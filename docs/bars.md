@@ -30,7 +30,7 @@ Features:
 
 - baseStyle, fillStyle, borderStyle, textStyle: **Optional**, Apply CSS to the unfilled portion, filled portion, border, and 
              display text on the bar, in the form of an object where the keys are CSS attributes, and the values are the
-             values for those attributes (both as strings).
+             values for those attributes (both as strings). 
 
 
 - layer: **Assigned automagically**. It's the same value as the name of this layer, so you can do player[this.layer].points or similar
