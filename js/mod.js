@@ -1,9 +1,9 @@
 let modInfo = {
-	name: "The Incremtreeverse",
+	name: "The Incrementreeverse",
 	id: "incrementy",
 	author: "pg132",
 	pointsName: "points",
-	discordName: "",
+	discordName: "pg132#7975",
 	discordLink: "",
 	changelogLink: "https://github.com/Acamaeda/The-Modding-Tree/blob/master/changelog.md",
     	offlineLimit: 10/3600,   
@@ -13,8 +13,8 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.9.1",
-	name: "Peter Piper picked a peck of pickled peppers",
+	num: "1.0 The Abelian Tributary",
+	name: "",
 }
 
 // If you add new functions anywhere inside of a layer, and those functions have an effect when called, add them here.
@@ -36,12 +36,11 @@ function addedPlayerData() { return {
 
 // Display extra things at the top of the page
 var displayThings = [
-	"Current endgame: The fifteenth upgrade of the Shard layer."
 ]
 
 // Determines when the game "ends"
 function isEndgame() {
-	return player.points.gte(new Decimal("e280000000"))
+	return player.points.layer > 1.7e308
 }
 
 

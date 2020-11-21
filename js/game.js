@@ -9,6 +9,10 @@ const TMT_VERSION = {
 	tmtName: "We should have thought of this sooner!"
 }
 
+function finishedChallenges(layer, data){
+	return challengeCompletions(layer, data) == (layers[layer].challenges[data].completionLimit || 1)
+}
+
 function getResetGain(layer, useType = null) {
 	let type = useType
 	if (!useType) type = tmp[layer].type
@@ -91,7 +95,19 @@ function canReset(layer)
 }
 
 function rowReset(row, layer) {
-	for (lr in ROW_LAYERS[row]){
+	if (row == "side") {
+		for (lr in ROW_LAYERS["side"]){
+			if (layers[lr].doReset) {
+				player[lr].activeChallenge = null // Exit challenges on any row reset on an equal or higher row
+				layers[lr].doReset(layer)
+			}
+		}
+		return
+	}
+	let order = Object.keys(ROW_LAYERS[row])
+	if (row == 3) order = order.reverse()
+	for (let i = 0; i < order.length; i ++){
+		lr = order[i]
 		if (layers[lr].doReset) {
 			player[lr].activeChallenge = null // Exit challenges on any row reset on an equal or higher row
 			layers[lr].doReset(layer)
@@ -131,6 +147,7 @@ function addPoints(layer, gain) {
 	player[layer].points = player[layer].points.add(gain).max(0)
 	if (player[layer].best) player[layer].best = player[layer].best.max(player[layer].points)
 	if (player[layer].total) player[layer].total = player[layer].total.add(gain)
+	if (player[layer].bestOnce) player[layer].bestOnce = player[layer].bestOnce.max(gain)
 }
 
 function generatePoints(layer, diff) {
@@ -152,6 +169,14 @@ function doReset(layer, force=false) {
 			if (!tmp[layer].canReset) return;
 		} 
 
+		let timesMult = hasUpgrade("o", 13) && layer == "sp" ? 5 : 1
+		if (hasMilestone("c", 1) && layer == "sp") timesMult *= 3
+		if (hasMilestone("c", 2) && layer == "sp") timesMult *= 5
+		if (devSpeedUp) timesMult *= 2
+
+		timesMult = Math.floor(timesMult)
+		if (player[layer].times != undefined) player[layer].times += timesMult
+
 		if (layers[layer].onPrestige)
 			layers[layer].onPrestige(gain)
 		
@@ -169,12 +194,9 @@ function doReset(layer, force=false) {
 					if (!player[lrs[lr]].unlocked) player[lrs[lr]].unlockOrder++
 			}
 		}
-	
 		tmp[layer].baseAmount = new Decimal(0) // quick fix
 	}
-
 	if (tmp[layer].resetsNothing) return
-
 
 	for (layerResetting in layers) {
 		if (row >= layers[layerResetting].row && (!force || layerResetting != layer)) completeChallenge(layerResetting)
@@ -226,7 +248,7 @@ function startChallenge(layer, x) {
 function canCompleteChallenge(layer, x){
 	if (x != player[layer].activeChallenge) return
 
-	let challenge = tmp[layer].challenges[x]
+	let challenge = tmp[layer].challenges[x] 
 
 	if (challenge.currencyInternalName){
 		let name = challenge.currencyInternalName
@@ -249,14 +271,32 @@ function canCompleteChallenge(layer, x){
 function completeChallenge(layer, x) {
 	var x = player[layer].activeChallenge
 	if (!x) return
+	if (layer == "sp") {
+		let pts = layers.sp.challenges.getPointGain()
+		if (x == 11) player.sp.chall1points = player.sp.chall1points.max(pts)
+		if (x == 12) player.sp.chall2points = player.sp.chall2points.max(pts)
+		if (x == 21) player.sp.chall3points = player.sp.chall3points.max(pts)
+		if (x == 22) player.sp.chall4points = player.sp.chall4points.max(pts)
+	}
 	if (!canCompleteChallenge(layer, x)){
 		delete player[layer].activeChallenge
 		return
 	}
-	if (player[layer].challenges[x] < tmp[layer].challenges[x].completionLimit) {
+	if (player[layer].challenges[x] < tmp[layer].challenges[x].completionLimit || player[layer].challenges[x] == undefined) {
 		needCanvasUpdate = true
 		player[layer].challenges[x] += 1
 		if (layers[layer].challenges[x].onComplete) layers[layer].challenges[x].onComplete()
+	}
+	while (player[layer].challenges[x] < tmp[layer].challenges[x].completionLimit) {
+		if (layer == "b" && x == 12) break
+
+		tmp[layer].challenges[x].goal = layers[layer].challenges[x].goal
+		if (typeof tmp[layer].challenges[x].goal == "function"){
+			tmp[layer].challenges[x].goal = tmp[layer].challenges[x].goal()
+		}
+		
+		if (canCompleteChallenge(layer, x)) player[layer].challenges[x] += 1
+		else break
 	}
 	delete player[layer].activeChallenge
 	updateChallengeTemp(layer)
@@ -331,11 +371,13 @@ function hardReset() {
 }
 
 var ticking = false
+var devstop = false
 
 var interval = setInterval(function() {
 	if (player===undefined||tmp===undefined) return;
 	if (ticking) return;
 	if (gameEnded&&!player.keepGoing) return;
+	if (devstop) return
 	ticking = true
 	let now = Date.now()
 	let diff = (now - player.time) / 1e3
@@ -348,7 +390,7 @@ var interval = setInterval(function() {
 		}
 		if (!player.offlineProd || player.offTime.remain <= 0) delete player.offTime
 	}
-	if (player.devSpeed) diff *= player.devSpeed
+	if (player.devSpeed != undefined) diff *= player.devSpeed
 	player.time = now
 	if (needCanvasUpdate) resizeCanvas();
 	updateTemp();

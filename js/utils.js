@@ -1,13 +1,25 @@
 // ************ Number formatting ************
 
+function addCommas(s){
+	if (s.length <= 3) return s
+	let rem = s.length % 3
+	if (rem == 0) rem = 3
+	return s.slice(0, rem) + "," + addCommas(s.slice(rem))
+}
+
+
 function exponentialFormat(num, precision) {
 	let e = num.log10().floor()
 	let m = num.div(Decimal.pow(10, e))
-	if(m.toStringWithDecimalPlaces(precision) == 10) {
+	if (m.toStringWithDecimalPlaces(precision) == 10) {
 		m = new Decimal(1)
 		e = e.add(1)
 	}
-	return m.toStringWithDecimalPlaces(precision)+"e"+e.toStringWithDecimalPlaces(0)
+	let end = e.toStringWithDecimalPlaces(0)
+	if (!end.includes("e")) end = addCommas(end)
+	let start = ""
+	if (e.lt(1e9)) start = m.toStringWithDecimalPlaces(precision)
+	return start + "e" + end
 }
 
 function commaFormat(num, precision) {
@@ -37,17 +49,21 @@ function format(decimal, precision=2) {
 	decimal = new Decimal(decimal)
 	if (isNaN(decimal.sign)||isNaN(decimal.layer)||isNaN(decimal.mag)) {
 		player.hasNaN = true;
-		//Decimal(0)
+		Decimal(0)
 		
 		return "NaN"
 	}
 	if (decimal.sign<0) return "-"+format(decimal.neg(), precision)
 	if (decimal.mag == Number.POSITIVE_INFINITY) return "Infinity"
-	if (decimal.gte("eeee1000")) {
+	if (decimal.gte("eeee10")) {
 		var slog = decimal.slog()
-		if (slog.gte(1e6)) return "F" + format(slog.floor())
-		else return Decimal.pow(10, slog.sub(slog.floor())).toStringWithDecimalPlaces(3) + "F" + commaFormat(slog.floor(), 0)
-	} else if (decimal.gte("1e100000")) return exponentialFormat(decimal, 0)
+		if (slog.gte(1e5)) return "F" + formatWhole(slog.floor())
+		if (slog.gte(1e4)) return Decimal.pow(10, slog.sub(slog.floor())).toStringWithDecimalPlaces(0) + "F" + commaFormat(slog.floor(), 0)
+		if (slog.gte(100)) return Decimal.pow(10, slog.sub(slog.floor())).toStringWithDecimalPlaces(2) + "F" + commaFormat(slog.floor(), 0)
+		else return Decimal.pow(10, slog.sub(slog.floor())).toStringWithDecimalPlaces(4) + "F" + commaFormat(slog.floor(), 0)
+	} else if (decimal.gte("ee20")) return "e" + format(decimal.log10(), precision)
+	else if (decimal.gte("ee10")) return "e" + format(decimal.log10(), 4)
+	else if (decimal.gte("1e100000")) return exponentialFormat(decimal, 0)
 	else if (decimal.gte(1e9)) return exponentialFormat(decimal, precision)
 	else if (decimal.gte(1e3)) return commaFormat(decimal, 0)
 	else return regularFormat(decimal, precision)
@@ -56,7 +72,7 @@ function format(decimal, precision=2) {
 function formatWhole(decimal) {
 	decimal = new Decimal(decimal)
 	if (decimal.gte(1e9)) return format(decimal, 2)
-	if (decimal.lte(0.95) && !decimal.eq(0)) return format(decimal, 2)
+	if (decimal.lt(10) && decimal.neq(decimal.floor())) return format(decimal, 2)
 	return format(decimal, 0)
 }
 
@@ -403,10 +419,12 @@ function canAffordUpgrade(layer, id) {
 }
 
 function hasUpgrade(layer, id){
+	if (["am","a","e","m","q","b","g"].includes(layer) && hasUpgrade("pi", 32)) return false
 	return (player[layer].upgrades.includes(toNumber(id)) || player[layer].upgrades.includes(id.toString()))
 }
 
 function hasMilestone(layer, id){
+	if (["am","a","e","m","q","b","g"].includes(layer) && hasUpgrade("pi", 32)) return false
 	return (player[layer].milestones.includes(toNumber(id)) || player[layer].milestones.includes(id.toString()))
 }
 
@@ -415,10 +433,11 @@ function hasAchievement(layer, id){
 }
 
 function hasChallenge(layer, id){
-	return (player[layer].challenges[id])
+	return challengeCompletions(layer, id)
 }
 
 function challengeCompletions(layer, id){
+	if (["am","a","e","m","q","b","g"].includes(layer) && hasUpgrade("pi", 32)) return 0
 	return (player[layer].challenges[id])
 }
 
@@ -459,7 +478,6 @@ function achievementEffect(layer, id){
 }
 
 function canAffordPurchase(layer, thing, cost) {
-
 	if (thing.currencyInternalName){
 		let name = thing.currencyInternalName
 		if (thing.currencyLocation){
@@ -556,7 +574,7 @@ function inChallenge(layer, id){
 	if (challenge==id) return true
 
 	if (layers[layer].challenges[challenge].countsAs)
-		return tmp[layer].challenges[id].countsAs.includes(id)
+		return tmp[layer].challenges[challenge].countsAs.includes(id)
 }
 
 // ************ Misc ************
