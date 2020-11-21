@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".1 First Steps",
+	num: ".1.1 First Steps",
 	name: "",
 }
 
@@ -34,10 +34,46 @@ function canGenPoints(){
 function addedPlayerData() { return {
 }}
 
+PROGRESSION_MILESTONES = {
+	1:() => player.a.upgrades.length >= 1,
+	2:() => player.a.upgrades.length >= 3,
+	3:() => player.a.upgrades.length >= 6,
+}
+
+PROGRESSION_MILESTONES_TEXT = {
+	1: "one Amoeba upgrade",
+	2: "three Amoeba upgrades",
+	3: "six Amoeba upgrades",
+}
+
+function progressReachedNum(){
+	if (typeof player == "undefined") return "You might have a bug, if this disappears its fine"
+	a = 0
+	b = 0
+	for (i in PROGRESSION_MILESTONES) {
+		b ++
+		if (PROGRESSION_MILESTONES[i]() == true) a ++
+	}
+	return "You have done " + formatWhole(a) + "/" + formatWhole(b) + " of the milestones"
+}
+
+function nextMilestone(){
+	for (i in PROGRESSION_MILESTONES) {
+		if (PROGRESSION_MILESTONES[i]() == false) return "The next is at " + PROGRESSION_MILESTONES_TEXT[i]
+	}
+	return ""
+}
+
 // Display extra things at the top of the page
 var displayThings = [
-	"This may be incorrect: Last updated 9:56 PM pacific 11.20",
-	"Endgame, one upgrade :)"
+	"This may be incorrect: Last updated 10:47 PM pacific 11.20",
+	function(){
+		return shiftDown ? "Shift is down" : ""
+	},
+	"Endgame: All milestones",
+	function(){
+		return progressReachedNum() + "<br>" + nextMilestone()
+	}
 ]
 
 // Determines when the game "ends"

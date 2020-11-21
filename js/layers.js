@@ -8,6 +8,8 @@ function getPointGen() {
         }
 
         if (hasUpgrade("a", 11)) gain = gain.times(upgradeEffect("a", 11))
+        if (hasUpgrade("a", 12)) gain = gain.times(upgradeEffect("a", 12))
+                                 gain = gain.times(layers.a.buyables[11].effect())
 
 	return gain
 }
@@ -33,6 +35,15 @@ function getsReset(layer, layerPrestiging) {
         for (let i = 0; i < order.length; i++) {
                 if (layerPrestiging == order[i]) return false
                 if (layer == order[i]) return true
+        }
+        return false
+}
+
+function hasUnlockedPast(layer){
+        let on = false
+        for (let i = 0; i < LAYERS.length; i++) {
+                if (on && layers[LAYERS[i]].unlocked()) return true
+                if (layer == LAYERS[i]) on = true
         }
         return false
 }
@@ -106,6 +117,9 @@ addLayer("a", {
                         if (LAYERS[i] == "a") yet = true
                 }
 
+                if (hasUpgrade("a", 13)) x = x.times(upgradeEffect("a", 13))
+                if (hasUpgrade("a", 14)) x = x.times(upgradeEffect("a", 14))
+
                 return x
         },
         effect(){
@@ -151,7 +165,13 @@ addLayer("a", {
                 let nextnum = Decimal.pow(10, gain.plus(1).div(pst).root(exp).div(pre)).times(div).ceil()
 
                 let nextAt = ""
-                if (gain.lt(1e6)) nextAt = "<br>Next at " + format(nextnum) + " points"
+                if (gain.lt(1e6)) {
+                        nextAt = "<br>Next at " + format(nextnum) + " points"
+                        let ps = gain.div(player.a.time || 1)
+
+                        if (ps.lt(1000/60)) nextAt += "<br>" + format(ps.times(60)) + "/m"
+                        else nextAt += "<br>" + format(ps) + "/s"
+                }
 
                 let a = "Reset for " + formatWhole(gain) + " Amoebas"
 
@@ -168,35 +188,79 @@ addLayer("a", {
                         description: "Amoebas boost point gain",
                         cost: new Decimal(2),
                         effect(){
-                                let ret = player.a.points.times(10).plus(1).log10().pow(3)
+                                let exp = 3
+                                if (hasUpgrade("a", 21)) exp += player.a.upgrades.length * .5
+                                let ret = player.a.points.times(10).plus(20).log10().pow(exp)
                                 return ret
                         },
                         unlocked(){
-                                return true
+                                return player.a.best.gt(0) || hasUnlockedPast("a")
                         }
                 },
                 12: {
-                        title: "A", //next is are
-                        description: "idkyet",
+                        title: "A",
+                        description: "Each Amoeba Upgrade doubles point gain",
                         cost: new Decimal(15),
                         effect(){
-                                return new Decimal(0)
-                                let ret = player.a.points.times(10).plus(1).log10().pow(3)
-                                return ret
+                                return Decimal.pow(2, player.a.upgrades.length)
                         },
                         unlocked(){
-                                return hasUpgrade("a", 11)
+                                return hasUpgrade("a", 11) || hasUnlockedPast("a")
                         }
                 },
+                13: {
+                        title: "Are",
+                        description: "Each Amoeba Upgrade multiplies Amoeba gain by 1.2",
+                        cost: new Decimal(300),
+                        effect(){
+                                return Decimal.pow(1.2, player.a.upgrades.length)
+                        },
+                        unlocked(){
+                                return hasUpgrade("a", 12) || hasUnlockedPast("a")
+                        }
+                },
+                14: {
+                        title: "At",
+                        description: "Amoebas boost Amoeba gain",
+                        cost: new Decimal(1000),
+                        effect(){
+                                return player.a.points.plus(10).log10()
+                        },
+                        unlocked(){
+                                return hasUpgrade("a", 13) || hasUnlockedPast("a")
+                        }
+                },
+                15: {
+                        title: "As",
+                        description: "Unlock the first Amoeba buyable",
+                        cost: new Decimal(1500),
+                        unlocked(){
+                                return hasUpgrade("a", 14) || hasUnlockedPast("a")
+                        }
+                },
+                21: {
+                        title: "An",
+                        description: "Each Amoeba upgrade adds .5 to the <b>And</b> exponent",
+                        cost: new Decimal(5000),
+                        effect(){
+                                return 3 + player.a.upgrades.length
+                        },
+                        effectDisplay(){
+                                return "3 -> " + formatWhole(3 + player.a.upgrades.length * .5)
+                        },
+                        unlocked(){
+                                return getBuyableAmount("a", 11).gte(3) || hasUnlockedPast("a")
+                        }
+                }, //next: 2e4 & about & need 6 of buyable 11
         },
         buyables: {
                 rows: 3,
                 cols: 3,
                 11: {
-                        title: "name",
+                        title: "All",
                         display(){
                                 let start = "<b><h2>Amount</h2>: " + getBuyableAmount("a", 11) + "</b><br>"
-                                let eff = "<b><h2>Effect</h2>: x" + format(this.effect()) + "</b><br>"
+                                let eff = "<b><h2>Effect</h2>: x" + format(this.effect()) + " points</b><br>"
                                 let cost = "<b><h2>Cost</h2>: " + format(this.cost()) + " Amoebas</b><br>"
                                 let eformula = "<b><h2>Effect formula</h2>:<br>" + format(this.effectBase()) + "^x</b><br>"
                                 let end = shiftDown ? eformula : "Shift to see details"
@@ -204,9 +268,9 @@ addLayer("a", {
                         },
                         getBases(){
                                 //currently an example
-                                let b0 = 10
-                                let b1 = 3
-                                let b2 = 1.01
+                                let b0 = 500
+                                let b1 = 2
+                                let b2 = 1.001
                                 return [b0, b1, b2]
                         },
                         cost(add){
@@ -219,7 +283,7 @@ addLayer("a", {
                                 let exp1 = x
                                 let exp2 = x.times(x)
 
-                                return Decimal.pow(base0, exp0).times(Decimal.pow(base1, exp1)).times(Decimal.pow(base2, exp2))
+                                return Decimal.pow(base0, exp0).times(Decimal.pow(base1, exp1)).times(Decimal.pow(base2, exp2)).ceil()
                         },
                         effectBase(){
                                 let base = new Decimal(1.5)
@@ -276,7 +340,7 @@ addLayer("a", {
                                 */
                         },
                         unlocked(){ 
-                                return false
+                                return hasUpgrade("a", 15) || hasUnlockedPast("a")
                         },
                 },
         },
@@ -304,12 +368,14 @@ addLayer("a", {
                                 "blank", 
                                 "buyables"],
                         unlocked(){
-                                return false // for now
+                                return hasUpgrade("a", 15) || hasUnlockedPast("a")
                         },
                 },
         },
         doReset(layer){
+                if (layer == "a") player.a.time = 0
                 if (!getsReset("a", layer)) return
+                player.a.time = 0
 
                 //upgrades
                 let keep = []
