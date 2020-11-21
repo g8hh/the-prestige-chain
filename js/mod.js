@@ -35,15 +35,21 @@ function addedPlayerData() { return {
 }}
 
 PROGRESSION_MILESTONES = {
-	1:() => player.a.upgrades.length >= 1,
-	2:() => player.a.upgrades.length >= 3,
-	3:() => player.a.upgrades.length >= 6,
+	1:() => player.a.upgrades.length >= 1 || hasUnlockedPast("a"),
+	2:() => player.a.upgrades.length >= 3 || hasUnlockedPast("a"),
+	3:() => player.a.upgrades.length >= 6 || hasUnlockedPast("a"),
+	4:() => getBuyableAmount("a", 12).gte(2) || hasUnlockedPast("a"),
+	5:() => player.a.points.gte(1e6) || hasUnlockedPast("a"),
+	6:() => player.b.upgrades.length >= 1 || hasUnlockedPast("b"),
 }
 
 PROGRESSION_MILESTONES_TEXT = {
 	1: "one Amoeba upgrade",
 	2: "three Amoeba upgrades",
 	3: "six Amoeba upgrades",
+	4: "two Any buyables",
+	5: "1e6 Amoebas",
+	6: "one Bacteria upgrade",
 }
 
 function progressReachedNum(){
@@ -66,11 +72,8 @@ function nextMilestone(){
 
 // Display extra things at the top of the page
 var displayThings = [
-	"This may be incorrect: Last updated 10:47 PM pacific 11.20",
-	function(){
-		return shiftDown ? "Shift is down" : ""
-	},
-	"Endgame: All milestones",
+	"This may be incorrect: Last updated 11:49 PM pacific 11.20",
+	"Endgame: All milestones & 5 Bacteria",
 	function(){
 		return progressReachedNum() + "<br>" + nextMilestone()
 	}
