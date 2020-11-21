@@ -1,6 +1,6 @@
 let modInfo = {
-	name: "The Incrementreeverse",
-	id: "incrementy",
+	name: "The Prestige Chain",
+	id: "prestigechain",
 	author: "pg132",
 	pointsName: "points",
 	discordName: "pg132#7975",
@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "1.0 The Abelian Tributary",
+	num: ".1 First Steps",
 	name: "",
 }
 
@@ -36,13 +36,14 @@ function addedPlayerData() { return {
 
 // Display extra things at the top of the page
 var displayThings = [
+	"This may be incorrect: Last updated 9:56 PM pacific 11.20",
+	"Endgame, one upgrade :)"
 ]
 
 // Determines when the game "ends"
 function isEndgame() {
-	return player.points.layer > 1.7e308
+	return false
 }
-
 
 
 // Less important things beyond this point!

@@ -169,10 +169,7 @@ function doReset(layer, force=false) {
 			if (!tmp[layer].canReset) return;
 		} 
 
-		let timesMult = hasUpgrade("o", 13) && layer == "sp" ? 5 : 1
-		if (hasMilestone("c", 1) && layer == "sp") timesMult *= 3
-		if (hasMilestone("c", 2) && layer == "sp") timesMult *= 5
-		if (devSpeedUp) timesMult *= 2
+		let timesMult = 1
 
 		timesMult = Math.floor(timesMult)
 		if (player[layer].times != undefined) player[layer].times += timesMult
@@ -239,7 +236,6 @@ function startChallenge(layer, x) {
 		enter = true
 	}	
 	doReset(layer, true)
-	if (layer == "b") doReset("am", true)
 	if (enter) player[layer].activeChallenge = x
 
 	updateChallengeTemp(layer)
@@ -271,13 +267,6 @@ function canCompleteChallenge(layer, x){
 function completeChallenge(layer, x) {
 	var x = player[layer].activeChallenge
 	if (!x) return
-	if (layer == "sp") {
-		let pts = layers.sp.challenges.getPointGain()
-		if (x == 11) player.sp.chall1points = player.sp.chall1points.max(pts)
-		if (x == 12) player.sp.chall2points = player.sp.chall2points.max(pts)
-		if (x == 21) player.sp.chall3points = player.sp.chall3points.max(pts)
-		if (x == 22) player.sp.chall4points = player.sp.chall4points.max(pts)
-	}
 	if (!canCompleteChallenge(layer, x)){
 		delete player[layer].activeChallenge
 		return
@@ -288,8 +277,6 @@ function completeChallenge(layer, x) {
 		if (layers[layer].challenges[x].onComplete) layers[layer].challenges[x].onComplete()
 	}
 	while (player[layer].challenges[x] < tmp[layer].challenges[x].completionLimit) {
-		if (layer == "b" && x == 12) break
-
 		tmp[layer].challenges[x].goal = layers[layer].challenges[x].goal
 		if (typeof tmp[layer].challenges[x].goal == "function"){
 			tmp[layer].challenges[x].goal = tmp[layer].challenges[x].goal()
