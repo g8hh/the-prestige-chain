@@ -21,14 +21,23 @@ To make a new softcap using this function
 var softcap_data = {
 	a_eff: {
 		1: {
+			func: "pow",
+			start: 5,
+			pow: .8,
+			derv: true,
+			active(){
+				return !hasUpgrade("a", 55)
+			},
+		},
+		2: {
 			func: "log",
 			start: 10,
 			mul: 10,
 			active(){
-				return !hasUpgrade("a", 33)
+				return !hasUpgrade("a", 55)
 			},
 		},
-		2: {
+		3: {
 			func: "pow",
 			start: 1e4,
 			pow: .5,
@@ -40,6 +49,15 @@ var softcap_data = {
 			func: "log",
 			start: 10,
 			mul: 10,
+			active(){
+				return !hasUpgrade("c", 14)
+			},
+		},
+		2: {
+			func: "pow",
+			start: 1000,
+			pow: .8,
+			derv: true
 		},
 	},
 	c_eff: {
@@ -111,7 +129,7 @@ function do_softcap(x, data, num) {
 		if (vars[i] == "start") start = v[i]
 	}
 
-	if (v[3] === false) return x 
+	if (v[4] === false) return x 
 
 	var canSoftcap = false
 	if (!start || x.gt(start)) canSoftcap = true

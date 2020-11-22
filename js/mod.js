@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".1.4 The Second Step",
+	num: ".1.4 Tick Tock",
 	name: "",
 }
 
@@ -49,6 +49,9 @@ PROGRESSION_MILESTONES = {
 	12:() => player.c.upgrades.length >= 3 || hasUnlockedPast("c"),
 	13:() => getBuyableAmount("a", 31).gte(4) || hasUnlockedPast("c"),
 	14:() => player.b.upgrades.length >= 12 || hasUnlockedPast("c"),
+	15:() => player.b.upgrades.length >= 14 || hasUnlockedPast("c"),
+	16:() => player.c.upgrades.length >= 4 || hasUnlockedPast("c"),
+	17:() => challengeCompletions("b", 11) >= 1 || hasUnlockedPast("c"),
 }
 
 PROGRESSION_MILESTONES_TEXT = {
@@ -66,6 +69,9 @@ PROGRESSION_MILESTONES_TEXT = {
 	12: "3 Circle upgrades",
 	13: "4 Against levels",
 	14: "12 Bacteria upgrades",
+	15: "14 Bacteria upgrades",
+	16: "4 Circle upgrades",
+	17: "1 Big completion",
 }
 
 function progressReachedNum(){
@@ -91,9 +97,9 @@ function nextMilestone(){
 var displayThings = [
 	"This may be incorrect: Last updated 7:52 PM pacific 11.21",
 	function (){
-		let a = "Endgame: All milestones"
+		let a = "Endgame: All goals"
 		if (progressReachedNum() == Object.keys(PROGRESSION_MILESTONES).length) a += " (done!)"
-		return a + " & e4256 Amoebas"
+		return a + " & 1e196 bacteria"
 	},
 ]
 
