@@ -181,11 +181,11 @@ addLayer("a", {
                                         if (hasUpgrade("b", 24)) amt *= 2
                                         if (hasUpgrade("b", 25)) amt *= 2
                                 }
-                                layers.a.buyables[11].buyMax(amt)
-                                layers.a.buyables[12].buyMax(amt)
-                                layers.a.buyables[13].buyMax(amt)
-                                layers.a.buyables[21].buyMax(amt)
-                                layers.a.buyables[22].buyMax(amt)
+                                if (layers.a.buyables[11].unlocked()) layers.a.buyables[11].buyMax(amt)
+                                if (layers.a.buyables[12].unlocked()) layers.a.buyables[12].buyMax(amt)
+                                if (layers.a.buyables[13].unlocked()) layers.a.buyables[13].buyMax(amt)
+                                if (layers.a.buyables[21].unlocked()) layers.a.buyables[21].buyMax(amt)
+                                if (layers.a.buyables[22].unlocked()) layers.a.buyables[22].buyMax(amt)
                         }
                 } else {
                         player.a.abtime = 0
@@ -235,6 +235,7 @@ addLayer("a", {
                                 if (hasUpgrade("a", 21)) exp += player.a.upgrades.length * .5
 
                                 if (hasUpgrade("a", 44)) exp *= exp
+                                if (hasUpgrade("c", 11)) exp *= 2
 
                                 let ret = player.a.points.times(10).plus(20).log10().pow(exp)
                                 return ret
@@ -388,7 +389,7 @@ addLayer("a", {
                 42: {
                         title: "Another",
                         description: "<b>Account</b> gives free <b>Access</b> levels",
-                        cost: new Decimal(1e197),
+                        cost: new Decimal(1e195),
                         unlocked(){
                                 return hasUpgrade("a", 41) || hasUnlockedPast("b")
                         }
@@ -526,7 +527,7 @@ addLayer("a", {
                                 
                                 player.a.buyables[11] = player.a.buyables[11].plus(diff)
 
-                                if (hasUpgrade("a", 35)) return 
+                                if (hasUpgrade("a", 35) || diff.eq(0)) return 
                                 player.a.points = player.a.points.sub(this.cost(-1)).max(0)
                         },
                         unlocked(){ 
@@ -643,7 +644,7 @@ addLayer("a", {
                                 
                                 player.a.buyables[12] = player.a.buyables[12].plus(diff)
 
-                                if (hasUpgrade("a", 35)) return 
+                                if (hasUpgrade("a", 35) || diff.eq(0)) return 
                                 player.a.points = player.a.points.sub(this.cost(-1)).max(0)
                         },
                         unlocked(){ 
@@ -745,7 +746,7 @@ addLayer("a", {
                                 
                                 player.a.buyables[13] = player.a.buyables[13].plus(diff)
 
-                                if (hasUpgrade("a", 35)) return 
+                                if (hasUpgrade("a", 35) || diff.eq(0)) return 
                                 player.a.points = player.a.points.sub(this.cost(-1)).max(0)
                         },
                         unlocked(){ 
@@ -851,7 +852,7 @@ addLayer("a", {
                                 
                                 player.a.buyables[21] = player.a.buyables[21].plus(diff)
 
-                                if (hasUpgrade("a", 35)) return 
+                                if (hasUpgrade("a", 35) || diff.eq(0)) return 
                                 player.a.points = player.a.points.sub(this.cost(-1)).max(0)
                         },
                         unlocked(){ 
@@ -952,7 +953,7 @@ addLayer("a", {
                                 
                                 player.a.buyables[22] = player.a.buyables[22].plus(diff)
 
-                                if (hasUpgrade("a", 35)) return 
+                                if (hasUpgrade("a", 35) || diff.eq(0)) return 
                                 player.a.points = player.a.points.sub(this.cost(-1)).max(0)
                         },
                         unlocked(){ 
@@ -1008,7 +1009,7 @@ addLayer("a", {
                 let keep = []
                 if (hasUpgrade("b", 13)) keep.push(11,12,13,14,15,21,22,23,24,25)
                 if (hasUpgrade("b", 14)) keep.push(31,32,33,34,35,41,42,43,44,45)
-                player.a.upgrades = filter(player.a.upgrades, keep)
+                if (!hasUpgrade("c", 11)) player.a.upgrades = filter(player.a.upgrades, keep)
 
                 //resources
                 player.a.points = new Decimal(0)
@@ -1163,6 +1164,8 @@ addLayer("b", {
                         effect(){
                                 let ret = player.b.points.plus(8).sqrt()
                                 ret = softcap(ret, "b_upg11")
+
+                                if (hasUpgrade("c", 11)) ret = ret.pow(2)
                                 return ret
                         },
                         unlocked(){
@@ -1187,7 +1190,7 @@ addLayer("b", {
                 },
                 14: {
                         title: "Business",
-                        description: "Keep the third and fourht rows of Amoeba upgrades and buy each Amoeba buyable once per second",
+                        description: "Keep the third and fourth rows of Amoeba upgrades and buy each Amoeba buyable once per second",
                         cost: new Decimal(1000),
                         unlocked(){
                                 return hasUpgrade("b", 13) || hasUnlockedPast("b")
@@ -1618,6 +1621,26 @@ addLayer("c", {
         },
         canReset(){
                 return this.getResetGain().gt(0)
+        },
+        upgrades:{
+                rows: 5,
+                cols: 5,
+                11: {
+                        title: "Can",
+                        description: "Keep all Amoeba upgrades, square <b>And</b> and <b>By</b>",
+                        cost: new Decimal(3),
+                        unlocked(){ 
+                                return player.c.best.gte(2) || hasUnlockedPast("c")
+                        }, //hasUpgrade("c", 11)
+                },
+
+                /*
+                contact
+                click
+                city
+                copyright
+
+                */
         },
         tabFormat: {
                 "Upgrades": {
