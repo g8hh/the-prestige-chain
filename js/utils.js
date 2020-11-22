@@ -94,6 +94,7 @@ function toPlaces(x, precision, maxAccepted) {
 
 function save() {
 	localStorage.setItem(modInfo.id, btoa(JSON.stringify(player)))
+	console.log("saved at " + new Date().getTime())
 }
 
 function startPlayerBase() {

@@ -94,7 +94,27 @@ var softcap_data = {
 			pow: .3,
 			derv: true
 		}
-	}
+	},
+	a_buy32: {
+		1: {
+			func: "log",
+			start: .5,
+			add: Math.log10(2) + .5,
+		},
+		2: {
+			func: "log",
+			start: 1,
+			add: 1,
+		},
+	},
+	d_eff: {
+		1: {
+			func: "pow",
+			start: 50,
+			pow: .8,
+			derv: true,
+		},
+	},
 }
 
 var softcap_vars = {

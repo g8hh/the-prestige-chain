@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".1.4 Tick Tock",
+	num: ".1.6 The First Trial",
 	name: "",
 }
 
@@ -44,7 +44,7 @@ PROGRESSION_MILESTONES = {
 	7:() => player.a.upgrades.length >= 13 || hasUnlockedPast("b"),
 	8:() => player.b.upgrades.length >= 6 || hasUnlockedPast("b"),
 	9:() => player.a.upgrades.length >= 16 || hasUnlockedPast("b"),
-	10:() => player.b.points.gt(5e10) || hasUnlockedPast("c"),
+	10:() => player.b.points.gt(5e10) || hasUnlockedPast("b"),
 	11:() => player.c.points.gte(3) || hasUnlockedPast("c"),
 	12:() => player.c.upgrades.length >= 3 || hasUnlockedPast("c"),
 	13:() => getBuyableAmount("a", 31).gte(4) || hasUnlockedPast("c"),
@@ -52,7 +52,18 @@ PROGRESSION_MILESTONES = {
 	15:() => player.b.upgrades.length >= 14 || hasUnlockedPast("c"),
 	16:() => player.c.upgrades.length >= 4 || hasUnlockedPast("c"),
 	17:() => challengeCompletions("b", 11) >= 1 || hasUnlockedPast("c"),
+	18:() => player.b.upgrades.length >= 19 || hasUnlockedPast("c"),
+	19:() => player.c.upgrades.length >= 7 || hasUnlockedPast("c"),
+	20:() => challengeCompletions("b", 12) >= 1 || hasUnlockedPast("c"),
+	21:() => player.c.points.gte(5e10) || hasUnlockedPast("c"),
+	22:() => player.d.points.gte(5) || hasUnlockedPast("d"),
 }
+
+/*
+A: 5
+B: 5
+C: 11 (currently)
+*/
 
 PROGRESSION_MILESTONES_TEXT = {
 	1: "1 Amoeba upgrade",
@@ -72,6 +83,11 @@ PROGRESSION_MILESTONES_TEXT = {
 	15: "14 Bacteria upgrades",
 	16: "4 Circle upgrades",
 	17: "1 Big completion",
+	18: "19 Bacteria upgrades",
+	19: "7 Circle upgrades",
+	20: "1 Body completion",
+	21: "5e10 Circles",
+	22: "5 Doodles",
 }
 
 function progressReachedNum(){
@@ -95,11 +111,11 @@ function nextMilestone(){
 
 // Display extra things at the top of the page
 var displayThings = [
-	"This may be incorrect: Last updated 7:52 PM pacific 11.21",
+	"This may be incorrect: Last updated 10:28 PM pacific 11.22",
 	function (){
 		let a = "Endgame: All goals"
 		if (progressReachedNum() == Object.keys(PROGRESSION_MILESTONES).length) a += " (done!)"
-		return a + " & 1e196 bacteria"
+		return a + ""
 	},
 ]
 
