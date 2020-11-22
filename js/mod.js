@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".1.6 The First Trial",
+	num: ".1.7 The First Trial",
 	name: "",
 }
 
@@ -57,6 +57,9 @@ PROGRESSION_MILESTONES = {
 	20:() => challengeCompletions("b", 12) >= 1 || hasUnlockedPast("c"),
 	21:() => player.c.points.gte(5e10) || hasUnlockedPast("c"),
 	22:() => player.d.points.gte(5) || hasUnlockedPast("d"),
+	23:() => player.b.upgrades.length >= 22 || hasUnlockedPast("d"),
+	24:() => getBuyableAmount("b", 21).gte(2) || hasUnlockedPast("d"),
+	25:() => player.d.upgrades.length >= 4 || hasUnlockedPast("d"),
 }
 
 /*
@@ -88,6 +91,9 @@ PROGRESSION_MILESTONES_TEXT = {
 	20: "1 Body completion",
 	21: "5e10 Circles",
 	22: "5 Doodles",
+	23: "22 Bacteria upgrades",
+	24: "22 Baby buyables",
+	25: "4 Doodle upgrades",
 }
 
 function progressReachedNum(){
@@ -111,11 +117,11 @@ function nextMilestone(){
 
 // Display extra things at the top of the page
 var displayThings = [
-	"This may be incorrect: Last updated 10:28 PM pacific 11.22",
+	"This may be incorrect: Last updated 2:15 PM pacific 11.22",
 	function (){
 		let a = "Endgame: All goals"
 		if (progressReachedNum() == Object.keys(PROGRESSION_MILESTONES).length) a += " (done!)"
-		return a + ""
+		return a + " & 2e79 circles"
 	},
 ]
 
