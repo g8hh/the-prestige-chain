@@ -24,6 +24,15 @@ var softcap_data = {
 			func: "log",
 			start: 10,
 			mul: 10,
+			active(){
+				return !hasUpgrade("a", 33)
+			},
+		},
+		2: {
+			func: "pow",
+			start: 1e4,
+			pow: .5,
+			derv: true
 		},
 	},
 	b_eff: {
@@ -33,12 +42,40 @@ var softcap_data = {
 			mul: 10,
 		},
 	},
+	c_eff: {
+		1: {
+			func: "pow",
+			start: 30,
+			pow: .8,
+			derv: true
+		},
+	},
 	b_upg11: {
 		1: {
 			func: "log",
 			start: 10,
 			mul: 10,
 		},
+		2: {
+			func: "pow",
+			start: 20,
+			pow: .3,
+			derv: true
+		},
+	},
+	a_buy13: {
+		1: {
+			func: "log",
+			start: 10,
+			mul: 5,
+			add: 5
+		},
+		2: {
+			func: "pow",
+			start: 15,
+			pow: .3,
+			derv: true
+		}
 	}
 }
 
@@ -68,13 +105,13 @@ function do_softcap(x, data, num) {
 	var vars = softcap_vars[func]
 
 	var start = 0
-	var v = [data[vars[0]], data[vars[1]], data[vars[2]], data.start]
-	for (let i = 0; i < 4; i++) {
+	var v = [data[vars[0]], data[vars[1]], data[vars[2]], data[vars[3]], data.active]
+	for (let i = 0; i < 5; i++) {
 		if (typeof v[i] == "function") v[i] = v[i]()
 		if (vars[i] == "start") start = v[i]
 	}
-	
-	if (v[4] === false) return x 
+
+	if (v[3] === false) return x 
 
 	var canSoftcap = false
 	if (!start || x.gt(start)) canSoftcap = true
@@ -88,7 +125,7 @@ function softcap(x, id) {
 	var data = softcap_data[id]
 
 	if (data == undefined) {
-		console.log("your thing broke at" + id)
+		console.log("there is no softcap at " + id)
 		return
 	}
 

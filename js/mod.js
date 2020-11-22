@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".1.1 First Steps",
+	num: ".1.3 First Steps",
 	name: "",
 }
 
@@ -41,6 +41,11 @@ PROGRESSION_MILESTONES = {
 	4:() => getBuyableAmount("a", 12).gte(2) || hasUnlockedPast("a"),
 	5:() => player.a.points.gte(1e6) || hasUnlockedPast("a"),
 	6:() => player.b.upgrades.length >= 1 || hasUnlockedPast("b"),
+	7:() => player.a.upgrades.length >= 13 || hasUnlockedPast("b"),
+	8:() => player.b.upgrades.length >= 6 || hasUnlockedPast("b"),
+	9:() => player.a.upgrades.length >= 16 || hasUnlockedPast("b"),
+	10:() => player.b.points.gt(5e10) || hasUnlockedPast("c"),
+	11:() => player.c.points.gte(3) || hasUnlockedPast("c"),
 }
 
 PROGRESSION_MILESTONES_TEXT = {
@@ -50,17 +55,23 @@ PROGRESSION_MILESTONES_TEXT = {
 	4: "two Any buyables",
 	5: "1e6 Amoebas",
 	6: "one Bacteria upgrade",
+	7: "thirteen Amoeba upgrades",
+	8: "six Bacteria upgrades",
+	9: "sixteen Amoeba upgrades",
+	10: "5e10 Bacteria",
+	11: "3 Circles",
 }
 
 function progressReachedNum(){
-	if (typeof player == "undefined") return "You might have a bug, if this disappears its fine"
-	a = 0
-	b = 0
+	let a = 0
 	for (i in PROGRESSION_MILESTONES) {
-		b ++
 		if (PROGRESSION_MILESTONES[i]() == true) a ++
 	}
-	return "You have done " + formatWhole(a) + "/" + formatWhole(b) + " of the milestones"
+	return a
+}
+
+function progressReachedText(){
+	return "You have done " + formatWhole(progressReachedNum()) + "/" + formatWhole(Object.keys(PROGRESSION_MILESTONES).length) + " of the milestones"
 }
 
 function nextMilestone(){
@@ -72,11 +83,12 @@ function nextMilestone(){
 
 // Display extra things at the top of the page
 var displayThings = [
-	"This may be incorrect: Last updated 11:49 PM pacific 11.20",
-	"Endgame: All milestones & 5 Bacteria",
-	function(){
-		return progressReachedNum() + "<br>" + nextMilestone()
-	}
+	"This may be incorrect: Last updated 4:33 PM pacific 11.21",
+	function (){
+		let a = "Endgame: All milestones"
+		if (progressReachedNum() == Object.keys(PROGRESSION_MILESTONES).length) a += " (done!)"
+		return a
+	},
 ]
 
 // Determines when the game "ends"
