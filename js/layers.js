@@ -1338,7 +1338,7 @@ addLayer("a", {
                 player.a.best = new Decimal(0)
 
                 //buyables
-                let resetBuyables = [11, 12, 13, 21]
+                let resetBuyables = [11, 12, 13, 21, 22, 23, 31]
                 for (let j = 0; j < resetBuyables.length; j++) {
                         player.a.buyables[resetBuyables[j]] = new Decimal(0)
                 }
@@ -1930,7 +1930,7 @@ addLayer("b", {
                 player.b.best = new Decimal(0)
 
                 //buyables
-                let resetBuyables = [11, /*12, 13*/]
+                let resetBuyables = [11, 12, /*13*/]
                 for (let j = 0; j < resetBuyables.length; j++) {
                         player.b.buyables[resetBuyables[j]] = new Decimal(0)
                 }
