@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".1.3 First Steps",
+	num: ".1.4 The Second Step",
 	name: "",
 }
 
@@ -46,20 +46,26 @@ PROGRESSION_MILESTONES = {
 	9:() => player.a.upgrades.length >= 16 || hasUnlockedPast("b"),
 	10:() => player.b.points.gt(5e10) || hasUnlockedPast("c"),
 	11:() => player.c.points.gte(3) || hasUnlockedPast("c"),
+	12:() => player.c.upgrades.length >= 3 || hasUnlockedPast("c"),
+	13:() => getBuyableAmount("a", 31).gte(4) || hasUnlockedPast("c"),
+	14:() => player.b.upgrades.length >= 12 || hasUnlockedPast("c"),
 }
 
 PROGRESSION_MILESTONES_TEXT = {
-	1: "one Amoeba upgrade",
-	2: "three Amoeba upgrades",
-	3: "six Amoeba upgrades",
-	4: "two Any buyables",
+	1: "1 Amoeba upgrade",
+	2: "3 Amoeba upgrades",
+	3: "6 Amoeba upgrades",
+	4: "2 Any buyables",
 	5: "1e6 Amoebas",
-	6: "one Bacteria upgrade",
-	7: "thirteen Amoeba upgrades",
-	8: "six Bacteria upgrades",
-	9: "sixteen Amoeba upgrades",
+	6: "1 Bacteria upgrade",
+	7: "13 Amoeba upgrades",
+	8: "6 Bacteria upgrades",
+	9: "16 Amoeba upgrades",
 	10: "5e10 Bacteria",
 	11: "3 Circles",
+	12: "3 Circle upgrades",
+	13: "4 Against levels",
+	14: "12 Bacteria upgrades",
 }
 
 function progressReachedNum(){
@@ -83,11 +89,11 @@ function nextMilestone(){
 
 // Display extra things at the top of the page
 var displayThings = [
-	"This may be incorrect: Last updated 4:33 PM pacific 11.21",
+	"This may be incorrect: Last updated 7:52 PM pacific 11.21",
 	function (){
 		let a = "Endgame: All milestones"
 		if (progressReachedNum() == Object.keys(PROGRESSION_MILESTONES).length) a += " (done!)"
-		return a
+		return a + " & e4256 Amoebas"
 	},
 ]
 
