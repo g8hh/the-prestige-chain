@@ -1024,7 +1024,7 @@ addLayer("a", {
                                 }
                                 if (hasUpgrade("c", 32)) {
                                         extra = true
-                                        a += "<h3>Account</h3>, "
+                                        a += "<h3>Above</h3>, "
                                 }
                                 if (!extra) return ""
                                 return a.slice(0,a.length-2)
@@ -1619,11 +1619,13 @@ addLayer("a", {
                 if (!getsReset("a", layer)) return
                 player.a.time = 0
 
-                //upgrades
-                let keep = []
-                if (hasUpgrade("b", 13)) keep.push(11,12,13,14,15,21,22,23,24,25)
-                if (hasUpgrade("b", 14)) keep.push(31,32,33,34,35,41,42,43,44,45)
-                if (!hasUpgrade("c", 11)) player.a.upgrades = filter(player.a.upgrades, keep)
+                if (!hasMilestone("ach", 1)) {
+                        //upgrades
+                        let keep = []
+                        if (hasUpgrade("b", 13)) keep.push(11,12,13,14,15,21,22,23,24,25)
+                        if (hasUpgrade("b", 14)) keep.push(31,32,33,34,35,41,42,43,44,45)
+                        if (!hasUpgrade("c", 11)) player.a.upgrades = filter(player.a.upgrades, keep)
+                }
 
                 //resources
                 player.a.points = new Decimal(0)
@@ -1755,6 +1757,8 @@ addLayer("b", {
                                 if (layers.b.buyables[12].unlocked()) layers.b.buyables[12].buyMax(amt)
                                 if (layers.b.buyables[13].unlocked()) layers.b.buyables[13].buyMax(amt)
                                 if (layers.b.buyables[21].unlocked()) layers.b.buyables[21].buyMax(amt)
+                                if (layers.b.buyables[22].unlocked()) layers.b.buyables[22].buyMax(amt)
+                                if (layers.b.buyables[23].unlocked()) layers.b.buyables[23].buyMax(amt)
                         }
                 } else {
                         player.b.abtime = 0
@@ -2289,6 +2293,7 @@ addLayer("b", {
                                 if (!isBuyableActive("b")) return new Decimal(1)
                                 
                                 let base = new Decimal(5)
+                                if (hasUpgrade("d", 21)) base = base.plus(this.total().div(100))
                                 return base
                         },
                         effect(){
@@ -2466,9 +2471,9 @@ addLayer("b", {
                         getExtraFormulaText(){
                                 let a = "<b><h2>Extra levels from</h2>:<br>"
                                 let extra = false
-                                if (false) {
+                                if (hasUpgrade("d", 15)) {
                                         extra = true
-                                        a += "<h3>lul</h3>, "
+                                        a += "<h3>Beauty</h3>, "
                                 }
                                 if (!extra) return ""
                                 return a.slice(0,a.length-2)
@@ -2518,6 +2523,7 @@ addLayer("b", {
                         },
                         extra(){
                                 let ret = new Decimal(0)
+                                if (hasUpgrade("d", 15)) ret = ret.plus(layers.b.buyables[23].total())
                                 return ret
                         },
                         buy(){
@@ -2669,7 +2675,9 @@ addLayer("b", {
                         rewardDescription: "Give free <b>Based</b> levels",
                         rewardEffect(){
                                 let c = challengeCompletions("b", 11)
-                                return Math.pow(c, 3) + c * 5
+                                let ret = Math.pow(c, 3) + c * 5
+                                ret = softcap(ret, "b_chall")
+                                return Math.floor(ret)
                         },
                         goal(){
                                 let init = new Decimal("1e2456")
@@ -2688,7 +2696,9 @@ addLayer("b", {
                         rewardDescription: "Give free <b>Against</b> levels",
                         rewardEffect(){
                                 let c = challengeCompletions("b", 12)
-                                return Math.pow(c, 3) + c * 5
+                                let ret = Math.pow(c, 3) + c * 5
+                                ret = softcap(ret, "b_chall")
+                                return Math.floor(ret)
                         },
                         goal(){
                                 let init = new Decimal("1e4992")
@@ -2708,7 +2718,9 @@ addLayer("b", {
                         rewardDescription: "Give free <b>Omnipotent I</b> levels",
                         rewardEffect(){
                                 let c = challengeCompletions("b", 21)
-                                return Math.pow(c, 3) + Math.pow(c, 2) * 5 + c * 9
+                                let ret = Math.pow(c, 3) + Math.pow(c, 2) * 5 + c * 9
+                                ret = softcap(ret, "b_chall")
+                                return Math.floor(ret)
                         },
                         goal(){
                                 let init = new Decimal("1e14666")
@@ -2783,11 +2795,13 @@ addLayer("b", {
                 if (!getsReset("b", layer)) return
                 player.b.time = 0
 
-                //upgrades
-                let keep = []
-                if (hasUpgrade("c", 12)) keep.push(11,12,13,14,15,21,22,23,24,25,31,32,33,34,35)
-                if (hasUpgrade("c", 15)) keep.push(41,42,43,44,45)
-                if (!hasUpgrade("d", 11)) player.b.upgrades = filter(player.b.upgrades, keep)
+                if (hasMilestone("ach", 2)) {
+                        //upgrades
+                        let keep = []
+                        if (hasUpgrade("c", 12)) keep.push(11,12,13,14,15,21,22,23,24,25,31,32,33,34,35)
+                        if (hasUpgrade("c", 15)) keep.push(41,42,43,44,45)
+                        if (!hasUpgrade("d", 11)) player.b.upgrades = filter(player.b.upgrades, keep)
+                }
 
                 //resources
                 player.b.points = new Decimal(0)
@@ -3129,10 +3143,12 @@ addLayer("c", {
                 if (!getsReset("c", layer)) return
                 player.c.time = 0
 
-                //upgrades
-                let keep = []
-                if (hasUpgrade("d", 11)) keep.push(11,12,13,14,15,21,22,23,24,25,31,32,33,34,35)
-                player.c.upgrades = filter(player.c.upgrades, keep)
+                if (hasMilestone("ach", 3)) {
+                        //upgrades
+                        let keep = []
+                        if (hasUpgrade("d", 11)) keep.push(11,12,13,14,15,21,22,23,24,25,31,32,33,34,35)
+                        player.c.upgrades = filter(player.c.upgrades, keep)
+                }
 
                 //resources
                 player.c.points = new Decimal(0)
@@ -3314,9 +3330,30 @@ addLayer("d", {
                                 return hasUpgrade("d", 13) || hasUnlockedPast("d")
                         }, //hasUpgrade("d", 14)
                 },
+                15: {
+                        title: "Does",
+                        description: "<b>Beauty</b> gives free <b>Bank</b> levels",
+                        cost: new Decimal(5e4),
+                        unlocked(){ 
+                                return player.ach.achievements.includes("47") || hasUnlockedPast("d")
+                        }, //hasUpgrade("d", 15)
+                },
+                21: {
+                        title: "Days",
+                        description: "Each <b>Become</b> adds .01 to its base",
+                        cost: new Decimal(15e4),
+                        unlocked(){ 
+                                return player.ach.achievements.includes("51") || hasUnlockedPast("d")
+                        }, //hasUpgrade("d", 21)
+                },
 
                 /*
-                does
+                Development
+                Details
+                Did
+                Design
+                Down
+                Download
 
                 */
         },
@@ -3377,9 +3414,11 @@ addLayer("d", {
                 if (!getsReset("d", layer)) return
                 player.d.time = 0
 
-                //upgrades
-                let keep = []
-                player.d.upgrades = filter(player.d.upgrades, keep)
+                if (hasMilestone("ach", 4)) {
+                        //upgrades
+                        let keep = []
+                        player.d.upgrades = filter(player.d.upgrades, keep)
+                }
 
                 //resources
                 player.d.points = new Decimal(0)
@@ -3443,7 +3482,7 @@ addLayer("ach", {
                 return ""
         },
         update(diff){
-                player.ach.points = new Decimal(player.ach.achievements.length)
+                player.ach.points = new Decimal(player.ach.achievements.length).max(player.ach.points)
         },
         row: "side", // Row the layer is in on the tree (0 is the first row)
         hotkeys: [
@@ -3711,14 +3750,76 @@ addLayer("ach", {
                                 return "Get " + PROGRESSION_MILESTONES_TEXT[28]
                         },
                 },
+                51: {
+                        name: "Twenty-nine",
+                        done(){
+                                return PROGRESSION_MILESTONES[29]()
+                        },
+                        tooltip() {
+                                return "Be able to get " + PROGRESSION_MILESTONES_TEXT[29]
+                        },
+                },
+        },
+        milestones: {
+                1: {
+                        requirementDescription: "<b>Life</b><br>Requires: 30 Goals", 
+                        effectDescription: "You permanently keep all <b>A</b> upgrades",
+                        done(){
+                                return player.ach.points.gte(30)
+                        },
+                        unlocked(){
+                                return true
+                        },
+                },
+                2: {
+                        requirementDescription: "<b>The Universe</b><br>Requires: wil prb chance currently 99 Goals", 
+                        effectDescription: "You permanently keep all <b>B</b> upgrades",
+                        done(){
+                                return player.ach.points.gte(99)
+                        },
+                        unlocked(){
+                                return true
+                        },
+                },
+                3: {
+                        requirementDescription: "<b>And Everything</b><br>Requires: wil prb chance currently 99 Goals", 
+                        effectDescription: "You permanently keep all <b>C</b> upgrades",
+                        done(){
+                                return player.ach.points.gte(99)
+                        },
+                        unlocked(){
+                                return true
+                        },
+                },
+                4: {
+                        requirementDescription: "<b>idk yet--Hawking?</b><br>Requires: wil prb chance currently 99 Goals", 
+                        effectDescription: "You permanently keep all <b>D</b> upgrades",
+                        done(){
+                                return player.ach.points.gte(99)
+                        },
+                        unlocked(){
+                                return false
+                        },
+                },
+                //Life, the universe, and everything
         },
         tabFormat: {
                 "Achievements": {
                         content: [
-                                "achievements"
+                                "main-display-goals",
+                                "achievements",
                         ],
                         unlocked(){
                                 return true
+                        },
+                },
+                "Milestones": {
+                        content: [
+                                "main-display-goals",
+                                "milestones",
+                        ],
+                        unlocked(){
+                                return player.ach.points.gte(29)
                         },
                 },
         },

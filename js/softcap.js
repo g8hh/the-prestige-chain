@@ -115,6 +115,26 @@ var softcap_data = {
 			derv: true,
 		},
 	},
+	b_chall: {
+		1: {
+			func: "pow",
+			start: 100,
+			pow: .5,
+			derv: false,
+		},
+		2: {
+			func: "pow",
+			start: 200,
+			pow: .5,
+			derv: false,
+		},
+		3: {
+			func: "pow",
+			start: 300,
+			pow: .5,
+			derv: false,
+		},
+	},
 }
 
 var softcap_vars = {

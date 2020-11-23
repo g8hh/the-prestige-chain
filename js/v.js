@@ -123,8 +123,8 @@ function loadVue() {
 			<br><h3 v-html="tmp[layer].challenges[data].name"></h3><br><br>
 			<button v-bind:class="{ longUpg: true, can: true, [layer]: true }" v-bind:style="{'background-color': tmp[layer].color}" v-on:click="startChallenge(layer, data)">{{player[layer].activeChallenge==(data)?(canCompleteChallenge(layer, data)?"Finish":"Exit Early"):(finishedChallenges(layer, data)?"Completed":"Start")}}</button><br><br>
 			<span v-html="tmp[layer].challenges[data].challengeDescription"></span><br>
-			Goal: {{format(tmp[layer].challenges[data].goal)}} {{tmp[layer].challenges[data].currencyDisplayName ? tmp[layer].challenges[data].currencyDisplayName : "points"}}<br>
-			Reward: <span v-html="tmp[layer].challenges[data].rewardDescription"></span><br>
+			Goal: {{format(tmp[layer].challenges[data].goal)}} {{tmp[layer].challenges[data].currencyDisplayName ? tmp[layer].challenges[data].currencyDisplayName : "points"}}<br><br>
+			Reward: <span v-html="tmp[layer].challenges[data].rewardDescription"></span><br><br>
 			<span v-if="tmp[layer].challenges[data].rewardEffect!==undefined">Currently: <span v-html="(tmp[layer].challenges[data].rewardDisplay) ? (tmp[layer].challenges[data].rewardDisplay) : format(tmp[layer].challenges[data].rewardEffect)"></span></span>
 		</div>
 		`
@@ -207,6 +207,13 @@ function loadVue() {
 		props: ['layer'],
 		template: `
 		<div><span v-if="player[layer].points.lt('1e1000')">You have </span><h2 v-bind:style="{'color': tmp[layer].color, 'text-shadow': '0px 0px 10px' + tmp[layer].color}">{{formatWhole(player[layer].points)}}</h2> {{tmp[layer].resource}}<span v-if="tmp[layer].effectDescription">, {{tmp[layer].effectDescription}}</span><br><br></span>
+		`
+	})
+
+	Vue.component('main-display-goals', {
+		props: ['layer'],
+		template: `
+		<div><span v-if="player[layer].points.lt('1e1000')">You have comepleted </span><h2 v-bind:style="{'color': tmp[layer].color, 'text-shadow': '0px 0px 10px' + tmp[layer].color}">{{formatWhole(player[layer].points)}}</h2> {{tmp[layer].resource}}<span v-if="tmp[layer].effectDescription">, {{tmp[layer].effectDescription}}</span><br><br></span>
 		`
 	})
 
