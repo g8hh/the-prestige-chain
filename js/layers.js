@@ -2001,7 +2001,7 @@ addLayer("b", {
                 55: {
                         title: "Bad",
                         description: "Unlock two new <b>B</b> buyables which both give free levels to <b>Baby</b> levels",
-                        cost: new Decimal("1e11063"),
+                        cost: new Decimal("1e10964"),
                         unlocked(){
                                 return hasUpgrade("c", 35) || hasUnlockedPast("d")
                         }, //hasUpgrade("b", 55)
@@ -2485,8 +2485,8 @@ addLayer("b", {
                         },
                         getBases(){
                                 //currently an example
-                                let b0 = new Decimal("1e11066")
-                                let b1 = new Decimal("1e425")
+                                let b0 = new Decimal("1e10967")
+                                let b1 = new Decimal("1e419")
                                 let b2 = 1e10
                                 return [b0, b1, b2]
                         },
@@ -2590,9 +2590,9 @@ addLayer("b", {
                         },
                         getBases(){
                                 //currently an example
-                                let b0 = new Decimal("1e11487")
-                                let b1 = new Decimal("1e154")
-                                let b2 = 1e12
+                                let b0 = new Decimal("1e11369")
+                                let b1 = new Decimal("1e156")
+                                let b2 = 1e15
                                 return [b0, b1, b2]
                         },
                         cost(add){
@@ -2723,8 +2723,9 @@ addLayer("b", {
                                 return Math.floor(ret)
                         },
                         goal(){
-                                let init = new Decimal("1e14666")
+                                let init = new Decimal("1e14538")
                                 let factor = getChallengeFactor(challengeCompletions("b", 21))
+                                factor = factor.pow(.9636)
                                 return init.pow(factor)
                         },
                         unlocked(){
@@ -3040,7 +3041,7 @@ addLayer("c", {
                         description: "Gain a free <b>Omnipotent I</b> level per ugprade in this row",
                         cost: new Decimal(2e19),
                         unlocked(){ 
-                                return hasUpgrade("b", 53) || hasUnlockedPast("c")
+                                return hasUpgrade("b", 53) || hasUnlockedPast("d")
                         }, //hasUpgrade("c", 31)
                 },
                 32: {
@@ -3048,7 +3049,7 @@ addLayer("c", {
                         description: "<b>Above</b> gives free <b>Account</b> levels",
                         cost: new Decimal(1e31),
                         unlocked(){ 
-                                return player.ach.achievements.includes("43") || hasUnlockedPast("c")
+                                return player.ach.achievements.includes("43") || hasUnlockedPast("d")
                         }, //hasUpgrade("c", 32)
                 },
                 33: {
@@ -3056,7 +3057,7 @@ addLayer("c", {
                         description: "Unlock a third <b>B</b> challenge and <b>Advanced</b> gives free <b>After</b> levels",
                         cost: new Decimal(2e79),
                         unlocked(){ 
-                                return hasUpgrade("c", 32) || hasUnlockedPast("c")
+                                return hasUpgrade("c", 32) || hasUnlockedPast("d")
                         }, //hasUpgrade("c", 33)
                 },
                 34: {
@@ -3064,15 +3065,15 @@ addLayer("c", {
                         description: "<b>Baby</b> gives free <b>Become</b> and <b>Based</b> levels",
                         cost: new Decimal(2e88),
                         unlocked(){ 
-                                return hasUpgrade("c", 33) || hasUnlockedPast("c")
+                                return hasUpgrade("c", 33) || hasUnlockedPast("d")
                         }, //hasUpgrade("c", 34)
                 },
                 35: {
                         title: "Check",
                         description: "Each <b>Advanced</b> adds .0001 to the <b>Omnipotent I</b> base",
-                        cost: new Decimal(1e153),
+                        cost: new Decimal(1e152),
                         unlocked(){ 
-                                return hasUpgrade("c", 34) || hasUnlockedPast("c")
+                                return hasUpgrade("c", 34) || hasUnlockedPast("d")
                         }, //hasUpgrade("c", 35)
                 },
 
@@ -3819,7 +3820,7 @@ addLayer("ach", {
                                 "milestones",
                         ],
                         unlocked(){
-                                return player.ach.points.gte(29)
+                                return player.ach.points.gte(28)
                         },
                 },
         },
