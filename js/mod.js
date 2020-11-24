@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".1.10 The First Trials",
+	num: ".1.11 The Second Trial",
 	name: "",
 }
 
@@ -65,6 +65,9 @@ PROGRESSION_MILESTONES = {
 	28:() => getBuyableAmount("b", 23).gte(2) || hasUnlockedPast("d"),
 	29:() => layers.d.getResetGain().gte(25500) || hasUnlockedPast("d"),
 	30:() => getBuyableAmount("c", 11).gte(5) || hasUnlockedPast("d"),
+	31:() => getBuyableAmount("b", 31).gte(1) || hasUnlockedPast("d"),
+	32:() => player.c.upgrades.length >= 18 || hasUnlockedPast("d"),
+	33:() => totalChallengeComps("c") >= 1 || hasUnlockedPast("d"),
 }
 
 /*
@@ -104,6 +107,9 @@ PROGRESSION_MILESTONES_TEXT = {
 	28: "2 Beauty buyables",
 	29: "25,500 Doodles at once",
 	30: "5 Case buyables",
+	31: "1 Basic buyables",
+	32: "18 Circle upgrades",
+	33: "1 Circle Challenge"
 }
 
 function progressReachedNum(){
@@ -127,13 +133,13 @@ function nextMilestone(){
 
 // Display extra things at the top of the page
 var displayThings = [
-	"This may be incorrect: Last updated 6:15 PM pacific 11.23",
+	"This may be incorrect: Last updated 8:09 PM pacific 11.23",
 	function (){
 		let a = "Endgame: All goals"
 		if (player.ach.achievements.length == Object.keys(PROGRESSION_MILESTONES).length) {
 			a += " (done!)"
 		} else a += " (not done)"
-		return a + " & 5e6 Doodles"
+		return a + " & 1e1046 circles"
 	},
 ]
 
