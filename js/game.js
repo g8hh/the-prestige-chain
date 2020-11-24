@@ -105,14 +105,13 @@ function rowReset(row, layer) {
 		return
 	}
 	let order = Object.keys(ROW_LAYERS[row])
-	if (row == 3) order = order.reverse()
 	for (let i = 0; i < order.length; i ++){
 		lr = order[i]
 		if (layers[lr].doReset) {
 			player[lr].activeChallenge = null // Exit challenges on any row reset on an equal or higher row
 			layers[lr].doReset(layer)
 		}
-		else if(tmp[layer].row > tmp[lr].row && row !== "side") layerDataReset(lr)
+		else if (tmp[layer].row > tmp[lr].row) layerDataReset(lr)
 	}
 }
 
