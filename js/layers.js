@@ -599,6 +599,7 @@ addLayer("a", {
                                 if (hasUpgrade("a", 34)) ret = ret.plus(layers.a.buyables[13].total())
                                 ret = ret.plus(layers.b.buyables[11].total())
                                 ret = ret.plus(layers.a.buyables[33].total())
+                                ret = ret.plus(layers.c.buyables[11].total())
                                 return ret
                         },
                         buy(){
@@ -2089,6 +2090,7 @@ addLayer("b", {
                                 let ret = new Decimal(0)
                                 if (hasUpgrade("b", 34)) ret = ret.plus(layers.b.buyables[12].total())
                                 if (hasUpgrade("b", 54)) ret = ret.plus(layers.b.buyables[13].total())
+                                ret = ret.plus(layers.c.buyables[11].total())
                                 return ret
                         },
                         buy(){
@@ -2611,6 +2613,7 @@ addLayer("b", {
                                 if (!isBuyableActive("b")) return new Decimal(1)
                                 
                                 let base = new Decimal(1e10)
+                                base = base.times(layers.c.buyables[11].effect())
                                 return base
                         },
                         effect(){
@@ -3078,7 +3081,6 @@ addLayer("c", {
                 },
 
                 /*
-                Case
                 County
                 Care
                 Computer
@@ -3086,6 +3088,114 @@ addLayer("c", {
                 Control
                 Change
                 */
+        },
+        buyables: {
+                rows: 3,
+                cols: 3,
+                11: {
+                        title: "Case",
+                        display(){
+                                let start = "<b><h2>Amount</h2>: " + this.getAmountDisplay() + "</b><br>"
+                                let eff = "<b><h2>Effect</h2>: x" + format(this.effect()) + " Beauty base</b><br>"
+                                let cost = "<b><h2>Cost</h2>: " + format(this.cost()) + " Circles</b><br>"
+                                let eformula = "<b><h2>Effect formula</h2>:<br>" + format(this.effectBase()) + "^x</b><br>"
+                                let exformula = this.getExtraFormulaText()
+
+                                let end = shiftDown ? eformula + exformula : "Shift to see details"
+                                return "<br>" + start + eff + cost + end
+                        },
+                        getExtraFormulaText(){
+                                let a = "<b><h2>Extra levels from</h2>:<br>"
+                                let extra = false
+                                if (false) {
+                                        extra = true
+                                        a += "<h3>thing</h3>, "
+                                }
+                                if (!extra) return ""
+                                return a.slice(0, a.length-2)
+                        },
+                        getAmountDisplay(){
+                                let extra = this.extra()
+                                if (extra.eq(0)) return getBuyableAmount("c", 11)
+                                return getBuyableAmount("c", 11) + "+" + formatWhole(extra)
+                        },
+                        getBases(){
+                                //currently an example
+                                let b0 = new Decimal("1e443")
+                                let b1 = 2
+                                let b2 = 1.5
+                                return [b0, b1, b2]
+                        },
+                        cost(add){
+                                let x = getBuyableAmount("c", 11).plus(add)
+                                let bases = this.getBases()
+                                let base0 = bases[0]
+                                let base1 = bases[1]
+                                let base2 = bases[2]
+                                let exp0 = 1
+                                let exp1 = x
+                                let exp2 = x.times(x)
+
+                                return Decimal.pow(base0, exp0).times(Decimal.pow(base1, exp1)).times(Decimal.pow(base2, exp2)).ceil()
+                        },
+                        effectBase(){
+                                if (!isBuyableActive("c")) return new Decimal(1)
+
+                                let base = new Decimal(1e2)
+                                return base
+                        },
+                        effect(){
+                                let x = this.total()
+                                let base = this.effectBase()
+                                let ret = Decimal.pow(base, x)
+                                ret = softcap(ret, "c_buy11")
+                                return ret
+                        },
+                        canAfford(){
+                                return player.c.points.gte(this.cost())
+                        },
+                        total(){
+                                return getBuyableAmount("c", 11).plus(this.extra())
+                        },
+                        extra(){
+                                let ret = new Decimal(0)
+                                return ret
+                        },
+                        buy(){
+                                let cost = this.cost()
+                                if (!this.canAfford()) return
+                                player.c.buyables[11] = player.c.buyables[11].plus(1)
+                                player.c.points = player.c.points.minus(cost)
+                        },
+                        buyMax(maximum){
+                                let bases = this.getBases()
+                                if (!this.unlocked()) return 
+                                if (player.c.points.lt(bases[0])) return
+
+                                // let exp2 = x.times(x)
+                                let pttarget = player.c.points.div(bases[0]).log(1.01)
+                                let bfactor = Decimal.log(bases[1], 3).div(Decimal.log(1.01, 3))
+                                //want to find ax^2+bx = c
+                                let c = pttarget
+                                let b = bfactor
+                                let a = Decimal.log(bases[2], 3).div(Decimal.log(1.01, 3))
+                                // let a = 1 this is constant so remove it
+
+                                let target = c.times(a).times(4).plus(b * b).sqrt().minus(b).div(2).div(a).floor().plus(1)
+                                //-b + sqrt(b*b+4*c*a)
+
+                                let diff = target.minus(player.c.buyables[11]).max(0)
+                                if (maximum != undefined) diff = diff.min(maximum)
+
+                                player.c.buyables[11] = player.c.buyables[11].plus(diff)
+
+                                if (false || diff.eq(0)) return 
+                                player.c.points = player.c.points.sub(this.cost(-1)).max(0)
+                        },
+                        unlocked(){ 
+                                return hasUpgrade("d", 22) || hasUnlockedPast("d")
+                        },
+                },
         },
         tabFormat: {
                 "Upgrades": {
@@ -3114,10 +3224,21 @@ addLayer("c", {
                 },
                 "Buyables": {
                         content: ["main-display",
+                                ["display-text",
+                                        function() {
+                                                return "Each buyable gives free levels to all previous layers corresponding buyable"
+                                        }
+                                ],
+                                ["display-text",
+                                        function() {
+                                                if (!shiftDown || !hasUpgrade("c", 22)) return ""
+                                                return "You are gaining " + format(layers.c.getResetGain()) + " Circles per second"
+                                        }
+                                ],
                                 "blank", 
                                 "buyables"],
                         unlocked(){
-                                return false || hasUnlockedPast("d")
+                                return hasUpgrade("d", 22) || hasUnlockedPast("d")
                         },
                 },
                 "Challenges": {
@@ -3247,7 +3368,7 @@ addLayer("d", {
         },
         update(diff){
                 player.d.best = player.d.best.max(player.d.points)
-                if (false) {
+                if (hasUpgrade("d", 22)) {
                         player.d.points = player.d.points.plus(this.getResetGain().times(diff))
                         player.d.total = player.d.total.plus(this.getResetGain().times(diff))
                         player.d.autotimes += diff
@@ -3347,9 +3468,16 @@ addLayer("d", {
                                 return player.ach.achievements.includes("51") || hasUnlockedPast("d")
                         }, //hasUpgrade("d", 21)
                 },
+                22: {
+                        title: "Development",
+                        description: "Remove the ability to prestige but gain 100% of Doodles on prestige per second and unlock a <b>C</b> buyable",
+                        cost: new Decimal(5e5),
+                        unlocked(){ 
+                                return hasUpgrade("d", 21) || hasUnlockedPast("d")
+                        }, //hasUpgrade("d", 22)
+                },
 
                 /*
-                Development
                 Details
                 Did
                 Design
@@ -3361,7 +3489,7 @@ addLayer("d", {
         tabFormat: {
                 "Upgrades": {
                         content: ["main-display",
-                                ["prestige-button", "", function (){ return false ? {'display': 'none'} : {}}],
+                                ["prestige-button", "", function (){ return hasUpgrade("d", 22) ? {'display': 'none'} : {}}],
                                 ["display-text",
                                         function() {return shiftDown ? "Your best Doodles is " + format(player.d.best) : ""}],
                                 ["display-text",
@@ -3372,7 +3500,7 @@ addLayer("d", {
                                 ],
                                 ["display-text",
                                         function() {
-                                                if (false) return "You are gaining " + format(layers.d.getResetGain()) + " Doodles per second"
+                                                if (hasUpgrade("d", 22)) return "You are gaining " + format(layers.d.getResetGain()) + " Doodles per second"
                                                 return "There is a five second cooldown for prestiging (" + format(Math.max(0, 5-player.d.time)) + ")" 
                                         },
                                         //{"font-size": "20px"}
@@ -3758,6 +3886,15 @@ addLayer("ach", {
                         },
                         tooltip() {
                                 return "Be able to get " + PROGRESSION_MILESTONES_TEXT[29]
+                        },
+                },
+                52: {
+                        name: "Thirty",
+                        done(){
+                                return PROGRESSION_MILESTONES[30]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[30]
                         },
                 },
         },

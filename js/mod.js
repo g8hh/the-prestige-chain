@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".1.9 The First Trials",
+	num: ".1.10 The First Trials",
 	name: "",
 }
 
@@ -64,6 +64,7 @@ PROGRESSION_MILESTONES = {
 	27:() => totalChallengeComps("b") >= 11 || hasUnlockedPast("d"),
 	28:() => getBuyableAmount("b", 23).gte(2) || hasUnlockedPast("d"),
 	29:() => layers.d.getResetGain().gte(25500) || hasUnlockedPast("d"),
+	30:() => getBuyableAmount("c", 11).gte(5) || hasUnlockedPast("d"),
 }
 
 /*
@@ -102,6 +103,7 @@ PROGRESSION_MILESTONES_TEXT = {
 	27: "11 Bacteria challenge completions",
 	28: "2 Beauty buyables",
 	29: "25,500 Doodles at once",
+	30: "5 Case buyables",
 }
 
 function progressReachedNum(){
@@ -125,13 +127,13 @@ function nextMilestone(){
 
 // Display extra things at the top of the page
 var displayThings = [
-	"This may be incorrect: Last updated 12:47 PM pacific 11.23",
+	"This may be incorrect: Last updated 6:15 PM pacific 11.23",
 	function (){
 		let a = "Endgame: All goals"
 		if (player.ach.achievements.length == Object.keys(PROGRESSION_MILESTONES).length) {
 			a += " (done!)"
 		} else a += " (not done)"
-		return a + " & 5e5 Doodles"
+		return a + " & 5e6 Doodles"
 	},
 ]
 

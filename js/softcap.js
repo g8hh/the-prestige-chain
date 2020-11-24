@@ -135,6 +135,25 @@ var softcap_data = {
 			derv: false,
 		},
 	},
+	c_buy11: {
+		1: {
+			func: "pow",
+			start: 1e30,
+			pow: .5,
+			derv: false,
+		},
+		2: {
+			func: "pow",
+			start: 1e50,
+			pow: .5,
+			derv: false,
+		},
+		3: {
+			func: "log",
+			start: 1e100,
+			pow: 50,
+		},
+	},
 }
 
 var softcap_vars = {
