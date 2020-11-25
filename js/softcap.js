@@ -154,6 +154,13 @@ var softcap_data = {
 			pow: 50,
 		},
 	},
+	e_eff:{
+		1: {
+			func: "pow",
+			start: 1e100,
+			pow: .9,
+		}
+	}
 }
 
 var softcap_vars = {

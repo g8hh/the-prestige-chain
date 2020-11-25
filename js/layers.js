@@ -29,14 +29,6 @@ function getBuyableEffect(layer, id){
         return layers[layer].buyables[id].effect()
 }
 
-function hasUnlockedRow(r){
-        if (r == 4) return false
-        if (r == 3) return hasUnlockedRow(4)   || false
-        if (r == 2) return hasUnlockedRow(3)   || false
-        if (r == 1) return hasUnlockedRow(2)   || false
-        return false
-}
-
 function getsReset(layer, layerPrestiging) {
         order = LAYERS
         for (let i = 0; i < order.length; i++) {
@@ -65,6 +57,7 @@ function getChallengeFactor(comps){
 }
 
 function isBuyableActive(layer){
+        if (layer == "e") return true
         if (layer == "d") return true
         if (layer == "c") return true
         if (inChallenge("c", 11)) return false
@@ -74,6 +67,7 @@ function isBuyableActive(layer){
 }
 
 function isPrestigeEffectActive(layer){
+        if (layer == "e") return true
         if (layer == "d") return true
         if (layer == "c") return true
         if (layer == "b") return true
@@ -87,6 +81,46 @@ function totalChallengeComps(layer){
         let c = challengeCompletions(layer, 21) || 0
         let d = challengeCompletions(layer, 22) || 0
         return a + b + c + d
+}
+
+function getABBulk(layer){
+        let amt = 1
+        if (hasUpgrade("e", 11)) amt *= Math.max(player.ach.achievements.length, 1)
+        if (layer == "a") {
+                if (hasUpgrade("a", 35)) amt *= 10
+                if (hasUpgrade("b", 21)) {
+                        amt *= 2
+                        if (hasUpgrade("b", 22)) amt *= 2
+                        if (hasUpgrade("b", 23)) amt *= 2
+                        if (hasUpgrade("b", 24)) amt *= 2
+                        if (hasUpgrade("b", 25)) amt *= 2
+                }
+                if (hasUpgrade("b", 32)) {
+                        amt *= 2
+                        if (hasUpgrade("b", 31)) amt *= 2
+                        if (hasUpgrade("b", 33)) amt *= 2
+                        if (hasUpgrade("b", 34)) amt *= 2
+                        if (hasUpgrade("b", 35)) amt *= 2
+                }
+                if (hasUpgrade("c", 41)) amt *= 10
+                return amt
+        }
+        if (layer == "b") {
+                if (hasUpgrade("b", 32)) {
+                        amt *= 2
+                        if (hasUpgrade("b", 31)) amt *= 2
+                        if (hasUpgrade("b", 33)) amt *= 2
+                        if (hasUpgrade("b", 34)) amt *= 2
+                        if (hasUpgrade("b", 35)) amt *= 2
+                }
+                if (hasUpgrade("c", 41)) amt *= 2
+                return amt
+        }
+        if (layer == "c"){
+
+                return amt
+        }
+
 }
 
 var devSpeedUp = false
@@ -213,23 +247,7 @@ addLayer("a", {
                         if (player.a.abtime > 10) player.a.abtime = 10
                         if (player.a.abtime > 1) {
                                 player.a.abtime += -1
-                                let amt = 1
-                                if (hasUpgrade("a", 35)) amt *= 10
-                                if (hasUpgrade("b", 21)) {
-                                        amt *= 2
-                                        if (hasUpgrade("b", 22)) amt *= 2
-                                        if (hasUpgrade("b", 23)) amt *= 2
-                                        if (hasUpgrade("b", 24)) amt *= 2
-                                        if (hasUpgrade("b", 25)) amt *= 2
-                                }
-                                if (hasUpgrade("b", 32)) {
-                                        amt *= 2
-                                        if (hasUpgrade("b", 31)) amt *= 2
-                                        if (hasUpgrade("b", 33)) amt *= 2
-                                        if (hasUpgrade("b", 34)) amt *= 2
-                                        if (hasUpgrade("b", 35)) amt *= 2
-                                }
-                                if (hasUpgrade("c", 41)) amt *= 10
+                                let amt = getABBulk("a")
                                 if (tmp.a.buyables[11].unlocked) layers.a.buyables[11].buyMax(amt)
                                 if (tmp.a.buyables[12].unlocked) layers.a.buyables[12].buyMax(amt)
                                 if (tmp.a.buyables[13].unlocked) layers.a.buyables[13].buyMax(amt)
@@ -1763,15 +1781,7 @@ addLayer("b", {
                         if (player.b.abtime > 10) player.b.abtime = 10
                         if (player.b.abtime > 1) {
                                 player.b.abtime += -1
-                                let amt = 1
-                                if (hasUpgrade("b", 32)) {
-                                        amt *= 2
-                                        if (hasUpgrade("b", 31)) amt *= 2
-                                        if (hasUpgrade("b", 33)) amt *= 2
-                                        if (hasUpgrade("b", 34)) amt *= 2
-                                        if (hasUpgrade("b", 35)) amt *= 2
-                                }
-                                if (hasUpgrade("c", 41)) amt *= 2
+                                let amt = getABBulk("b")
                                 if (tmp.b.buyables[11].unlocked) layers.b.buyables[11].buyMax(amt)
                                 if (tmp.b.buyables[12].unlocked) layers.b.buyables[12].buyMax(amt)
                                 if (tmp.b.buyables[13].unlocked) layers.b.buyables[13].buyMax(amt)
@@ -3162,24 +3172,32 @@ addLayer("c", {
                 return a + format(eff) + "."
         },
         update(diff){
-                player.c.best = player.c.best.max(player.c.points)
+                let data = player.c
+
+                data.best = data.best.max(data.points)
                 if (hasUpgrade("c", 22)) {
-                        player.c.points = player.c.points.plus(this.getResetGain().times(diff))
-                        player.c.total = player.c.total.plus(this.getResetGain().times(diff))
-                        player.c.autotimes += diff
-                        if (player.c.autotimes > 3) player.c.autotimes = 3
-                        if (player.c.autotimes > 1) {
-                                player.c.autotimes += -1
-                                player.c.times ++
+                        data.points = player.c.points.plus(this.getResetGain().times(diff))
+                        data.total = player.c.total.plus(this.getResetGain().times(diff))
+                        data.autotimes += diff
+                        if (data.autotimes > 3) data.autotimes = 3
+                        if (data.autotimes > 1) {
+                                data.autotimes += -1
+                                data.times ++
                         }
                 }
-                if (false) {
-                        player.c.abtime += diff
-                        if (player.c.abtime > 10) player.c.abtime = 10
+                if (hasUpgrade("e", 11)) {
+                        data.abtime += diff
+                        if (data.abtime > 10) data.abtime = 10
+                        if (data.abtime > 1) {
+                                data.abtime += -1
+                                let amt = getABBulk("c")
+                                if (tmp.c.buyables[11].unlocked) layers.c.buyables[11].buyMax(amt)
+                                if (tmp.c.buyables[12].unlocked) layers.c.buyables[12].buyMax(amt)
+                        }
                 } else {
-                        player.c.abtime = 0
+                        data.abtime = 0
                 }
-                player.c.time += diff
+                data.time += diff
         },
         row: 2, // Row the layer is in on the tree (0 is the first row)
         hotkeys: [
@@ -3691,7 +3709,7 @@ addLayer("c", {
                         //upgrades
                         let keep = []
                         if (hasUpgrade("d", 11)) keep.push(11,12,13,14,15,21,22,23,24,25,31,32,33,34,35)
-                        player.c.upgrades = filter(player.c.upgrades, keep)
+                        if (!hasUpgrade("e", 11)) player.c.upgrades = filter(player.c.upgrades, keep)
                 }
 
                 //resources
@@ -3700,7 +3718,7 @@ addLayer("c", {
                 player.c.best = new Decimal(0)
 
                 //buyables
-                let resetBuyables = [11, /*12, 13*/]
+                let resetBuyables = [11, 12, /*13*/]
                 for (let j = 0; j < resetBuyables.length; j++) {
                         player.c.buyables[resetBuyables[j]] = new Decimal(0)
                 }
@@ -3838,7 +3856,7 @@ addLayer("d", {
                 return a + nextAt
         },
         canReset(){
-                return this.getResetGain().gt(0) && player.d.time >= 5 && !false
+                return this.getResetGain().gt(0) && player.d.time >= 5 && !hasUpgrade("d", 22)
         },
         upgrades: {
                 rows: 5,
@@ -3960,7 +3978,7 @@ addLayer("d", {
                                 "blank", 
                                 "buyables"],
                         unlocked(){
-                                return false || hasUnlockedPast("d")
+                                return false || hasUnlockedPast("e")
                         },
                 },
                 "Challenges": {
@@ -3978,7 +3996,7 @@ addLayer("d", {
                                 "challenges",
                         ],
                         unlocked(){
-                                return false || hasUnlockedPast("d")
+                                return false || hasUnlockedPast("e")
                         },
                 },
         },
@@ -3990,6 +4008,7 @@ addLayer("d", {
                 if (!hasMilestone("ach", 4)) {
                         //upgrades
                         let keep = []
+                        if (hasUpgrade("e", 11)) keep.push(11,12,13,14,15,21,22,23,24,25,31,32,33,34,35)
                         player.d.upgrades = filter(player.d.upgrades, keep)
                 }
 
@@ -4002,6 +4021,228 @@ addLayer("d", {
                 let resetBuyables = [/*11, 12, 13*/]
                 for (let j = 0; j < resetBuyables.length; j++) {
                         player.d.buyables[resetBuyables[j]] = new Decimal(0)
+                }
+
+        },
+})
+
+
+addLayer("e", {
+        name: "Eggs", // This is optional, only used in a few places, If absent it just uses the layer id.
+        symbol: "E", // This appears on the layer's node. Default is the id with the first letter capitalized
+        position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+        startData() { return {
+                unlocked: true,
+		points: new Decimal(0),
+                best: new Decimal(0),
+                total: new Decimal(0),
+                abtime: 0,
+                time: 0,
+                times: 0,
+                autotimes: 0,
+        }},
+        color: "#FFFFCC",
+        branches: ["d"],
+        requires: new Decimal(0), // Can be a function that takes requirement increases into account
+        resource: "Eggs", // Name of prestige currency
+        baseResource: "Doodles", // Name of resource prestige is based on
+        baseAmount() {return player.d.points.floor()}, // Get the current amount of baseResource
+        type: "custom", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+        getResetGain() {
+                let pts = this.baseAmount()
+                let pre = this.getGainMultPre()
+                let exp = this.getGainExp()
+                let pst = this.getGainMultPost()
+                let div = this.getBaseDiv()
+
+                let a = pts.div(div)
+                if (a.lt(1)) return new Decimal(0)
+
+                let ret = a.log10().times(pre).pow(exp).times(pst)
+
+                if (!hasUnlockedPast("e") && player.e.best.eq(0)) ret = ret.min(1)
+
+                return ret.floor()
+        },
+        getBaseDiv(){
+                let x = new Decimal(1e9)
+                return x
+        },
+        getGainExp(){
+                let x = new Decimal(2)
+                return x
+        },
+        getGainMultPre(){
+                let x = new Decimal(.5)
+                return x
+        },
+        getGainMultPost(){
+                let x = new Decimal(1)
+
+                let yet = false
+                for (let i = 0; i < LAYERS.length; i++){
+                        if (layers[LAYERS[i]].row == "side") continue
+                        if (yet) x = x.times(layers[LAYERS[i]].effect())
+                        if (LAYERS[i] == "e") yet = true
+                }
+
+
+                return x
+        },
+        effect(){
+                if (!isPrestigeEffectActive("e")) return new Decimal(1)
+
+                let amt = player.e.points
+
+                let ret = amt.times(24).plus(1).pow(2)
+
+                ret = softcap(ret, "e_eff")
+
+                return ret
+        },
+        effectDescription(){
+                let eff = this.effect()
+                let a = "which buffs point and all previous prestige gain by "
+
+                return a + format(eff) + "."
+        },
+        update(diff){
+                let data = player.e
+
+                data.best = data.best.max(data.points)
+                if (false) {
+                        data.points = data.points.plus(this.getResetGain().times(diff))
+                        data.total = data.total.plus(this.getResetGain().times(diff))
+                        data.autotimes += diff
+                        if (data.autotimes > 3) data.autotimes = 3
+                        if (data.autotimes > 1) {
+                                data.autotimes += -1
+                                data.times ++
+                        }
+                }
+                if (false) {
+                        data.abtime += diff
+                        if (data.abtime > 10) data.abtime = 10
+                } else {
+                        data.abtime = 0
+                }
+                data.time += diff
+        },
+        row: 4, // Row the layer is in on the tree (0 is the first row)
+        hotkeys: [
+            {key: "e", description: "Reset for Eggs", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+        ],
+        layerShown(){return player.d.best.gt(5e10) || player.e.best.gt(0) || hasUnlockedPast("e")},
+        prestigeButtonText(){
+                let gain= this.getResetGain()
+                let pts = this.baseAmount()
+                let pre = this.getGainMultPre()
+                let exp = this.getGainExp()
+                let pst = this.getGainMultPost()
+                let div = this.getBaseDiv()
+
+                let nextnum = Decimal.pow(10, gain.plus(1).div(pst).root(exp).div(pre)).times(div).ceil()
+
+                let nextAt = ""
+                if (gain.lt(1e6) && (hasUnlockedPast("e") || player.e.best.neq(0))) {
+                        nextAt = "<br>Next at " + format(nextnum) + " " + this.baseResource
+                        let ps = gain.div(player.c.time || 1)
+
+                        if (ps.lt(1000/60)) nextAt += "<br>" + format(ps.times(60)) + "/m"
+                        else nextAt += "<br>" + format(ps) + "/s"
+                }
+
+                let a = "Reset for " + formatWhole(gain) + " " + this.resource
+
+                return a + nextAt
+        },
+        canReset(){
+                return this.getResetGain().gt(0) && player.e.time >= 5 && !false
+        },
+        upgrades: {
+                rows: 5,
+                cols: 5,
+                11: {
+                        title: "Email",
+                        description: "Keep <b>C</b> and three rows of <b>D</b> upgrades, autobuy <b>C</b> buyables once per second, and multiply all autobuyer bulk by the number of goals",
+                        cost: new Decimal(10),
+                        unlocked(){ 
+                                return player.ach.achievements.includes("61") || hasUnlockedPast("e")
+                        }, //hasUpgrade("e", 11)
+                },
+        },
+        tabFormat: {
+                "Upgrades": {
+                        content: ["main-display",
+                                ["prestige-button", "", function (){ return false ? {'display': 'none'} : {}}],
+                                ["display-text",
+                                        function() {return shiftDown ? "Your best Eggs is " + format(player.e.best) : ""}],
+                                ["display-text",
+                                        function() {
+                                                if (hasUnlockedPast("e")) return ""
+                                                return "You have done " + formatWhole(player.e.times) + " Egg resets"
+                                        }
+                                ],
+                                ["display-text",
+                                        function() {
+                                                if (false) return "You are gaining " + format(tmp.e.getResetGain) + " Eggs per second"
+                                                return "There is a five second cooldown for prestiging (" + format(Math.max(0, 5-player.e.time)) + ")" 
+                                        },
+                                        //{"font-size": "20px"}
+                                ],
+                                "blank", 
+                                "upgrades"],
+                        unlocked(){
+                                return true
+                        },
+                },
+                "Buyables": {
+                        content: ["main-display",
+                                "blank", 
+                                "buyables"],
+                        unlocked(){
+                                return false || hasUnlockedPast("e")
+                        },
+                },
+                "Challenges": {
+                        content: [
+                                ["display-text",
+                                        function() {
+                                                return "Challenge completions are never reset, and you can bulk complete challenges"
+                                        }
+                                ],
+                                ["display-text",
+                                        function() {
+                                                return "You have completed " + formatWhole(totalChallengeComps("e")) + " Egg Challenges"
+                                        }
+                                ],
+                                "challenges",
+                        ],
+                        unlocked(){
+                                return false || hasUnlockedPast("e")
+                        },
+                },
+        },
+        doReset(layer){
+                if (layer == "e") player.e.time = 0
+                if (!getsReset("e", layer)) return
+                player.e.time = 0
+
+                if (!hasMilestone("ach", 5)) {
+                        //upgrades
+                        let keep = []
+                        player.e.upgrades = filter(player.e.upgrades, keep)
+                }
+
+                //resources
+                player.e.points = new Decimal(0)
+                player.e.total = new Decimal(0)
+                player.e.best = new Decimal(0)
+
+                //buyables
+                let resetBuyables = [/*11, 12, 13*/]
+                for (let j = 0; j < resetBuyables.length; j++) {
+                        player.e.buyables[resetBuyables[j]] = new Decimal(0)
                 }
 
         },
@@ -4418,7 +4659,7 @@ addLayer("ach", {
                         },
                 },
                 3: {
-                        requirementDescription: "<b>And Everything</b><br>Requires: wil prb chance currently 99 Goals", 
+                        requirementDescription: "<b>And Everything</b><br>Requires: wil prb change currently 99 Goals", 
                         effectDescription: "You permanently keep all <b>C</b> upgrades",
                         done(){
                                 return player.ach.points.gte(99)
@@ -4428,16 +4669,27 @@ addLayer("ach", {
                         },
                 },
                 4: {
-                        requirementDescription: "<b>idk yet--Hawking?</b><br>Requires: wil prb chance currently 99 Goals", 
+                        requirementDescription: "<b>Tell me and I forget</b><br>Requires: wil prb change currently 99 Goals", 
                         effectDescription: "You permanently keep all <b>D</b> upgrades",
                         done(){
                                 return player.ach.points.gte(99)
                         },
                         unlocked(){
-                                return false
+                                return true
                         },
                 },
-                //Life, the universe, and everything
+                5: {
+                        requirementDescription: "<b>Teach me and I remember</b><br>Requires: wil prb change currently 99 Goals", 
+                        effectDescription: "You permanently keep all <b>E</b> upgrades",
+                        done(){
+                                return player.ach.points.gte(99)
+                        },
+                        unlocked(){
+                                return true
+                        },
+                },
+                //Involve me and I learn
+                //Benjamin Franklin
         },
         tabFormat: {
                 "Achievements": {

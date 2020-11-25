@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".1.13 The Time Trial",
+	num: ".1.14 The Time Trial",
 	name: "",
 }
 
@@ -70,7 +70,7 @@ PROGRESSION_MILESTONES = {
 	33:() => totalChallengeComps("c") >= 1 || hasUnlockedPast("d"),
 	34:() => player.c.upgrades.length >= 20 || hasUnlockedPast("d"),
 	35:() => totalChallengeComps("c") >= 2 || hasUnlockedPast("d"),
-	/*36:() => player.e.points.gte(2) || hasUnlockedPast("e"),*/ 36:() => false,
+	36:() => player.e.points.gte(2) || hasUnlockedPast("e"),
 }
 
 /*
@@ -139,13 +139,13 @@ function nextMilestone(){
 
 // Display extra things at the top of the page
 var displayThings = [
-	"This may be incorrect: Last updated 7:59 PM pacific 11.24",
+	"This may be incorrect: Last updated 10:26 PM pacific 11.24",
 	function (){
 		let a = "Endgame: All goals"
 		if (player.ach.achievements.length == Object.keys(PROGRESSION_MILESTONES).length) {
 			a += " (done!)"
 		} else a += " (not done)"
-		return a + " & 1e11 Doodles"
+		return a + " & 200 Eggs"
 	},
 ]
 
