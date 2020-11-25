@@ -6,14 +6,14 @@ let modInfo = {
 	discordName: "pg132#7975",
 	discordLink: "",
 	changelogLink: "https://github.com/Acamaeda/The-Modding-Tree/blob/master/changelog.md",
-    	offlineLimit: 10/3600,   
-	// In hours, so the current (10/3600) is 10 seconds
+    	offlineLimit: 0,   
+	// In seconds, so the current 0 is 0 seconds
     	initialStartPoints: new Decimal (0) // Used for hard resets and new players
 }
 
 // Set your version in num and name
 let VERSION = {
-	num: ".1.12 The Second Trial",
+	num: ".1.13 The Time Trial",
 	name: "",
 }
 
@@ -139,7 +139,7 @@ function nextMilestone(){
 
 // Display extra things at the top of the page
 var displayThings = [
-	"This may be incorrect: Last updated 1:51 PM pacific 11.24",
+	"This may be incorrect: Last updated 7:59 PM pacific 11.24",
 	function (){
 		let a = "Endgame: All goals"
 		if (player.ach.achievements.length == Object.keys(PROGRESSION_MILESTONES).length) {

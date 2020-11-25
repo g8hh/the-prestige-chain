@@ -148,7 +148,7 @@ addLayer("a", {
                 let x = new Decimal(2)
                 if (hasUpgrade("a", 32)) x = x.times(3)
 
-                x = x.plus(layers.a.buyables[21].effect())
+                x = x.plus(tmp.a.buyables[21].effect)
 
                 return x
         },
@@ -229,15 +229,16 @@ addLayer("a", {
                                         if (hasUpgrade("b", 34)) amt *= 2
                                         if (hasUpgrade("b", 35)) amt *= 2
                                 }
-                                if (layers.a.buyables[11].unlocked()) layers.a.buyables[11].buyMax(amt)
-                                if (layers.a.buyables[12].unlocked()) layers.a.buyables[12].buyMax(amt)
-                                if (layers.a.buyables[13].unlocked()) layers.a.buyables[13].buyMax(amt)
-                                if (layers.a.buyables[21].unlocked()) layers.a.buyables[21].buyMax(amt)
-                                if (layers.a.buyables[22].unlocked()) layers.a.buyables[22].buyMax(amt)
-                                if (layers.a.buyables[23].unlocked()) layers.a.buyables[23].buyMax(amt)
-                                if (layers.a.buyables[31].unlocked()) layers.a.buyables[31].buyMax(amt)
-                                if (layers.a.buyables[32].unlocked()) layers.a.buyables[32].buyMax(amt)
-                                if (layers.a.buyables[33].unlocked()) layers.a.buyables[33].buyMax(amt)
+                                if (hasUpgrade("c", 41)) amt *= 10
+                                if (tmp.a.buyables[11].unlocked) layers.a.buyables[11].buyMax(amt)
+                                if (tmp.a.buyables[12].unlocked) layers.a.buyables[12].buyMax(amt)
+                                if (tmp.a.buyables[13].unlocked) layers.a.buyables[13].buyMax(amt)
+                                if (tmp.a.buyables[21].unlocked) layers.a.buyables[21].buyMax(amt)
+                                if (tmp.a.buyables[22].unlocked) layers.a.buyables[22].buyMax(amt)
+                                if (tmp.a.buyables[23].unlocked) layers.a.buyables[23].buyMax(amt)
+                                if (tmp.a.buyables[31].unlocked) layers.a.buyables[31].buyMax(amt)
+                                if (tmp.a.buyables[32].unlocked) layers.a.buyables[32].buyMax(amt)
+                                if (tmp.a.buyables[33].unlocked) layers.a.buyables[33].buyMax(amt)
                         }
                 } else {
                         player.a.abtime = 0
@@ -321,7 +322,7 @@ addLayer("a", {
                         cost: new Decimal(300),
                         effect(){
                                 let exp = new Decimal(player.a.upgrades.length)
-                                exp = exp.times(layers.a.buyables[13].effect())
+                                exp = exp.times(tmp.a.buyables[13].effect)
                                 return Decimal.pow(1.2, exp)
                         },
                         unlocked(){
@@ -578,8 +579,8 @@ addLayer("a", {
                                 if (!isBuyableActive("a")) return new Decimal(1)
 
                                 let base = new Decimal(1.5)
-                                if (hasUpgrade("a", 34)) base = base.plus(layers.a.buyables[13].total().div(100))
-                                if (hasUpgrade("d", 11)) base = base.plus(layers.a.buyables[32].total())
+                                if (hasUpgrade("a", 34)) base = base.plus(tmp.a.buyables[13].total.div(100))
+                                if (hasUpgrade("d", 11)) base = base.plus(tmp.a.buyables[32].total)
                                 return base
                         },
                         effect(){
@@ -595,11 +596,12 @@ addLayer("a", {
                         },
                         extra(){
                                 let ret = new Decimal(0)
-                                if (hasUpgrade("a", 24)) ret = ret.plus(layers.a.buyables[12].total())
-                                if (hasUpgrade("a", 34)) ret = ret.plus(layers.a.buyables[13].total())
-                                ret = ret.plus(layers.b.buyables[11].total())
-                                ret = ret.plus(layers.a.buyables[33].total())
-                                ret = ret.plus(layers.c.buyables[11].total())
+                                
+                                if (hasUpgrade("a", 24)) ret = ret.plus(tmp.a.buyables[12].total)
+                                if (hasUpgrade("a", 34)) ret = ret.plus(tmp.a.buyables[13].total)
+                                ret = ret.plus(tmp.b.buyables[11].total)
+                                ret = ret.plus(tmp.a.buyables[33].total)
+                                ret = ret.plus(tmp.c.buyables[11].total)
                                 return ret
                         },
                         buy(){
@@ -700,8 +702,8 @@ addLayer("a", {
                                 
                                 let base = new Decimal(1.1)
                                 if (hasUpgrade("b", 12)) base = base.plus(Decimal.div(player.b.upgrades.length, 10))
-                                if (hasUpgrade("a", 43)) base = base.plus(layers.a.buyables[22].total().div(20))
-                                if (hasUpgrade("a", 51)) base = base.plus(layers.a.buyables[21].total().div(100))
+                                if (hasUpgrade("a", 43)) base = base.plus(tmp.a.buyables[22].total.div(20))
+                                if (hasUpgrade("a", 51)) base = base.plus(tmp.a.buyables[21].total.div(100))
                                 return base
                         },
                         effect(){
@@ -717,12 +719,12 @@ addLayer("a", {
                         },
                         extra(){
                                 let ret = new Decimal(0)
-                                if (hasUpgrade("b", 15)) ret = ret.plus(layers.a.buyables[13].total())
-                                if (hasUpgrade("b", 23)) ret = ret.plus(layers.a.buyables[21].total())
+                                if (hasUpgrade("b", 15)) ret = ret.plus(tmp.a.buyables[13].total)
+                                if (hasUpgrade("b", 23)) ret = ret.plus(tmp.a.buyables[21].total)
                                 if (hasUpgrade("b", 24)) ret = ret.plus(player.a.upgrades.length)
-                                ret = ret.plus(layers.b.buyables[12].total())
-                                ret = ret.plus(layers.a.buyables[33].total())
-                                ret = ret.plus(layers.c.buyables[12].total())
+                                ret = ret.plus(tmp.b.buyables[12].total)
+                                ret = ret.plus(tmp.a.buyables[33].total)
+                                ret = ret.plus(tmp.c.buyables[12].total)
                                 return ret
                         },
                         buy(){
@@ -834,11 +836,11 @@ addLayer("a", {
                         },
                         extra(){
                                 let ret = new Decimal(0)
-                                if (hasUpgrade("b", 25)) ret = ret.plus(layers.a.buyables[21].total())
-                                if (hasUpgrade("a", 52)) ret = ret.plus(layers.a.buyables[22].total())
-                                ret = ret.plus(layers.a.buyables[33].total())
-                                ret = ret.plus(layers.b.buyables[13].total())
-                                if (hasUpgrade("c", 33)) ret = ret.plus(layers.a.buyables[23].total())
+                                if (hasUpgrade("b", 25)) ret = ret.plus(tmp.a.buyables[21].total)
+                                if (hasUpgrade("a", 52)) ret = ret.plus(tmp.a.buyables[22].total)
+                                ret = ret.plus(tmp.a.buyables[33].total)
+                                ret = ret.plus(tmp.b.buyables[13].total)
+                                if (hasUpgrade("c", 33)) ret = ret.plus(tmp.a.buyables[23].total)
                                 return ret
                         },
                         buy(){
@@ -938,7 +940,7 @@ addLayer("a", {
                                 if (!isBuyableActive("a")) return new Decimal(0)
 
                                 let base = new Decimal(1)
-                                base = base.plus(layers.a.buyables[32].effect())
+                                base = base.plus(tmp.a.buyables[32].effect)
                                 return base
                         },
                         effect(){
@@ -955,11 +957,11 @@ addLayer("a", {
                         extra(){
                                 let ret = new Decimal(0)
                                 if (hasUpgrade("a", 41)) ret = ret.plus(1)
-                                if (hasUpgrade("a", 42)) ret = ret.plus(layers.a.buyables[22].total())
-                                if (hasUpgrade("c", 13)) ret = ret.plus(layers.a.buyables[23].total())
-                                if (hasUpgrade("b", 44)) ret = ret.plus(layers.a.buyables[32].total())
-                                ret = ret.plus(layers.a.buyables[33].total())
-                                ret = ret.plus(layers.b.buyables[21].total())
+                                if (hasUpgrade("a", 42)) ret = ret.plus(tmp.a.buyables[22].total)
+                                if (hasUpgrade("c", 13)) ret = ret.plus(tmp.a.buyables[23].total)
+                                if (hasUpgrade("b", 44)) ret = ret.plus(tmp.a.buyables[32].total)
+                                ret = ret.plus(tmp.a.buyables[33].total)
+                                ret = ret.plus(tmp.b.buyables[21].total)
                                 return ret
                         },
                         buy(){
@@ -1076,11 +1078,11 @@ addLayer("a", {
                         extra(){
                                 let ret = new Decimal(0)
                                 if (hasUpgrade("b", 31)) ret = ret.plus(1)
-                                if (hasUpgrade("a", 54)) ret = ret.plus(layers.a.buyables[23].total())
-                                if (hasUpgrade("b", 33)) ret = ret.plus(layers.a.buyables[31].total())
-                                ret = ret.plus(layers.a.buyables[33].total())
-                                if (hasUpgrade("c", 32)) ret = ret.plus(layers.a.buyables[32].total())
-                                ret = ret.plus(layers.b.buyables[22].total())
+                                if (hasUpgrade("a", 54)) ret = ret.plus(tmp.a.buyables[23].total)
+                                if (hasUpgrade("b", 33)) ret = ret.plus(tmp.a.buyables[31].total)
+                                ret = ret.plus(tmp.a.buyables[33].total)
+                                if (hasUpgrade("c", 32)) ret = ret.plus(tmp.a.buyables[32].total)
+                                ret = ret.plus(tmp.b.buyables[22].total)
                                 return ret
                         },
                         buy(){
@@ -1176,7 +1178,7 @@ addLayer("a", {
                                 if (!isBuyableActive("a")) return new Decimal(1)
                                 
                                 let base = new Decimal(1e5)
-                                base = base.times(layers.b.buyables[31].effect())
+                                base = base.times(tmp.b.buyables[31].effect)
                                 return base
                         },
                         effect(){
@@ -1192,10 +1194,10 @@ addLayer("a", {
                         },
                         extra(){
                                 let ret = new Decimal(0)
-                                if (hasUpgrade("b", 42)) ret = ret.plus(layers.a.buyables[31].total())
-                                if (hasUpgrade("c", 23)) ret = ret.plus(layers.a.buyables[32].total())
-                                ret = ret.plus(layers.a.buyables[33].total())
-                                ret = ret.plus(layers.b.buyables[23].total())
+                                if (hasUpgrade("b", 42)) ret = ret.plus(tmp.a.buyables[31].total)
+                                if (hasUpgrade("c", 23)) ret = ret.plus(tmp.a.buyables[32].total)
+                                ret = ret.plus(tmp.a.buyables[33].total)
+                                ret = ret.plus(tmp.b.buyables[23].total)
                                 return ret
                         },
                         buy(){
@@ -1290,7 +1292,7 @@ addLayer("a", {
                                 if (!isBuyableActive("a")) return new Decimal(1)
                                 
                                 let base = new Decimal(1e5)
-                                base = base.times(layers.b.buyables[22].effect())
+                                base = base.times(tmp.b.buyables[22].effect)
                                 return base
                         },
                         effect(){
@@ -1306,11 +1308,11 @@ addLayer("a", {
                         },
                         extra(){
                                 let ret = new Decimal(0)
-                                ret = ret.plus(layers.b.challenges[12].rewardEffect())
-                                ret = ret.plus(layers.a.buyables[33].total())
-                                if (hasUpgrade("d", 14)) ret = ret.plus(layers.a.buyables[32].total())
-                                if (hasUpgrade("d", 24)) ret = ret.plus(layers.b.buyables[13].total())
-                                ret = ret.plus(layers.b.buyables[31].total())
+                                ret = ret.plus(tmp.b.challenges[12].rewardEffect)
+                                ret = ret.plus(tmp.a.buyables[33].total)
+                                if (hasUpgrade("d", 14)) ret = ret.plus(tmp.a.buyables[32].total)
+                                if (hasUpgrade("d", 24)) ret = ret.plus(tmp.b.buyables[13].total)
+                                ret = ret.plus(tmp.b.buyables[31].total)
                                 return ret
                         },
                         buy(){
@@ -1422,9 +1424,9 @@ addLayer("a", {
                         },
                         extra(){
                                 let ret = new Decimal(0)
-                                ret = ret.plus(layers.a.buyables[33].total())
+                                ret = ret.plus(tmp.a.buyables[33].total)
                                 if (hasUpgrade("d", 13)) ret = ret.plus(player.d.upgrades.length)
-                                ret = ret.plus(layers.b.buyables[32].total())
+                                ret = ret.plus(tmp.b.buyables[32].total)
                                 return ret
                         },
                         buy(){
@@ -1521,7 +1523,7 @@ addLayer("a", {
 
                                 let base = new Decimal(.5)
                                 if (hasUpgrade("b", 53)) base = base.plus(totalChallengeComps("b") / 10)
-                                if (hasUpgrade("c", 35)) base = base.plus(layers.a.buyables[23].total().times(.0001))
+                                if (hasUpgrade("c", 35)) base = base.plus(tmp.a.buyables[23].total.times(.0001))
                                 return base
                         },
                         effect(){
@@ -1546,9 +1548,9 @@ addLayer("a", {
                                         if (hasUpgrade("c", 34)) ret = ret.plus(1)
                                         if (hasUpgrade("c", 35)) ret = ret.plus(1)
                                 }
-                                ret = ret.plus(layers.b.challenges[21].rewardEffect())
-                                if (hasUpgrade("d", 23)) ret = ret.plus(layers.c.buyables[11].total())
-                                if (hasUpgrade("c", 44)) ret = ret.plus(layers.b.buyables[31].total())
+                                ret = ret.plus(tmp.b.challenges[21].rewardEffect)
+                                if (hasUpgrade("d", 23)) ret = ret.plus(tmp.c.buyables[11].total)
+                                if (hasUpgrade("c", 44)) ret = ret.plus(tmp.b.buyables[31].total)
                                 return ret
                         },
                         buy(){
@@ -1605,7 +1607,7 @@ addLayer("a", {
                                 ],
                                 ["display-text",
                                         function() {
-                                                if (hasUpgrade("a", 23)) return "You are gaining " + format(layers.a.getResetGain()) + " Amoebas per second"
+                                                if (hasUpgrade("a", 23)) return "You are gaining " + format(tmp.a.getResetGain) + " Amoebas per second"
                                                 return "There is a two second cooldown for prestiging (" + format(Math.max(0, 2-player.a.time)) + ")" 
                                         },
                                         //{"font-size": "20px"}
@@ -1620,7 +1622,7 @@ addLayer("a", {
                         content: ["main-display",
                                 ["display-text",
                                         function() {
-                                                if (hasUpgrade("a", 23) && shiftDown) return "You are gaining " + format(layers.a.getResetGain()) + " Amoebas per second"
+                                                if (hasUpgrade("a", 23) && shiftDown) return "You are gaining " + format(tmp.a.getResetGain) + " Amoebas per second"
                                                 return ""
                                         },
                                 ],
@@ -1702,7 +1704,7 @@ addLayer("b", {
                 let x = new Decimal(2)
                 if (hasUpgrade("c", 25)) x = x.plus(1)
                 if (hasUpgrade("d", 12)) x = x.plus(totalChallengeComps("b") ** 2)
-                                         x = x.plus(layers.a.buyables[33].effect())
+                                         x = x.plus(tmp.a.buyables[33].effect)
                 return x
         },
         getGainMultPre(){
@@ -1719,8 +1721,8 @@ addLayer("b", {
                         if (LAYERS[i] == "b") yet = true
                 }
 
-                x = x.times(layers.a.buyables[22].effect())
-                x = x.times(layers.b.buyables[12].effect())
+                x = x.times(tmp.a.buyables[22].effect)
+                x = x.times(tmp.b.buyables[12].effect)
 
                 return x
         },
@@ -1769,14 +1771,15 @@ addLayer("b", {
                                         if (hasUpgrade("b", 34)) amt *= 2
                                         if (hasUpgrade("b", 35)) amt *= 2
                                 }
-                                if (layers.b.buyables[11].unlocked()) layers.b.buyables[11].buyMax(amt)
-                                if (layers.b.buyables[12].unlocked()) layers.b.buyables[12].buyMax(amt)
-                                if (layers.b.buyables[13].unlocked()) layers.b.buyables[13].buyMax(amt)
-                                if (layers.b.buyables[21].unlocked()) layers.b.buyables[21].buyMax(amt)
-                                if (layers.b.buyables[22].unlocked()) layers.b.buyables[22].buyMax(amt)
-                                if (layers.b.buyables[23].unlocked()) layers.b.buyables[23].buyMax(amt)
-                                if (layers.b.buyables[31].unlocked()) layers.b.buyables[31].buyMax(amt)
-                                if (layers.b.buyables[32].unlocked()) layers.b.buyables[32].buyMax(amt)
+                                if (hasUpgrade("c", 41)) amt *= 2
+                                if (tmp.b.buyables[11].unlocked) layers.b.buyables[11].buyMax(amt)
+                                if (tmp.b.buyables[12].unlocked) layers.b.buyables[12].buyMax(amt)
+                                if (tmp.b.buyables[13].unlocked) layers.b.buyables[13].buyMax(amt)
+                                if (tmp.b.buyables[21].unlocked) layers.b.buyables[21].buyMax(amt)
+                                if (tmp.b.buyables[22].unlocked) layers.b.buyables[22].buyMax(amt)
+                                if (tmp.b.buyables[23].unlocked) layers.b.buyables[23].buyMax(amt)
+                                if (tmp.b.buyables[31].unlocked) layers.b.buyables[31].buyMax(amt)
+                                if (tmp.b.buyables[32].unlocked) layers.b.buyables[32].buyMax(amt)
                         }
                 } else {
                         player.b.abtime = 0
@@ -2086,8 +2089,8 @@ addLayer("b", {
                                 if (!isBuyableActive("b")) return new Decimal(1)
 
                                 let base = new Decimal(1e20)
-                                if (hasUpgrade("c", 21)) base = base.times(layers.a.buyables[12].total().max(1).pow(2))
-                                base = base.times(layers.b.buyables[23].effect())
+                                if (hasUpgrade("c", 21)) base = base.times(tmp.a.buyables[12].total.max(1).pow(2))
+                                base = base.times(tmp.b.buyables[23].effect)
                                 return base
                         },
                         effect(){
@@ -2103,9 +2106,9 @@ addLayer("b", {
                         },
                         extra(){
                                 let ret = new Decimal(0)
-                                if (hasUpgrade("b", 34)) ret = ret.plus(layers.b.buyables[12].total())
-                                if (hasUpgrade("b", 54)) ret = ret.plus(layers.b.buyables[13].total())
-                                ret = ret.plus(layers.c.buyables[11].total())
+                                if (hasUpgrade("b", 34)) ret = ret.plus(tmp.b.buyables[12].total)
+                                if (hasUpgrade("b", 54)) ret = ret.plus(tmp.b.buyables[13].total)
+                                ret = ret.plus(tmp.c.buyables[11].total)
                                 return ret
                         },
                         buy(){
@@ -2204,7 +2207,7 @@ addLayer("b", {
                                 if (!isBuyableActive("b")) return new Decimal(1)
                                 
                                 let base = new Decimal(10)
-                                if (hasUpgrade("b", 41)) base = base.plus(layers.a.buyables[11].total().div(1000))
+                                if (hasUpgrade("b", 41)) base = base.plus(tmp.a.buyables[11].total.div(1000))
                                 return base
                         },
                         effect(){
@@ -2222,11 +2225,11 @@ addLayer("b", {
                         },
                         extra(){
                                 let ret = new Decimal(0)
-                                ret = ret.plus(layers.b.challenges[11].rewardEffect())
+                                ret = ret.plus(tmp.b.challenges[11].rewardEffect)
                                 if (hasUpgrade("c", 15)) ret = ret.plus(player.b.upgrades.length)
-                                if (hasUpgrade("c", 34)) ret = ret.plus(layers.b.buyables[21].total())
-                                if (hasUpgrade("b", 54)) ret = ret.plus(layers.b.buyables[13].total())
-                                ret = ret.plus(layers.c.buyables[12].total())
+                                if (hasUpgrade("c", 34)) ret = ret.plus(tmp.b.buyables[21].total)
+                                if (hasUpgrade("b", 54)) ret = ret.plus(tmp.b.buyables[13].total)
+                                ret = ret.plus(tmp.c.buyables[12].total)
                                 return ret
                         },
                         buy(){
@@ -2336,8 +2339,8 @@ addLayer("b", {
                         },
                         extra(){
                                 let ret = new Decimal(0)
-                                if (hasUpgrade("c", 34)) ret = ret.plus(layers.b.buyables[21].total())
-                                if (hasUpgrade("c", 42)) ret = ret.plus(layers.b.buyables[22].total())
+                                if (hasUpgrade("c", 34)) ret = ret.plus(tmp.b.buyables[21].total)
+                                if (hasUpgrade("c", 42)) ret = ret.plus(tmp.b.buyables[22].total)
                                 return ret
                         },
                         buy(){
@@ -2447,9 +2450,9 @@ addLayer("b", {
                         },
                         extra(){
                                 let ret = new Decimal(0)
-                                if (hasUpgrade("b", 55)) ret = ret.plus(layers.b.buyables[22].total())
-                                if (hasUpgrade("b", 55)) ret = ret.plus(layers.b.buyables[23].total())
-                                if (hasUpgrade("c", 43)) ret = ret.plus(layers.b.buyables[31].total())
+                                if (hasUpgrade("b", 55)) ret = ret.plus(tmp.b.buyables[22].total)
+                                if (hasUpgrade("b", 55)) ret = ret.plus(tmp.b.buyables[23].total)
+                                if (hasUpgrade("c", 43)) ret = ret.plus(tmp.b.buyables[31].total)
                                 return ret
                         },
                         buy(){
@@ -2541,7 +2544,7 @@ addLayer("b", {
                                 if (!isBuyableActive("b")) return new Decimal(1)
                                 
                                 let base = new Decimal(1e5)
-                                base = base.times(layers.c.challenges[11].rewardEffect())
+                                base = base.times(tmp.c.challenges[11].rewardEffect)
                                 return base
                         },
                         effect(){
@@ -2559,8 +2562,8 @@ addLayer("b", {
                         },
                         extra(){
                                 let ret = new Decimal(0)
-                                if (hasUpgrade("d", 15)) ret = ret.plus(layers.b.buyables[23].total())
-                                if (hasUpgrade("c", 41)) ret = ret.plus(layers.b.buyables[31].total())
+                                if (hasUpgrade("d", 15)) ret = ret.plus(tmp.b.buyables[23].total)
+                                if (hasUpgrade("c", 41)) ret = ret.plus(tmp.b.buyables[31].total)
                                 return ret
                         },
                         buy(){
@@ -2652,7 +2655,7 @@ addLayer("b", {
                                 if (!isBuyableActive("b")) return new Decimal(1)
                                 
                                 let base = new Decimal(1e10)
-                                base = base.times(layers.c.buyables[11].effect())
+                                base = base.times(tmp.c.buyables[11].effect)
                                 return base
                         },
                         effect(){
@@ -2670,8 +2673,8 @@ addLayer("b", {
                         },
                         extra(){
                                 let ret = new Decimal(0)
-                                if (hasUpgrade("c", 41)) ret = ret.plus(layers.b.buyables[31].total())
-                                if (hasUpgrade("c", 45)) ret = ret.plus(layers.b.buyables[32].total())
+                                if (hasUpgrade("c", 41)) ret = ret.plus(tmp.b.buyables[31].total)
+                                if (hasUpgrade("c", 45)) ret = ret.plus(tmp.b.buyables[32].total)
                                 return ret
                         },
                         buy(){
@@ -2739,8 +2742,8 @@ addLayer("b", {
                         getBases(){
                                 //currently an example
                                 let b0 = new Decimal("1e48252")
-                                let b1 = new Decimal("2e175")
-                                let b2 = 5e27
+                                let b1 = new Decimal("5e175")
+                                let b2 = 2e27
                                 return [b0, b1, b2]
                         },
                         cost(add){
@@ -2776,7 +2779,7 @@ addLayer("b", {
                         },
                         extra(){
                                 let ret = new Decimal(0)
-                                if (hasUpgrade("c", 45)) ret = ret.plus(layers.b.buyables[32].total())
+                                if (hasUpgrade("c", 45)) ret = ret.plus(tmp.b.buyables[32].total)
                                 return ret
                         },
                         buy(){
@@ -2996,7 +2999,7 @@ addLayer("b", {
                                 ["display-text",
                                         function() {
                                                 let a = hasUnlockedPast("b") ? "" : "You have done " + formatWhole(player.b.times) + " Bacteria resets<br>"
-                                                if (hasUpgrade("b", 22)) return a + "You are gaining " + format(layers.b.getResetGain()) + " Bacteria per second"
+                                                if (hasUpgrade("b", 22)) return a + "You are gaining " + format(tmp.b.getResetGain) + " Bacteria per second"
                                                 return a + "There is a five second cooldown for prestiging (" + format(Math.max(0, 5-player.b.time)) + ")" 
                                         },
                                         //{"font-size": "20px"}
@@ -3016,7 +3019,7 @@ addLayer("b", {
                                 ["display-text",
                                         function() {
                                                 if (!shiftDown || !hasUpgrade("b", 22)) return ""
-                                                return "You are gaining " + format(layers.b.getResetGain()) + " Bacteria per second"
+                                                return "You are gaining " + format(tmp.b.getResetGain) + " Bacteria per second"
                                         }
                                 ],
                                 "blank", 
@@ -3117,7 +3120,7 @@ addLayer("c", {
                 let x = new Decimal(2)
                 if (hasUpgrade("c", 25)) x = x.plus(1)
                 if (hasUpgrade("b", 52)) x = x.plus(player.c.upgrades.length * .2)
-                x = x.plus(layers.b.buyables[32].effect())
+                x = x.plus(tmp.b.buyables[32].effect)
                 return x
         },
         getGainMultPre(){
@@ -3148,7 +3151,7 @@ addLayer("c", {
 
                 ret = softcap(ret, "c_eff")
 
-                ret = ret.times(layers.c.buyables[12].effect())
+                ret = ret.times(tmp.c.buyables[12].effect)
 
                 return ret
         },
@@ -3334,7 +3337,7 @@ addLayer("c", {
                 },
                 41: {
                         title: "Computer",
-                        description: "<b>Basic</b> gives free <b>Bank</b> and <b>Beauty</b> levels",
+                        description: "<b>Basic</b> gives free <b>Bank</b> and <b>Beauty</b> levels and <b>B</b> and <b>A</b> autobuyers can buy 10x more",
                         cost: new Decimal("1e584"),
                         unlocked(){ 
                                 return player.ach.achievements.includes("53") || hasUnlockedPast("d")
@@ -3448,7 +3451,7 @@ addLayer("c", {
                         },
                         extra(){
                                 let ret = new Decimal(0)
-                                if (hasUpgrade("d", 25)) ret = ret.plus(layers.c.buyables[12].total())
+                                if (hasUpgrade("d", 25)) ret = ret.plus(tmp.c.buyables[12].total)
                                 return ret
                         },
                         buy(){
@@ -3630,7 +3633,7 @@ addLayer("c", {
                                 ],
                                 ["display-text",
                                         function() {
-                                                if (hasUpgrade("c", 22)) return "You are gaining " + format(layers.c.getResetGain()) + " Circles per second"
+                                                if (hasUpgrade("c", 22)) return "You are gaining " + format(tmp.c.getResetGain) + " Circles per second"
                                                 return "There is a five second cooldown for prestiging (" + format(Math.max(0, 5-player.c.time)) + ")" 
                                         },
                                         //{"font-size": "20px"}
@@ -3651,7 +3654,7 @@ addLayer("c", {
                                 ["display-text",
                                         function() {
                                                 if (!shiftDown || !hasUpgrade("c", 22)) return ""
-                                                return "You are gaining " + format(layers.c.getResetGain()) + " Circles per second"
+                                                return "You are gaining " + format(tmp.c.getResetGain) + " Circles per second"
                                         }
                                 ],
                                 "blank", 
@@ -3941,7 +3944,7 @@ addLayer("d", {
                                 ],
                                 ["display-text",
                                         function() {
-                                                if (hasUpgrade("d", 22)) return "You are gaining " + format(layers.d.getResetGain()) + " Doodles per second"
+                                                if (hasUpgrade("d", 22)) return "You are gaining " + format(tmp.d.getResetGain) + " Doodles per second"
                                                 return "There is a five second cooldown for prestiging (" + format(Math.max(0, 5-player.d.time)) + ")" 
                                         },
                                         //{"font-size": "20px"}

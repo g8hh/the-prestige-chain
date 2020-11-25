@@ -24,8 +24,8 @@ function exponentialFormat(num, precision) {
 
 function commaFormat(num, precision) {
 	if (num === null || num === undefined) return "NaN"
-	if (num.mag < 0.001) return (0).toFixed(precision)
-	return num.toStringWithDecimalPlaces(precision).replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+	if (num.lt(Decimal.pow(10, precision * -1))) return (0).toFixed(precision)
+	return addCommas(num.toStringWithDecimalPlaces())
 }
 
 
@@ -73,7 +73,7 @@ function formatWhole(decimal) {
 	decimal = new Decimal(decimal)
 	if (decimal.gte(1e9)) return format(decimal, 2)
 	if (decimal.lt(10) && decimal.neq(decimal.floor())) return format(decimal, 2)
-	return format(decimal, 0)
+	return addCommas(decimal.floor().mag.toString())
 }
 
 function formatTime(s) {
