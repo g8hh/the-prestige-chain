@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".1.14 The Time Trial",
+	num: ".1.15 Omnipotence",
 	name: "",
 }
 
@@ -35,42 +35,44 @@ function addedPlayerData() { return {
 }}
 
 PROGRESSION_MILESTONES = {
-	1:() => player.a.upgrades.length >= 1 || hasUnlockedPast("a"),
-	2:() => player.a.upgrades.length >= 3 || hasUnlockedPast("a"),
-	3:() => player.a.upgrades.length >= 6 || hasUnlockedPast("a"),
-	4:() => getBuyableAmount("a", 12).gte(2) || hasUnlockedPast("a"),
-	5:() => player.a.points.gte(1e6) || hasUnlockedPast("a"),
-	6:() => player.b.upgrades.length >= 1 || hasUnlockedPast("b"),
-	7:() => player.a.upgrades.length >= 13 || hasUnlockedPast("b"),
-	8:() => player.b.upgrades.length >= 6 || hasUnlockedPast("b"),
-	9:() => player.a.upgrades.length >= 16 || hasUnlockedPast("b"),
-	10:() => player.b.points.gt(5e10) || hasUnlockedPast("b"),
-	11:() => player.c.points.gte(3) || hasUnlockedPast("c"),
-	12:() => player.c.upgrades.length >= 3 || hasUnlockedPast("c"),
-	13:() => getBuyableAmount("a", 31).gte(4) || hasUnlockedPast("c"),
-	14:() => player.b.upgrades.length >= 12 || hasUnlockedPast("c"),
-	15:() => player.b.upgrades.length >= 14 || hasUnlockedPast("c"),
-	16:() => player.c.upgrades.length >= 4 || hasUnlockedPast("c"),
-	17:() => challengeCompletions("b", 11) >= 1 || hasUnlockedPast("c"),
-	18:() => player.b.upgrades.length >= 19 || hasUnlockedPast("c"),
-	19:() => player.c.upgrades.length >= 7 || hasUnlockedPast("c"),
-	20:() => challengeCompletions("b", 12) >= 1 || hasUnlockedPast("c"),
-	21:() => player.c.points.gte(5e10) || hasUnlockedPast("c"),
-	22:() => player.d.points.gte(5) || hasUnlockedPast("d"),
-	23:() => player.b.upgrades.length >= 22 || hasUnlockedPast("d"),
-	24:() => getBuyableAmount("b", 21).gte(2) || hasUnlockedPast("d"),
-	25:() => player.d.upgrades.length >= 4 || hasUnlockedPast("d"),
-	26:() => totalChallengeComps("b") >= 8 || hasUnlockedPast("d"),
-	27:() => totalChallengeComps("b") >= 11 || hasUnlockedPast("d"),
-	28:() => getBuyableAmount("b", 23).gte(2) || hasUnlockedPast("d"),
-	29:() => layers.d.getResetGain().gte(25500) || hasUnlockedPast("d"),
-	30:() => getBuyableAmount("c", 11).gte(5) || hasUnlockedPast("d"),
-	31:() => getBuyableAmount("b", 31).gte(1) || hasUnlockedPast("d"),
-	32:() => player.c.upgrades.length >= 18 || hasUnlockedPast("d"),
-	33:() => totalChallengeComps("c") >= 1 || hasUnlockedPast("d"),
-	34:() => player.c.upgrades.length >= 20 || hasUnlockedPast("d"),
-	35:() => totalChallengeComps("c") >= 2 || hasUnlockedPast("d"),
-	36:() => player.e.points.gte(2) || hasUnlockedPast("e"),
+	1:() => player.a.upgrades.length >= 1      || hasAchievement("ach", 11),
+	2:() => player.a.upgrades.length >= 3      || hasAchievement("ach", 12),
+	3:() => player.a.upgrades.length >= 6      || hasAchievement("ach", 13),
+	4:() => getBuyableAmount("a", 12).gte(2)   || hasAchievement("ach", 14),
+	5:() => player.a.points.gte(1e6)           || hasAchievement("ach", 15),
+	6:() => player.b.upgrades.length >= 1      || hasAchievement("ach", 16),
+	7:() => player.a.upgrades.length >= 13     || hasAchievement("ach", 17),
+	8:() => player.b.upgrades.length >= 6      || hasAchievement("ach", 21),
+	9:() => player.a.upgrades.length >= 16     || hasAchievement("ach", 22),
+	10:() => player.b.points.gt(5e10)          || hasAchievement("ach", 23),
+	11:() => player.c.points.gte(3)            || hasAchievement("ach", 24),
+	12:() => player.c.upgrades.length >= 3     || hasAchievement("ach", 25),
+	13:() => getBuyableAmount("a", 31).gte(4)  || hasAchievement("ach", 26),
+	14:() => player.b.upgrades.length >= 12    || hasAchievement("ach", 27),
+	15:() => player.b.upgrades.length >= 14    || hasAchievement("ach", 31),
+	16:() => player.c.upgrades.length >= 4     || hasAchievement("ach", 32),
+	17:() => challengeCompletions("b", 11) >= 1|| hasAchievement("ach", 33),
+	18:() => player.b.upgrades.length >= 19    || hasAchievement("ach", 34),
+	19:() => player.c.upgrades.length >= 7     || hasAchievement("ach", 35),
+	20:() => challengeCompletions("b", 12) >= 1|| hasAchievement("ach", 36),
+	21:() => player.c.points.gte(5e10)         || hasAchievement("ach", 37),
+	22:() => player.d.points.gte(5)            || hasAchievement("ach", 41),
+	23:() => player.b.upgrades.length >= 22    || hasAchievement("ach", 42),
+	24:() => getBuyableAmount("b", 21).gte(2)  || hasAchievement("ach", 43),
+	25:() => player.d.upgrades.length >= 4     || hasAchievement("ach", 44),
+	26:() => totalChallengeComps("b") >= 8     || hasAchievement("ach", 45),
+	27:() => totalChallengeComps("b") >= 11    || hasAchievement("ach", 46),
+	28:() => getBuyableAmount("b", 23).gte(2)  || hasAchievement("ach", 47),
+	29:() => layers.d.getResetGain().gte(25500)|| hasAchievement("ach", 51),
+	30:() => getBuyableAmount("c", 11).gte(5)  || hasAchievement("ach", 52),
+	31:() => getBuyableAmount("b", 31).gte(1)  || hasAchievement("ach", 53),
+	32:() => player.c.upgrades.length >= 18    || hasAchievement("ach", 54),
+	33:() => totalChallengeComps("c") >= 1     || hasAchievement("ach", 55),
+	34:() => player.c.upgrades.length >= 20    || hasAchievement("ach", 56),
+	35:() => totalChallengeComps("c") >= 2     || hasAchievement("ach", 57),
+	36:() => player.e.points.gte(2)            || hasAchievement("ach", 61),
+	37:() => player.e.points.gte(200)          || hasAchievement("ach", 62),
+	38:() => totalChallengeComps("c") >= 3     || hasAchievement("ach", 63),
 }
 
 /*
@@ -116,6 +118,8 @@ PROGRESSION_MILESTONES_TEXT = {
 	34: "20 Circle upgrades",
 	35: "2 Circle challenge completions",
 	36: "2 Eggs",
+	37: "200 Eggs",
+	38: "3 Circle challenge completions",
 }
 
 function progressReachedNum(){
@@ -139,13 +143,13 @@ function nextMilestone(){
 
 // Display extra things at the top of the page
 var displayThings = [
-	"This may be incorrect: Last updated 10:26 PM pacific 11.24",
+	"This may be incorrect: Last updated 8:14 PM pacific 11.25",
 	function (){
 		let a = "Endgame: All goals"
 		if (player.ach.achievements.length == Object.keys(PROGRESSION_MILESTONES).length) {
 			a += " (done!)"
 		} else a += " (not done)"
-		return a + " & 200 Eggs"
+		return a + " & 5e28 Doodles"
 	},
 ]
 
