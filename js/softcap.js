@@ -154,6 +154,60 @@ var softcap_data = {
 			pow: 50,
 		},
 	},
+	c_buy13: {
+		1: {
+			func: "pow",
+			start: 3.5,
+			pow: .5,
+		},
+		2: {
+			func: "pow",
+			start: 4,
+			pow: .5,
+		},
+		3: {
+			func: "pow",
+			start: 4.1,
+			pow: .5,
+		},
+		4: {
+			func: "pow",
+			start: 4.2,
+			pow: .5,
+		},
+		5: {
+			func: "pow",
+			start: 4.3,
+			pow: .5,
+		},
+		6: {
+			func: "pow",
+			start: 4.4,
+			pow: .5,
+		},
+		7: {
+			func: "pow",
+			start: 4.5,
+			pow: .5,
+		},
+	},
+	c_buy21: {
+		1: {
+			func: "pow",
+			start: 1e40,
+			pow: .5,
+		},
+		2: {
+			func: "log",
+			start: 1e50,
+			pow: 50 / Math.log10(50),
+		},
+		3: {
+			func: "pow",
+			start: 1e60,
+			pow: .5,
+		},
+	},
 	e_eff:{
 		1: {
 			func: "pow",

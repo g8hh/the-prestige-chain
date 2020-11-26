@@ -3563,6 +3563,14 @@ addLayer("c", {
                                 return hasUpgrade("d", 31) || hasUnlockedPast("e")
                         }, //hasUpgrade("c", 52)
                 },
+                53: {
+                        title: "College",
+                        description: "<b>Compare</b> gives free levels to <b>Call</b> and <b>Case</b>",
+                        cost: new Decimal("1e34974"),
+                        unlocked(){ 
+                                return hasUpgrade("d", 32) || hasUnlockedPast("e")
+                        }, //hasUpgrade("c", 53)
+                },
 
                 /*
                 college
@@ -3598,6 +3606,10 @@ addLayer("c", {
                                 if (hasUpgrade("c", 52)) {
                                         extra = true
                                         a += "<h3>Country</h3>, "
+                                }
+                                if (hasUpgrade("c", 53)) {
+                                        extra = true
+                                        a += "<h3>Compare</h3>, "
                                 }
                                 if (!extra) return ""
                                 return a.slice(0, a.length-2)
@@ -3649,6 +3661,7 @@ addLayer("c", {
                                 let ret = new Decimal(0)
                                 if (hasUpgrade("d", 25)) ret = ret.plus(tmp.c.buyables[12].total)
                                 if (hasUpgrade("c", 52)) ret = ret.plus(tmp.c.buyables[13].total)
+                                if (hasUpgrade("c", 53)) ret = ret.plus(tmp.c.buyables[21].total)
                                 return ret
                         },
                         buy(){
@@ -3705,6 +3718,10 @@ addLayer("c", {
                                         extra = true
                                         a += "<h3>Country</h3>, "
                                 }
+                                if (hasUpgrade("c", 53)) {
+                                        extra = true
+                                        a += "<h3>Compare</h3>, "
+                                }
                                 if (!extra) return ""
                                 return a.slice(0, a.length-2)
                         },
@@ -3753,6 +3770,7 @@ addLayer("c", {
                         extra(){
                                 let ret = new Decimal(0)
                                 if (hasUpgrade("c", 52)) ret = ret.plus(tmp.c.buyables[13].total)
+                                if (hasUpgrade("c", 53)) ret = ret.plus(tmp.c.buyables[21].total)
                                 return ret
                         },
                         buy(){
@@ -3794,9 +3812,10 @@ addLayer("c", {
                         title: "Country",
                         display(){
                                 let start = "<b><h2>Amount</h2>: " + this.getAmountDisplay() + "</b><br>"
-                                let eff = "<b><h2>Effect</h2>: +" + format(this.effect()) + " Brand effect</b><br>"
+                                let eff = "<b><h2>Effect</h2>: +" + format(this.effect(), 4) + " Brand effect</b><br>"
                                 let cost = "<b><h2>Cost</h2>: " + format(this.cost()) + " Circles</b><br>"
-                                let eformula = "<b><h2>Effect formula</h2>:<br>" + format(this.effectBase()) + "*x</b><br>"
+                                let scs = this.effect().gt(3.5)
+                                let eformula = "<b><h2>Effect formula</h2>:<br>" + format(this.effectBase(), 4) + "*x" + (scs ? " (softcapped)" : "") + "</b><br>"
                                 let exformula = this.getExtraFormulaText()
 
                                 let end = shiftDown ? eformula + exformula : "Shift to see details"
@@ -3805,9 +3824,9 @@ addLayer("c", {
                         getExtraFormulaText(){
                                 let a = "<b><h2>Extra levels from</h2>:<br>"
                                 let extra = false
-                                if (false) {
+                                if (hasUpgrade("d", 33)) {
                                         extra = true
-                                        a += "<h3>thing</h3>, "
+                                        a += "<h3>Compare</h3>, "
                                 }
                                 if (!extra) return ""
                                 return a.slice(0, a.length-2)
@@ -3846,6 +3865,7 @@ addLayer("c", {
                                 let x = this.total()
                                 let base = this.effectBase()
                                 let ret = Decimal.times(base, x)
+                                ret = softcap(ret, "c_buy13")
                                 return ret
                         },
                         canAfford(){
@@ -3856,6 +3876,7 @@ addLayer("c", {
                         },
                         extra(){
                                 let ret = new Decimal(0)
+                                if (hasUpgrade("d", 33)) ret = ret.plus(tmp.c.buyables[21].total)
                                 return ret
                         },
                         buy(){
@@ -3890,7 +3911,7 @@ addLayer("c", {
                                 player.c.points = player.c.points.sub(this.cost(-1)).max(0)
                         },
                         unlocked(){ 
-                                return hasUpgrade("c", 31) || hasUnlockedPast("d")
+                                return hasUpgrade("d", 31) || hasUnlockedPast("e")
                         },
                 },
                 21: {
@@ -3899,7 +3920,8 @@ addLayer("c", {
                                 let start = "<b><h2>Amount</h2>: " + this.getAmountDisplay() + "</b><br>"
                                 let eff = "<b><h2>Effect</h2>: *" + format(this.effect()) + " base B gain</b><br>"
                                 let cost = "<b><h2>Cost</h2>: " + format(this.cost()) + " Circles</b><br>"
-                                let eformula = "<b><h2>Effect formula</h2>:<br>" + format(this.effectBase()) + "^x</b><br>"
+                                let scs = this.effect().gt(1e40)
+                                let eformula = "<b><h2>Effect formula</h2>:<br>" + format(this.effectBase()) + "^x" + (scs ? " (softcapped)" : "") + "</b><br>"
                                 let exformula = this.getExtraFormulaText()
 
                                 let end = shiftDown ? eformula + exformula : "Shift to see details"
@@ -3949,6 +3971,7 @@ addLayer("c", {
                                 let x = this.total()
                                 let base = this.effectBase()
                                 let ret = Decimal.pow(base, x)
+                                ret = softcap(ret, "c_buy21")
                                 return ret
                         },
                         canAfford(){
@@ -3993,7 +4016,7 @@ addLayer("c", {
                                 player.c.points = player.c.points.sub(this.cost(-1)).max(0)
                         },
                         unlocked(){ 
-                                return (hasUpgrade("c", 31) && hasUpgrade("c", 32)) || hasUnlockedPast("d")
+                                return (hasUpgrade("d", 31) && hasUpgrade("d", 32)) || hasUnlockedPast("e")
                         },
                 },
         },
@@ -4344,10 +4367,24 @@ addLayer("d", {
                                 return player.ach.achievements.includes("64") || hasUnlockedPast("e")
                         }, //hasUpgrade("d", 32)
                 },
+                33: {
+                        title: "Directory",
+                        description: "<b>Compare</b> gives free <b>Country</b> levels",
+                        cost: new Decimal(1e77),
+                        unlocked(){ 
+                                return hasUpgrade("c", 53) || hasUnlockedPast("e")
+                        }, //hasUpgrade("d", 33)
+                },
 
                 /*
-                Download
-
+                during
+                digital
+                department
+                description
+                december
+                different
+                delivery
+                discussion
                 */
         },
         tabFormat: {
@@ -5074,7 +5111,6 @@ addLayer("ach", {
                                 return "Get " + PROGRESSION_MILESTONES_TEXT[40]
                         },
                 },
-                /*
                 66: {
                         name: "Forty-one",
                         done(){
@@ -5084,6 +5120,7 @@ addLayer("ach", {
                                 return "Get " + PROGRESSION_MILESTONES_TEXT[41]
                         },
                 },
+                /*
                 67: {
                         name: "Forty-two",
                         done(){

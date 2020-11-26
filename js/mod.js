@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".2 Careful Infation",
+	num: ".2.1 Softcaps Needed",
 	name: "",
 }
 
@@ -75,6 +75,7 @@ PROGRESSION_MILESTONES = {
 	38:() => totalChallengeComps("c") >= 3     || hasAchievement("ach", 63),
 	39:() => totalChallengeComps("c") >= 5     || hasAchievement("ach", 64),
 	40:() => totalChallengeComps("b") >= 56    || hasAchievement("ach", 65),
+	41:() => totalChallengeComps("b") >= 61    || hasAchievement("ach", 65),
 }
 
 /*
@@ -124,6 +125,7 @@ PROGRESSION_MILESTONES_TEXT = {
 	38: "3 Circle challenge completions",
 	39: "5 Circle challenge completions",
 	40: "56 Bacteria challenge completions",
+	41: "61 Bacteria challenge completions",
 }
 
 function progressReachedNum(){
@@ -147,13 +149,13 @@ function nextMilestone(){
 
 // Display extra things at the top of the page
 var displayThings = [
-	"This may be incorrect: Last updated 9:56 PM pacific 11.25",
+	"This may be incorrect: Last updated 10:46 PM pacific 11.25",
 	function (){
 		let a = "Endgame: All goals"
 		if (player.ach.achievements.length == Object.keys(PROGRESSION_MILESTONES).length) {
 			a += " (done!)"
 		} else a += " (not done)"
-		return a + " & 1e76 Doodles"
+		return a + " & 2e108 Doodles"
 	},
 ]
 
