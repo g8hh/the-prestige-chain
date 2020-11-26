@@ -14,6 +14,7 @@ replace "a" with another layer of choice
 */
 var FREE_BUYABLE_DATA = {
         a11: {
+                name: "All",
                 a12: {
                         active: function(){
                                 return hasUpgrade("a", 24)
@@ -26,6 +27,7 @@ var FREE_BUYABLE_DATA = {
                 },
         },
         a12: {
+                name: "Any",
                 a13: {
                         active: function(){
                                 return hasUpgrade("b", 15)
@@ -38,6 +40,7 @@ var FREE_BUYABLE_DATA = {
                 },
         },
         a13: {
+                name: "After",
                 a21: {
                         active: function(){
                                 return hasUpgrade("b", 25)
@@ -55,6 +58,7 @@ var FREE_BUYABLE_DATA = {
                 },
         },
         a21: {
+                name: "Access",
                 a22: {
                         active: function(){
                                 return hasUpgrade("a", 42)
@@ -72,6 +76,7 @@ var FREE_BUYABLE_DATA = {
                 },
         },
         a22: {
+                name: "Account",
                 a23: {
                         active: function(){
                                 return hasUpgrade("a", 54)
@@ -89,6 +94,7 @@ var FREE_BUYABLE_DATA = {
                 },
         },
         a23: {
+                name: "Advanced",
                 a31: {
                         active: function(){
                                 return hasUpgrade("b", 42)
@@ -101,6 +107,7 @@ var FREE_BUYABLE_DATA = {
                 },
         },
         a31: {
+                name: "Against",
                 a32: {
                         active: function(){
                                 return hasUpgrade("d", 14)
@@ -112,7 +119,11 @@ var FREE_BUYABLE_DATA = {
                         }
                 },
         },
+        a32: {
+                name: "Above",
+        },
         a33: {
+                name: "Omnipotent I",
                 b31: {
                         active: function(){
                                 return hasUpgrade("c", 44)
@@ -125,6 +136,7 @@ var FREE_BUYABLE_DATA = {
                 },
         },
         b11: {
+                name: "Because",
                 b12: {
                         active: function(){
                                 return hasUpgrade("b", 34)
@@ -137,6 +149,7 @@ var FREE_BUYABLE_DATA = {
                 },
         },
         b12: {
+                name: "Based",
                 b13: {
                         active: function(){
                                 return hasUpgrade("b", 54)
@@ -149,6 +162,7 @@ var FREE_BUYABLE_DATA = {
                 },
         },
         b13: {
+                name: "Become",
                 b21: {
                         active: function(){
                                 return hasUpgrade("c", 34)
@@ -161,6 +175,7 @@ var FREE_BUYABLE_DATA = {
                 },
         },
         b21: {
+                name: "Baby",
                 b22: {
                         active: function(){
                                 return hasUpgrade("b", 55)
@@ -178,6 +193,7 @@ var FREE_BUYABLE_DATA = {
                 },
         },
         b22: {
+                name: "Bank",
                 b23: {
                         active: function(){
                                 return hasUpgrade("d", 15)
@@ -195,6 +211,7 @@ var FREE_BUYABLE_DATA = {
                 },
         },
         b23: {
+                name: "Beauty",
                 b31: {
                         active: function(){
                                 return hasUpgrade("c", 41)
@@ -207,20 +224,36 @@ var FREE_BUYABLE_DATA = {
                 },
         },
         b31: {
+                name: "Basic",
                 b32: {
                         active: function(){
                                 return hasUpgrade("c", 45)
                         }
                 },
         },
+        b32: {
+                name: "Brand",
+                c21:{
+                        active: function(){
+                                return hasUpgrade("d", 34)
+                        },
+                },
+        },
         b33: {
+                name: "Omnipotent II",
                 c22: {
                         active: function(){
                                 return hasUpgrade("c", 54)
                         }
                 },
+                c23: {
+                        active: function(){
+                                return hasUpgrade("c", 55)
+                        }
+                },
         },
         c11: {
+                name: "Case",
                 c12: {
                         active: function(){
                                 return hasUpgrade("d", 25)
@@ -238,6 +271,7 @@ var FREE_BUYABLE_DATA = {
                 },
         },
         c12: {
+                name: "Call",
                 c13: {
                         active: function(){
                                 return hasUpgrade("c", 52)
@@ -255,23 +289,41 @@ var FREE_BUYABLE_DATA = {
                 },
         },
         c13: {
+                name: "Country",
                 c21: {
                         active: function(){
                                 return hasUpgrade("d", 33)
-                        }
+                        },
                 },
                 c22: {
                         active: function(){
                                 return hasUpgrade("e", 12)
-                        }
+                        },
                 },
         },
         c21: {
+                name: "Compare",
                 c22: {
                         active: function(){
                                 return hasUpgrade("c", 54)
+                        },
+                },
+                c23: {
+                        active: function(){
+                                return hasUpgrade("c", 55)
                         }
                 },
+        },
+        c22: {
+                name: "Card",
+                c23: {
+                        active: function(){
+                                return hasUpgrade("d", 35)
+                        },
+                },
+        },
+        c23: {
+                name: "Canada",
         },
 }
 
@@ -284,6 +336,7 @@ var EXTRA_FREE_BUYABLE_DATA = {
                         amount: function(){
                                 return player.a.upgrades.length
                         },
+                        name: "A Upgrades",
                 },
         },
         a21: {
@@ -314,6 +367,7 @@ var EXTRA_FREE_BUYABLE_DATA = {
                         amount: function(){
                                 return player.d.upgrades.length
                         },
+                        name: "D upgrades"
                 },
         },
         a33: {
@@ -354,7 +408,18 @@ var EXTRA_FREE_BUYABLE_DATA = {
                         },
                         amount: function(){
                                 return player.b.upgrades.length
-                        }
+                        },
+                        name: "B Upgrades"
+                },
+        },
+        c23: {
+                1: {
+                        active: function(){
+                                return true
+                        },
+                        amount: function(){
+                                return tmp.c.challenges[12].rewardEffect
+                        },
                 },
         },
 }
@@ -374,12 +439,24 @@ function getCodedBuyableAmount(code){
         return getBuyableTotal(code.slice(0,1), code.slice(1,3)) 
 }
 
+function isValidBuyableCode(code){
+        if (code.length != 3) return false
+        let letter = code.slice(0,1)
+        let num = Number(code.slice(1,3))
+        return isBuyableDefined(letter, num)
+}
+
+function getBuyableName(code){
+        return FREE_BUYABLE_DATA[code].name
+}
+
 function calcBuyableExtra(layer, id){
         let key = layer + id
         let data = FREE_BUYABLE_DATA[key] || {}
         if (data == undefined) return new Decimal(0)
         let amt = new Decimal(0)
         for (i in data) {
+                if (!isValidBuyableCode(i)) continue
                 if (data[i].active() == true) amt = amt.plus(getCodedBuyableAmount(i))
         }
         let data2 = getAlwaysActiveAdditionalBuyables(layer, id)
@@ -408,7 +485,29 @@ function getAlwaysActiveAdditionalBuyables(layer, id){
         return l
 }
 
-
+function getBuyableExtraText(layer, id){
+        let a = "<b><h2>Extra levels from</h2>:<br>"
+        let extra = false
+        let key = layer + id
+        let data = FREE_BUYABLE_DATA[key] || {}
+        for (i in data) {
+                if (!isValidBuyableCode(i)) continue
+                if (data[i].active() == true) {
+                        extra = true
+                        a += "<h3>" + getBuyableName(i) + "</h3>, "
+                }
+        }
+        let data3 = EXTRA_FREE_BUYABLE_DATA[key] || {}
+        for (i in data3) {
+                if (!data3[i].name) continue
+                if (data3[i].active() == true) {
+                        extra = true
+                        a += "<h3>" + data3[i].name + "</h3>, "
+                }
+        }
+        if (!extra) return ""
+        return a.slice(0, a.length-2)
+}
 
 
 

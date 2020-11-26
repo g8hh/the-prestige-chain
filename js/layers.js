@@ -124,7 +124,11 @@ function getABBulk(layer){
 
                 return amt
         }
+}
 
+function doPrestigeGainChange(amt, layer){
+        if (layer == "a" && inChallenge("c", 12)) amt = amt.sqrt()
+        return amt
 }
 
 var devSpeedUp = false
@@ -176,6 +180,8 @@ addLayer("a", {
 
                 let ret = a.log10().times(pre).pow(exp).times(pst)
 
+                ret = doPrestigeGainChange(ret, "a")
+
                 return ret.floor()
         },
         getBaseDiv(){
@@ -211,6 +217,7 @@ addLayer("a", {
                 if (hasUpgrade("b", 11)) x = x.times(upgradeEffect("b", 11))
                                          x = x.times(getBuyableEffect("a", 31))
                                          x = x.times(getBuyableEffect("b", 21))
+                                         x = x.times(getBuyableEffect("c", 23))
 
                 return x
         },
@@ -560,18 +567,7 @@ addLayer("a", {
                                 return "<br>" + start + eff + cost + end
                         },
                         getExtraFormulaText(){
-                                let a = "<b><h2>Extra levels from</h2>:<br>"
-                                let extra = false
-                                if (hasUpgrade("a", 24)) {
-                                        extra = true
-                                        a += "<h3>Any</h3>, "
-                                }
-                                if (hasUpgrade("a", 34)) {
-                                        extra = true
-                                        a += "<h3>After</h3>, "
-                                }
-                                if (!extra) return ""
-                                return a.slice(0,a.length-2)
+                                return getBuyableExtraText("a", 11)
                         },
                         getAmountDisplay(){
                                 let extra = this.extra()
@@ -671,22 +667,7 @@ addLayer("a", {
                                 return "<br>" + start + eff + cost + end
                         },
                         getExtraFormulaText(){
-                                let a = "<b><h2>Extra levels from</h2>:<br>"
-                                let extra = false
-                                if (hasUpgrade("b", 15)) {
-                                        extra = true
-                                        a += "<h3>After</h3>, "
-                                }
-                                if (hasUpgrade("b", 23)) {
-                                        extra = true
-                                        a += "<h3>Access</h3>, "
-                                }
-                                if (hasUpgrade("b", 24)) {
-                                        extra = true
-                                        a += "<h3>A Upgrades</h3>, "
-                                }
-                                if (!extra) return ""
-                                return a.slice(0,a.length-2)
+                                return getBuyableExtraText("a", 12)
                         },
                         getAmountDisplay(){
                                 let extra = this.extra()
@@ -788,22 +769,7 @@ addLayer("a", {
                                 return "<br>" + start + eff + cost + end
                         },
                         getExtraFormulaText(){
-                                let a = "<b><h2>Extra levels from</h2>:<br>"
-                                let extra = false
-                                if (hasUpgrade("b", 25)) {
-                                        extra = true
-                                        a += "<h3>Access</h3>, "
-                                }
-                                if (hasUpgrade("a", 52)) {
-                                        extra = true
-                                        a += "<h3>Account</h3>, "
-                                }
-                                if (hasUpgrade("c", 33)) {
-                                        extra = true
-                                        a += "<h3>Advanced</h3>, "
-                                }
-                                if (!extra) return ""
-                                return a.slice(0,a.length-2)
+                                return getBuyableExtraText("a", 13)
                         },
                         getAmountDisplay(){
                                 let extra = this.extra()
@@ -897,22 +863,7 @@ addLayer("a", {
                                 return "<br>" + start + eff + cost + end
                         },
                         getExtraFormulaText(){
-                                let a = "<b><h2>Extra levels from</h2>:<br>"
-                                let extra = false
-                                if (hasUpgrade("a", 42)) {
-                                        extra = true
-                                        a += "<h3>Account</h3>, "
-                                }
-                                if (hasUpgrade("c", 13)) {
-                                        extra = true
-                                        a += "<h3>Advanced</h3>, "
-                                }
-                                if (hasUpgrade("b", 44)) {
-                                        extra = true
-                                        a += "<h3>Above</h3>, "
-                                }
-                                if (!extra) return ""
-                                return a.slice(0,a.length-2)
+                                return getBuyableExtraText("a", 21)
                         },
                         getAmountDisplay(){
                                 let extra = this.extra()
@@ -1011,22 +962,7 @@ addLayer("a", {
                                 return "<br>" + start + eff + cost + end
                         },
                         getExtraFormulaText(){
-                                let a = "<b><h2>Extra levels from</h2>:<br>"
-                                let extra = false
-                                if (hasUpgrade("a", 54)) {
-                                        extra = true
-                                        a += "<h3>Advanced</h3>, "
-                                }
-                                if (hasUpgrade("b", 33)) {
-                                        extra = true
-                                        a += "<h3>Against</h3>, "
-                                }
-                                if (hasUpgrade("c", 32)) {
-                                        extra = true
-                                        a += "<h3>Above</h3>, "
-                                }
-                                if (!extra) return ""
-                                return a.slice(0,a.length-2)
+                                return getBuyableExtraText("a", 22)
                         },
                         getAmountDisplay(){
                                 let extra = this.extra()
@@ -1125,18 +1061,7 @@ addLayer("a", {
                                 return "<br>" + start + eff + cost + end
                         },
                         getExtraFormulaText(){
-                                let a = "<b><h2>Extra levels from</h2>:<br>"
-                                let extra = false
-                                if (hasUpgrade("b", 42)) {
-                                        extra = true
-                                        a += "<h3>Against</h3>, "
-                                }
-                                if (hasUpgrade("c", 23)) {
-                                        extra = true
-                                        a += "<h3>Above</h3>, "
-                                }
-                                if (!extra) return ""
-                                return a.slice(0,a.length-2)
+                                return getBuyableExtraText("a", 23)
                         },
                         getAmountDisplay(){
                                 let extra = this.extra()
@@ -1235,18 +1160,7 @@ addLayer("a", {
                                 return "<br>" + start + eff + cost + end
                         },
                         getExtraFormulaText(){
-                                let a = "<b><h2>Extra levels from</h2>:<br>"
-                                let extra = false
-                                if (hasUpgrade("d", 14)) {
-                                        extra = true
-                                        a += "<h3>Above</h3>, "
-                                }
-                                if (hasUpgrade("d", 24)) {
-                                        extra = true
-                                        a += "<h3>Become</h3>, "
-                                }
-                                if (!extra) return ""
-                                return a.slice(0,a.length-2)
+                                return getBuyableExtraText("a", 31)
                         },
                         getAmountDisplay(){
                                 let extra = this.extra()
@@ -1345,14 +1259,7 @@ addLayer("a", {
                                 return "<br>" + start + eff + cost + end
                         },
                         getExtraFormulaText(){
-                                let a = "<b><h2>Extra levels from</h2>:<br>"
-                                let extra = false
-                                if (hasUpgrade("d", 13)) {
-                                        extra = true
-                                        a += "<h3>D Upgrades</h3>, "
-                                }
-                                if (!extra) return ""
-                                return a.slice(0,a.length-2)
+                                return getBuyableExtraText("a", 32)
                         },
                         getAmountDisplay(){
                                 let extra = this.extra()
@@ -1454,18 +1361,7 @@ addLayer("a", {
                                 return "<br>" + start + eff + cost + end
                         },
                         getExtraFormulaText(){
-                                let a = "<b><h2>Extra levels from</h2>:<br>"
-                                let extra = false
-                                if (hasUpgrade("d", 23)) {
-                                        extra = true
-                                        a += "<h3>Case</h3>, "
-                                }
-                                if (hasUpgrade("c", 44)) {
-                                        extra = true
-                                        a += "<h3>Basic</h3>, "
-                                }
-                                if (!extra) return ""
-                                return a.slice(0,a.length-2)
+                                return getBuyableExtraText("a", 33)
                         },
                         getAmountDisplay(){
                                 let extra = this.extra()
@@ -1655,6 +1551,8 @@ addLayer("b", {
                 let ret = a.log10().times(pre).pow(exp).times(pst)
 
                 if (!hasUnlockedPast("b") && player.b.best.eq(0)) ret = ret.min(1)
+
+                ret = doPrestigeGainChange(ret, "b")
 
                 return ret.floor()
         },
@@ -2003,18 +1901,7 @@ addLayer("b", {
                                 return "<br>" + start + eff + cost + end
                         },
                         getExtraFormulaText(){
-                                let a = "<b><h2>Extra levels from</h2>:<br>"
-                                let extra = false
-                                if (hasUpgrade("b", 34)) {
-                                        extra = true
-                                        a += "<h3>Based</h3>, "
-                                }
-                                if (hasUpgrade("b", 54)) {
-                                        extra = true
-                                        a += "<h3>Become</h3>, "
-                                }
-                                if (!extra) return ""
-                                return a.slice(0,a.length-2)
+                                return getBuyableExtraText("b", 11)
                         },
                         getAmountDisplay(){
                                 let extra = this.extra()
@@ -2113,22 +2000,7 @@ addLayer("b", {
                                 return "<br>" + start + eff + cost + end
                         },
                         getExtraFormulaText(){
-                                let a = "<b><h2>Extra levels from</h2>:<br>"
-                                let extra = false
-                                if (hasUpgrade("c", 15)) {
-                                        extra = true
-                                        a += "<h3>B Upgrades</h3>, "
-                                }
-                                if (hasUpgrade("c", 34)) {
-                                        extra = true
-                                        a += "<h3>Baby</h3>, "
-                                }
-                                if (hasUpgrade("b", 54)) {
-                                        extra = true
-                                        a += "<h3>Become</h3>, "
-                                }
-                                if (!extra) return ""
-                                return a.slice(0,a.length-2)
+                                return getBuyableExtraText("b", 12)
                         },
                         getAmountDisplay(){
                                 let extra = this.extra()
@@ -2226,18 +2098,7 @@ addLayer("b", {
                                 return "<br>" + start + eff + cost + end
                         },
                         getExtraFormulaText(){
-                                let a = "<b><h2>Extra levels from</h2>:<br>"
-                                let extra = false
-                                if (hasUpgrade("c", 34)) {
-                                        extra = true
-                                        a += "<h3>Baby</h3>, "
-                                }
-                                if (hasUpgrade("c", 42)) {
-                                        extra = true
-                                        a += "<h3>Bank</h3>, "
-                                }
-                                if (!extra) return ""
-                                return a.slice(0,a.length-2)
+                                return getBuyableExtraText("b", 13)
                         },
                         getAmountDisplay(){
                                 let extra = this.extra()
@@ -2334,19 +2195,7 @@ addLayer("b", {
                                 return "<br>" + start + eff + cost + end
                         },
                         getExtraFormulaText(){
-                                let a = "<b><h2>Extra levels from</h2>:<br>"
-                                let extra = false
-                                if (hasUpgrade("b", 55)) {
-                                        extra = true
-                                        a += "<h3>Bank</h3>, "
-                                        a += "<h3>Beauty</h3>, "
-                                }
-                                if (hasUpgrade("c", 43)) {
-                                        extra = true
-                                        a += "<h3>Basic</h3>, "
-                                }
-                                if (!extra) return ""
-                                return a.slice(0,a.length-2)
+                                return getBuyableExtraText("b", 21)
                         },
                         getAmountDisplay(){
                                 let extra = this.extra()
@@ -2443,22 +2292,7 @@ addLayer("b", {
                                 return "<br>" + start + eff + cost + end
                         },
                         getExtraFormulaText(){
-                                let a = "<b><h2>Extra levels from</h2>:<br>"
-                                let extra = false
-                                if (hasUpgrade("d", 15)) {
-                                        extra = true
-                                        a += "<h3>Beauty</h3>, "
-                                }
-                                if (hasUpgrade("c", 41)) {
-                                        extra = true
-                                        a += "<h3>Basic</h3>, "
-                                }
-                                if (hasUpgrade("d", 31)) {
-                                        extra = true
-                                        a += "<h3>Brand</h3>, "
-                                }
-                                if (!extra) return ""
-                                return a.slice(0,a.length-2)
+                                return getBuyableExtraText("b", 22)
                         },
                         getAmountDisplay(){
                                 let extra = this.extra()
@@ -2555,18 +2389,7 @@ addLayer("b", {
                                 return "<br>" + start + eff + cost + end
                         },
                         getExtraFormulaText(){
-                                let a = "<b><h2>Extra levels from</h2>:<br>"
-                                let extra = false
-                                if (hasUpgrade("c", 41)) {
-                                        extra = true
-                                        a += "<h3>Basic</h3>, "
-                                }
-                                if (hasUpgrade("c", 45)) {
-                                        extra = true
-                                        a += "<h3>Brand</h3>, "
-                                }
-                                if (!extra) return ""
-                                return a.slice(0,a.length-2)
+                                return getBuyableExtraText("b", 23)
                         },
                         getAmountDisplay(){
                                 let extra = this.extra()
@@ -2663,14 +2486,7 @@ addLayer("b", {
                                 return "<br>" + start + eff + cost + end
                         },
                         getExtraFormulaText(){
-                                let a = "<b><h2>Extra levels from</h2>:<br>"
-                                let extra = false
-                                if (hasUpgrade("c", 45)) {
-                                        extra = true
-                                        a += "<h3>Brand</h3>, "
-                                }
-                                if (!extra) return ""
-                                return a.slice(0,a.length-2)
+                                return getBuyableExtraText("b", 31)
                         },
                         getAmountDisplay(){
                                 let extra = this.extra()
@@ -2766,14 +2582,7 @@ addLayer("b", {
                                 return "<br>" + start + eff + cost + end
                         },
                         getExtraFormulaText(){
-                                let a = "<b><h2>Extra levels from</h2>:<br>"
-                                let extra = false
-                                if (false) {
-                                        extra = true
-                                        a += "<h3>lul</h3>, "
-                                }
-                                if (!extra) return ""
-                                return a.slice(0,a.length-2)
+                                return getBuyableExtraText("b", 32)
                         },
                         getAmountDisplay(){
                                 let extra = this.extra()
@@ -2870,14 +2679,7 @@ addLayer("b", {
                                 return "<br>" + start + eff + cost + end
                         },
                         getExtraFormulaText(){
-                                let a = "<b><h2>Extra levels from</h2>:<br>"
-                                let extra = false
-                                if (hasUpgrade("c", 54)) {
-                                        extra = true
-                                        a += "<h3>Card</h3>, "
-                                }
-                                if (!extra) return ""
-                                return a.slice(0,a.length-2)
+                                return getBuyableExtraText("b", 33)
                         },
                         getAmountDisplay(){
                                 let extra = this.extra()
@@ -3171,6 +2973,8 @@ addLayer("c", {
 
                 if (!hasUnlockedPast("c") && player.c.best.eq(0)) ret = ret.min(1)
 
+                ret = doPrestigeGainChange(ret, "c")
+
                 return ret.floor()
         },
         getBaseDiv(){
@@ -3247,6 +3051,7 @@ addLayer("c", {
                                 if (tmp.c.buyables[13].unlocked) layers.c.buyables[13].buyMax(amt)
                                 if (tmp.c.buyables[21].unlocked) layers.c.buyables[21].buyMax(amt)
                                 if (tmp.c.buyables[22].unlocked) layers.c.buyables[22].buyMax(amt)
+                                if (tmp.c.buyables[23].unlocked) layers.c.buyables[23].buyMax(amt)
                         }
                 } else {
                         data.abtime = 0
@@ -3479,11 +3284,17 @@ addLayer("c", {
                                 return hasUpgrade("d", 33) || hasUnlockedPast("e")
                         }, //hasUpgrade("c", 54)
                 },
+                55: {
+                        title: "Credit",
+                        description: "<b>Canada</b> gives free levels to <b>Omnipotent II</b> and <b>Compare</b> and unlock a <b>C</b> challange",
+                        cost: new Decimal("1e826733"),
+                        unlocked(){ 
+                                return hasUpgrade("d", 35) || hasUnlockedPast("e")
+                        }, //hasUpgrade("c", 55)
+                },
 
                 /*
-                canada
-                credit
-                categories
+                (USED)categories
                 */
         },
         buyables: {
@@ -3502,22 +3313,7 @@ addLayer("c", {
                                 return "<br>" + start + eff + cost + end
                         },
                         getExtraFormulaText(){
-                                let a = "<b><h2>Extra levels from</h2>:<br>"
-                                let extra = false
-                                if (hasUpgrade("d", 25)) {
-                                        extra = true
-                                        a += "<h3>Call</h3>, "
-                                }
-                                if (hasUpgrade("c", 52)) {
-                                        extra = true
-                                        a += "<h3>Country</h3>, "
-                                }
-                                if (hasUpgrade("c", 53)) {
-                                        extra = true
-                                        a += "<h3>Compare</h3>, "
-                                }
-                                if (!extra) return ""
-                                return a.slice(0, a.length-2)
+                                return getBuyableExtraText("c", 11)
                         },
                         getAmountDisplay(){
                                 let extra = this.extra()
@@ -3613,22 +3409,7 @@ addLayer("c", {
                                 return "<br>" + start + eff + cost + end
                         },
                         getExtraFormulaText(){
-                                let a = "<b><h2>Extra levels from</h2>:<br>"
-                                let extra = false
-                                if (hasUpgrade("c", 52)) {
-                                        extra = true
-                                        a += "<h3>Country</h3>, "
-                                }
-                                if (hasUpgrade("c", 53)) {
-                                        extra = true
-                                        a += "<h3>Compare</h3>, "
-                                }
-                                if (hasUpgrade("e", 12)) {
-                                        extra = true
-                                        a += "<h3>Card</h3>, "
-                                }
-                                if (!extra) return ""
-                                return a.slice(0, a.length-2)
+                                return getBuyableExtraText("c", 12)
                         },
                         getAmountDisplay(){
                                 let extra = this.extra()
@@ -3724,18 +3505,7 @@ addLayer("c", {
                                 return "<br>" + start + eff + cost + end
                         },
                         getExtraFormulaText(){
-                                let a = "<b><h2>Extra levels from</h2>:<br>"
-                                let extra = false
-                                if (hasUpgrade("d", 33)) {
-                                        extra = true
-                                        a += "<h3>Compare</h3>, "
-                                }
-                                if (hasUpgrade("e", 12)) {
-                                        extra = true
-                                        a += "<h3>Card</h3>, "
-                                }
-                                if (!extra) return ""
-                                return a.slice(0, a.length-2)
+                                return getBuyableExtraText("c", 13)
                         },
                         getAmountDisplay(){
                                 let extra = this.extra()
@@ -3832,14 +3602,7 @@ addLayer("c", {
                                 return "<br>" + start + eff + cost + end
                         },
                         getExtraFormulaText(){
-                                let a = "<b><h2>Extra levels from</h2>:<br>"
-                                let extra = false
-                                if (hasUpgrade("c", 54)) {
-                                        extra = true
-                                        a += "<h3>Card</h3>, "
-                                }
-                                if (!extra) return ""
-                                return a.slice(0, a.length-2)
+                                return getBuyableExtraText("c", 21)
                         },
                         getAmountDisplay(){
                                 let extra = this.extra()
@@ -3935,14 +3698,7 @@ addLayer("c", {
                                 return "<br>" + start + eff + cost + end
                         },
                         getExtraFormulaText(){
-                                let a = "<b><h2>Extra levels from</h2>:<br>"
-                                let extra = false
-                                if (false) {
-                                        extra = true
-                                        a += "<h3>thing</h3>, "
-                                }
-                                if (!extra) return ""
-                                return a.slice(0, a.length-2)
+                                return getBuyableExtraText("c", 22)
                         },
                         getAmountDisplay(){
                                 let extra = this.extra()
@@ -4024,6 +3780,101 @@ addLayer("c", {
                                 return (hasUpgrade("d", 31) && hasUpgrade("d", 33)) || hasUnlockedPast("e")
                         },
                 },
+                23: {
+                        title: "Canada",
+                        display(){
+                                let start = "<b><h2>Amount</h2>: " + this.getAmountDisplay() + "</b><br>"
+                                let eff = "<b><h2>Effect</h2>: *" + format(this.effect()) + " Amoebas</b><br>"
+                                let cost = "<b><h2>Cost</h2>: " + format(this.cost()) + " Circles</b><br>"
+                                let eformula = "<b><h2>Effect formula</h2>:<br>" + format(this.effectBase()) + "^x</b><br>"
+                                let exformula = this.getExtraFormulaText()
+
+                                let end = shiftDown ? eformula + exformula : "Shift to see details"
+                                return "<br>" + start + eff + cost + end
+                        },
+                        getExtraFormulaText(){
+                                return getBuyableExtraText("c", 23)
+                        },
+                        getAmountDisplay(){
+                                let extra = this.extra()
+                                if (extra.eq(0)) return getBuyableAmount("c", 23)
+                                return getBuyableAmount("c", 23) + "+" + formatWhole(extra)
+                        },
+                        getBases(){
+                                //currently an example
+                                let b0 = new Decimal("1e455951")
+                                let b1 = new Decimal("1e1000")
+                                let b2 = 1e20
+                                return [b0, b1, b2]
+                        },
+                        cost(add){
+                                let x = getBuyableAmount("c", 23).plus(add)
+                                let bases = this.getBases()
+                                let base0 = bases[0]
+                                let base1 = bases[1]
+                                let base2 = bases[2]
+                                let exp0 = 1
+                                let exp1 = x
+                                let exp2 = x.times(x)
+
+                                return Decimal.pow(base0, exp0).times(Decimal.pow(base1, exp1)).times(Decimal.pow(base2, exp2)).ceil()
+                        },
+                        effectBase(){
+                                if (!isBuyableActive("c")) return new Decimal(0)
+
+                                let base = Decimal.pow(10, 1572e3)
+                                return base
+                        },
+                        effect(){
+                                let x = this.total()
+                                let base = this.effectBase()
+                                let ret = Decimal.pow(base, x)
+                                return ret
+                        },
+                        canAfford(){
+                                return player.c.points.gte(this.cost())
+                        },
+                        total(){
+                                return getBuyableAmount("c", 23).plus(this.extra())
+                        },
+                        extra(){
+                                return calcBuyableExtra("c", 23)
+                        },
+                        buy(){
+                                let cost = this.cost()
+                                if (!this.canAfford()) return
+                                player.c.buyables[23] = player.c.buyables[23].plus(1)
+                                player.c.points = player.c.points.minus(cost)
+                        },
+                        buyMax(maximum){
+                                let bases = this.getBases()
+                                if (!this.unlocked()) return 
+                                if (player.c.points.lt(bases[0])) return
+
+                                // let exp2 = x.times(x)
+                                let pttarget = player.c.points.div(bases[0]).log(1.01)
+                                let bfactor = Decimal.log(bases[1], 3).div(Decimal.log(1.01, 3))
+                                //want to find ax^2+bx = c
+                                let c = pttarget
+                                let b = bfactor
+                                let a = Decimal.log(bases[2], 3).div(Decimal.log(1.01, 3))
+                                // let a = 1 this is constant so remove it
+
+                                let target = c.times(a).times(4).plus(b * b).sqrt().minus(b).div(2).div(a).floor().plus(1)
+                                //-b + sqrt(b*b+4*c*a)
+
+                                let diff = target.minus(player.c.buyables[23]).max(0)
+                                if (maximum != undefined) diff = diff.min(maximum)
+
+                                player.c.buyables[23] = player.c.buyables[23].plus(diff)
+
+                                if (false || diff.eq(0)) return 
+                                player.c.points = player.c.points.sub(this.cost(-1)).max(0)
+                        },
+                        unlocked(){ 
+                                return (hasUpgrade("d", 31) && hasUpgrade("d", 34)) || hasUnlockedPast("e")
+                        },
+                },
         },
         challenges: {
                 rows: 2,
@@ -4049,6 +3900,27 @@ addLayer("c", {
                         },
                         currencyInternalName: "points",
                         completionLimit: 20,
+                },
+                12: {
+                        name: "Categories",
+                        challengeDescription: "<b>Change</b> and square root <b>A</b> gain",
+                        rewardDescription: "Give free <b>Canada</b> levels",
+                        rewardEffect(){
+                                let c = challengeCompletions("c", 12)
+                                let ret = (c) * (c + 10) * (c + 11) / 6
+                                return ret
+                        },
+                        goal(){
+                                let init = Decimal.pow(10, 34136600)
+                                let factor = getChallengeFactor(challengeCompletions("c", 12))
+                                return init.pow(factor)
+                        },
+                        unlocked(){
+                                return hasUpgrade("c", 55) || hasUnlockedPast("e")
+                        },
+                        currencyInternalName: "points",
+                        completionLimit: 20,
+                        countsAs: [11],
                 },
         },
         tabFormat: {
@@ -4175,6 +4047,8 @@ addLayer("d", {
                 let ret = a.log10().times(pre).pow(exp).times(pst)
 
                 if (!hasUnlockedPast("d") && player.d.best.eq(0)) ret = ret.min(1)
+
+                ret = doPrestigeGainChange(ret, "d")
 
                 return ret.floor()
         },
@@ -4382,10 +4256,24 @@ addLayer("d", {
                                 return hasUpgrade("c", 53) || hasUnlockedPast("e")
                         }, //hasUpgrade("d", 33)
                 },
+                34: {
+                        title: "During",
+                        description: "<b>Compare</b> gives free <b>Brand</b> levels",
+                        cost: new Decimal(1e246),
+                        unlocked(){ 
+                                return hasUpgrade("e", 12) || hasUnlockedPast("e")
+                        }, //hasUpgrade("d", 34)
+                },
+                35: {
+                        title: "Digital",
+                        description: "<b>Canada</b> gives free <b>Card</b> levels",
+                        cost: new Decimal("1e314"),
+                        unlocked(){ 
+                                return player.ach.achievements.includes("71") || hasUnlockedPast("e")
+                        }, //hasUpgrade("d", 35)
+                },
 
                 /*
-                during
-                digital
                 department
                 description
                 december
@@ -4507,6 +4395,8 @@ addLayer("e", {
                 let ret = a.log10().times(pre).pow(exp).times(pst)
 
                 if (!hasUnlockedPast("e") && player.e.best.eq(0)) ret = ret.min(1)
+
+                ret = doPrestigeGainChange(ret, "e")
 
                 return ret.floor()
         },
@@ -5155,7 +5045,6 @@ addLayer("ach", {
                                 return "Get " + PROGRESSION_MILESTONES_TEXT[42]
                         },
                 }, 
-                /*
                 71: {
                         name: "Forty-three",
                         done(){
@@ -5183,6 +5072,7 @@ addLayer("ach", {
                                 return "Get " + PROGRESSION_MILESTONES_TEXT[45]
                         },
                 },
+                /*
                 74: {
                         name: "Forty-six",
                         done(){
@@ -5192,6 +5082,7 @@ addLayer("ach", {
                                 return "Get " + PROGRESSION_MILESTONES_TEXT[46]
                         },
                 },
+                /*
                 75: {
                         name: "Forty-seven",
                         done(){
@@ -5201,6 +5092,7 @@ addLayer("ach", {
                                 return "Get " + PROGRESSION_MILESTONES_TEXT[47]
                         },
                 },
+                /*
                 76: {
                         name: "Forty-eight",
                         done(){
@@ -5210,6 +5102,7 @@ addLayer("ach", {
                                 return "Get " + PROGRESSION_MILESTONES_TEXT[48]
                         },
                 },
+                /*
                 77: {
                         name: "Forty-nine",
                         done(){
