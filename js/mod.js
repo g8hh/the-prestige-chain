@@ -75,7 +75,7 @@ PROGRESSION_MILESTONES = {
 	38:() => totalChallengeComps("c") >= 3     || hasAchievement("ach", 63),
 	39:() => totalChallengeComps("c") >= 5     || hasAchievement("ach", 64),
 	40:() => totalChallengeComps("b") >= 56    || hasAchievement("ach", 65),
-	41:() => totalChallengeComps("b") >= 61    || hasAchievement("ach", 65),
+	41:() => totalChallengeComps("b") >= 61    || hasAchievement("ach", 66),
 }
 
 /*
