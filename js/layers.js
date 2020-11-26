@@ -863,6 +863,7 @@ addLayer("a", {
                                 ret = ret.plus(tmp.a.buyables[33].total)
                                 ret = ret.plus(tmp.b.buyables[13].total)
                                 if (hasUpgrade("c", 33)) ret = ret.plus(tmp.a.buyables[23].total)
+                                ret = ret.plus(tmp.c.buyables[13].total)
                                 return ret
                         },
                         buy(){
@@ -984,6 +985,7 @@ addLayer("a", {
                                 if (hasUpgrade("b", 44)) ret = ret.plus(tmp.a.buyables[32].total)
                                 ret = ret.plus(tmp.a.buyables[33].total)
                                 ret = ret.plus(tmp.b.buyables[21].total)
+                                ret = ret.plus(tmp.c.buyables[21].total)
                                 return ret
                         },
                         buy(){
@@ -1732,6 +1734,7 @@ addLayer("b", {
         },
         getGainMultPre(){
                 let x = new Decimal(1)
+                x = x.times(tmp.c.buyables[21].effect)
                 return x
         },
         getGainMultPost(){
@@ -2224,6 +2227,7 @@ addLayer("b", {
                                 
                                 let base = new Decimal(10)
                                 if (hasUpgrade("b", 41)) base = base.plus(tmp.a.buyables[11].total.div(1000))
+                                if (hasUpgrade("d", 32)) base = base.plus(tmp.a.buyables[33].total.pow(2))
                                 return base
                         },
                         effect(){
@@ -2359,6 +2363,7 @@ addLayer("b", {
                                 if (hasUpgrade("c", 34)) ret = ret.plus(tmp.b.buyables[21].total)
                                 if (hasUpgrade("c", 42)) ret = ret.plus(tmp.b.buyables[22].total)
                                 ret = ret.plus(tmp.b.buyables[33].total)
+                                ret = ret.plus(tmp.c.buyables[13].total)
                                 return ret
                         },
                         buy(){
@@ -2473,6 +2478,7 @@ addLayer("b", {
                                 if (hasUpgrade("b", 55)) ret = ret.plus(tmp.b.buyables[23].total)
                                 if (hasUpgrade("c", 43)) ret = ret.plus(tmp.b.buyables[31].total)
                                 ret = ret.plus(tmp.b.buyables[33].total)
+                                ret = ret.plus(tmp.c.buyables[21].total)
                                 return ret
                         },
                         buy(){
@@ -2533,6 +2539,10 @@ addLayer("b", {
                                         extra = true
                                         a += "<h3>Basic</h3>, "
                                 }
+                                if (hasUpgrade("d", 31)) {
+                                        extra = true
+                                        a += "<h3>Brand</h3>, "
+                                }
                                 if (!extra) return ""
                                 return a.slice(0,a.length-2)
                         },
@@ -2585,6 +2595,7 @@ addLayer("b", {
                                 if (hasUpgrade("d", 15)) ret = ret.plus(tmp.b.buyables[23].total)
                                 if (hasUpgrade("c", 41)) ret = ret.plus(tmp.b.buyables[31].total)
                                 ret = ret.plus(tmp.b.buyables[33].total)
+                                if (hasUpgrade("d", 31)) ret = ret.plus(tmp.b.buyables[32].total)
                                 return ret
                         },
                         buy(){
@@ -2846,7 +2857,7 @@ addLayer("b", {
                                 let start = "<b><h2>Amount</h2>: " + this.getAmountDisplay() + "</b><br>"
                                 let eff = "<b><h2>Effect</h2>: +" + format(this.effect()) + " Circle gain exp</b><br>"
                                 let cost = "<b><h2>Cost</h2>: " + format(this.cost()) + " Bacteria</b><br>"
-                                let eformula = "<b><h2>Effect formula</h2>:<br>" + format(this.effectBase()) + "^x</b><br>"
+                                let eformula = "<b><h2>Effect formula</h2>:<br>" + format(this.effectBase()) + "*x</b><br>"
                                 let exformula = this.getExtraFormulaText()
 
                                 let end = shiftDown ? eformula + exformula : "Shift to see details"
@@ -2890,6 +2901,7 @@ addLayer("b", {
                                 if (!isBuyableActive("b")) return new Decimal(0)
                                 
                                 let base = new Decimal(1)
+                                base = base.plus(tmp.c.buyables[13].effect)
                                 return base
                         },
                         effect(){
@@ -3333,6 +3345,8 @@ addLayer("c", {
                                 let amt = getABBulk("c")
                                 if (tmp.c.buyables[11].unlocked) layers.c.buyables[11].buyMax(amt)
                                 if (tmp.c.buyables[12].unlocked) layers.c.buyables[12].buyMax(amt)
+                                if (tmp.c.buyables[13].unlocked) layers.c.buyables[13].buyMax(amt)
+                                if (tmp.c.buyables[21].unlocked) layers.c.buyables[21].buyMax(amt)
                         }
                 } else {
                         data.abtime = 0
@@ -3541,9 +3555,22 @@ addLayer("c", {
                                 return hasAchievement("ach", 62) || hasUnlockedPast("e")
                         }, //hasUpgrade("c", 51)
                 },
+                52: {
+                        title: "Customer",
+                        description: "<b>Country</b> gives free levels to <b>Call</b> and <b>Case</b>",
+                        cost: new Decimal("1e5443"),
+                        unlocked(){ 
+                                return hasUpgrade("d", 31) || hasUnlockedPast("e")
+                        }, //hasUpgrade("c", 52)
+                },
 
                 /*
-                Country
+                college
+                card
+                course
+                canada
+                credit
+                categories
                 */
         },
         buyables: {
@@ -3567,6 +3594,10 @@ addLayer("c", {
                                 if (hasUpgrade("d", 25)) {
                                         extra = true
                                         a += "<h3>Call</h3>, "
+                                }
+                                if (hasUpgrade("c", 52)) {
+                                        extra = true
+                                        a += "<h3>Country</h3>, "
                                 }
                                 if (!extra) return ""
                                 return a.slice(0, a.length-2)
@@ -3617,6 +3648,7 @@ addLayer("c", {
                         extra(){
                                 let ret = new Decimal(0)
                                 if (hasUpgrade("d", 25)) ret = ret.plus(tmp.c.buyables[12].total)
+                                if (hasUpgrade("c", 52)) ret = ret.plus(tmp.c.buyables[13].total)
                                 return ret
                         },
                         buy(){
@@ -3669,9 +3701,9 @@ addLayer("c", {
                         getExtraFormulaText(){
                                 let a = "<b><h2>Extra levels from</h2>:<br>"
                                 let extra = false
-                                if (false) {
+                                if (hasUpgrade("c", 52)) {
                                         extra = true
-                                        a += "<h3>thing</h3>, "
+                                        a += "<h3>Country</h3>, "
                                 }
                                 if (!extra) return ""
                                 return a.slice(0, a.length-2)
@@ -3720,6 +3752,7 @@ addLayer("c", {
                         },
                         extra(){
                                 let ret = new Decimal(0)
+                                if (hasUpgrade("c", 52)) ret = ret.plus(tmp.c.buyables[13].total)
                                 return ret
                         },
                         buy(){
@@ -3755,6 +3788,212 @@ addLayer("c", {
                         },
                         unlocked(){ 
                                 return hasUpgrade("c", 44) || hasUnlockedPast("d")
+                        },
+                },
+                13: {
+                        title: "Country",
+                        display(){
+                                let start = "<b><h2>Amount</h2>: " + this.getAmountDisplay() + "</b><br>"
+                                let eff = "<b><h2>Effect</h2>: +" + format(this.effect()) + " Brand effect</b><br>"
+                                let cost = "<b><h2>Cost</h2>: " + format(this.cost()) + " Circles</b><br>"
+                                let eformula = "<b><h2>Effect formula</h2>:<br>" + format(this.effectBase()) + "*x</b><br>"
+                                let exformula = this.getExtraFormulaText()
+
+                                let end = shiftDown ? eformula + exformula : "Shift to see details"
+                                return "<br>" + start + eff + cost + end
+                        },
+                        getExtraFormulaText(){
+                                let a = "<b><h2>Extra levels from</h2>:<br>"
+                                let extra = false
+                                if (false) {
+                                        extra = true
+                                        a += "<h3>thing</h3>, "
+                                }
+                                if (!extra) return ""
+                                return a.slice(0, a.length-2)
+                        },
+                        getAmountDisplay(){
+                                let extra = this.extra()
+                                if (extra.eq(0)) return getBuyableAmount("c", 13)
+                                return getBuyableAmount("c", 13) + "+" + formatWhole(extra)
+                        },
+                        getBases(){
+                                //currently an example
+                                let b0 = new Decimal("1e5422")
+                                let b1 = new Decimal(1e10)
+                                let b2 = 10
+                                return [b0, b1, b2]
+                        },
+                        cost(add){
+                                let x = getBuyableAmount("c", 13).plus(add)
+                                let bases = this.getBases()
+                                let base0 = bases[0]
+                                let base1 = bases[1]
+                                let base2 = bases[2]
+                                let exp0 = 1
+                                let exp1 = x
+                                let exp2 = x.times(x)
+
+                                return Decimal.pow(base0, exp0).times(Decimal.pow(base1, exp1)).times(Decimal.pow(base2, exp2)).ceil()
+                        },
+                        effectBase(){
+                                if (!isBuyableActive("c")) return new Decimal(0)
+
+                                let base = new Decimal(.02)
+                                return base
+                        },
+                        effect(){
+                                let x = this.total()
+                                let base = this.effectBase()
+                                let ret = Decimal.times(base, x)
+                                return ret
+                        },
+                        canAfford(){
+                                return player.c.points.gte(this.cost())
+                        },
+                        total(){
+                                return getBuyableAmount("c", 13).plus(this.extra())
+                        },
+                        extra(){
+                                let ret = new Decimal(0)
+                                return ret
+                        },
+                        buy(){
+                                let cost = this.cost()
+                                if (!this.canAfford()) return
+                                player.c.buyables[13] = player.c.buyables[13].plus(1)
+                                player.c.points = player.c.points.minus(cost)
+                        },
+                        buyMax(maximum){
+                                let bases = this.getBases()
+                                if (!this.unlocked()) return 
+                                if (player.c.points.lt(bases[0])) return
+
+                                // let exp2 = x.times(x)
+                                let pttarget = player.c.points.div(bases[0]).log(1.01)
+                                let bfactor = Decimal.log(bases[1], 3).div(Decimal.log(1.01, 3))
+                                //want to find ax^2+bx = c
+                                let c = pttarget
+                                let b = bfactor
+                                let a = Decimal.log(bases[2], 3).div(Decimal.log(1.01, 3))
+                                // let a = 1 this is constant so remove it
+
+                                let target = c.times(a).times(4).plus(b * b).sqrt().minus(b).div(2).div(a).floor().plus(1)
+                                //-b + sqrt(b*b+4*c*a)
+
+                                let diff = target.minus(player.c.buyables[13]).max(0)
+                                if (maximum != undefined) diff = diff.min(maximum)
+
+                                player.c.buyables[13] = player.c.buyables[13].plus(diff)
+
+                                if (false || diff.eq(0)) return 
+                                player.c.points = player.c.points.sub(this.cost(-1)).max(0)
+                        },
+                        unlocked(){ 
+                                return hasUpgrade("c", 31) || hasUnlockedPast("d")
+                        },
+                },
+                21: {
+                        title: "Compare",
+                        display(){
+                                let start = "<b><h2>Amount</h2>: " + this.getAmountDisplay() + "</b><br>"
+                                let eff = "<b><h2>Effect</h2>: *" + format(this.effect()) + " base B gain</b><br>"
+                                let cost = "<b><h2>Cost</h2>: " + format(this.cost()) + " Circles</b><br>"
+                                let eformula = "<b><h2>Effect formula</h2>:<br>" + format(this.effectBase()) + "^x</b><br>"
+                                let exformula = this.getExtraFormulaText()
+
+                                let end = shiftDown ? eformula + exformula : "Shift to see details"
+                                return "<br>" + start + eff + cost + end
+                        },
+                        getExtraFormulaText(){
+                                let a = "<b><h2>Extra levels from</h2>:<br>"
+                                let extra = false
+                                if (false) {
+                                        extra = true
+                                        a += "<h3>thing</h3>, "
+                                }
+                                if (!extra) return ""
+                                return a.slice(0, a.length-2)
+                        },
+                        getAmountDisplay(){
+                                let extra = this.extra()
+                                if (extra.eq(0)) return getBuyableAmount("c", 21)
+                                return getBuyableAmount("c", 21) + "+" + formatWhole(extra)
+                        },
+                        getBases(){
+                                //currently an example
+                                let b0 = new Decimal("1e10314")
+                                let b1 = new Decimal(1e253)
+                                let b2 = 1000
+                                return [b0, b1, b2]
+                        },
+                        cost(add){
+                                let x = getBuyableAmount("c", 21).plus(add)
+                                let bases = this.getBases()
+                                let base0 = bases[0]
+                                let base1 = bases[1]
+                                let base2 = bases[2]
+                                let exp0 = 1
+                                let exp1 = x
+                                let exp2 = x.times(x)
+
+                                return Decimal.pow(base0, exp0).times(Decimal.pow(base1, exp1)).times(Decimal.pow(base2, exp2)).ceil()
+                        },
+                        effectBase(){
+                                if (!isBuyableActive("c")) return new Decimal(0)
+
+                                let base = new Decimal(2)
+                                return base
+                        },
+                        effect(){
+                                let x = this.total()
+                                let base = this.effectBase()
+                                let ret = Decimal.pow(base, x)
+                                return ret
+                        },
+                        canAfford(){
+                                return player.c.points.gte(this.cost())
+                        },
+                        total(){
+                                return getBuyableAmount("c", 21).plus(this.extra())
+                        },
+                        extra(){
+                                let ret = new Decimal(0)
+                                return ret
+                        },
+                        buy(){
+                                let cost = this.cost()
+                                if (!this.canAfford()) return
+                                player.c.buyables[21] = player.c.buyables[21].plus(1)
+                                player.c.points = player.c.points.minus(cost)
+                        },
+                        buyMax(maximum){
+                                let bases = this.getBases()
+                                if (!this.unlocked()) return 
+                                if (player.c.points.lt(bases[0])) return
+
+                                // let exp2 = x.times(x)
+                                let pttarget = player.c.points.div(bases[0]).log(1.01)
+                                let bfactor = Decimal.log(bases[1], 3).div(Decimal.log(1.01, 3))
+                                //want to find ax^2+bx = c
+                                let c = pttarget
+                                let b = bfactor
+                                let a = Decimal.log(bases[2], 3).div(Decimal.log(1.01, 3))
+                                // let a = 1 this is constant so remove it
+
+                                let target = c.times(a).times(4).plus(b * b).sqrt().minus(b).div(2).div(a).floor().plus(1)
+                                //-b + sqrt(b*b+4*c*a)
+
+                                let diff = target.minus(player.c.buyables[21]).max(0)
+                                if (maximum != undefined) diff = diff.min(maximum)
+
+                                player.c.buyables[21] = player.c.buyables[21].plus(diff)
+
+                                if (false || diff.eq(0)) return 
+                                player.c.points = player.c.points.sub(this.cost(-1)).max(0)
+                        },
+                        unlocked(){ 
+                                return (hasUpgrade("c", 31) && hasUpgrade("c", 32)) || hasUnlockedPast("d")
                         },
                 },
         },
@@ -4089,9 +4328,24 @@ addLayer("d", {
                                 return player.ach.achievements.includes("57") || hasUnlockedPast("d")
                         }, //hasUpgrade("d", 25)
                 },
+                31: {
+                        title: "Down",
+                        description: "Each upgrade in this row unlocks a <b>C</b> buyable and <b>Brand</b> gives free <b>Bank</b> levels",
+                        cost: new Decimal(5e28),
+                        unlocked(){ 
+                                return player.ach.achievements.includes("63") || hasUnlockedPast("e")
+                        }, //hasUpgrade("d", 31)
+                },
+                32: {
+                        title: "Download",
+                        description: "Per <b>Omnipotent I</b> squared add 1 to <b>Based</b> base",
+                        cost: new Decimal(1e42),
+                        unlocked(){ 
+                                return player.ach.achievements.includes("64") || hasUnlockedPast("e")
+                        }, //hasUpgrade("d", 32)
+                },
 
                 /*
-                Down
                 Download
 
                 */
@@ -4802,7 +5056,6 @@ addLayer("ach", {
                                 return "Get " + PROGRESSION_MILESTONES_TEXT[38]
                         },
                 },
-                /*
                 64: {
                         name: "Thirty-nine",
                         done(){
@@ -4821,6 +5074,7 @@ addLayer("ach", {
                                 return "Get " + PROGRESSION_MILESTONES_TEXT[40]
                         },
                 },
+                /*
                 66: {
                         name: "Forty-one",
                         done(){

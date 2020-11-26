@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".1.15 Omnipotence",
+	num: ".2 Careful Infation",
 	name: "",
 }
 
@@ -73,6 +73,8 @@ PROGRESSION_MILESTONES = {
 	36:() => player.e.points.gte(2)            || hasAchievement("ach", 61),
 	37:() => player.e.points.gte(200)          || hasAchievement("ach", 62),
 	38:() => totalChallengeComps("c") >= 3     || hasAchievement("ach", 63),
+	39:() => totalChallengeComps("c") >= 5     || hasAchievement("ach", 64),
+	40:() => totalChallengeComps("b") >= 56    || hasAchievement("ach", 65),
 }
 
 /*
@@ -120,6 +122,8 @@ PROGRESSION_MILESTONES_TEXT = {
 	36: "2 Eggs",
 	37: "200 Eggs",
 	38: "3 Circle challenge completions",
+	39: "5 Circle challenge completions",
+	40: "56 Bacteria challenge completions",
 }
 
 function progressReachedNum(){
@@ -143,13 +147,13 @@ function nextMilestone(){
 
 // Display extra things at the top of the page
 var displayThings = [
-	"This may be incorrect: Last updated 8:14 PM pacific 11.25",
+	"This may be incorrect: Last updated 9:56 PM pacific 11.25",
 	function (){
 		let a = "Endgame: All goals"
 		if (player.ach.achievements.length == Object.keys(PROGRESSION_MILESTONES).length) {
 			a += " (done!)"
 		} else a += " (not done)"
-		return a + " & 5e28 Doodles"
+		return a + " & 1e76 Doodles"
 	},
 ]
 
