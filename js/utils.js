@@ -91,9 +91,10 @@ function toPlaces(x, precision, maxAccepted) {
 }
 // ************ Save stuff ************
 
+var logSave = false
 function save() {
 	localStorage.setItem(modInfo.id, btoa(JSON.stringify(player)))
-	console.log("saved at " + new Date().getTime())
+	if (logSave) console.log("saved at " + new Date().getTime())
 }
 
 function startPlayerBase() {

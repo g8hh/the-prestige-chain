@@ -207,6 +207,11 @@ var softcap_data = {
 			start: 1e60,
 			pow: .5,
 		},
+		4: {
+			func: "log",
+			start: 1e70,
+			pow: 70 / Math.log10(70),
+		},
 	},
 	e_eff:{
 		1: {

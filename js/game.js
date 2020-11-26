@@ -44,8 +44,7 @@ function getNextAt(layer, canMax=false, useType = null) {
 	if (tmp[layer].gainMult.lte(0)) return new Decimal(Infinity)
 	if (tmp[layer].gainExp.lte(0)) return new Decimal(Infinity)
 
-	if (type=="static") 
-	{
+	if (type=="static") {
 		if (!tmp[layer].canBuyMax) canMax = false
 		let amt = player[layer].points.plus((canMax&&tmp[layer].baseAmount.gte(tmp[layer].nextAt))?tmp[layer].resetGain:0)
 		let extraCost = Decimal.pow(tmp[layer].base, amt.pow(tmp[layer].exponent).div(tmp[layer].gainExp)).times(tmp[layer].gainMult)
@@ -77,21 +76,19 @@ function shouldNotify(layer){
 	if (layers[layer].shouldNotify){
 		return layers[layer].shouldNotify()
 	}
-	else 
-		return false
+	else return false
 }
 
-function canReset(layer)
-{
-	if (tmp[layer].type == "normal")
+function canReset(layer){
+	if (tmp[layer].type == "normal") {
 		return tmp[layer].baseAmount.gte(tmp[layer].requires)
-	else if (tmp[layer].type== "static")
+	} else if (tmp[layer].type== "static") {
 		return tmp[layer].baseAmount.gte(tmp[layer].nextAt) 
-	if (tmp[layer].type == "none")
+	} if (tmp[layer].type == "none") {
 		return false
-	else if (layers[layer].canReset != undefined)
+	} else if (layers[layer].canReset != undefined) {
 		return layers[layer].canReset()
-	else return tmp[layer].baseAmount.gte(tmp[layer].requires)
+	} else return tmp[layer].baseAmount.gte(tmp[layer].requires)
 }
 
 function rowReset(row, layer) {
@@ -205,6 +202,7 @@ function doReset(layer, force=false) {
 	rowReset("side", layer)
 	prevOnReset = undefined
 
+	updateTemp()
 	updateTemp()
 	updateTemp()
 }

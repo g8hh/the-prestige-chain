@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".2.1 Softcaps Needed",
+	num: ".2.2 The Buyable Refactoring",
 	name: "",
 }
 
@@ -76,6 +76,7 @@ PROGRESSION_MILESTONES = {
 	39:() => totalChallengeComps("c") >= 5     || hasAchievement("ach", 64),
 	40:() => totalChallengeComps("b") >= 56    || hasAchievement("ach", 65),
 	41:() => totalChallengeComps("b") >= 61    || hasAchievement("ach", 66),
+	42:() => player.e.upgrades.length >= 2     || hasAchievement("ach", 67),
 }
 
 /*
@@ -108,7 +109,7 @@ PROGRESSION_MILESTONES_TEXT = {
 	21: "5e10 Circles",
 	22: "5 Doodles",
 	23: "22 Bacteria upgrades",
-	24: "22 Baby buyables",
+	24: "2 Baby buyables",
 	25: "4 Doodle upgrades",
 	26: "8 Bacteria challenge completions",
 	27: "11 Bacteria challenge completions",
@@ -126,6 +127,7 @@ PROGRESSION_MILESTONES_TEXT = {
 	39: "5 Circle challenge completions",
 	40: "56 Bacteria challenge completions",
 	41: "61 Bacteria challenge completions",
+	42: "2 Egg upgrades",
 }
 
 function progressReachedNum(){
@@ -149,7 +151,7 @@ function nextMilestone(){
 
 // Display extra things at the top of the page
 var displayThings = [
-	"This may be incorrect: Last updated 10:46 PM pacific 11.25",
+	"This may be incorrect: Last updated 11:26 AM pacific 11.26",
 	function (){
 		let a = "Endgame: All goals"
 		if (player.ach.achievements.length == Object.keys(PROGRESSION_MILESTONES).length) {
