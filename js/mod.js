@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".2.3 The Buyable Refactoring^2",
+	num: ".2.4 The Buyable Refactoring^2",
 	name: "",
 }
 
@@ -80,6 +80,9 @@ PROGRESSION_MILESTONES = {
 	43:() => totalChallengeComps("c") >= 9     || hasAchievement("ach", 71),
 	44:() => totalChallengeComps("c") >= 13    || hasAchievement("ach", 72),
 	45:() => totalChallengeComps("c") >= 14    || hasAchievement("ach", 73),
+	46:() => getBuyableAmount("d", 11).gte(14) || hasAchievement("ach", 74),
+	47:() => getBuyableAmount("d", 13).gte(6)  || hasAchievement("ach", 75),
+	48:() => totalChallengeComps("c") >= 15    || hasAchievement("ach", 76),
 }
 
 /*
@@ -134,6 +137,9 @@ PROGRESSION_MILESTONES_TEXT = {
 	43: "9 Circle challenge completions",
 	44: "13 Circle challenge completions",
 	45: "14 Circle challenge completions",
+	46: "14 Department buyables",
+	47: "6 Delivery buyables",
+	48: "15 Circle challenge completions",
 }
 
 function progressReachedNum(){
@@ -157,13 +163,13 @@ function nextMilestone(){
 
 // Display extra things at the top of the page
 var displayThings = [
-	"This may be incorrect: Last updated 3:37 PM pacific 11.26",
+	"This may be incorrect: Last updated 9:00 PM pacific 11.26",
 	function (){
 		let a = "Endgame: All goals"
 		if (player.ach.achievements.length == Object.keys(PROGRESSION_MILESTONES).length) {
 			a += " (done!)"
 		} else a += " (not done)"
-		return a + " & 2e609 Doodles"
+		return a + " & 1e1655 Doodles"
 	},
 ]
 

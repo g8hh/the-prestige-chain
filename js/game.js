@@ -99,6 +99,7 @@ function rowReset(row, layer) {
 				layers[lr].doReset(layer)
 			}
 		}
+		updateTemp()
 		return
 	}
 	let order = Object.keys(ROW_LAYERS[row])
@@ -110,6 +111,7 @@ function rowReset(row, layer) {
 		}
 		else if (tmp[layer].row > tmp[lr].row) layerDataReset(lr)
 	}
+	updateTemp()
 }
 
 function layerDataReset(layer, keep = []) {

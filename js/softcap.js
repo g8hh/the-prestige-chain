@@ -213,6 +213,13 @@ var softcap_data = {
 			pow: 70 / Math.log10(70),
 		},
 	},
+	c_buy31: {
+		1: {
+			func: "log",
+			start: new Decimal("1e500"),
+			pow: 500 / Math.log10(500),
+		},
+	},
 	e_eff:{
 		1: {
 			func: "pow",

@@ -222,6 +222,11 @@ var FREE_BUYABLE_DATA = {
                                 return hasUpgrade("c", 45)
                         }
                 },
+                d11: {
+                        active: function(){
+                                return hasUpgrade("d", 42)
+                        },
+                },
         },
         b31: {
                 name: "Basic",
@@ -230,12 +235,22 @@ var FREE_BUYABLE_DATA = {
                                 return hasUpgrade("c", 45)
                         }
                 },
+                d11: {
+                        active: function(){
+                                return hasUpgrade("d", 42)
+                        },
+                },
         },
         b32: {
                 name: "Brand",
                 c21:{
                         active: function(){
                                 return hasUpgrade("d", 34)
+                        },
+                },
+                d11:{
+                        active: function(){
+                                return hasUpgrade("d", 41)
                         },
                 },
         },
@@ -321,10 +336,37 @@ var FREE_BUYABLE_DATA = {
                                 return hasUpgrade("d", 35)
                         },
                 },
+                c31: {
+                        active: function(){
+                                return hasUpgrade("d", 43)
+                        },
+                },
         },
         c23: {
                 name: "Canada",
+                c31: {
+                        active: function(){
+                                return hasUpgrade("d", 43)
+                        },
+                },
         },
+        c31: {
+                name: "Conditions",
+        },
+        d11: {
+                name: "Department",
+                d13: {
+                        active: function(){
+                                return hasUpgrade("e", 14)
+                        },
+                },
+        },
+        d12: {
+                name: "December",
+        },
+        d13: {
+                name: "Delivery",
+        }
 }
 
 var EXTRA_FREE_BUYABLE_DATA = {
@@ -343,6 +385,16 @@ var EXTRA_FREE_BUYABLE_DATA = {
                 1: {
                         active: function(){
                                 return hasUpgrade("a", 41)
+                        },
+                        amount: function(){
+                                return 1
+                        },
+                },
+        },
+        a22: {
+                1: {
+                        active: function(){
+                                return hasUpgrade("b", 31)
                         },
                         amount: function(){
                                 return 1
