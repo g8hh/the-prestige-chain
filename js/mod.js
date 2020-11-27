@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".2.4 The Buyable Refactoring^2",
+	num: ".2.5 High Inflation Alert",
 	name: "",
 }
 
@@ -83,6 +83,10 @@ PROGRESSION_MILESTONES = {
 	46:() => getBuyableAmount("d", 11).gte(14) || hasAchievement("ach", 74),
 	47:() => getBuyableAmount("d", 13).gte(6)  || hasAchievement("ach", 75),
 	48:() => totalChallengeComps("c") >= 15    || hasAchievement("ach", 76),
+	49:() => totalChallengeComps("c") >= 17    || hasAchievement("ach", 77),
+	50:() => totalChallengeComps("c") >= 19    || hasAchievement("ach", 81),
+	51:() => totalChallengeComps("c") >= 22    || hasAchievement("ach", 82),
+	52:() => totalChallengeComps("c") >= 34    || hasAchievement("ach", 83),
 }
 
 /*
@@ -140,6 +144,10 @@ PROGRESSION_MILESTONES_TEXT = {
 	46: "14 Department buyables",
 	47: "6 Delivery buyables",
 	48: "15 Circle challenge completions",
+	49: "17 Circle challenge completions",
+	50: "19 Circle challenge completions",
+	51: "22 Circle challenge completions",
+	52: "34 Circle challenge completions",
 }
 
 function progressReachedNum(){
@@ -163,13 +171,13 @@ function nextMilestone(){
 
 // Display extra things at the top of the page
 var displayThings = [
-	"This may be incorrect: Last updated 9:00 PM pacific 11.26",
+	"This may be incorrect: Last updated 1:05 PM pacific 11.27",
 	function (){
 		let a = "Endgame: All goals"
 		if (player.ach.achievements.length == Object.keys(PROGRESSION_MILESTONES).length) {
 			a += " (done!)"
 		} else a += " (not done)"
-		return a + " & 1e1655 Doodles"
+		return a + " & 1e14 eggs"
 	},
 ]
 

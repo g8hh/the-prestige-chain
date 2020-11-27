@@ -360,13 +360,54 @@ var FREE_BUYABLE_DATA = {
                                 return hasUpgrade("e", 14)
                         },
                 },
+                d12: {
+                        active: function(){
+                                return hasUpgrade("e", 21)
+                        },
+                },
         },
         d12: {
                 name: "December",
+                d13: {
+                        active: function(){
+                                return hasUpgrade("d", 44)
+                        },
+                },
+                d21: {
+                        active: function(){
+                                return hasUpgrade("e", 15)
+                        },
+                },
+                d22: {
+                        active: function(){
+                                return hasUpgrade("e", 23)
+                        },
+                },
         },
         d13: {
                 name: "Delivery",
-        }
+                d21: {
+                        active: function(){
+                                return hasUpgrade("e", 15)
+                        },
+                },
+                d22: {
+                        active: function(){
+                                return hasUpgrade("d", 45)
+                        },
+                },
+        },
+        d21: {
+                name: "Drive",
+                d22: {
+                        active: function(){
+                                return hasUpgrade("e", 24)
+                        },
+                },
+        },
+        d22: {
+                name: "Director",
+        },
 }
 
 var EXTRA_FREE_BUYABLE_DATA = {
@@ -474,7 +515,26 @@ var EXTRA_FREE_BUYABLE_DATA = {
                         },
                 },
         },
+        d21: {
+                1: {
+                        active: function(){
+                                return hasUpgrade("e", 21)
+                        },
+                        amount: function(){
+                                return 1
+                        },
+                },
+        },
 }
+
+var CURRENT_BUYABLE_EXTRAS = {}
+
+function resetCurrBuyableExtras(){
+        for (i in FREE_BUYABLE_DATA){
+                CURRENT_BUYABLE_EXTRAS[i] = new Decimal(0)
+        }
+}
+resetCurrBuyableExtras()
 
 function isBuyableDefined(layer, id){
         if (layers[layer] == undefined) return false
@@ -484,7 +544,9 @@ function isBuyableDefined(layer, id){
 
 function getBuyableTotal(layer, id){
         if (!isBuyableDefined(layer, id)) return new Decimal(0)
-        return tmp[layer].buyables[id].total
+        let a = new Decimal(0)
+        if (CURRENT_BUYABLE_EXTRAS[layer+id] != undefined) a = CURRENT_BUYABLE_EXTRAS[layer+id]
+        return getBuyableAmount(layer, id).plus(a)
 }
 
 function getCodedBuyableAmount(code){
@@ -499,10 +561,18 @@ function isValidBuyableCode(code){
 }
 
 function getBuyableName(code){
-        return FREE_BUYABLE_DATA[code].name
+        if (FREE_BUYABLE_DATA[code] != undefined && FREE_BUYABLE_DATA[code].name != undefined) return FREE_BUYABLE_DATA[code].name
+        return layers[code.slice(0,1)].buyables[code.slice(1,3)].title
 }
 
 function calcBuyableExtra(layer, id){
+        if (!isBuyableDefined(layer, id)) return new Decimal(0)
+        let a = new Decimal(0)
+        if (CURRENT_BUYABLE_EXTRAS[layer+id] != undefined) a = CURRENT_BUYABLE_EXTRAS[layer+id]
+        return a 
+}
+
+function reCalcBuyableExtra(layer, id){
         let key = layer + id
         let data = FREE_BUYABLE_DATA[key] || {}
         if (data == undefined) return new Decimal(0)
@@ -521,6 +591,19 @@ function calcBuyableExtra(layer, id){
                 if (data3[i].active() == true) amt = amt.plus(data3[i].amount())
         }
         return amt
+}
+
+function updateAllBuyableExtras(){
+        resetCurrBuyableExtras()
+        let order = []
+        for (i in FREE_BUYABLE_DATA){
+                order.push(i)
+        }
+        order.reverse()
+        for (j in order){
+                i = order[j]
+                CURRENT_BUYABLE_EXTRAS[i] = reCalcBuyableExtra(i.slice(0,1), i.slice(1,3))
+        }
 }
 
 function getAlwaysActiveAdditionalBuyables(layer, id){

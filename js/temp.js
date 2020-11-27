@@ -76,6 +76,7 @@ function updateTemp() {
 		tmp.displayThings.push(text) 
 	}
 
+	updateAllBuyableExtras()
 }
 
 function updateTempData(layerData, tmpData) {
@@ -92,18 +93,15 @@ function updateTempData(layerData, tmpData) {
 	}	
 }
 
-function updateChallengeTemp(layer)
-{
+function updateChallengeTemp(layer){
 	updateTempData(layers[layer].challenges, tmp[layer].challenges)
 }
 
-function updateBuyableTemp(layer)
-{
+function updateBuyableTemp(layer){
 	updateTempData(layers[layer].buyables, tmp[layer].buyables)
 }
 
-function updateClickableTemp(layer)
-{
+function updateClickableTemp(layer){
 	updateTempData(layers[layer].clickables, tmp[layer].clickables)
 }
 

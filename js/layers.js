@@ -91,6 +91,8 @@ function getABBulk(layer){
         let amt = 1
         if (hasUpgrade("e", 11)) amt *= Math.max(player.ach.achievements.length, 1)
         if (hasUpgrade("d", 35)) amt *= 100
+        if (hasUpgrade("e", 23)) amt *= 100
+        if (hasMilestone("ach", 4))
         if (layer == "a") {
                 if (hasUpgrade("a", 35)) amt *= 10
                 if (hasUpgrade("b", 21)) {
@@ -122,9 +124,32 @@ function getABBulk(layer){
                 return amt
         }
         if (layer == "c"){
-
                 return amt
         }
+        if (layer == "d"){
+                return amt
+        }
+        return amt
+}
+
+function getABSpeed(layer){
+        let diffmult = 1
+        if (hasUpgrade("e", 22)) diffmult *= 2
+        if (hasUpgrade("e", 24)) diffmult *= 3
+        if (layer == "a"){
+                if (hasUpgrade("b", 45)) diffmult *= 2
+        }
+        if (layer == "b"){
+                if (hasUpgrade("b", 45)) diffmult *= 2
+        }
+        if (layer == "c"){
+                if (hasUpgrade("d", 41)) diffmult *= 3
+        }
+        if (layer == "d"){
+                if (hasUpgrade("e", 21)) diffmult *= 3
+        }
+
+        return diffmult
 }
 
 function doPrestigeGainChange(amt, layer){
@@ -252,9 +277,7 @@ addLayer("a", {
                         }
                 }
                 if (hasUpgrade("b", 14)) {
-                        let diffmult = 1
-                        if (hasUpgrade("b", 45)) diffmult *= 2
-                        player.a.abtime += diff * diffmult
+                        player.a.abtime += diff * getABSpeed("a")
 
                         if (player.a.abtime > 10) player.a.abtime = 10
                         if (player.a.abtime > 1) {
@@ -572,7 +595,7 @@ addLayer("a", {
                         },
                         getAmountDisplay(){
                                 let extra = this.extra()
-                                if (extra.eq(0)) return getBuyableAmount("a", 11)
+                                if (extra.eq(0)) return formatWhole(getBuyableAmount("a", 11))
                                 return formatWhole(getBuyableAmount("a", 11)) + "+" + formatWhole(extra)
                         },
                         getBases(){
@@ -672,7 +695,7 @@ addLayer("a", {
                         },
                         getAmountDisplay(){
                                 let extra = this.extra()
-                                if (extra.eq(0)) return getBuyableAmount("a", 12)
+                                if (extra.eq(0)) return formatWhole(getBuyableAmount("a", 12))
                                 return formatWhole(getBuyableAmount("a", 12)) + "+" + formatWhole(extra)
                         },
                         getBases(){
@@ -774,7 +797,7 @@ addLayer("a", {
                         },
                         getAmountDisplay(){
                                 let extra = this.extra()
-                                if (extra.eq(0)) return getBuyableAmount("a", 13)
+                                if (extra.eq(0)) return formatWhole(getBuyableAmount("a", 13))
                                 return formatWhole(getBuyableAmount("a", 13)) + "+" + formatWhole(extra)
                         },
                         getBases(){
@@ -868,7 +891,7 @@ addLayer("a", {
                         },
                         getAmountDisplay(){
                                 let extra = this.extra()
-                                if (extra.eq(0)) return getBuyableAmount("a", 21)
+                                if (extra.eq(0)) return formatWhole(getBuyableAmount("a", 21))
                                 return formatWhole(getBuyableAmount("a", 21)) + "+" + formatWhole(extra)
                         },
                         getBases(){
@@ -967,7 +990,7 @@ addLayer("a", {
                         },
                         getAmountDisplay(){
                                 let extra = this.extra()
-                                if (extra.eq(0)) return getBuyableAmount("a", 22)
+                                if (extra.eq(0)) return formatWhole(getBuyableAmount("a", 22))
                                 return formatWhole(getBuyableAmount("a", 22)) + "+" + formatWhole(extra)
                         },
                         getBases(){
@@ -1066,7 +1089,7 @@ addLayer("a", {
                         },
                         getAmountDisplay(){
                                 let extra = this.extra()
-                                if (extra.eq(0)) return getBuyableAmount("a", 23)
+                                if (extra.eq(0)) return formatWhole(getBuyableAmount("a", 23))
                                 return formatWhole(getBuyableAmount("a", 23)) + "+" + formatWhole(extra)
                         },
                         getBases(){
@@ -1165,7 +1188,7 @@ addLayer("a", {
                         },
                         getAmountDisplay(){
                                 let extra = this.extra()
-                                if (extra.eq(0)) return getBuyableAmount("a", 31)
+                                if (extra.eq(0)) return formatWhole(getBuyableAmount("a", 31))
                                 return formatWhole(getBuyableAmount("a", 31)) + "+" + formatWhole(extra)
                         },
                         getBases(){
@@ -1264,7 +1287,7 @@ addLayer("a", {
                         },
                         getAmountDisplay(){
                                 let extra = this.extra()
-                                if (extra.eq(0)) return getBuyableAmount("a", 32)
+                                if (extra.eq(0)) return formatWhole(getBuyableAmount("a", 32))
                                 return formatWhole(getBuyableAmount("a", 32)) + "+" + formatWhole(extra)
                         },
                         getBases(){
@@ -1366,7 +1389,7 @@ addLayer("a", {
                         },
                         getAmountDisplay(){
                                 let extra = this.extra()
-                                if (extra.eq(0)) return getBuyableAmount("a", 33)
+                                if (extra.eq(0)) return formatWhole(getBuyableAmount("a", 33))
                                 return formatWhole(getBuyableAmount("a", 33)) + "+" + formatWhole(extra)
                         },
                         getBases(){
@@ -1618,9 +1641,7 @@ addLayer("b", {
                         }
                 }
                 if (hasUpgrade("b", 32)) {
-                        let diffmult = 1
-                        if (hasUpgrade("b", 45)) diffmult *= 2
-                        player.b.abtime += diff * diffmult
+                        player.b.abtime += diff * getABSpeed("b")
                         
                         if (player.b.abtime > 10) player.b.abtime = 10
                         if (player.b.abtime > 1) {
@@ -1906,8 +1927,8 @@ addLayer("b", {
                         },
                         getAmountDisplay(){
                                 let extra = this.extra()
-                                if (extra.eq(0)) return getBuyableAmount("b", 11)
-                                return getBuyableAmount("b", 11) + "+" + formatWhole(extra)
+                                if (extra.eq(0)) return formatWhole(getBuyableAmount("b", 11))
+                                return formatWhole(getBuyableAmount("b", 11)) + "+" + formatWhole(extra)
                         },
                         getBases(){
                                 //currently an example
@@ -2005,8 +2026,8 @@ addLayer("b", {
                         },
                         getAmountDisplay(){
                                 let extra = this.extra()
-                                if (extra.eq(0)) return getBuyableAmount("b", 12)
-                                return getBuyableAmount("b", 12) + "+" + formatWhole(extra)
+                                if (extra.eq(0)) return formatWhole(getBuyableAmount("b", 12))
+                                return formatWhole(getBuyableAmount("b", 12)) + "+" + formatWhole(extra)
                         },
                         getBases(){
                                 //currently an example
@@ -2033,6 +2054,8 @@ addLayer("b", {
                                 let base = new Decimal(10)
                                 if (hasUpgrade("b", 41)) base = base.plus(tmp.a.buyables[11].total.div(1000))
                                 if (hasUpgrade("d", 32)) base = base.plus(tmp.a.buyables[33].total.pow(2))
+
+                                base = base.times(tmp.d.buyables[21].effect)
                                 return base
                         },
                         effect(){
@@ -2103,8 +2126,8 @@ addLayer("b", {
                         },
                         getAmountDisplay(){
                                 let extra = this.extra()
-                                if (extra.eq(0)) return getBuyableAmount("b", 13)
-                                return getBuyableAmount("b", 13) + "+" + formatWhole(extra)
+                                if (extra.eq(0)) return formatWhole(getBuyableAmount("b", 13))
+                                return formatWhole(getBuyableAmount("b", 13)) + "+" + formatWhole(extra)
                         },
                         getBases(){
                                 //currently an example
@@ -2200,8 +2223,8 @@ addLayer("b", {
                         },
                         getAmountDisplay(){
                                 let extra = this.extra()
-                                if (extra.eq(0)) return getBuyableAmount("b", 21)
-                                return getBuyableAmount("b", 21) + "+" + formatWhole(extra)
+                                if (extra.eq(0)) return formatWhole(getBuyableAmount("b", 21))
+                                return formatWhole(getBuyableAmount("b", 21)) + "+" + formatWhole(extra)
                         },
                         getBases(){
                                 //currently an example
@@ -2297,8 +2320,8 @@ addLayer("b", {
                         },
                         getAmountDisplay(){
                                 let extra = this.extra()
-                                if (extra.eq(0)) return getBuyableAmount("b", 22)
-                                return getBuyableAmount("b", 22) + "+" + formatWhole(extra)
+                                if (extra.eq(0)) return formatWhole(getBuyableAmount("b", 22))
+                                return formatWhole(getBuyableAmount("b", 22)) + "+" + formatWhole(extra)
                         },
                         getBases(){
                                 //currently an example
@@ -2394,8 +2417,8 @@ addLayer("b", {
                         },
                         getAmountDisplay(){
                                 let extra = this.extra()
-                                if (extra.eq(0)) return getBuyableAmount("b", 23)
-                                return getBuyableAmount("b", 23) + "+" + formatWhole(extra)
+                                if (extra.eq(0)) return formatWhole(getBuyableAmount("b", 23))
+                                return formatWhole(getBuyableAmount("b", 23)) + "+" + formatWhole(extra)
                         },
                         getBases(){
                                 //currently an example
@@ -2491,8 +2514,8 @@ addLayer("b", {
                         },
                         getAmountDisplay(){
                                 let extra = this.extra()
-                                if (extra.eq(0)) return getBuyableAmount("b", 31)
-                                return getBuyableAmount("b", 31) + "+" + formatWhole(extra)
+                                if (extra.eq(0)) return formatWhole(getBuyableAmount("b", 31))
+                                return formatWhole(getBuyableAmount("b", 31)) + "+" + formatWhole(extra)
                         },
                         getBases(){
                                 //currently an example
@@ -2587,8 +2610,8 @@ addLayer("b", {
                         },
                         getAmountDisplay(){
                                 let extra = this.extra()
-                                if (extra.eq(0)) return getBuyableAmount("b", 32)
-                                return getBuyableAmount("b", 32) + "+" + formatWhole(extra)
+                                if (extra.eq(0)) return formatWhole(getBuyableAmount("b", 32))
+                                return formatWhole(getBuyableAmount("b", 32)) + "+" + formatWhole(extra)
                         },
                         getBases(){
                                 //currently an example
@@ -2684,8 +2707,8 @@ addLayer("b", {
                         },
                         getAmountDisplay(){
                                 let extra = this.extra()
-                                if (extra.eq(0)) return getBuyableAmount("b", 33)
-                                return getBuyableAmount("b", 33) + "+" + formatWhole(extra)
+                                if (extra.eq(0)) return formatWhole(getBuyableAmount("b", 33))
+                                return formatWhole(getBuyableAmount("b", 33)) + "+" + formatWhole(extra)
                         },
                         getBases(){
                                 //currently an example
@@ -2710,6 +2733,7 @@ addLayer("b", {
                                 if (!isBuyableActive("b")) return new Decimal(1)
                                 
                                 let base = new Decimal(1e40)
+                                base = base.times(tmp.d.buyables[22].effect)
                                 return base
                         },
                         effect(){
@@ -3042,7 +3066,7 @@ addLayer("c", {
                         }
                 }
                 if (hasUpgrade("e", 11)) {
-                        data.abtime += diff
+                        data.abtime += diff * getABSpeed("c")
                         if (data.abtime > 10) data.abtime = 10
                         if (data.abtime > 1) {
                                 data.abtime += -1
@@ -3326,8 +3350,8 @@ addLayer("c", {
                         },
                         getAmountDisplay(){
                                 let extra = this.extra()
-                                if (extra.eq(0)) return getBuyableAmount("c", 11)
-                                return getBuyableAmount("c", 11) + "+" + formatWhole(extra)
+                                if (extra.eq(0)) return formatWhole(getBuyableAmount("c", 11))
+                                return formatWhole(getBuyableAmount("c", 11)) + "+" + formatWhole(extra)
                         },
                         getBases(){
                                 //currently an example
@@ -3423,8 +3447,8 @@ addLayer("c", {
                         },
                         getAmountDisplay(){
                                 let extra = this.extra()
-                                if (extra.eq(0)) return getBuyableAmount("c", 12)
-                                return getBuyableAmount("c", 12) + "+" + formatWhole(extra)
+                                if (extra.eq(0)) return formatWhole(getBuyableAmount("c", 12))
+                                return formatWhole(getBuyableAmount("c", 12)) + "+" + formatWhole(extra)
                         },
                         getBases(){
                                 //currently an example
@@ -3521,8 +3545,8 @@ addLayer("c", {
                         },
                         getAmountDisplay(){
                                 let extra = this.extra()
-                                if (extra.eq(0)) return getBuyableAmount("c", 13)
-                                return getBuyableAmount("c", 13) + "+" + formatWhole(extra)
+                                if (extra.eq(0)) return formatWhole(getBuyableAmount("c", 13))
+                                return formatWhole(getBuyableAmount("c", 13)) + "+" + formatWhole(extra)
                         },
                         getBases(){
                                 //currently an example
@@ -3619,8 +3643,8 @@ addLayer("c", {
                         },
                         getAmountDisplay(){
                                 let extra = this.extra()
-                                if (extra.eq(0)) return getBuyableAmount("c", 21)
-                                return getBuyableAmount("c", 21) + "+" + formatWhole(extra)
+                                if (extra.eq(0)) return formatWhole(getBuyableAmount("c", 21))
+                                return formatWhole(getBuyableAmount("c", 21)) + "+" + formatWhole(extra)
                         },
                         getBases(){
                                 //currently an example
@@ -3716,8 +3740,8 @@ addLayer("c", {
                         },
                         getAmountDisplay(){
                                 let extra = this.extra()
-                                if (extra.eq(0)) return getBuyableAmount("c", 22)
-                                return getBuyableAmount("c", 22) + "+" + formatWhole(extra)
+                                if (extra.eq(0)) return formatWhole(getBuyableAmount("c", 22))
+                                return formatWhole(getBuyableAmount("c", 22)) + "+" + formatWhole(extra)
                         },
                         getBases(){
                                 //currently an example
@@ -3749,6 +3773,7 @@ addLayer("c", {
                                 let x = this.total()
                                 let base = this.effectBase()
                                 let ret = Decimal.pow(base, x)
+                                ret = softcap(ret, "c_buy22")
                                 return ret
                         },
                         canAfford(){
@@ -3813,8 +3838,8 @@ addLayer("c", {
                         },
                         getAmountDisplay(){
                                 let extra = this.extra()
-                                if (extra.eq(0)) return getBuyableAmount("c", 23)
-                                return getBuyableAmount("c", 23) + "+" + formatWhole(extra)
+                                if (extra.eq(0)) return formatWhole(getBuyableAmount("c", 23))
+                                return formatWhole(getBuyableAmount("c", 23)) + "+" + formatWhole(extra)
                         },
                         getBases(){
                                 //currently an example
@@ -3910,8 +3935,8 @@ addLayer("c", {
                         },
                         getAmountDisplay(){
                                 let extra = this.extra()
-                                if (extra.eq(0)) return getBuyableAmount("c", 31)
-                                return getBuyableAmount("c", 31) + "+" + formatWhole(extra)
+                                if (extra.eq(0)) return formatWhole(getBuyableAmount("c", 31))
+                                return formatWhole(getBuyableAmount("c", 31)) + "+" + formatWhole(extra)
                         },
                         getBases(){
                                 //currently an example
@@ -3987,7 +4012,7 @@ addLayer("c", {
                                 player.c.points = player.c.points.sub(this.cost(-1)).max(0)
                         },
                         unlocked(){ 
-                                return hasUpgrade("d", 13) || hasUnlockedPast("e")
+                                return hasUpgrade("e", 13) || hasUnlockedPast("e")
                         },
                 },
         },
@@ -4215,26 +4240,35 @@ addLayer("d", {
                 return a + format(eff) + "."
         },
         update(diff){
-                player.d.best = player.d.best.max(player.d.points)
+                let data = player.d
+                
+                data.best = data.best.max(data.points)
                 if (hasUpgrade("d", 22)) {
-                        player.d.points = player.d.points.plus(this.getResetGain().times(diff))
-                        player.d.total = player.d.total.plus(this.getResetGain().times(diff))
-                        let diffmult = 1
-                        if (hasUpgrade("d", 41)) diffmult *= 3
-                        player.d.autotimes += diff * diffmult
-                        if (player.d.autotimes > 3) player.d.autotimes = 3
-                        if (player.d.autotimes > 1) {
-                                player.d.autotimes += -1
-                                player.d.times ++
+                        data.points = data.points.plus(this.getResetGain().times(diff))
+                        data.total = data.total.plus(this.getResetGain().times(diff))
+                        data.autotimes += diff
+                        if (data.autotimes > 3) data.autotimes = 3
+                        if (data.autotimes > 1) {
+                                data.autotimes += -1
+                                data.times ++
                         }
                 }
-                if (false) {
-                        player.d.abtime += diff
-                        if (player.d.abtime > 10) player.d.abtime = 10
+                if (hasUpgrade("e", 14)) {
+                        data.abtime += diff * getABSpeed("d")
+                        if (data.abtime > 10) data.abtime = 10
+                        if (data.abtime > 1) {
+                                data.abtime += -1
+                                let amt = getABBulk("d")
+                                if (tmp.d.buyables[11].unlocked) layers.d.buyables[11].buyMax(amt)
+                                if (tmp.d.buyables[12].unlocked) layers.d.buyables[12].buyMax(amt)
+                                if (tmp.d.buyables[13].unlocked) layers.d.buyables[13].buyMax(amt)
+                                if (tmp.d.buyables[21].unlocked) layers.d.buyables[21].buyMax(amt)
+                                if (tmp.d.buyables[22].unlocked) layers.d.buyables[22].buyMax(amt)
+                        }
                 } else {
-                        player.d.abtime = 0
+                        data.abtime = 0
                 }
-                player.d.time += diff
+                data.time += diff
         },
         row: 3, // Row the layer is in on the tree (0 is the first row)
         hotkeys: [
@@ -4414,9 +4448,30 @@ addLayer("d", {
                                 return hasUpgrade("d", 42) || hasUnlockedPast("e")
                         }, //hasUpgrade("d", 43)
                 },
+                44: {
+                        title: "Display",
+                        description: "<b>Delivery</b> gives free <b>December</b> levels",
+                        cost: new Decimal("5e1667"),
+                        unlocked(){ 
+                                return hasUpgrade("e", 14) || hasUnlockedPast("e")
+                        }, //hasUpgrade("d", 44)
+                },
+                45: {
+                        title: "Daily",
+                        description: "<b>Director</b> gives free <b>Delivery</b> levels",
+                        cost: new Decimal("1e2333"),
+                        unlocked(){ 
+                                return hasUpgrade("e", 15) || hasUnlockedPast("e")
+                        }, //hasUpgrade("d", 45)
+                },
 
                 /*
-                (USED)discussion
+                due
+                database
+                done
+                direct
+                district
+                downloads
                 */
         },
         buyables: {
@@ -4439,8 +4494,8 @@ addLayer("d", {
                         },
                         getAmountDisplay(){
                                 let extra = this.extra()
-                                if (extra.eq(0)) return getBuyableAmount("d", 11)
-                                return getBuyableAmount("d", 11) + "+" + formatWhole(extra)
+                                if (extra.eq(0)) return formatWhole(getBuyableAmount("d", 11))
+                                return formatWhole(getBuyableAmount("d", 11)) + "+" + formatWhole(extra)
                         },
                         getBases(){
                                 //currently an example
@@ -4536,8 +4591,8 @@ addLayer("d", {
                         },
                         getAmountDisplay(){
                                 let extra = this.extra()
-                                if (extra.eq(0)) return getBuyableAmount("d", 12)
-                                return getBuyableAmount("d", 12) + "+" + formatWhole(extra)
+                                if (extra.eq(0)) return formatWhole(getBuyableAmount("d", 12))
+                                return formatWhole(getBuyableAmount("d", 12)) + "+" + formatWhole(extra)
                         },
                         getBases(){
                                 //currently an example
@@ -4632,8 +4687,8 @@ addLayer("d", {
                         },
                         getAmountDisplay(){
                                 let extra = this.extra()
-                                if (extra.eq(0)) return getBuyableAmount("d", 13)
-                                return getBuyableAmount("d", 13) + "+" + formatWhole(extra)
+                                if (extra.eq(0)) return formatWhole(getBuyableAmount("d", 13))
+                                return formatWhole(getBuyableAmount("d", 13)) + "+" + formatWhole(extra)
                         },
                         getBases(){
                                 //currently an example
@@ -4711,6 +4766,201 @@ addLayer("d", {
                                 return hasUpgrade("e", 13) || hasUnlockedPast("e")
                         },
                 },
+                21: {
+                        title: "Drive",
+                        display(){
+                                let start = "<b><h2>Amount</h2>: " + this.getAmountDisplay() + "</b><br>"
+                                let eff = "<b><h2>Effect</h2>: *" + format(this.effect()) + " Based base</b><br>"
+                                let cost = "<b><h2>Cost</h2>: " + format(this.cost()) + " Doodles</b><br>"
+                                let eformula = "<b><h2>Effect formula</h2>:<br>" + format(this.effectBase()) + "^x</b><br>"
+                                let exformula = this.getExtraFormulaText()
+
+                                let end = shiftDown ? eformula + exformula : "Shift to see details"
+                                return "<br>" + start + eff + cost + end
+                        },
+                        getExtraFormulaText(){
+                                return getBuyableExtraText("d", 21)
+                        },
+                        getAmountDisplay(){
+                                let extra = this.extra()
+                                if (extra.eq(0)) return formatWhole(getBuyableAmount("d", 21))
+                                return formatWhole(getBuyableAmount("d", 21)) + "+" + formatWhole(extra)
+                        },
+                        getBases(){
+                                //currently an example
+                                let b0 = new Decimal("1e1655")
+                                let b1 = .2
+                                let b2 = 5
+                                return [b0, b1, b2]
+                        },
+                        cost(add){
+                                let x = getBuyableAmount("d", 21).plus(add)
+                                let bases = this.getBases()
+                                let base0 = bases[0]
+                                let base1 = bases[1]
+                                let base2 = bases[2]
+                                let exp0 = 1
+                                let exp1 = x
+                                let exp2 = x.times(x)
+
+                                return Decimal.pow(base0, exp0).times(Decimal.pow(base1, exp1)).times(Decimal.pow(base2, exp2)).ceil()
+                        },
+                        effectBase(){
+                                if (!isBuyableActive("d")) return new Decimal(1)
+
+                                let base = new Decimal(5)
+                                return base
+                        },
+                        effect(){
+                                let x = this.total()
+                                let base = this.effectBase()
+                                let ret = Decimal.pow(base, x)
+                                ret = softcap(ret, "d_buy21")
+                                return ret
+                        },
+                        canAfford(){
+                                return player.d.points.gte(this.cost())
+                        },
+                        total(){
+                                return getBuyableAmount("d", 21).plus(this.extra())
+                        },
+                        extra(){
+                                return calcBuyableExtra("d", 21)
+                        },
+                        buy(){
+                                let cost = this.cost()
+                                if (!this.canAfford()) return
+                                player.d.buyables[21] = player.d.buyables[21].plus(1)
+                                if (false) return
+                                player.d.points = player.d.points.minus(cost)
+                        },
+                        buyMax(maximum){
+                                let bases = this.getBases()
+                                if (!this.unlocked()) return 
+                                if (player.d.points.lt(bases[0])) return
+
+                                // let exp2 = x.times(x)
+                                let pttarget = player.d.points.div(bases[0]).log(1.01)
+                                let bfactor = Decimal.log(bases[1], 3).div(Decimal.log(1.01, 3))
+                                //want to find ax^2+bx = c
+                                let c = pttarget
+                                let b = bfactor
+                                let a = Decimal.log(bases[2], 3).div(Decimal.log(1.01, 3))
+                                // let a = 1 this is constant so remove it
+
+                                let target = c.times(a).times(4).plus(b * b).sqrt().minus(b).div(2).div(a).floor().plus(1)
+                                //-b + sqrt(b*b+4*c*a)
+
+                                let diff = target.minus(player.d.buyables[21]).max(0)
+                                if (maximum != undefined) diff = diff.min(maximum)
+
+                                player.d.buyables[21] = player.d.buyables[21].plus(diff)
+
+                                if (false || diff.eq(0)) return 
+                                player.d.points = player.d.points.sub(this.cost(-1)).max(0)
+                        },
+                        unlocked(){ 
+                                return (hasUpgrade("e", 13) && hasUpgrade("e", 14)) || hasUnlockedPast("e")
+                        },
+                },
+                22: {
+                        title: "Director",
+                        display(){
+                                let start = "<b><h2>Amount</h2>: " + this.getAmountDisplay() + "</b><br>"
+                                let eff = "<b><h2>Effect</h2>: *" + format(this.effect()) + " Omnipotent II base</b><br>"
+                                let cost = "<b><h2>Cost</h2>: " + format(this.cost()) + " Doodles</b><br>"
+                                let eformula = "<b><h2>Effect formula</h2>:<br>" + format(this.effectBase()) + "^x</b><br>"
+                                let exformula = this.getExtraFormulaText()
+
+                                let end = shiftDown ? eformula + exformula : "Shift to see details"
+                                return "<br>" + start + eff + cost + end
+                        },
+                        getExtraFormulaText(){
+                                return getBuyableExtraText("d", 22)
+                        },
+                        getAmountDisplay(){
+                                let extra = this.extra()
+                                if (extra.eq(0)) return formatWhole(getBuyableAmount("d", 22))
+                                return formatWhole(getBuyableAmount("d", 22)) + "+" + formatWhole(extra)
+                        },
+                        getBases(){
+                                //currently an example
+                                let b0 = new Decimal("1e1945")
+                                let b1 = new Decimal("1e77")
+                                let b2 = 10
+                                return [b0, b1, b2]
+                        },
+                        cost(add){
+                                let x = getBuyableAmount("d", 22).plus(add)
+                                let bases = this.getBases()
+                                let base0 = bases[0]
+                                let base1 = bases[1]
+                                let base2 = bases[2]
+                                let exp0 = 1
+                                let exp1 = x
+                                let exp2 = x.times(x)
+
+                                return Decimal.pow(base0, exp0).times(Decimal.pow(base1, exp1)).times(Decimal.pow(base2, exp2)).ceil()
+                        },
+                        effectBase(){
+                                if (!isBuyableActive("d")) return new Decimal(1)
+
+                                let base = new Decimal(10)
+                                if (hasUpgrade("e", 25)) base = base.plus(1)
+                                return base
+                        },
+                        effect(){
+                                let x = this.total()
+                                let base = this.effectBase()
+                                let ret = Decimal.pow(base, x)
+                                ret = softcap(ret, "d_buy22")
+                                return ret
+                        },
+                        canAfford(){
+                                return player.d.points.gte(this.cost())
+                        },
+                        total(){
+                                return getBuyableAmount("d", 22).plus(this.extra())
+                        },
+                        extra(){
+                                return calcBuyableExtra("d", 22)
+                        },
+                        buy(){
+                                let cost = this.cost()
+                                if (!this.canAfford()) return
+                                player.d.buyables[22] = player.d.buyables[22].plus(1)
+                                if (false) return
+                                player.d.points = player.d.points.minus(cost)
+                        },
+                        buyMax(maximum){
+                                let bases = this.getBases()
+                                if (!this.unlocked()) return 
+                                if (player.d.points.lt(bases[0])) return
+
+                                // let exp2 = x.times(x)
+                                let pttarget = player.d.points.div(bases[0]).log(1.01)
+                                let bfactor = Decimal.log(bases[1], 3).div(Decimal.log(1.01, 3))
+                                //want to find ax^2+bx = c
+                                let c = pttarget
+                                let b = bfactor
+                                let a = Decimal.log(bases[2], 3).div(Decimal.log(1.01, 3))
+                                // let a = 1 this is constant so remove it
+
+                                let target = c.times(a).times(4).plus(b * b).sqrt().minus(b).div(2).div(a).floor().plus(1)
+                                //-b + sqrt(b*b+4*c*a)
+
+                                let diff = target.minus(player.d.buyables[22]).max(0)
+                                if (maximum != undefined) diff = diff.min(maximum)
+
+                                player.d.buyables[22] = player.d.buyables[22].plus(diff)
+
+                                if (false || diff.eq(0)) return 
+                                player.d.points = player.d.points.sub(this.cost(-1)).max(0)
+                        },
+                        unlocked(){ 
+                                return (hasUpgrade("e", 13) && hasUpgrade("e", 15)) || hasUnlockedPast("e")
+                        },
+                },
         },
         tabFormat: {
                 "Upgrades": {
@@ -4780,7 +5030,7 @@ addLayer("d", {
                 if (!getsReset("d", layer)) return
                 player.d.time = 0
 
-                if (!hasMilestone("ach", 4)) {
+                if (!hasMilestone("ach", 5)) {
                         //upgrades
                         let keep = []
                         if (!hasUpgrade("e", 11)) player.d.upgrades = filter(player.d.upgrades, keep)
@@ -4846,6 +5096,7 @@ addLayer("e", {
         },
         getGainExp(){
                 let x = new Decimal(2)
+                if (hasUpgrade("e", 25)) x = x.plus(1)
                 return x
         },
         getGainMultPre(){
@@ -4886,7 +5137,7 @@ addLayer("e", {
                 let data = player.e
 
                 data.best = data.best.max(data.points)
-                if (false) {
+                if (hasUpgrade("e", 22)) {
                         data.points = data.points.plus(this.getResetGain().times(diff))
                         data.total = data.total.plus(this.getResetGain().times(diff))
                         data.autotimes += diff
@@ -4933,7 +5184,7 @@ addLayer("e", {
                 return a + nextAt
         },
         canReset(){
-                return this.getResetGain().gt(0) && player.e.time >= 5 && !false
+                return this.getResetGain().gt(0) && player.e.time >= 5 && !hasUpgrade("e", 22)
         },
         upgrades: {
                 rows: 5,
@@ -4964,26 +5215,77 @@ addLayer("e", {
                 },
                 14: {
                         title: "Even",
-                        description: "<b>Delivery</b> gives free <b>Department</b> buyables [THIS DOES NTO UNLOCK A BUYABLE YET]",
+                        description: "<b>Delivery</b> gives free <b>Department</b> buyables and autobuy <b>D</b> buyables once per second",
                         cost: new Decimal(1e6),
                         unlocked(){ 
                                 return player.ach.achievements.includes("75") || hasUnlockedPast("e")
                         }, //hasUpgrade("e", 14)
                 },
+                15: {
+                        title: "End",
+                        description: "<b>Drive</b> gives free <b>December</b> and <b>Delivery</b> buyables",
+                        cost: new Decimal(1e6),
+                        unlocked(){ 
+                                return player.ach.achievements.includes("75") || hasUnlockedPast("e")
+                        }, //hasUpgrade("e", 15)
+                },
+                21: {
+                        title: "Events",
+                        description: "<b>December</b> gives free <b>Department</b> levels and gain a free <b>Drive</b> level and triple <b>D</b> autobuyer speed",
+                        cost: new Decimal(3e6),
+                        unlocked(){ 
+                                return hasUpgrade("d", 45) || hasUnlockedPast("e")
+                        }, //hasUpgrade("e", 21)
+                },
+                22: {
+                        title: "Every",
+                        description: "Remove the ability to prestige but gain 100% of Eggs on prestige per second and all autobuyers work 2x faster",
+                        cost: new Decimal(1e7),
+                        unlocked(){ 
+                                return hasUpgrade("e", 21) || hasUnlockedPast("e")
+                        }, //hasUpgrade("e", 22)
+                },
+                23: {
+                        title: "English",
+                        description: "<b>Director</b> gives free <b>December</b> levels and all autobuyers buy 100x more",
+                        cost: new Decimal(1e9),
+                        unlocked(){ 
+                                return hasUpgrade("e", 22) || hasUnlockedPast("e")
+                        }, //hasUpgrade("e", 23)
+                },
+                24: {
+                        title: "Estate",
+                        description: "<b>Director</b> gives free <b>Drive</b> levels and all autobuyers buy 3x faster",
+                        cost: new Decimal(3e9),
+                        unlocked(){ 
+                                return hasUpgrade("e", 23) || hasUnlockedPast("e")
+                        }, //hasUpgrade("e", 24)
+                },
+                25: {
+                        title: "Equipment",
+                        description: "Add one to the <b>Director</b> base and <b>E</b> gain exponent",
+                        cost: new Decimal(1e10),
+                        unlocked(){ 
+                                return hasUpgrade("e", 24) || hasUnlockedPast("e")
+                        }, //hasUpgrade("e", 25)
+                },
 
                 /*
-                end
-                events
-                every
-                english
-                estate
-                equipment
+                
+                experience
+                east
+                example
+                easy
+                event
+                enter
+                energy
+                entertainment
                 */
         },
         tabFormat: {
                 "Upgrades": {
                         content: ["main-display",
-                                ["prestige-button", "", function (){ return false ? {'display': 'none'} : {}}],
+                                ["prestige-button", "", function (){ return hasUpgrade("e", 22) ? {'display': 'none'} : {}}],
                                 ["display-text",
                                         function() {return shiftDown ? "Your best Eggs is " + format(player.e.best) : ""}],
                                 ["display-text",
@@ -4994,7 +5296,7 @@ addLayer("e", {
                                 ],
                                 ["display-text",
                                         function() {
-                                                if (false) return "You are gaining " + format(tmp.e.getResetGain) + " Eggs per second"
+                                                if (hasUpgrade("e", 22)) return "You are gaining " + format(tmp.e.getResetGain) + " Eggs per second"
                                                 return "There is a five second cooldown for prestiging (" + format(Math.max(0, 5-player.e.time)) + ")" 
                                         },
                                         //{"font-size": "20px"}
@@ -5037,7 +5339,7 @@ addLayer("e", {
                 if (!getsReset("e", layer)) return
                 player.e.time = 0
 
-                if (!hasMilestone("ach", 5)) {
+                if (!hasMilestone("ach", 6)) {
                         //upgrades
                         let keep = []
                         player.e.upgrades = filter(player.e.upgrades, keep)
@@ -5119,7 +5421,7 @@ addLayer("ach", {
                 return false
         },
         achievements: {
-                rows: 7,
+                rows: 8,
                 cols: 7,
                 11: {
                         name: "One",
@@ -5553,7 +5855,6 @@ addLayer("ach", {
                                 return "Get " + PROGRESSION_MILESTONES_TEXT[48]
                         },
                 },
-                /*
                 77: {
                         name: "Forty-nine",
                         done(){
@@ -5562,7 +5863,74 @@ addLayer("ach", {
                         tooltip() {
                                 return "Get " + PROGRESSION_MILESTONES_TEXT[49]
                         },
-                }, 
+                },
+                81: {
+                        name: "Fifty",
+                        done(){
+                                return PROGRESSION_MILESTONES[50]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[50]
+                        },
+                },
+                82: {
+                        name: "Fifty-one",
+                        done(){
+                                return PROGRESSION_MILESTONES[51]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[51]
+                        },
+                },
+                83: {
+                        name: "Fifty-two",
+                        done(){
+                                return PROGRESSION_MILESTONES[52]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[52]
+                        },
+                },
+                /*
+                84: {
+                        name: "Fifty-three",
+                        done(){
+                                return PROGRESSION_MILESTONES[53]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[53]
+                        },
+                },
+                /*
+                85: {
+                        name: "Fifty-four",
+                        done(){
+                                return PROGRESSION_MILESTONES[54]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[54]
+                        },
+                },
+                /*
+                86: {
+                        name: "Fifty-five",
+                        done(){
+                                return PROGRESSION_MILESTONES[55]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[55]
+                        },
+                },
+                /*
+                87: {
+                        name: "Fifty-six",
+                        done(){
+                                return PROGRESSION_MILESTONES[56]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[56]
+                        },
+                },
                 /*
                 */
         },
@@ -5598,7 +5966,17 @@ addLayer("ach", {
                         },
                 },
                 4: {
-                        requirementDescription: "<b>Tell me and I forget</b><br>Requires: wil prb change currently 99 Goals", 
+                        requirementDescription: "<b>Tell me and I forget</b><br>Requires: 52 Goals", 
+                        effectDescription: "All autobuyers buy 100x more",
+                        done(){
+                                return player.ach.points.gte(52)
+                        },
+                        unlocked(){
+                                return true
+                        },
+                },
+                5: {
+                        requirementDescription: "<b>Teach me and I remember</b><br>Requires: wil prb change currently 99 Goals", 
                         effectDescription: "You permanently keep all <b>D</b> upgrades",
                         done(){
                                 return player.ach.points.gte(99)
@@ -5607,8 +5985,8 @@ addLayer("ach", {
                                 return true
                         },
                 },
-                5: {
-                        requirementDescription: "<b>Teach me and I remember</b><br>Requires: wil prb change currently 99 Goals", 
+                6: {
+                        requirementDescription: "<b>Involve me and I learn</b><br>Requires: wil prb change currently 99 Goals", 
                         effectDescription: "You permanently keep all <b>E</b> upgrades",
                         done(){
                                 return player.ach.points.gte(99)
@@ -5617,7 +5995,7 @@ addLayer("ach", {
                                 return true
                         },
                 },
-                //Involve me and I learn
+                //
                 //Benjamin Franklin
         },
         tabFormat: {
