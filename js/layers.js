@@ -92,7 +92,7 @@ function getABBulk(layer){
         if (hasUpgrade("e", 11)) amt *= Math.max(player.ach.achievements.length, 1)
         if (hasUpgrade("d", 35)) amt *= 100
         if (hasUpgrade("e", 23)) amt *= 100
-        if (hasMilestone("ach", 4))
+        if (hasMilestone("ach", 4)) amt *= 100
         if (layer == "a") {
                 if (hasUpgrade("a", 35)) amt *= 10
                 if (hasUpgrade("b", 21)) {

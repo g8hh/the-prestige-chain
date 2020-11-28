@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".2.5 High Inflation Alert",
+	num: ".2.5.1 High Inflation Alert",
 	name: "",
 }
 
@@ -171,7 +171,7 @@ function nextMilestone(){
 
 // Display extra things at the top of the page
 var displayThings = [
-	"This may be incorrect: Last updated 1:05 PM pacific 11.27",
+	"This may be incorrect: Last updated 5:30 PM pacific 11.27",
 	function (){
 		let a = "Endgame: All goals"
 		if (player.ach.achievements.length == Object.keys(PROGRESSION_MILESTONES).length) {
