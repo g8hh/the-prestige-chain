@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".2.5.1 High Inflation Alert",
+	num: ".2.6 Ideas are a Dime a Dozen",
 	name: "",
 }
 
@@ -87,6 +87,7 @@ PROGRESSION_MILESTONES = {
 	50:() => totalChallengeComps("c") >= 19    || hasAchievement("ach", 81),
 	51:() => totalChallengeComps("c") >= 22    || hasAchievement("ach", 82),
 	52:() => totalChallengeComps("c") >= 34    || hasAchievement("ach", 83),
+	53:() => false  /* player.f.times >= 1 */  || hasAchievement("ach", 84),
 }
 
 /*
@@ -148,6 +149,7 @@ PROGRESSION_MILESTONES_TEXT = {
 	50: "19 Circle challenge completions",
 	51: "22 Circle challenge completions",
 	52: "34 Circle challenge completions",
+	53: "F reset xd",
 }
 
 function progressReachedNum(){
@@ -171,7 +173,7 @@ function nextMilestone(){
 
 // Display extra things at the top of the page
 var displayThings = [
-	"This may be incorrect: Last updated 5:30 PM pacific 11.27",
+	"This may be incorrect: Last updated 11:05 PM pacific 11.28",
 	function (){
 		let a = "Endgame: All goals"
 		if (player.ach.achievements.length == Object.keys(PROGRESSION_MILESTONES).length) {
