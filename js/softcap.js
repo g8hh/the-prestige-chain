@@ -261,7 +261,10 @@ var softcap_data = {
 			start: 1e100,
 			pow: .9,
 		}
-	}
+	},
+	f_eff:{
+		
+	},
 }
 
 var softcap_vars = {
@@ -311,7 +314,7 @@ function softcap(x, id) {
 
 	if (data == undefined) {
 		console.log("there is no softcap at " + id)
-		return
+		return x
 	}
 
 	var sc = 1

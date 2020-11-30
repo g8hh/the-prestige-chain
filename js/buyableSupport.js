@@ -607,6 +607,11 @@ function updateAllBuyableExtras(){
 }
 
 function getAlwaysActiveAdditionalBuyables(layer, id){
+        let depth = getChallengeDepth(4)
+        if (depth > 0 && layer == "a") return []
+        if (depth > 1 && layer == "b") return []
+        if (depth > 2 && layer == "c") return []
+
         let l = []
         let yet1 = false
         for (j in LAYERS){

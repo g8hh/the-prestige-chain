@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".2.6 Ideas are a Dime a Dozen",
+	num: ".2.7 Ideas are a Dime a Dozen",
 	name: "",
 }
 
@@ -87,7 +87,7 @@ PROGRESSION_MILESTONES = {
 	50:() => totalChallengeComps("c") >= 19    || hasAchievement("ach", 81),
 	51:() => totalChallengeComps("c") >= 22    || hasAchievement("ach", 82),
 	52:() => totalChallengeComps("c") >= 34    || hasAchievement("ach", 83),
-	53:() => false  /* player.f.times >= 1 */  || hasAchievement("ach", 84),
+	53:() => player.f.times >= 1               || hasAchievement("ach", 84),
 }
 
 /*
@@ -149,7 +149,7 @@ PROGRESSION_MILESTONES_TEXT = {
 	50: "19 Circle challenge completions",
 	51: "22 Circle challenge completions",
 	52: "34 Circle challenge completions",
-	53: "F reset xd",
+	53: "F reset once",
 }
 
 function progressReachedNum(){
@@ -173,13 +173,16 @@ function nextMilestone(){
 
 // Display extra things at the top of the page
 var displayThings = [
-	"This may be incorrect: Last updated 11:05 PM pacific 11.28",
+	"This may be incorrect: Last updated 8:35 PM pacific 11.29",
 	function (){
+		return "Endgame: One Medal " + (player.goalsii.points.gt(0) ? "(done)" : "(not done)")
+		/*
 		let a = "Endgame: All goals"
 		if (player.ach.achievements.length == Object.keys(PROGRESSION_MILESTONES).length) {
 			a += " (done!)"
 		} else a += " (not done)"
-		return a + " & 1e14 eggs"
+		return a + " & 1 00 token"
+		*/
 	},
 ]
 

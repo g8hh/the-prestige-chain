@@ -152,6 +152,20 @@ function generatePoints(layer, diff) {
 	addPoints(layer, tmp[layer].resetGain.times(diff))
 }
 
+function resetChallengeCompsRow(row){
+	for (i in ROW_LAYERS[row]) {
+		resetChallengeComps(i)
+	}
+}
+
+function resetChallengeComps(layer){
+	let l = [11,12,21,22]
+	for (j in l){
+		i = l[j]
+		if (player[layer].challenges[i] != undefined) player[layer].challenges[i] = 0
+	}
+}
+
 var prevOnReset
 
 function doReset(layer, force=false) {
@@ -200,8 +214,15 @@ function doReset(layer, force=false) {
 	prevOnReset = {...player} //Deep Copy
 	player.points = (row == 0 ? new Decimal(0) : getStartPoints())
 
-	for (let x = row; x >= 0; x--) rowReset(x, layer)
+	if (layer == "goalsii") {
+		row = 5
+	}
+
 	rowReset("side", layer)
+	for (let x = row; x >= 0; x--) {
+		rowReset(x, layer)
+		if (layer == "goalsii") resetChallengeCompsRow(x)
+	}
 	prevOnReset = undefined
 
 	updateTemp()

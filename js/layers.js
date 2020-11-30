@@ -8,15 +8,20 @@ function getPointGen() {
                 gain = gain.times(tmp[LAYERS[i]].effect)
         }
 
-        if (hasUpgrade("a", 11)) gain = gain.times(upgradeEffect("a", 11))
-        if (hasUpgrade("a", 12)) gain = gain.times(upgradeEffect("a", 12))
-                                 gain = gain.times(getBuyableEffect("a", 11))
-                                 gain = gain.times(getBuyableEffect("a", 23))
-                                 gain = gain.times(getBuyableEffect("b", 11))
-        if (hasUpgrade("c", 51)) gain = gain.times(100)
+        if (hasUpgrade("a", 11))  gain = gain.times(upgradeEffect("a", 11))
+        if (hasUpgrade("a", 12))  gain = gain.times(upgradeEffect("a", 12))
+                                  gain = gain.times(getBuyableEffect("a", 11))
+                                  gain = gain.times(getBuyableEffect("a", 23))
+                                  gain = gain.times(getBuyableEffect("b", 11))
+        if (hasUpgrade("c", 51))  gain = gain.times(100)
 
 
         if (inChallenge("b", 22)) gain = gain.sqrt()
+                                  gain = gain.times(tmp.goalsii.effect)
+
+        
+
+        gain = gain.pow(Decimal.pow(.9, getChallengeDepth(2)))
 
 	return gain
 }
@@ -34,6 +39,9 @@ function getBuyableEffect(layer, id){
 }
 
 function getsReset(layer, layerPrestiging) {
+        if (layerPrestiging == "goalsii"){
+                return ["a", "b", "c", "d", "e", "f"].includes(layer)
+        }
         order = LAYERS
         for (let i = 0; i < order.length; i++) {
                 if (layers[LAYERS[i]].row == "side") continue
@@ -44,6 +52,9 @@ function getsReset(layer, layerPrestiging) {
 }
 
 function hasUnlockedPast(layer){
+        if (layers["goalsii"].layerShown()) {
+                if (["a", "b", "c", "d", "e", "f"].includes(layer)) return true
+        }
         let on = false
         for (let i = 0; i < LAYERS.length; i++) {
                 if (layers[LAYERS[i]].row == "side") continue
@@ -60,17 +71,23 @@ function getChallengeFactor(comps){
         return b1
 }
 
-function isBuyableActive(layer){
+function isBuyableActive(layer, thang){
+        if (layer == "f") return true
         if (layer == "e") return true
         if (layer == "d") return true
+        let depth = getChallengeDepth(3)
+        if (depth > 2) return thang%10 != 1
         if (layer == "c") return true
         if (inChallenge("c", 11)) return false
+        if (depth > 1) return thang%10 != 1
         if (layer == "b") return true
         if (inChallenge("b", 11)) return false
+        if (depth > 0) return thang%10 != 1
         if (layer == "a") return true
 }
 
 function isPrestigeEffectActive(layer){
+        if (layer == "f") return true
         if (layer == "e") return true
         if (layer == "d") return true
         if (layer == "c") return true
@@ -129,6 +146,12 @@ function getABBulk(layer){
         if (layer == "d"){
                 return amt
         }
+        if (layer == "e"){
+                return amt
+        }
+        if (layer == "f"){
+                return amt
+        }
         return amt
 }
 
@@ -154,6 +177,9 @@ function getABSpeed(layer){
 
 function doPrestigeGainChange(amt, layer){
         if (layer == "a" && inChallenge("c", 12)) amt = amt.sqrt()
+        if (["a", "b", "c", "d", "e", "f"].includes(layer)) {
+                amt = amt.pow(Decimal.pow(.95, getChallengeDepth(1)))
+        }
         return amt
 }
 
@@ -165,7 +191,7 @@ bacteria
 circles
 doodles
 eggs
-fires
+features
 games
 hooks
 */
@@ -219,6 +245,7 @@ addLayer("a", {
                 if (hasUpgrade("a", 32)) x = x.times(3)
 
                 x = x.plus(tmp.a.buyables[21].effect)
+                x = x.plus(getGoalChallengeReward("00"))
 
                 return x
         },
@@ -244,6 +271,7 @@ addLayer("a", {
                                          x = x.times(getBuyableEffect("a", 31))
                                          x = x.times(getBuyableEffect("b", 21))
                                          x = x.times(getBuyableEffect("c", 23))
+                                         x = x.times(tmp.goalsii.effect)
 
                 return x
         },
@@ -300,7 +328,7 @@ addLayer("a", {
         },
         row: 0, // Row the layer is in on the tree (0 is the first row)
         hotkeys: [
-            {key: "a", description: "Reset for Amoeba", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+            {key: "a", description: "A: Reset for Amoeba", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
         ],
         layerShown(){return true},
         prestigeButtonText(){
@@ -618,7 +646,7 @@ addLayer("a", {
                                 return Decimal.pow(base0, exp0).times(Decimal.pow(base1, exp1)).times(Decimal.pow(base2, exp2)).ceil()
                         },
                         effectBase(){
-                                if (!isBuyableActive("a")) return new Decimal(1)
+                                if (!isBuyableActive("a", 11)) return new Decimal(1)
 
                                 let base = new Decimal(1.5)
                                 if (hasUpgrade("a", 34)) base = base.plus(tmp.a.buyables[13].total.div(100))
@@ -718,7 +746,7 @@ addLayer("a", {
                                 return Decimal.pow(base0, exp0).times(Decimal.pow(base1, exp1)).times(Decimal.pow(base2, exp2)).ceil()
                         },
                         effectBase(){
-                                if (!isBuyableActive("a")) return new Decimal(1)
+                                if (!isBuyableActive("a", 12)) return new Decimal(1)
                                 
                                 let base = new Decimal(1.1)
                                 if (hasUpgrade("b", 12)) base = base.plus(Decimal.div(player.b.upgrades.length, 10))
@@ -819,7 +847,7 @@ addLayer("a", {
                                 return Decimal.pow(base0, exp0).times(Decimal.pow(base1, exp1)).times(Decimal.pow(base2, exp2)).ceil()
                         },
                         effect(){
-                                if (!isBuyableActive("a")) return new Decimal(1)
+                                if (!isBuyableActive("a", 13)) return new Decimal(1)
 
                                 let x = this.total()
                                 let ret = Decimal.pow(x, 2).times(.3).plus(1)
@@ -914,7 +942,7 @@ addLayer("a", {
                                 return Decimal.pow(base0, exp0).times(Decimal.pow(base1, exp1)).times(Decimal.pow(base2, exp2)).ceil()
                         },
                         effectBase(){
-                                if (!isBuyableActive("a")) return new Decimal(0)
+                                if (!isBuyableActive("a", 21)) return new Decimal(0)
 
                                 let base = new Decimal(1)
                                 base = base.plus(tmp.a.buyables[32].effect)
@@ -1013,7 +1041,7 @@ addLayer("a", {
                                 return Decimal.pow(base0, exp0).times(Decimal.pow(base1, exp1)).times(Decimal.pow(base2, exp2)).ceil()
                         },
                         effectBase(){
-                                if (!isBuyableActive("a")) return new Decimal(1)
+                                if (!isBuyableActive("a", 22)) return new Decimal(1)
                                 
                                 let base = new Decimal(1.2)
                                 if (hasUpgrade("a", 45)) base = base.plus(this.total().div(100))
@@ -1112,7 +1140,7 @@ addLayer("a", {
                                 return Decimal.pow(base0, exp0).times(Decimal.pow(base1, exp1)).times(Decimal.pow(base2, exp2)).ceil()
                         },
                         effectBase(){
-                                if (!isBuyableActive("a")) return new Decimal(1)
+                                if (!isBuyableActive("a", 23)) return new Decimal(1)
                                 
                                 let base = new Decimal(1e5)
                                 base = base.times(tmp.b.buyables[31].effect)
@@ -1210,7 +1238,7 @@ addLayer("a", {
                                 return Decimal.pow(base0, exp0).times(Decimal.pow(base1, exp1)).times(Decimal.pow(base2, exp2)).ceil()
                         },
                         effectBase(){
-                                if (!isBuyableActive("a")) return new Decimal(1)
+                                if (!isBuyableActive("a", 31)) return new Decimal(1)
                                 
                                 let base = new Decimal(1e5)
                                 base = base.times(tmp.b.buyables[22].effect)
@@ -1310,7 +1338,7 @@ addLayer("a", {
                                 return Decimal.pow(base0, exp0).times(Decimal.pow(base1, exp1)).times(Decimal.pow(base2, exp2)).ceil()
                         },
                         effectBase(){
-                                if (!isBuyableActive("a")) return new Decimal(0)
+                                if (!isBuyableActive("a", 32)) return new Decimal(0)
 
                                 let base = new Decimal(.01)
                                 return base
@@ -1412,7 +1440,7 @@ addLayer("a", {
                                 return Decimal.pow(base0, exp0).times(Decimal.pow(base1, exp1)).times(Decimal.pow(base2, exp2)).ceil()
                         },
                         effectBase(){
-                                if (!isBuyableActive("a")) return new Decimal(0)
+                                if (!isBuyableActive("a", 33)) return new Decimal(0)
 
                                 let base = new Decimal(.5)
                                 if (hasUpgrade("b", 53)) base = base.plus(totalChallengeComps("b") / 10)
@@ -1518,6 +1546,7 @@ addLayer("a", {
                 if (layer == "a") player.a.time = 0
                 if (!getsReset("a", layer)) return
                 player.a.time = 0
+                player.a.times = 0
 
                 if (!hasMilestone("ach", 1)) {
                         //upgrades
@@ -1589,6 +1618,7 @@ addLayer("b", {
                 if (hasUpgrade("c", 25)) x = x.plus(1)
                 if (hasUpgrade("d", 12)) x = x.plus(totalChallengeComps("b") ** 2)
                                          x = x.plus(tmp.a.buyables[33].effect)
+                                         x = x.plus(getGoalChallengeReward("00"))
                 return x
         },
         getGainMultPre(){
@@ -1608,6 +1638,7 @@ addLayer("b", {
 
                 x = x.times(tmp.a.buyables[22].effect)
                 x = x.times(tmp.b.buyables[12].effect)
+                x = x.times(tmp.goalsii.effect)
 
                 return x
         },
@@ -1664,7 +1695,7 @@ addLayer("b", {
         },
         row: 1, // Row the layer is in on the tree (0 is the first row)
         hotkeys: [
-            {key: "b", description: "Reset for Bacteria", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+            {key: "b", description: "B: Reset for Bacteria", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
         ],
         layerShown(){return player.a.best.gt(1e6) || player.b.best.gt(0) || hasUnlockedPast("b")},
         prestigeButtonText(){
@@ -1950,7 +1981,7 @@ addLayer("b", {
                                 return Decimal.pow(base0, exp0).times(Decimal.pow(base1, exp1)).times(Decimal.pow(base2, exp2)).ceil()
                         },
                         effectBase(){
-                                if (!isBuyableActive("b")) return new Decimal(1)
+                                if (!isBuyableActive("b", 11)) return new Decimal(1)
 
                                 let base = new Decimal(1e20)
                                 if (hasUpgrade("c", 21)) base = base.times(tmp.a.buyables[12].total.max(1).pow(2))
@@ -2013,7 +2044,7 @@ addLayer("b", {
                                 let eff = "<b><h2>Effect</h2>: x" + format(this.effect()) + " Bacteria</b><br>"
                                 let cost = "<b><h2>Cost</h2>: " + format(this.cost()) + " Bacteria</b><br>"
                                 let eformula = "<b><h2>Effect formula</h2>:<br>(" + format(this.effectBase()) + "+x)^x</b><br>"
-                                if (!isBuyableActive("b")) {
+                                if (!isBuyableActive("b", 12)) {
                                         eformula = "<b><h2>Effect formula</h2>:<br>" + format(this.effectBase()) + "^x</b><br>"
                                 }
                                 let exformula = this.getExtraFormulaText()
@@ -2049,7 +2080,7 @@ addLayer("b", {
                                 return Decimal.pow(base0, exp0).times(Decimal.pow(base1, exp1)).times(Decimal.pow(base2, exp2)).ceil()
                         },
                         effectBase(){
-                                if (!isBuyableActive("b")) return new Decimal(1)
+                                if (!isBuyableActive("b", 12)) return new Decimal(1)
                                 
                                 let base = new Decimal(10)
                                 if (hasUpgrade("b", 41)) base = base.plus(tmp.a.buyables[11].total.div(1000))
@@ -2059,7 +2090,7 @@ addLayer("b", {
                                 return base
                         },
                         effect(){
-                                if (!isBuyableActive("b")) return new Decimal(1)
+                                if (!isBuyableActive("b", 12)) return new Decimal(1)
                                 
                                 let x = this.total()
                                 let base = this.effectBase()
@@ -2149,15 +2180,13 @@ addLayer("b", {
                                 return Decimal.pow(base0, exp0).times(Decimal.pow(base1, exp1)).times(Decimal.pow(base2, exp2)).ceil()
                         },
                         effectBase(){
-                                if (!isBuyableActive("b")) return new Decimal(1)
+                                if (!isBuyableActive("b", 13)) return new Decimal(1)
                                 
                                 let base = new Decimal(5)
                                 if (hasUpgrade("d", 21)) base = base.plus(this.total().div(100))
                                 return base
                         },
-                        effect(){
-                                if (!isBuyableActive("b")) return new Decimal(1)
-                                
+                        effect(){                                
                                 let x = this.total()
                                 let base = this.effectBase()
                                 return Decimal.pow(base, x)
@@ -2246,15 +2275,13 @@ addLayer("b", {
                                 return Decimal.pow(base0, exp0).times(Decimal.pow(base1, exp1)).times(Decimal.pow(base2, exp2)).ceil()
                         },
                         effectBase(){
-                                if (!isBuyableActive("b")) return new Decimal(1)
+                                if (!isBuyableActive("b", 21)) return new Decimal(1)
                                 
                                 let base = new Decimal(1.11e111)
                                 base = base.times(tmp.b.buyables[33].effect)
                                 return base
                         },
-                        effect(){
-                                if (!isBuyableActive("b")) return new Decimal(1)
-                                
+                        effect(){                                
                                 let x = this.total()
                                 let base = this.effectBase()
                                 return Decimal.pow(base, x)
@@ -2343,15 +2370,13 @@ addLayer("b", {
                                 return Decimal.pow(base0, exp0).times(Decimal.pow(base1, exp1)).times(Decimal.pow(base2, exp2)).ceil()
                         },
                         effectBase(){
-                                if (!isBuyableActive("b")) return new Decimal(1)
+                                if (!isBuyableActive("b", 22)) return new Decimal(1)
                                 
                                 let base = new Decimal(1e5)
                                 base = base.times(tmp.c.challenges[11].rewardEffect)
                                 return base
                         },
-                        effect(){
-                                if (!isBuyableActive("b")) return new Decimal(1)
-                                
+                        effect(){                                
                                 let x = this.total()
                                 let base = this.effectBase()
                                 return Decimal.pow(base, x.sqrt())
@@ -2440,15 +2465,13 @@ addLayer("b", {
                                 return Decimal.pow(base0, exp0).times(Decimal.pow(base1, exp1)).times(Decimal.pow(base2, exp2)).ceil()
                         },
                         effectBase(){
-                                if (!isBuyableActive("b")) return new Decimal(1)
+                                if (!isBuyableActive("b", 23)) return new Decimal(1)
                                 
                                 let base = new Decimal(1e10)
                                 base = base.times(tmp.c.buyables[11].effect)
                                 return base
                         },
-                        effect(){
-                                if (!isBuyableActive("b")) return new Decimal(1)
-                                
+                        effect(){                                
                                 let x = this.total()
                                 let base = this.effectBase()
                                 return Decimal.pow(base, x)
@@ -2537,14 +2560,12 @@ addLayer("b", {
                                 return Decimal.pow(base0, exp0).times(Decimal.pow(base1, exp1)).times(Decimal.pow(base2, exp2)).ceil()
                         },
                         effectBase(){
-                                if (!isBuyableActive("b")) return new Decimal(1)
+                                if (!isBuyableActive("b", 31)) return new Decimal(1)
                                 
                                 let base = new Decimal(1e50)
                                 return base
                         },
-                        effect(){
-                                if (!isBuyableActive("b")) return new Decimal(1)
-                                
+                        effect(){                                
                                 let x = this.total()
                                 let base = this.effectBase()
                                 return Decimal.pow(base, x)
@@ -2633,15 +2654,13 @@ addLayer("b", {
                                 return Decimal.pow(base0, exp0).times(Decimal.pow(base1, exp1)).times(Decimal.pow(base2, exp2)).ceil()
                         },
                         effectBase(){
-                                if (!isBuyableActive("b")) return new Decimal(0)
+                                if (!isBuyableActive("b", 32)) return new Decimal(0)
                                 
                                 let base = new Decimal(1)
                                 base = base.plus(tmp.c.buyables[13].effect)
                                 return base
                         },
-                        effect(){
-                                if (!isBuyableActive("b")) return new Decimal(0)
-                                
+                        effect(){                                
                                 let x = this.total()
                                 let base = this.effectBase()
                                 return Decimal.times(base, x)
@@ -2730,15 +2749,13 @@ addLayer("b", {
                                 return Decimal.pow(base0, exp0).times(Decimal.pow(base1, exp1)).times(Decimal.pow(base2, exp2)).ceil()
                         },
                         effectBase(){
-                                if (!isBuyableActive("b")) return new Decimal(1)
+                                if (!isBuyableActive("b", 33)) return new Decimal(1)
                                 
                                 let base = new Decimal(1e40)
                                 base = base.times(tmp.d.buyables[22].effect)
                                 return base
                         },
-                        effect(){
-                                if (!isBuyableActive("b")) return new Decimal(1)
-                                
+                        effect(){                                
                                 let x = this.total()
                                 let base = this.effectBase()
                                 return Decimal.pow(base, x)
@@ -2939,6 +2956,7 @@ addLayer("b", {
                 if (layer == "b") player.b.time = 0
                 if (!getsReset("b", layer)) return
                 player.b.time = 0
+                player.b.times = 0
 
                 if (!hasMilestone("ach", 2)) {
                         //upgrades
@@ -3011,6 +3029,7 @@ addLayer("c", {
                 if (hasUpgrade("c", 25)) x = x.plus(1)
                 if (hasUpgrade("b", 52)) x = x.plus(player.c.upgrades.length * .2)
                 x = x.plus(tmp.b.buyables[32].effect)
+                x = x.plus(getGoalChallengeReward("00"))
                 return x
         },
         getGainMultPre(){
@@ -3029,6 +3048,7 @@ addLayer("c", {
 
                 if (hasUpgrade("c", 23)) x = x.times(player.c.upgrades.length).max(x)
                                          x = x.times(getBuyableEffect("b", 13))
+                                         x = x.times(tmp.goalsii.effect)
 
                 return x
         },
@@ -3086,7 +3106,7 @@ addLayer("c", {
         },
         row: 2, // Row the layer is in on the tree (0 is the first row)
         hotkeys: [
-            {key: "c", description: "Reset for Circles", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+            {key: "c", description: "C: Reset for Circles", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
         ],
         layerShown(){return player.b.best.gt(5e10) || player.c.best.gt(0) || hasUnlockedPast("c")},
         prestigeButtonText(){
@@ -3373,7 +3393,7 @@ addLayer("c", {
                                 return Decimal.pow(base0, exp0).times(Decimal.pow(base1, exp1)).times(Decimal.pow(base2, exp2)).ceil()
                         },
                         effectBase(){
-                                if (!isBuyableActive("c")) return new Decimal(1)
+                                if (!isBuyableActive("c", 11)) return new Decimal(1)
 
                                 let base = new Decimal(1e2)
                                 return base
@@ -3470,7 +3490,7 @@ addLayer("c", {
                                 return Decimal.pow(base0, exp0).times(Decimal.pow(base1, exp1)).times(Decimal.pow(base2, exp2)).ceil()
                         },
                         effectBase(){
-                                if (!isBuyableActive("c")) return new Decimal(1)
+                                if (!isBuyableActive("c", 12)) return new Decimal(1)
 
                                 let base = new Decimal("1e1624")
                                 base = base.times(tmp.c.buyables[31].effect)
@@ -3568,7 +3588,7 @@ addLayer("c", {
                                 return Decimal.pow(base0, exp0).times(Decimal.pow(base1, exp1)).times(Decimal.pow(base2, exp2)).ceil()
                         },
                         effectBase(){
-                                if (!isBuyableActive("c")) return new Decimal(0)
+                                if (!isBuyableActive("c", 13)) return new Decimal(0)
 
                                 let base = new Decimal(.02)
                                 return base
@@ -3666,7 +3686,7 @@ addLayer("c", {
                                 return Decimal.pow(base0, exp0).times(Decimal.pow(base1, exp1)).times(Decimal.pow(base2, exp2)).ceil()
                         },
                         effectBase(){
-                                if (!isBuyableActive("c")) return new Decimal(0)
+                                if (!isBuyableActive("c", 21)) return new Decimal(0)
 
                                 let base = new Decimal(2)
                                 return base
@@ -3763,7 +3783,7 @@ addLayer("c", {
                                 return Decimal.pow(base0, exp0).times(Decimal.pow(base1, exp1)).times(Decimal.pow(base2, exp2)).ceil()
                         },
                         effectBase(){
-                                if (!isBuyableActive("c")) return new Decimal(0)
+                                if (!isBuyableActive("c", 22)) return new Decimal(0)
 
                                 let base = new Decimal(5)
                                 base = base.plus(tmp.d.buyables[12].effect)
@@ -3861,7 +3881,7 @@ addLayer("c", {
                                 return Decimal.pow(base0, exp0).times(Decimal.pow(base1, exp1)).times(Decimal.pow(base2, exp2)).ceil()
                         },
                         effectBase(){
-                                if (!isBuyableActive("c")) return new Decimal(1)
+                                if (!isBuyableActive("c", 23)) return new Decimal(1)
 
                                 let base = Decimal.pow(10, 1572e3)
                                 return base
@@ -3958,7 +3978,7 @@ addLayer("c", {
                                 return Decimal.pow(base0, exp0).times(Decimal.pow(base1, exp1)).times(Decimal.pow(base2, exp2)).ceil()
                         },
                         effectBase(){
-                                if (!isBuyableActive("c")) return new Decimal(1)
+                                if (!isBuyableActive("c", 31)) return new Decimal(1)
 
                                 let base = new Decimal(1e50)
                                 return base
@@ -4130,6 +4150,7 @@ addLayer("c", {
                 if (layer == "c") player.c.time = 0
                 if (!getsReset("c", layer)) return
                 player.c.time = 0
+                player.c.times = 0
 
                 if (!hasMilestone("ach", 3)) {
                         //upgrades
@@ -4200,6 +4221,7 @@ addLayer("d", {
                 let x = new Decimal(2)
                 if (hasUpgrade("d", 25)) x = x.plus(1)
                 x = x.plus(tmp.b.challenges[22].rewardEffect)
+                x = x.plus(getGoalChallengeReward("00"))
                 return x
         },
         getGainMultPre(){
@@ -4218,6 +4240,7 @@ addLayer("d", {
 
                 x = x.times(tmp.c.buyables[22].effect)
                 x = x.times(tmp.d.buyables[11].effect)
+                x = x.times(tmp.goalsii.effect)
 
 
                 return x
@@ -4272,7 +4295,7 @@ addLayer("d", {
         },
         row: 3, // Row the layer is in on the tree (0 is the first row)
         hotkeys: [
-            {key: "d", description: "Reset for Doodles", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+            {key: "d", description: "D: Reset for Doodles", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
         ],
         layerShown(){return player.c.best.gt(5e10) || player.d.best.gt(0) || hasUnlockedPast("d")},
         prestigeButtonText(){
@@ -4288,7 +4311,7 @@ addLayer("d", {
                 let nextAt = ""
                 if (gain.lt(1e6) && (hasUnlockedPast("d") || player.d.best.neq(0))) {
                         nextAt = "<br>Next at " + format(nextnum) + " " + this.baseResource
-                        let ps = gain.div(player.c.time || 1)
+                        let ps = gain.div(player.d.time || 1)
 
                         if (ps.lt(1000/60)) nextAt += "<br>" + format(ps.times(60)) + "/m"
                         else nextAt += "<br>" + format(ps) + "/s"
@@ -4517,7 +4540,7 @@ addLayer("d", {
                                 return Decimal.pow(base0, exp0).times(Decimal.pow(base1, exp1)).times(Decimal.pow(base2, exp2)).ceil()
                         },
                         effectBase(){
-                                if (!isBuyableActive("d")) return new Decimal(1)
+                                if (!isBuyableActive("d", 11)) return new Decimal(1)
 
                                 let base = new Decimal(5)
                                 base = base.plus(tmp.d.buyables[13].effect)
@@ -4614,7 +4637,7 @@ addLayer("d", {
                                 return Decimal.pow(base0, exp0).times(Decimal.pow(base1, exp1)).times(Decimal.pow(base2, exp2)).ceil()
                         },
                         effectBase(){
-                                if (!isBuyableActive("d")) return new Decimal(0)
+                                if (!isBuyableActive("d", 12)) return new Decimal(0)
 
                                 let base = new Decimal(.01)
                                 return base
@@ -4710,7 +4733,7 @@ addLayer("d", {
                                 return Decimal.pow(base0, exp0).times(Decimal.pow(base1, exp1)).times(Decimal.pow(base2, exp2)).ceil()
                         },
                         effectBase(){
-                                if (!isBuyableActive("d")) return new Decimal(0)
+                                if (!isBuyableActive("d", 13)) return new Decimal(0)
 
                                 let base = new Decimal(.1)
                                 return base
@@ -4806,7 +4829,7 @@ addLayer("d", {
                                 return Decimal.pow(base0, exp0).times(Decimal.pow(base1, exp1)).times(Decimal.pow(base2, exp2)).ceil()
                         },
                         effectBase(){
-                                if (!isBuyableActive("d")) return new Decimal(1)
+                                if (!isBuyableActive("d", 21)) return new Decimal(1)
 
                                 let base = new Decimal(5)
                                 return base
@@ -4903,7 +4926,7 @@ addLayer("d", {
                                 return Decimal.pow(base0, exp0).times(Decimal.pow(base1, exp1)).times(Decimal.pow(base2, exp2)).ceil()
                         },
                         effectBase(){
-                                if (!isBuyableActive("d")) return new Decimal(1)
+                                if (!isBuyableActive("d", 22)) return new Decimal(1)
 
                                 let base = new Decimal(10)
                                 if (hasUpgrade("e", 25)) base = base.plus(1)
@@ -5021,7 +5044,7 @@ addLayer("d", {
                                 "challenges",
                         ],
                         unlocked(){
-                                return false || hasUnlockedPast("e")
+                                return false || hasUnlockedPast("f")
                         },
                 },
         },
@@ -5029,6 +5052,7 @@ addLayer("d", {
                 if (layer == "d") player.d.time = 0
                 if (!getsReset("d", layer)) return
                 player.d.time = 0
+                player.d.times = 0
 
                 if (!hasMilestone("ach", 5)) {
                         //upgrades
@@ -5097,6 +5121,7 @@ addLayer("e", {
         getGainExp(){
                 let x = new Decimal(2)
                 if (hasUpgrade("e", 25)) x = x.plus(1)
+                x = x.plus(getGoalChallengeReward("00"))
                 return x
         },
         getGainMultPre(){
@@ -5112,6 +5137,8 @@ addLayer("e", {
                         if (yet) x = x.times(tmp[LAYERS[i]].effect)
                         if (LAYERS[i] == "e") yet = true
                 }
+
+                x = x.times(tmp.goalsii.effect)
 
 
                 return x
@@ -5157,7 +5184,7 @@ addLayer("e", {
         },
         row: 4, // Row the layer is in on the tree (0 is the first row)
         hotkeys: [
-            {key: "e", description: "Reset for Eggs", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+            {key: "e", description: "E: Reset for Eggs", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
         ],
         layerShown(){return player.d.best.gt(5e10) || player.e.best.gt(0) || hasUnlockedPast("e")},
         prestigeButtonText(){
@@ -5173,7 +5200,7 @@ addLayer("e", {
                 let nextAt = ""
                 if (gain.lt(1e6) && (hasUnlockedPast("e") || player.e.best.neq(0))) {
                         nextAt = "<br>Next at " + format(nextnum) + " " + this.baseResource
-                        let ps = gain.div(player.c.time || 1)
+                        let ps = gain.div(player.e.time || 1)
 
                         if (ps.lt(1000/60)) nextAt += "<br>" + format(ps.times(60)) + "/m"
                         else nextAt += "<br>" + format(ps) + "/s"
@@ -5312,7 +5339,7 @@ addLayer("e", {
                                 "blank", 
                                 "buyables"],
                         unlocked(){
-                                return false || hasUnlockedPast("e")
+                                return false || hasUnlockedPast("f")
                         },
                 },
                 "Challenges": {
@@ -5330,7 +5357,7 @@ addLayer("e", {
                                 "challenges",
                         ],
                         unlocked(){
-                                return false || hasUnlockedPast("e")
+                                return false || hasUnlockedPast("f")
                         },
                 },
         },
@@ -5338,6 +5365,7 @@ addLayer("e", {
                 if (layer == "e") player.e.time = 0
                 if (!getsReset("e", layer)) return
                 player.e.time = 0
+                player.e.times = 0
 
                 if (!hasMilestone("ach", 6)) {
                         //upgrades
@@ -5351,9 +5379,243 @@ addLayer("e", {
                 player.e.best = new Decimal(0)
 
                 //buyables
-                let resetBuyables = [/*11, 12, 13*/]
+                let resetBuyables = [11, 12, 13, 21, 22, 23, 31, 32, 33]
                 for (let j = 0; j < resetBuyables.length; j++) {
+                        break
                         player.e.buyables[resetBuyables[j]] = new Decimal(0)
+                }
+
+        },
+})
+
+addLayer("f", {
+        name: "Features", // This is optional, only used in a few places, If absent it just uses the layer id.
+        symbol: "F", // This appears on the layer's node. Default is the id with the first letter capitalized
+        position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+        startData() { return {
+                unlocked: true,
+		points: new Decimal(0),
+                best: new Decimal(0),
+                total: new Decimal(0),
+                abtime: 0,
+                time: 0,
+                times: 0,
+                autotimes: 0,
+        }},
+        color: "#660099",
+        branches: ["e"],
+        requires: new Decimal(0), // Can be a function that takes requirement increases into account
+        resource: "Features", // Name of prestige currency
+        baseResource: "Eggs", // Name of resource prestige is based on
+        baseAmount() {return player.e.points.floor()}, // Get the current amount of baseResource
+        type: "custom", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+        getResetGain() {
+                let pts = this.baseAmount()
+                let pre = this.getGainMultPre()
+                let exp = this.getGainExp()
+                let pst = this.getGainMultPost()
+                let div = this.getBaseDiv()
+
+                let a = pts.div(div)
+                if (a.lt(1)) return new Decimal(0)
+
+                let ret = a.log10().times(pre).pow(exp).times(pst)
+
+                if (!hasUnlockedPast("f") && player.f.best.eq(0)) ret = ret.min(1)
+
+                ret = doPrestigeGainChange(ret, "f")
+
+                return ret.floor()
+        },
+        getBaseDiv(){
+                let x = new Decimal(1e11)
+                return x
+        },
+        getGainExp(){
+                let x = new Decimal(2)
+                x = x.plus(getGoalChallengeReward("00"))
+                return x
+        },
+        getGainMultPre(){
+                let x = new Decimal(1/3)
+                return x
+        },
+        getGainMultPost(){
+                let x = new Decimal(1)
+
+                let yet = false
+                for (let i = 0; i < LAYERS.length; i++){
+                        if (layers[LAYERS[i]].row == "side") continue
+                        if (yet) x = x.times(tmp[LAYERS[i]].effect)
+                        if (LAYERS[i] == "f") yet = true
+                }
+
+                x = x.times(tmp.goalsii.effect)
+
+
+                return x
+        },
+        effect(){
+                if (!isPrestigeEffectActive("f")) return new Decimal(1)
+
+                let amt = player.f.points
+
+                let ret = amt.times(4).plus(1)
+
+                if (ret.gt(10)) ret = ret.pow(2).div(10)
+                if (ret.gt(1000)) ret = ret.pow(2).div(1000)
+
+                ret = softcap(ret, "f_eff")
+
+                return ret
+        },
+        effectDescription(){
+                let eff = this.effect()
+                let a = "which buffs point and all previous prestige gain by "
+
+                return a + format(eff) + "."
+        },
+        update(diff){
+                let data = player.f
+
+                data.best = data.best.max(data.points)
+                if (false) {
+                        data.points = data.points.plus(this.getResetGain().times(diff))
+                        data.total = data.total.plus(this.getResetGain().times(diff))
+                        data.autotimes += diff
+                        if (data.autotimes > 3) data.autotimes = 3
+                        if (data.autotimes > 1) {
+                                data.autotimes += -1
+                                data.times ++
+                        }
+                }
+                if (false) {
+                        data.abtime += diff
+                        if (data.abtime > 10) data.abtime = 10
+                } else {
+                        data.abtime = 0
+                }
+                data.time += diff
+        },
+        row: 5, // Row the layer is in on the tree (0 is the first row)
+        hotkeys: [
+            {key: "f", description: "F: Reset for Features", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+        ],
+        layerShown(){return player.e.best.gt(5e13) || player.f.best.gt(0) || hasUnlockedPast("f")},
+        prestigeButtonText(){
+                let gain= this.getResetGain()
+                let pts = this.baseAmount()
+                let pre = this.getGainMultPre()
+                let exp = this.getGainExp()
+                let pst = this.getGainMultPost()
+                let div = this.getBaseDiv()
+
+                let nextnum = Decimal.pow(10, gain.plus(1).div(pst).root(exp).div(pre)).times(div).ceil()
+
+                let nextAt = ""
+                if (gain.lt(1e6) && (hasUnlockedPast("f") || player.f.best.neq(0))) {
+                        nextAt = "<br>Next at " + format(nextnum) + " " + this.baseResource
+                        let ps = gain.div(player.f.time || 1)
+
+                        if (ps.lt(1000/60)) nextAt += "<br>" + format(ps.times(60)) + "/m"
+                        else nextAt += "<br>" + format(ps) + "/s"
+                }
+
+                let a = "Reset for " + formatWhole(gain) + " " + this.resource
+
+                return a + nextAt
+        },
+        canReset(){
+                return this.getResetGain().gt(0) && player.f.time >= 5 && !false
+        },
+        upgrades: {
+                rows: 5,
+                cols: 5,
+                /*
+                11: {
+                        title: "Email",
+                        description: "Keep <b>C</b> and <b>D</b> upgrades, autobuy <b>C</b> buyables once per second, and multiply all autobuyer bulk by the number of goals",
+                        cost: new Decimal(10),
+                        unlocked(){ 
+                                return player.ach.achievements.includes("61") || hasUnlockedPast("e")
+                        }, //hasUpgrade("e", 11)
+                },
+                */
+        },
+        tabFormat: {
+                "Upgrades": {
+                        content: ["main-display",
+                                ["prestige-button", "", function (){ return false ? {'display': 'none'} : {}}],
+                                ["display-text",
+                                        function() {return shiftDown ? "Your best Features is " + format(player.f.best) : ""}],
+                                ["display-text",
+                                        function() {
+                                                if (hasUnlockedPast("f")) return ""
+                                                return "You have done " + formatWhole(player.f.times) + " Featur resets"
+                                        }
+                                ],
+                                ["display-text",
+                                        function() {
+                                                if (false) return "You are gaining " + format(tmp.f.getResetGain) + " Features per second"
+                                                return "There is a five second cooldown for prestiging (" + format(Math.max(0, 5-player.f.time)) + ")" 
+                                        },
+                                        //{"font-size": "20px"}
+                                ],
+                                "blank", 
+                                "upgrades"],
+                        unlocked(){
+                                return true
+                        },
+                },
+                "Buyables": {
+                        content: ["main-display",
+                                "blank", 
+                                "buyables"],
+                        unlocked(){
+                                return false || hasUnlockedPast("g")
+                        },
+                },
+                "Challenges": {
+                        content: [
+                                ["display-text",
+                                        function() {
+                                                return "Challenge completions are never reset, and you can bulk complete challenges"
+                                        }
+                                ],
+                                ["display-text",
+                                        function() {
+                                                return "You have completed " + formatWhole(totalChallengeComps("f")) + " Feature Challenges"
+                                        }
+                                ],
+                                "challenges",
+                        ],
+                        unlocked(){
+                                return false || hasUnlockedPast("g")
+                        },
+                },
+        },
+        doReset(layer){
+                if (layer == "f") player.f.time = 0
+                if (!getsReset("f", layer)) return
+                player.f.time = 0
+                player.f.times = 0
+
+                if (!false) {
+                        //upgrades
+                        let keep = []
+                        player.f.upgrades = filter(player.f.upgrades, keep)
+                }
+
+                //resources
+                player.f.points = new Decimal(0)
+                player.f.total = new Decimal(0)
+                player.f.best = new Decimal(0)
+
+                //buyables
+                let resetBuyables = [11, 12, 13, 21, 22, 23, 31, 32, 33]
+                for (let j = 0; j < resetBuyables.length; j++) {
+                        break
+                        player.f.buyables[resetBuyables[j]] = new Decimal(0)
                 }
 
         },
@@ -5368,6 +5630,7 @@ addLayer("ach", {
                 unlocked: true,
 		points: new Decimal(0),
                 best: new Decimal(0),
+                bestOverGoalsii: new Decimal(0),
                 total: new Decimal(0),
                 abtime: 0,
                 time: 0,
@@ -5410,6 +5673,7 @@ addLayer("ach", {
                 let data = player.ach
                 data.points = new Decimal(data.achievements.length).max(data.points)
                 data.best = data.best.max(data.points)
+                data.bestOverGoalsii = data.bestOverGoalsii.max(data.best)
         },
         row: "side", // Row the layer is in on the tree (0 is the first row)
         hotkeys: [
@@ -5899,7 +6163,7 @@ addLayer("ach", {
                                 return PROGRESSION_MILESTONES[53]()
                         },
                         tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[53]
+                                return PROGRESSION_MILESTONES_TEXT[53]
                         },
                 },
                 /*
@@ -6021,7 +6285,7 @@ addLayer("ach", {
                                 }],
                         ],
                         unlocked(){
-                                return player.ach.points.gte(28)
+                                return player.ach.points.gte(28) || player.goalsii.times > 0
                         },
                 },
         },
@@ -6033,10 +6297,807 @@ addLayer("ach", {
 
                 data.achievements = []
                 data.best = new Decimal(0)
+                data.points = new Decimal(0)
 
                 let keep = []
                 if (false) keep.push(4)
                 data.milestones = filter(data.milestones, keep)
+        },
+})
+
+addLayer("ghostONE", {
+        position: 1, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+        startData() { return {} },
+        color: "#CC66CC",
+        branches: [],
+        requires: new Decimal(0), // Can be a function that takes requirement increases into account
+        resource: "Medals", // Name of prestige currency
+        baseResource: "points", // Name of resource prestige is based on
+        baseAmount() {return new Decimal(0)}, // Get the current amount of baseResource
+        type: "custom", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+        getResetGain() {
+                return new Decimal(0)
+        },
+        row: "side", // Row the layer is in on the tree (0 is the first row)
+        hotkeys: [
+        ],
+        layerShown(){return "ghost"},
+        prestigeButtonText(){
+                return ""
+        },
+        canReset(){
+                return false
+        },
+        tabFormat: {
+                "Challenges": {
+                        content: [
+                                "main-display",
+                                "clickables",
+                        ],
+                        unlocked(){
+                                return false
+                        },
+                },
+        },
+})
+
+addLayer("goalsii", {
+        name: "Goals II", // This is optional, only used in a few places, If absent it just uses the layer id.
+        symbol: "✦", // This appears on the layer's node. Default is the id with the first letter capitalized
+        position: 2, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+        startData() { 
+                let a = {}
+                let b = {}
+                let c = {}
+                let d = {}
+                let l = ["00", "01", "02", "03", "04",
+                         "10", "11", "12", "13", "14",
+                         "20", "21", "22", "23", "24",
+                         "30", "31", "32", "33", "34",
+                         "40", "41", "42", "43", "44",
+                        ]
+                for (j in l){
+                        i = l[j]
+                        a[i] = new Decimal(0)
+                        b[i] = new Decimal(0)
+                        c[i] = new Decimal(0)
+                        d[i] = 0
+                }
+                return {
+                unlocked: true,
+                abtime: 0,
+                time: 0,
+                times: 0,
+                challtimes: d,
+                autotimes: 0,
+                currentChallenge: "00",
+                points: new Decimal(0),
+                best: new Decimal(0),
+                total: new Decimal(0),
+                tokens: {
+                        points: a,
+                        best: b,
+                        total: c,
+                },
+        }},
+        color: "#CC66CC",
+        branches: ["ach"],
+        requires: new Decimal(0), // Can be a function that takes requirement increases into account
+        resource: "Medals", // Name of prestige currency
+        baseResource: "points", // Name of resource prestige is based on
+        baseAmount() {return new Decimal(0)}, // Get the current amount of baseResource
+        type: "custom", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+        getResetGain() {
+                let a 
+                if (player.f.best.eq(0)) a = new Decimal(0)
+                else a = new Decimal(1)
+
+                let pre = this.getGainMultPre()
+                let exp = this.getGainExp()
+                let pst = this.getGainMultPost()
+
+                return a.times(pre).pow(exp).times(pst)
+        },
+        getGainExp(){
+                let x = new Decimal(1)
+                return x
+        },
+        getGainMultPre(){
+                let x = new Decimal(1)
+                return x
+        },
+        getGainMultPost(){
+                let x = new Decimal(1)
+                return x
+        },
+        effect(){
+                let amt = player.goalsii.points
+
+                let ret = amt.times(3).plus(1)
+
+                if (ret.gt(10)) ret = ret.pow(2).div(10)
+
+                return ret
+        },
+        effectDescription(){
+                let eff = this.effect()
+                let a = "which buffs point and all previous prestige gain by "
+
+                return a + format(eff) + "."
+        },
+        update(diff){
+                let data = player.goalsii
+
+                data.best = data.best.max(data.points)
+                for (i in data.tokens.best){
+                        data.tokens.best[i] = data.tokens.best[i].max(data.tokens.points[i])
+                }
+                if (false) {
+                        data.points = data.points.plus(this.getResetGain().times(diff))
+                        data.total = data.total.plus(this.getResetGain().times(diff))
+                        data.autotimes += diff
+                        if (data.autotimes > 3) data.autotimes = 3
+                        if (data.autotimes > 1) {
+                                data.autotimes += -1
+                                data.times ++
+                        }
+                }
+                if (false) {
+                        data.abtime += diff
+                        if (data.abtime > 10) data.abtime = 10
+                } else {
+                        data.abtime = 0
+                }
+                data.time += diff
+        },
+        row: "side", // Row the layer is in on the tree (0 is the first row)
+        hotkeys: [
+            //{key: "p", description: "Reset for prestige points", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+        ],
+        layerShown(){return player.goalsii.times > 0 || player.f.best.gt(0)},
+        prestigeButtonText(){
+                let b = ""
+                if (player.goalsii.times > 0) {
+                        b = "This will keep you in the same challenge <br>"
+                }
+
+                let gain = this.getResetGain()
+
+                let a = "Reset for " + formatWhole(gain) + " " + this.resource
+
+                return b + a
+        },
+        canReset(){
+                return player.f.best.gt(0)
+        },
+        achievements: {
+                rows: 8,
+                cols: 7,
+                /*
+                11: {
+                        name: "One",
+                        done(){
+                                return PROGRESSION_MILESTONES[1]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[1]
+                        },
+                },
+                */
+        },
+        clickables: {
+                rows: 5,
+                cols: 5,
+                11: {
+                        title(){
+                                if (player.goalsii.tokens.best["00"].gt(0)) return "<h3 style='color: #13ACDF'>00</h3>"
+                                return "<h3 style='color: #C03000'>00</h3>"
+                        },
+                        display(){
+                                let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["00"]) + "<br>"
+                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("00")) + " to<br>"
+                                let c = "all prior prestige gain exponents"
+                                return a + b + c
+                        },
+                        unlocked(){
+                                return player.goalsii.times > 0
+                        },
+                        canClick(){
+                                return tmp.goalsii.canReset || player.goalsii.currentChallenge != "00"
+                        },
+                        onClick(){
+                                return
+                        },
+                },
+                12: {
+                        title(){
+                                if (player.goalsii.tokens.best["01"].gt(0)) return "<h3 style='color: #13ACDF'>01</h3>"
+                                return "<h3 style='color: #C03000'>01</h3>"
+                        },
+                        display(){
+                                let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["01"]) + "<br>"
+                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("01")) + " to<br>"
+                                let c = "guess"
+                                return a + b + c
+                        },
+                        unlocked(){
+                                return player.goalsii.times > 0
+                        },
+                        canClick(){
+                                return tmp.goalsii.canReset && player.goalsii.tokens.best["00"].gt(0)
+                        },
+                        onClick(){
+                                return
+                        },
+                },
+                13: {
+                        title(){
+                                if (player.goalsii.tokens.best["02"].gt(0)) return "<h3 style='color: #13ACDF'>02</h3>"
+                                return "<h3 style='color: #C03000'>02</h3>"
+                        },
+                        display(){
+                                let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["02"]) + "<br>"
+                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("02")) + " to<br>"
+                                let c = "guess"
+                                return a + b + c
+                        },
+                        unlocked(){
+                                return player.goalsii.times > 0
+                        },
+                        canClick(){
+                                return tmp.goalsii.canReset && player.goalsii.tokens.best["01"].gt(0)
+                        },
+                        onClick(){
+                                return
+                        },
+                },
+                14: {
+                        title(){
+                                if (player.goalsii.tokens.best["03"].gt(0)) return "<h3 style='color: #13ACDF'>03</h3>"
+                                return "<h3 style='color: #C03000'>03</h3>"
+                        },
+                        display(){
+                                let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["02"]) + "<br>"
+                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("02")) + " to<br>"
+                                let c = "guess"
+                                return a + b + c
+                        },
+                        unlocked(){
+                                return player.goalsii.times > 0
+                        },
+                        canClick(){
+                                return tmp.goalsii.canReset && player.goalsii.tokens.best["02"].gt(0)
+                        },
+                        onClick(){
+                                return
+                        },
+                },
+                15: {
+                        title(){
+                                if (player.goalsii.tokens.best["04"].gt(0)) return "<h3 style='color: #13ACDF'>04</h3>"
+                                return "<h3 style='color: #C03000'>04</h3>"
+                        },
+                        display(){
+                                let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["02"]) + "<br>"
+                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("02")) + " to<br>"
+                                let c = "guess"
+                                return a + b + c
+                        },
+                        unlocked(){
+                                return player.goalsii.times > 0
+                        },
+                        canClick(){
+                                return tmp.goalsii.canReset && player.goalsii.tokens.best["03"].gt(0)
+                        },
+                        onClick(){
+                                return
+                        },
+                },
+                21: {
+                        title(){
+                                if (player.goalsii.tokens.best["10"].gt(0)) return "<h3 style='color: #13ACDF'>10</h3>"
+                                return "<h3 style='color: #C03000'>10</h3>"
+                        },
+                        display(){
+                                let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["10"]) + "<br>"
+                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("10")) + " to<br>"
+                                let c = "guess"
+                                return a + b + c
+                        },
+                        unlocked(){
+                                return player.goalsii.times > 0
+                        },
+                        canClick(){
+                                return tmp.goalsii.canReset && player.goalsii.tokens.best["00"].gt(0)
+                        },
+                        onClick(){
+                                return
+                        },
+                },
+                22: {
+                        title(){
+                                if (player.goalsii.tokens.best["11"].gt(0)) return "<h3 style='color: #13ACDF'>11</h3>"
+                                return "<h3 style='color: #C03000'>11</h3>"
+                        },
+                        display(){
+                                let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["11"]) + "<br>"
+                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("11")) + " to<br>"
+                                let c = "guess"
+                                return a + b + c
+                        },
+                        unlocked(){
+                                return player.goalsii.times > 0
+                        },
+                        canClick(){
+                                return tmp.goalsii.canReset && player.goalsii.tokens.best["10"].gt(0) && player.goalsii.tokens.best["01"].gt(0)
+                        },
+                        onClick(){
+                                return
+                        },
+                },
+                23: {
+                        title(){
+                                if (player.goalsii.tokens.best["12"].gt(0)) return "<h3 style='color: #13ACDF'>12</h3>"
+                                return "<h3 style='color: #C03000'>12</h3>"
+                        },
+                        display(){
+                                let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["12"]) + "<br>"
+                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("12")) + " to<br>"
+                                let c = "guess"
+                                return a + b + c
+                        },
+                        unlocked(){
+                                return player.goalsii.times > 0
+                        },
+                        canClick(){
+                                return tmp.goalsii.canReset && player.goalsii.tokens.best["11"].gt(0) && player.goalsii.tokens.best["02"].gt(0)
+                        },
+                        onClick(){
+                                return
+                        },
+                },
+                24: {
+                        title(){
+                                if (player.goalsii.tokens.best["13"].gt(0)) return "<h3 style='color: #13ACDF'>13</h3>"
+                                return "<h3 style='color: #C03000'>13</h3>"
+                        },
+                        display(){
+                                let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["13"]) + "<br>"
+                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("13")) + " to<br>"
+                                let c = "guess"
+                                return a + b + c
+                        },
+                        unlocked(){
+                                return player.goalsii.times > 0
+                        },
+                        canClick(){
+                                return tmp.goalsii.canReset && player.goalsii.tokens.best["12"].gt(0) && player.goalsii.tokens.best["03"].gt(0)
+                        },
+                        onClick(){
+                                return
+                        },
+                },
+                25: {
+                        title(){
+                                if (player.goalsii.tokens.best["14"].gt(0)) return "<h3 style='color: #13ACDF'>14</h3>"
+                                return "<h3 style='color: #C03000'>14</h3>"
+                        },
+                        display(){
+                                let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["14"]) + "<br>"
+                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("14")) + " to<br>"
+                                let c = "guess"
+                                return a + b + c
+                        },
+                        unlocked(){
+                                return player.goalsii.times > 0
+                        },
+                        canClick(){
+                                return tmp.goalsii.canReset && player.goalsii.tokens.best["13"].gt(0) && player.goalsii.tokens.best["04"].gt(0)
+                        },
+                        onClick(){
+                                return
+                        },
+                },
+                31: {
+                        title(){
+                                if (player.goalsii.tokens.best["20"].gt(0)) return "<h3 style='color: #13ACDF'>20</h3>"
+                                return "<h3 style='color: #C03000'>20</h3>"
+                        },
+                        display(){
+                                let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["20"]) + "<br>"
+                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("20")) + " to<br>"
+                                let c = "guess"
+                                return a + b + c
+                        },
+                        unlocked(){
+                                return player.goalsii.times > 0
+                        },
+                        canClick(){
+                                return tmp.goalsii.canReset && player.goalsii.tokens.best["10"].gt(0)
+                        },
+                        onClick(){
+                                return
+                        },
+                },
+                32: {
+                        title(){
+                                if (player.goalsii.tokens.best["21"].gt(0)) return "<h3 style='color: #13ACDF'>21</h3>"
+                                return "<h3 style='color: #C03000'>21</h3>"
+                        },
+                        display(){
+                                let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["21"]) + "<br>"
+                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("21")) + " to<br>"
+                                let c = "guess"
+                                return a + b + c
+                        },
+                        unlocked(){
+                                return player.goalsii.times > 0
+                        },
+                        canClick(){
+                                return tmp.goalsii.canReset && player.goalsii.tokens.best["20"].gt(0) && player.goalsii.tokens.best["11"].gt(0)
+                        },
+                        onClick(){
+                                return
+                        },
+                },
+                33: {
+                        title(){
+                                if (player.goalsii.tokens.best["22"].gt(0)) return "<h3 style='color: #13ACDF'>22</h3>"
+                                return "<h3 style='color: #C03000'>22</h3>"
+                        },
+                        display(){
+                                let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["22"]) + "<br>"
+                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("22")) + " to<br>"
+                                let c = "guess"
+                                return a + b + c
+                        },
+                        unlocked(){
+                                return player.goalsii.times > 0
+                        },
+                        canClick(){
+                                return tmp.goalsii.canReset && player.goalsii.tokens.best["21"].gt(0) && player.goalsii.tokens.best["12"].gt(0)
+                        },
+                        onClick(){
+                                return
+                        },
+                },
+                34: {
+                        title(){
+                                if (player.goalsii.tokens.best["23"].gt(0)) return "<h3 style='color: #13ACDF'>23</h3>"
+                                return "<h3 style='color: #C03000'>23</h3>"
+                        },
+                        display(){
+                                let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["23"]) + "<br>"
+                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("23")) + " to<br>"
+                                let c = "guess"
+                                return a + b + c
+                        },
+                        unlocked(){
+                                return player.goalsii.times > 0
+                        },
+                        canClick(){
+                                return tmp.goalsii.canReset && player.goalsii.tokens.best["22"].gt(0) && player.goalsii.tokens.best["13"].gt(0)
+                        },
+                        onClick(){
+                                return
+                        },
+                },
+                35: {
+                        title(){
+                                if (player.goalsii.tokens.best["24"].gt(0)) return "<h3 style='color: #13ACDF'>24</h3>"
+                                return "<h3 style='color: #C03000'>24</h3>"
+                        },
+                        display(){
+                                let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["24"]) + "<br>"
+                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("24")) + " to<br>"
+                                let c = "guess"
+                                return a + b + c
+                        },
+                        unlocked(){
+                                return player.goalsii.times > 0
+                        },
+                        canClick(){
+                                return tmp.goalsii.canReset && player.goalsii.tokens.best["23"].gt(0) && player.goalsii.tokens.best["14"].gt(0)
+                        },
+                        onClick(){
+                                return
+                        },
+                },
+                41: {
+                        title(){
+                                if (player.goalsii.tokens.best["30"].gt(0)) return "<h3 style='color: #13ACDF'>30</h3>"
+                                return "<h3 style='color: #C03000'>30</h3>"
+                        },
+                        display(){
+                                let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["30"]) + "<br>"
+                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("30")) + " to<br>"
+                                let c = "guess"
+                                return a + b + c
+                        },
+                        unlocked(){
+                                return player.goalsii.times > 0
+                        },
+                        canClick(){
+                                return tmp.goalsii.canReset && player.goalsii.tokens.best["20"].gt(0)
+                        },
+                        onClick(){
+                                return
+                        },
+                },
+                42: {
+                        title(){
+                                if (player.goalsii.tokens.best["31"].gt(0)) return "<h3 style='color: #13ACDF'>31</h3>"
+                                return "<h3 style='color: #C03000'>31</h3>"
+                        },
+                        display(){
+                                let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["31"]) + "<br>"
+                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("31")) + " to<br>"
+                                let c = "guess"
+                                return a + b + c
+                        },
+                        unlocked(){
+                                return player.goalsii.times > 0
+                        },
+                        canClick(){
+                                return tmp.goalsii.canReset && player.goalsii.tokens.best["30"].gt(0) && player.goalsii.tokens.best["21"].gt(0)
+                        },
+                        onClick(){
+                                return
+                        },
+                },
+                43: {
+                        title(){
+                                if (player.goalsii.tokens.best["32"].gt(0)) return "<h3 style='color: #13ACDF'>32</h3>"
+                                return "<h3 style='color: #C03000'>32</h3>"
+                        },
+                        display(){
+                                let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["32"]) + "<br>"
+                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("32")) + " to<br>"
+                                let c = "guess"
+                                return a + b + c
+                        },
+                        unlocked(){
+                                return player.goalsii.times > 0
+                        },
+                        canClick(){
+                                return tmp.goalsii.canReset && player.goalsii.tokens.best["31"].gt(0) && player.goalsii.tokens.best["22"].gt(0)
+                        },
+                        onClick(){
+                                return
+                        },
+                },
+                44: {
+                        title(){
+                                if (player.goalsii.tokens.best["33"].gt(0)) return "<h3 style='color: #13ACDF'>33</h3>"
+                                return "<h3 style='color: #C03000'>33</h3>"
+                        },
+                        display(){
+                                let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["33"]) + "<br>"
+                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("33")) + " to<br>"
+                                let c = "guess"
+                                return a + b + c
+                        },
+                        unlocked(){
+                                return player.goalsii.times > 0
+                        },
+                        canClick(){
+                                return tmp.goalsii.canReset && player.goalsii.tokens.best["32"].gt(0) && player.goalsii.tokens.best["23"].gt(0)
+                        },
+                        onClick(){
+                                return
+                        },
+                },
+                45: {
+                        title(){
+                                if (player.goalsii.tokens.best["34"].gt(0)) return "<h3 style='color: #13ACDF'>34</h3>"
+                                return "<h3 style='color: #C03000'>34</h3>"
+                        },
+                        display(){
+                                let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["34"]) + "<br>"
+                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("34")) + " to<br>"
+                                let c = "guess"
+                                return a + b + c
+                        },
+                        unlocked(){
+                                return player.goalsii.times > 0
+                        },
+                        canClick(){
+                                return tmp.goalsii.canReset && player.goalsii.tokens.best["33"].gt(0) && player.goalsii.tokens.best["24"].gt(0)
+                        },
+                        onClick(){
+                                return
+                        },
+                },
+                51: {
+                        title(){
+                                if (player.goalsii.tokens.best["40"].gt(0)) return "<h3 style='color: #13ACDF'>40</h3>"
+                                return "<h3 style='color: #C03000'>40</h3>"
+                        },
+                        display(){
+                                let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["40"]) + "<br>"
+                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("40")) + " to<br>"
+                                let c = "guess"
+                                return a + b + c
+                        },
+                        unlocked(){
+                                return player.goalsii.times > 0
+                        },
+                        canClick(){
+                                return tmp.goalsii.canReset && player.goalsii.tokens.best["30"].gt(0)
+                        },
+                        onClick(){
+                                return
+                        },
+                },
+                52: {
+                        title(){
+                                if (player.goalsii.tokens.best["41"].gt(0)) return "<h3 style='color: #13ACDF'>41</h3>"
+                                return "<h3 style='color: #C03000'>41</h3>"
+                        },
+                        display(){
+                                let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["41"]) + "<br>"
+                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("41")) + " to<br>"
+                                let c = "guess"
+                                return a + b + c
+                        },
+                        unlocked(){
+                                return player.goalsii.times > 0
+                        },
+                        canClick(){
+                                return tmp.goalsii.canReset && player.goalsii.tokens.best["40"].gt(0) && player.goalsii.tokens.best["31"].gt(0)
+                        },
+                        onClick(){
+                                return
+                        },
+                },
+                53: {
+                        title(){
+                                if (player.goalsii.tokens.best["42"].gt(0)) return "<h3 style='color: #13ACDF'>42</h3>"
+                                return "<h3 style='color: #C03000'>32</h3>"
+                        },
+                        display(){
+                                let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["42"]) + "<br>"
+                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("42")) + " to<br>"
+                                let c = "guess"
+                                return a + b + c
+                        },
+                        unlocked(){
+                                return player.goalsii.times > 0
+                        },
+                        canClick(){
+                                return tmp.goalsii.canReset && player.goalsii.tokens.best["41"].gt(0) && player.goalsii.tokens.best["32"].gt(0)
+                        },
+                        onClick(){
+                                return
+                        },
+                },
+                54: {
+                        title(){
+                                if (player.goalsii.tokens.best["43"].gt(0)) return "<h3 style='color: #13ACDF'>43</h3>"
+                                return "<h3 style='color: #C03000'>33</h3>"
+                        },
+                        display(){
+                                let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["43"]) + "<br>"
+                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("43")) + " to<br>"
+                                let c = "guess"
+                                return a + b + c
+                        },
+                        unlocked(){
+                                return player.goalsii.times > 0
+                        },
+                        canClick(){
+                                return tmp.goalsii.canReset && player.goalsii.tokens.best["42"].gt(0) && player.goalsii.tokens.best["33"].gt(0)
+                        },
+                        onClick(){
+                                return
+                        },
+                },
+                55: {
+                        title(){
+                                if (player.goalsii.tokens.best["44"].gt(0)) return "<h3 style='color: #13ACDF'>44</h3>"
+                                return "<h3 style='color: #C03000'>44</h3>"
+                        },
+                        display(){
+                                let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["44"]) + "<br>"
+                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("44")) + " to<br>"
+                                let c = "guess"
+                                return a + b + c
+                        },
+                        unlocked(){
+                                return player.goalsii.times > 0
+                        },
+                        canClick(){
+                                return tmp.goalsii.canReset && player.goalsii.tokens.best["43"].gt(0) && player.goalsii.tokens.best["34"].gt(0)
+                        },
+                        onClick(){
+                                return
+                        },
+                },
+        },
+        tabFormat: {
+                "Challenges": {
+                        content: [
+                                "main-display",
+                                ["display-text", "This resets Goals and all layers before and including F"],
+                                ["display-text", "Click a button below to enter a challenge", function (){ return !player.goalsii.best.gt(0) ? {'display': 'none'} : {}}],
+                                ["display-text", function() {
+                                        return "You are currently in challenge <h3 style = 'color: #CC00FF'>" + player.goalsii.currentChallenge + "</h3>"
+                                }],
+                                "prestige-button",
+                                "clickables",
+                        ],
+                        unlocked(){
+                                return true
+                        },
+                },
+                "Details": {
+                        content: [
+                                "main-display",
+                                ["display-text", `
+                                        Each challenge has a reward, and upon claiming said reward<br>
+                                        all prior unlocked main layers are totally reset, and goals are also reset<br>
+                                        <br>
+                                        There are 5 challenges, and the first is nothing<br>
+                                        <br>
+                                        Challenge AB means you are in Challenge A twice and Challenge B once<br>
+                                        <br>
+                                        Challenge table:<br>
+                                        00, 01, 02, 03, 04<br>
+                                        10, 11, 12, 13, 14<br>
+                                        20, 21, 22, 23, 24<br>
+                                        30, 31, 32, 33, 34<br>
+                                        40, 41, 42, 43, 44<br>
+                                        <br>
+                                        Each completion gives tokens<br>
+                                        The following only applies to layers unlocked before Goals II<br>
+                                        C0: Nothing<br>
+                                        C1: Raise all prestige gains ^.95 + C0<br>
+                                        C2: Raise point gain ^.9 (makes challenges harder) + C1<br>
+                                        C3: First column buyables do not give effects in the first n layers + C2<br>
+                                        C4: No buyables automatically give free levels to buyables in the first n layers + C3<br>
+                                        <br>
+                                        <br>
+                                        Completion of a challenge gives a token to that "upgrade" which gives an effect<br>
+                                        You get one token per reset, though multipliers will exist<br>
+                                        Rewards:<br> 00 tokens add to all prior prestige gain exponents .05*(x*Math.min(x + 3,100))<br>`],
+                        ],
+                        unlocked(){
+                                return player.goalsii.best.gt(0)
+                        },
+                },
+                /*
+                "Milestones": {
+                        content: [
+                                "main-display",
+                                "milestones",
+                        ],
+                        unlocked(){
+                                return false
+                        },
+                },
+                */
+        },
+        doReset(layer){
+                if (layers[layer].row != "side") return 
+                if (layer == "ach") return
+                if (layer == "goalsii") return
+
+                return //not done yet lol
+
+                let data = player.ach
+
+                data.achievements = []
+                data.best = new Decimal(0)
+
+                let keep = []
+                if (false) keep.push(4)
+                data.milestones = filter(data.milestones, keep)
+        },
+        onPrestige(gain){
+                let data = player.goalsii.tokens
+                let chall = player.goalsii.currentChallenge
+                data.points[chall] = data.points[chall].plus(gain)
+                data.total[chall]  = data.total[chall].plus(gain)
         },
 })
 
@@ -6060,7 +7121,7 @@ Challenge table: (will be clickables to enter/exit and to disp reward)<br>
 Each completion gives tokens<br>
 Only applies to layers unlocked before Goals II<br>
 C0: Nothing<br>
-C1: Raise all prestige gains ^.99 + C0<br>
+C1: Raise all prestige gains ^.95 + C0<br>
 C2: Raise point gain ^.9 (makes challenges harder) + C1<br>
 C3: First column buyables do not give effects + C2<br>
 C4: No buyables automatically give free levels to other buyables + C3<br>
