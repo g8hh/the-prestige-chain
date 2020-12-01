@@ -45,7 +45,7 @@ function sumValues(x) {
 	return x.reduce((a, b) => Decimal.add(a, b))
 }
 
-function format(decimal, precision=2) {
+function format(decimal, precision=2,) {
 	decimal = new Decimal(decimal)
 	if (isNaN(decimal.sign)||isNaN(decimal.layer)||isNaN(decimal.mag)) {
 		player.hasNaN = true;
@@ -224,8 +224,8 @@ function fixData(defaultData, newData) {
 			else
 				newData[item] = new Decimal(newData[item])
 		}
-		else if ((!!defaultData[item]) && (defaultData[item].constructor === Object)) {
-			if (newData[item] === undefined || (defaultData[item].constructor !== Object))
+		else if ((!!defaultData[item]) && (typeof defaultData[item] === "object")) {
+			if (newData[item] === undefined || (typeof defaultData[item] !== "object"))
 				newData[item] = defaultData[item]
 			else
 				fixData(defaultData[item], newData[item])
@@ -499,10 +499,11 @@ function buyUpgrade(layer, id) {
 }
 
 function buyUpg(layer, id) {
+	if (!tmp[layer].upgrades || !tmp[layer].upgrades[id]) return
+	let upg = tmp[layer].upgrades[id]
 	if (!player[layer].unlocked) return
 	if (!tmp[layer].upgrades[id].unlocked) return
 	if (player[layer].upgrades.includes(id)) return
-	let upg = tmp[layer].upgrades[id]
 	let cost = tmp[layer].upgrades[id].cost
 
 	if (upg.currencyInternalName){

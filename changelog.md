@@ -1,5 +1,66 @@
 # The Modding Tree changelog:
 
+### v2.2.7 11/30/20
+- Added autoUpgrade feature.
+- resource-display now shows resource gain per second if passiveGain is active.
+- Fixed formatting issues on some large numbers.
+- Better support for using classed objects in player and in layers/tmp.
+- Made hard resetting more effective.
+- Removed Herobrine from getStartClickables.
+
+### v2.2.6 11/30/20
+- Added goalDescription for challenges and made the new "canComplete" system the standard.
+- Another attempt to fix challenges not visually updating.
+- Fixed side layers not appearing.
+- Fixed getStartClickables again.
+
+### v2.2.5 11/29/20
+- Added features for overriding the displays and costs/goals of upgrades and challenges to make them fully custom.
+- best, total, and unlocked are always automatically added to layerData (but best and total will only display if you add them yourself).
+- Fixed getStartClickables.
+
+### v2.2.4 - 11/28/20
+- Added softcap and softcapPower features (for Normal layers)
+- Offline time limit and default max tick length were fixed (previously the limits were 1000x too large)
+- Added fixOldSaves.
+- You can use HTML in main-display.
+- Fixed a number of minor oddities.
+
+### v2.2.3 - 11/28/20
+- Layers will be highlighted if you can finish a challenge.
+- The "can complete challenge" color now overrides the "already completed" color.
+- Button nodes now work as side "layers".
+- Setting a tooltip to "" hides it entirely.
+
+### v2.2.2 - 11/22/20
+- Fixed right half of the screen being unclickable in some circumstances.
+- Fixed tree branches being offset.
+- Fix to lastSafeTab.
+
+### v2.2.1 - 11/7/20
+- Added a small highlight to layers you can meaningfully prestige on.
+- Added passiveGeneration and autoPrestige features to standardize prestige automation. (The old ways still work, but the new ones work better with other things)
+- Improved milestones visually a bit.
+- "best" and "total" are now only displayed if present in startData.
+- Fixed issues with things not updating visually. (Thank you to to Jacorb!)
+- Side layers and button nodes can now be highlighted.
+- Updated docs on the new tree-related features.
+
+## v2.2: Uprooted - 11/7/20
+- You can now embed a layer inside of a subtab or microtab!
+- Added support for hiding or reformatting the tree tab 
+- Added non-layer button nodes
+- Added shouldNotify to subtab/microtab buttons. (You can make them highlighted)
+- Added commas to large exponents.
+- Upgrades now only show "currently" if they have an effectDisplay (so not for constant effects).
+- Achievements are part of the default tab format.
+- NaN is now handled more intelligently.
+- Renamed files, and moved less relevant ones to another folder.
+- The "hide completed challenges" setting now only hides challenges at max completions.
+- Thank you to thepaperpilot for fixing errors in docs and improving the infobox appearance!
+- Many other minor fixes.
+
+
 ### v2.1.4 - 10/25/20
 - Added an infobox component. Thank you to thepaperpilot for this contribution!
 - Layer type is now optional, and defaults to "none".

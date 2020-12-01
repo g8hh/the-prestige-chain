@@ -174,10 +174,11 @@ Key:
                 Suggestion: use addPoints(layer, gain) when generating points to automatically
                 update the best and total amounts.
 
-- automate(): **optional**, this function is called every game tick, after production. Use it to activate any
-               autobuyers or auto-resets or similar on this layer, if appropriate. 
+- autoUpgrade: **optional**, a boolean value, if true, the game will attempt to buy this layer's upgrades every tick. Defaults to false.
 
-- resetsNothing: **optional**, returns true if this layer shouldn't trigger any resets when you prestige.
+- automate(): **optional**. This function is called every game tick, after production. Use it to activate automation things that aren't otherwise supported. 
+
+- resetsNothing: **optional**. Returns true if this layer shouldn't trigger any resets when you prestige.
 
 - increaseUnlockOrder: **optional**, an array of layer ids. When this layer is unlocked for the first time, the unlockOrder value
               for any not-yet-unlocked layers in this list increases. This can be used to make them harder to unlock.

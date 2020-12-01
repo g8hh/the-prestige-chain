@@ -11,8 +11,8 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "2.1.3.1",
-	name: " We should have thought of this sooner!",
+	num: "2.2.7",
+	name: "Uprooted",
 }
 
 // If you add new functions anywhere inside of a layer, and those functions have an effect when called, add them here.
@@ -63,4 +63,9 @@ function isEndgame() {
 // You can change this if you have things that can be messed up by long tick lengths
 function maxTickLength() {
 	return(3600000) // Default is 1 hour which is just arbitrarily large
+}
+
+// Use this if you need to undo inflation from an older version. If the version is older than the version that fixed the issue,
+// you can cap their current resources with this.
+function fixOldSave(oldVersion){
 }

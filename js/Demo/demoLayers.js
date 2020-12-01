@@ -12,6 +12,7 @@ addLayer("c", {
             beep: false,
         }},
         color: "#4BDC13",
+        autoUpgrade: true,
         requires: new Decimal(10), // Can be a function that takes requirement increases into account
         resource: "lollipops", // Name of prestige currency
         baseResource: "candies", // Name of resource prestige is based on
@@ -20,6 +21,10 @@ addLayer("c", {
         exponent: 0.5, // Prestige currency exponent
         base: 5, // Only needed for static layers, base of the formula (b^(x^exp))
         roundUpCost: false, // True if the cost needs to be rounded up (use when baseResource is static?)
+
+        // For normal layers, gain beyond [softcap] points is put to the [softcapPower]th power
+        softcap: new Decimal(1e100), 
+        softcapPower: new Decimal(0.5), 
         canBuyMax() {}, // Only needed for static layers with buy max
         gainMult() { // Calculate the multiplier for main currency from bonuses
             mult = new Decimal(1)

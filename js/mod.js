@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".2.9 Ideas are a Dime a Dozen",
+	num: ".2.9.1 Ideas are a Dime a Dozen",
 	name: "",
 }
 
@@ -173,7 +173,7 @@ function nextMilestone(){
 
 // Display extra things at the top of the page
 var displayThings = [
-	"This may be incorrect: Last updated 9:15 AM pacific 12.01",
+	"This may be incorrect: Last updated 10:45 AM pacific 12.01",
 	function (){
 		return "Endgame: Five 01 tokens " + (player.goalsii.tokens.best["01"].gt(4) ? "(done)" : "(not done)")
 		/*
