@@ -6496,8 +6496,9 @@ addLayer("goalsii", {
                 let ret = amt.times(3).plus(1)
 
                 if (ret.gt(1e1))  ret = ret.pow(2).div(1e1)
-                if (ret.gt(1e3))  ret = ret.pow(2).div(1e3)
-                if (ret.gt(1e6))  ret = ret.pow(2).div(1e6)
+                if (ret.gt(1e2))  ret = ret.pow(2).div(1e2)
+                if (ret.gt(1e4))  ret = ret.pow(2).div(1e4)
+                if (ret.gt(1e8))  ret = ret.pow(2).div(1e8)
 
                 if (hasMilestone("goalsii", 6)) ret = ret.times(2)
 
@@ -6660,7 +6661,7 @@ addLayer("goalsii", {
                         },
                         display(){
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["02"]) + "<br>"
-                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + format(getGoalChallengeReward("02")) + " to<br>"
+                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + format(getGoalChallengeReward("02"), 4) + " to<br>"
                                 let c = "Doodle effect exponent"
                                 return a + b + c
                         },
@@ -6686,7 +6687,7 @@ addLayer("goalsii", {
                         },
                         display(){
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["03"]) + "<br>"
-                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("03")) + " to<br>"
+                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + format(getGoalChallengeReward("03"), 4) + " to<br>"
                                 let c = "guess"
                                 return a + b + c
                         },
@@ -6764,7 +6765,7 @@ addLayer("goalsii", {
                         },
                         display(){
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["11"]) + "<br>"
-                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("11")) + " to<br>"
+                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + format(getGoalChallengeReward("11"), 4) + " to<br>"
                                 let c = "guess"
                                 return a + b + c
                         },
@@ -7396,8 +7397,8 @@ addLayer("goalsii", {
                                         C0: Nothing<br>
                                         C1: Raise all prestige gains ^.985 + C0<br>
                                         C2: Raise point gain ^.9 (makes challenges harder) + C1<br>
-                                        C3: First column buyables do not give effects in the first n layers + C2<br>
-                                        C4: No buyables automatically give free levels to buyables in the first n layers + C3<br>
+                                        C3: First column buyables do not give effects in the first n layers + 2xC2<br>
+                                        C4: No buyables automatically give free levels to buyables in the first n layers + 2xC3<br>
                                         <br>
                                         You can only enter challenges if you can medal reset, or if you aren't in challenge 00,<br>
                                         and want to enter challenge 00 to avoid softlocking <br>

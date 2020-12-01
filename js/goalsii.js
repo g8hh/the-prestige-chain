@@ -119,13 +119,15 @@ function getGoalChallengeReward(challnum){
 }
 
 function getChallengeDepth(chall){
-        chall = String(chall)
+        chall = Number(chall)
         if (chall > 4) return 0
         let c = player.goalsii.currentChallenge
         let a = 0
         if (c.slice(0, 1) == chall) a += 2
         if (c.slice(1, 2) == chall) a += 1
-        return a + getChallengeDepth(chall + 1)
+        a = a + getChallengeDepth(chall + 1)
+        if (chall > 2) a = a + getChallengeDepth(chall + 1)
+        return a
 }
 
 
