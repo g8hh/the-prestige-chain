@@ -35,7 +35,10 @@ var GOALS_REWARD_FUNCTIONS = {
                 return new Decimal(0)
         },
         "10"(x){
-                return new Decimal(0)
+                let ret = x.div(10)
+                if (ret.gt(1)) ret = ret.div(1).log10().plus(1)
+                if (ret.gt(2)) ret = ret.div(2).log10().plus(2)
+                return ret.times(10).floor()
         },
         "11"(x){
                 return new Decimal(0)

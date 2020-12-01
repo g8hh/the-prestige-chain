@@ -525,6 +525,16 @@ var EXTRA_FREE_BUYABLE_DATA = {
                         },
                 },
         },
+        d22: {
+                1: {
+                        active: function(){
+                                return true
+                        },
+                        amount: function(){
+                                return getGoalChallengeReward("10")
+                        }
+                }
+        },
 }
 
 var CURRENT_BUYABLE_EXTRAS = {}

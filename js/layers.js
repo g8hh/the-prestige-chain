@@ -181,7 +181,7 @@ function getABSpeed(layer){
 function doPrestigeGainChange(amt, layer){
         if (layer == "a" && inChallenge("c", 12)) amt = amt.sqrt()
         if (["a", "b", "c", "d", "e", "f"].includes(layer)) {
-                amt = amt.pow(Decimal.pow(.95, getChallengeDepth(1)))
+                amt = amt.pow(Decimal.pow(.985, getChallengeDepth(1)))
         }
         return amt
 }
@@ -1557,6 +1557,7 @@ addLayer("a", {
                         let keep = []
                         if (hasUpgrade("b", 13)) keep.push(11,12,13,14,15,21,22,23,24,25)
                         if (hasUpgrade("b", 14)) keep.push(31,32,33,34,35,41,42,43,44,45)
+                        if (hasMilestone("goalsii", 2)) keep.push(23)
                         if (!hasUpgrade("c", 11)) player.a.upgrades = filter(player.a.upgrades, keep)
                 }
 
@@ -2010,6 +2011,7 @@ addLayer("b", {
                                 let cost = this.cost()
                                 if (!this.canAfford()) return
                                 player.b.buyables[11] = player.b.buyables[11].plus(1)
+                                if (hasUpgrade("b", 52) || hasMilestone("goalsii", 3)) return 
                                 player.b.points = player.b.points.minus(cost)
                         },
                         buyMax(maximum){
@@ -2034,7 +2036,7 @@ addLayer("b", {
 
                                 player.b.buyables[11] = player.b.buyables[11].plus(diff)
 
-                                if (hasUpgrade("b", 52) || diff.eq(0)) return 
+                                if (hasUpgrade("b", 52) || hasMilestone("goalsii", 3) || diff.eq(0)) return 
                                 player.b.points = player.b.points.sub(this.cost(-1)).max(0)
                         },
                         unlocked(){ 
@@ -2113,6 +2115,7 @@ addLayer("b", {
                                 let cost = this.cost()
                                 if (!this.canAfford()) return
                                 player.b.buyables[12] = player.b.buyables[12].plus(1)
+                                if (hasUpgrade("b", 52) || hasMilestone("goalsii", 3)) return 
                                 player.b.points = player.b.points.minus(cost)
                         },
                         buyMax(maximum){
@@ -2137,7 +2140,7 @@ addLayer("b", {
                                 
                                 player.b.buyables[12] = player.b.buyables[12].plus(diff)
 
-                                if (hasUpgrade("b", 52) || diff.eq(0)) return 
+                                if (hasUpgrade("b", 52) || hasMilestone("goalsii", 3) || diff.eq(0)) return 
                                 player.b.points = player.b.points.sub(this.cost(-1)).max(0)
                         },
                         unlocked(){ 
@@ -2208,6 +2211,7 @@ addLayer("b", {
                                 let cost = this.cost()
                                 if (!this.canAfford()) return
                                 player.b.buyables[13] = player.b.buyables[13].plus(1)
+                                if (hasUpgrade("b", 52) || hasMilestone("goalsii", 3)) return 
                                 player.b.points = player.b.points.minus(cost)
                         },
                         buyMax(maximum){
@@ -2232,7 +2236,7 @@ addLayer("b", {
                                 
                                 player.b.buyables[13] = player.b.buyables[13].plus(diff)
 
-                                if (hasUpgrade("b", 52) || diff.eq(0)) return 
+                                if (hasUpgrade("b", 52) || hasMilestone("goalsii", 3) || diff.eq(0)) return 
                                 player.b.points = player.b.points.sub(this.cost(-1)).max(0)
                         },
                         unlocked(){ 
@@ -2303,6 +2307,7 @@ addLayer("b", {
                                 let cost = this.cost()
                                 if (!this.canAfford()) return
                                 player.b.buyables[21] = player.b.buyables[21].plus(1)
+                                if (hasUpgrade("b", 52) || hasMilestone("goalsii", 3)) return 
                                 player.b.points = player.b.points.minus(cost)
                         },
                         buyMax(maximum){
@@ -2327,7 +2332,7 @@ addLayer("b", {
                                 
                                 player.b.buyables[21] = player.b.buyables[21].plus(diff)
 
-                                if (hasUpgrade("b", 52) || diff.eq(0)) return 
+                                if (hasUpgrade("b", 52) || hasMilestone("goalsii", 3) || diff.eq(0)) return 
                                 player.b.points = player.b.points.sub(this.cost(-1)).max(0)
                         },
                         unlocked(){ 
@@ -2398,6 +2403,7 @@ addLayer("b", {
                                 let cost = this.cost()
                                 if (!this.canAfford()) return
                                 player.b.buyables[22] = player.b.buyables[22].plus(1)
+                                if (hasUpgrade("b", 52) || hasMilestone("goalsii", 3)) return 
                                 player.b.points = player.b.points.minus(cost)
                         },
                         buyMax(maximum){
@@ -2422,7 +2428,7 @@ addLayer("b", {
                                 
                                 player.b.buyables[22] = player.b.buyables[22].plus(diff)
 
-                                if (hasUpgrade("b", 52) || diff.eq(0)) return 
+                                if (hasUpgrade("b", 52) || hasMilestone("goalsii", 3) || diff.eq(0)) return 
                                 player.b.points = player.b.points.sub(this.cost(-1)).max(0)
                         },
                         unlocked(){ 
@@ -2493,6 +2499,7 @@ addLayer("b", {
                                 let cost = this.cost()
                                 if (!this.canAfford()) return
                                 player.b.buyables[23] = player.b.buyables[23].plus(1)
+                                if (hasUpgrade("b", 52) || hasMilestone("goalsii", 3)) return 
                                 player.b.points = player.b.points.minus(cost)
                         },
                         buyMax(maximum){
@@ -2517,7 +2524,7 @@ addLayer("b", {
                                 
                                 player.b.buyables[23] = player.b.buyables[23].plus(diff)
 
-                                if (hasUpgrade("b", 52) || diff.eq(0)) return 
+                                if (hasUpgrade("b", 52) || hasMilestone("goalsii", 3) || diff.eq(0)) return 
                                 player.b.points = player.b.points.sub(this.cost(-1)).max(0)
                         },
                         unlocked(){ 
@@ -2587,6 +2594,7 @@ addLayer("b", {
                                 let cost = this.cost()
                                 if (!this.canAfford()) return
                                 player.b.buyables[31] = player.b.buyables[31].plus(1)
+                                if (hasUpgrade("b", 52) || hasMilestone("goalsii", 3)) return 
                                 player.b.points = player.b.points.minus(cost)
                         },
                         buyMax(maximum){
@@ -2611,7 +2619,7 @@ addLayer("b", {
                                 
                                 player.b.buyables[31] = player.b.buyables[31].plus(diff)
 
-                                if (hasUpgrade("b", 52) || diff.eq(0)) return 
+                                if (hasUpgrade("b", 52) || hasMilestone("goalsii", 3) || diff.eq(0)) return 
                                 player.b.points = player.b.points.sub(this.cost(-1)).max(0)
                         },
                         unlocked(){ 
@@ -2682,6 +2690,7 @@ addLayer("b", {
                                 let cost = this.cost()
                                 if (!this.canAfford()) return
                                 player.b.buyables[32] = player.b.buyables[32].plus(1)
+                                if (hasUpgrade("b", 52) || hasMilestone("goalsii", 3)) return 
                                 player.b.points = player.b.points.minus(cost)
                         },
                         buyMax(maximum){
@@ -2706,7 +2715,7 @@ addLayer("b", {
                                 
                                 player.b.buyables[32] = player.b.buyables[32].plus(diff)
 
-                                if (hasUpgrade("b", 52) || diff.eq(0)) return 
+                                if (hasUpgrade("b", 52) || hasMilestone("goalsii", 3) || diff.eq(0)) return 
                                 player.b.points = player.b.points.sub(this.cost(-1)).max(0)
                         },
                         unlocked(){ 
@@ -2777,6 +2786,7 @@ addLayer("b", {
                                 let cost = this.cost()
                                 if (!this.canAfford()) return
                                 player.b.buyables[33] = player.b.buyables[33].plus(1)
+                                if (hasUpgrade("b", 52) || hasMilestone("goalsii", 3)) return 
                                 player.b.points = player.b.points.minus(cost)
                         },
                         buyMax(maximum){
@@ -2801,7 +2811,7 @@ addLayer("b", {
                                 
                                 player.b.buyables[33] = player.b.buyables[33].plus(diff)
 
-                                if (hasUpgrade("b", 52) || diff.eq(0)) return 
+                                if (hasUpgrade("b", 52) || hasMilestone("goalsii", 3) || diff.eq(0)) return 
                                 player.b.points = player.b.points.sub(this.cost(-1)).max(0)
                         },
                         unlocked(){ 
@@ -2967,6 +2977,7 @@ addLayer("b", {
                         let keep = []
                         if (hasUpgrade("c", 12)) keep.push(11,12,13,14,15,21,22,23,24,25,31,32,33,34,35)
                         if (hasUpgrade("c", 15)) keep.push(41,42,43,44,45)
+                        if (hasMilestone("goalsii", 3)) keep.push(22)
                         if (!hasUpgrade("d", 11)) player.b.upgrades = filter(player.b.upgrades, keep)
                 }
 
@@ -3422,7 +3433,7 @@ addLayer("c", {
                                 let cost = this.cost()
                                 if (!this.canAfford()) return
                                 player.c.buyables[11] = player.c.buyables[11].plus(1)
-                                if (hasUpgrade("e", 12)) return
+                                if (hasUpgrade("e", 12) || hasMilestone("goalsii", 4)) return
                                 player.c.points = player.c.points.minus(cost)
                         },
                         buyMax(maximum){
@@ -3447,7 +3458,7 @@ addLayer("c", {
 
                                 player.c.buyables[11] = player.c.buyables[11].plus(diff)
 
-                                if (hasUpgrade("e", 12) || diff.eq(0)) return 
+                                if (hasUpgrade("e", 12) || hasMilestone("goalsii", 4) || diff.eq(0)) return 
                                 player.c.points = player.c.points.sub(this.cost(-1)).max(0)
                         },
                         unlocked(){ 
@@ -3519,7 +3530,7 @@ addLayer("c", {
                                 let cost = this.cost()
                                 if (!this.canAfford()) return
                                 player.c.buyables[12] = player.c.buyables[12].plus(1)
-                                if (hasUpgrade("e", 12)) return
+                                if (hasUpgrade("e", 12) || hasMilestone("goalsii", 4)) return
                                 player.c.points = player.c.points.minus(cost)
                         },
                         buyMax(maximum){
@@ -3544,7 +3555,7 @@ addLayer("c", {
 
                                 player.c.buyables[12] = player.c.buyables[12].plus(diff)
 
-                                if (hasUpgrade("e", 12) || diff.eq(0)) return 
+                                if (hasUpgrade("e", 12) || hasMilestone("goalsii", 4) || diff.eq(0)) return 
                                 player.c.points = player.c.points.sub(this.cost(-1)).max(0)
                         },
                         unlocked(){ 
@@ -3618,7 +3629,7 @@ addLayer("c", {
                                 let cost = this.cost()
                                 if (!this.canAfford()) return
                                 player.c.buyables[13] = player.c.buyables[13].plus(1)
-                                if (hasUpgrade("e", 12)) return
+                                if (hasUpgrade("e", 12) || hasMilestone("goalsii", 4)) return
                                 player.c.points = player.c.points.minus(cost)
                         },
                         buyMax(maximum){
@@ -3643,7 +3654,7 @@ addLayer("c", {
 
                                 player.c.buyables[13] = player.c.buyables[13].plus(diff)
 
-                                if (hasUpgrade("e", 12) || diff.eq(0)) return 
+                                if (hasUpgrade("e", 12) || hasMilestone("goalsii", 4) || diff.eq(0)) return 
                                 player.c.points = player.c.points.sub(this.cost(-1)).max(0)
                         },
                         unlocked(){ 
@@ -3716,7 +3727,7 @@ addLayer("c", {
                                 let cost = this.cost()
                                 if (!this.canAfford()) return
                                 player.c.buyables[21] = player.c.buyables[21].plus(1)
-                                if (hasUpgrade("e", 12)) return
+                                if (hasUpgrade("e", 12) || hasMilestone("goalsii", 4)) return
                                 player.c.points = player.c.points.minus(cost)
                         },
                         buyMax(maximum){
@@ -3741,7 +3752,7 @@ addLayer("c", {
 
                                 player.c.buyables[21] = player.c.buyables[21].plus(diff)
 
-                                if (hasUpgrade("e", 12) || diff.eq(0)) return 
+                                if (hasUpgrade("e", 12) || hasMilestone("goalsii", 4) || diff.eq(0)) return 
                                 player.c.points = player.c.points.sub(this.cost(-1)).max(0)
                         },
                         unlocked(){ 
@@ -3814,7 +3825,7 @@ addLayer("c", {
                                 let cost = this.cost()
                                 if (!this.canAfford()) return
                                 player.c.buyables[22] = player.c.buyables[22].plus(1)
-                                if (hasUpgrade("e", 12)) return
+                                if (hasUpgrade("e", 12) || hasMilestone("goalsii", 4)) return
                                 player.c.points = player.c.points.minus(cost)
                         },
                         buyMax(maximum){
@@ -3839,7 +3850,7 @@ addLayer("c", {
 
                                 player.c.buyables[22] = player.c.buyables[22].plus(diff)
 
-                                if (hasUpgrade("e", 12) || diff.eq(0)) return 
+                                if (hasUpgrade("e", 12) || hasMilestone("goalsii", 4) || diff.eq(0)) return 
                                 player.c.points = player.c.points.sub(this.cost(-1)).max(0)
                         },
                         unlocked(){ 
@@ -3910,7 +3921,7 @@ addLayer("c", {
                                 let cost = this.cost()
                                 if (!this.canAfford()) return
                                 player.c.buyables[23] = player.c.buyables[23].plus(1)
-                                if (hasUpgrade("e", 12)) return 
+                                if (hasUpgrade("e", 12) || hasMilestone("goalsii", 4)) return 
                                 player.c.points = player.c.points.minus(cost)
                         },
                         buyMax(maximum){
@@ -3935,7 +3946,7 @@ addLayer("c", {
 
                                 player.c.buyables[23] = player.c.buyables[23].plus(diff)
 
-                                if (hasUpgrade("e", 12) || diff.eq(0)) return 
+                                if (hasUpgrade("e", 12) || hasMilestone("goalsii", 4) || diff.eq(0)) return 
                                 player.c.points = player.c.points.sub(this.cost(-1)).max(0)
                         },
                         unlocked(){ 
@@ -4008,7 +4019,7 @@ addLayer("c", {
                                 let cost = this.cost()
                                 if (!this.canAfford()) return
                                 player.c.buyables[31] = player.c.buyables[31].plus(1)
-                                if (hasUpgrade("e", 12)) return 
+                                if (hasUpgrade("e", 12) || hasMilestone("goalsii", 4)) return 
                                 player.c.points = player.c.points.minus(cost)
                         },
                         buyMax(maximum){
@@ -4033,7 +4044,7 @@ addLayer("c", {
 
                                 player.c.buyables[31] = player.c.buyables[31].plus(diff)
 
-                                if (hasUpgrade("e", 12) || diff.eq(0)) return 
+                                if (hasUpgrade("e", 12) || hasMilestone("goalsii", 4) || diff.eq(0)) return 
                                 player.c.points = player.c.points.sub(this.cost(-1)).max(0)
                         },
                         unlocked(){ 
@@ -4161,6 +4172,7 @@ addLayer("c", {
                         //upgrades
                         let keep = []
                         if (hasUpgrade("d", 11)) keep.push(11,12,13,14,15,21,22,23,24,25,31,32,33,34,35)
+                        if (hasMilestone("goalsii", 4)) keep.push(22)
                         if (!hasUpgrade("e", 11)) player.c.upgrades = filter(player.c.upgrades, keep)
                 }
 
@@ -4570,7 +4582,7 @@ addLayer("d", {
                                 let cost = this.cost()
                                 if (!this.canAfford()) return
                                 player.d.buyables[11] = player.d.buyables[11].plus(1)
-                                if (false) return
+                                if (hasMilestone("goalsii", 5)) return
                                 player.d.points = player.d.points.minus(cost)
                         },
                         buyMax(maximum){
@@ -4595,7 +4607,7 @@ addLayer("d", {
 
                                 player.d.buyables[11] = player.d.buyables[11].plus(diff)
 
-                                if (false || diff.eq(0)) return 
+                                if (hasMilestone("goalsii", 5) || diff.eq(0)) return 
                                 player.d.points = player.d.points.sub(this.cost(-1)).max(0)
                         },
                         unlocked(){ 
@@ -4666,7 +4678,7 @@ addLayer("d", {
                                 let cost = this.cost()
                                 if (!this.canAfford()) return
                                 player.d.buyables[12] = player.d.buyables[12].plus(1)
-                                if (false) return
+                                if (hasMilestone("goalsii", 5)) return
                                 player.d.points = player.d.points.minus(cost)
                         },
                         buyMax(maximum){
@@ -4691,7 +4703,7 @@ addLayer("d", {
 
                                 player.d.buyables[12] = player.d.buyables[12].plus(diff)
 
-                                if (false || diff.eq(0)) return 
+                                if (hasMilestone("goalsii", 5) || diff.eq(0)) return 
                                 player.d.points = player.d.points.sub(this.cost(-1)).max(0)
                         },
                         unlocked(){ 
@@ -4762,7 +4774,7 @@ addLayer("d", {
                                 let cost = this.cost()
                                 if (!this.canAfford()) return
                                 player.d.buyables[13] = player.d.buyables[13].plus(1)
-                                if (false) return
+                                if (hasMilestone("goalsii", 5)) return
                                 player.d.points = player.d.points.minus(cost)
                         },
                         buyMax(maximum){
@@ -4787,7 +4799,7 @@ addLayer("d", {
 
                                 player.d.buyables[13] = player.d.buyables[13].plus(diff)
 
-                                if (false || diff.eq(0)) return 
+                                if (hasMilestone("goalsii", 5) || diff.eq(0)) return 
                                 player.d.points = player.d.points.sub(this.cost(-1)).max(0)
                         },
                         unlocked(){ 
@@ -4859,7 +4871,7 @@ addLayer("d", {
                                 let cost = this.cost()
                                 if (!this.canAfford()) return
                                 player.d.buyables[21] = player.d.buyables[21].plus(1)
-                                if (false) return
+                                if (hasMilestone("goalsii", 5)) return
                                 player.d.points = player.d.points.minus(cost)
                         },
                         buyMax(maximum){
@@ -4884,7 +4896,7 @@ addLayer("d", {
 
                                 player.d.buyables[21] = player.d.buyables[21].plus(diff)
 
-                                if (false || diff.eq(0)) return 
+                                if (hasMilestone("goalsii", 5) || diff.eq(0)) return 
                                 player.d.points = player.d.points.sub(this.cost(-1)).max(0)
                         },
                         unlocked(){ 
@@ -4957,7 +4969,7 @@ addLayer("d", {
                                 let cost = this.cost()
                                 if (!this.canAfford()) return
                                 player.d.buyables[22] = player.d.buyables[22].plus(1)
-                                if (false) return
+                                if (hasMilestone("goalsii", 5)) return
                                 player.d.points = player.d.points.minus(cost)
                         },
                         buyMax(maximum){
@@ -4982,7 +4994,7 @@ addLayer("d", {
 
                                 player.d.buyables[22] = player.d.buyables[22].plus(diff)
 
-                                if (false || diff.eq(0)) return 
+                                if (hasMilestone("goalsii", 5) || diff.eq(0)) return 
                                 player.d.points = player.d.points.sub(this.cost(-1)).max(0)
                         },
                         unlocked(){ 
@@ -5062,6 +5074,7 @@ addLayer("d", {
                 if (!hasMilestone("ach", 5)) {
                         //upgrades
                         let keep = []
+                        if (hasMilestone("goalsii", 5)) keep.push(22)
                         if (!hasUpgrade("e", 11)) player.d.upgrades = filter(player.d.upgrades, keep)
                 }
 
@@ -5344,7 +5357,7 @@ addLayer("e", {
                                 "blank", 
                                 "buyables"],
                         unlocked(){
-                                return false || hasUnlockedPast("f")
+                                return false || hasUnlockedPast("g")
                         },
                 },
                 "Challenges": {
@@ -5362,7 +5375,7 @@ addLayer("e", {
                                 "challenges",
                         ],
                         unlocked(){
-                                return false || hasUnlockedPast("f")
+                                return false || hasUnlockedPast("g")
                         },
                 },
         },
@@ -5375,6 +5388,7 @@ addLayer("e", {
                 if (!hasMilestone("ach", 6)) {
                         //upgrades
                         let keep = []
+                        if (hasMilestone("goalsii", 6)) keep.push(22)
                         player.e.upgrades = filter(player.e.upgrades, keep)
                 }
 
@@ -6206,50 +6220,85 @@ addLayer("ach", {
         },
         milestones: {
                 1: {
-                        requirementDescription: "<b>Life</b><br>Requires: 30 Goals", 
+                        requirementDescription(){
+                                return "<b>Life</b><br>Requires: " + formatWhole(this.req()) + " Goals"
+                        }, 
                         effectDescription: "You permanently keep all <b>A</b> upgrades",
                         done(){
-                                return player.ach.points.gte(30)
+                                return player.ach.points.gte(this.req())
+                        },
+                        req(){
+                                let a = 30
+                                if (hasMilestone("goalsii", 7)) a /= 2
+                                return new Decimal(a).floor()
                         },
                         unlocked(){
                                 return true
                         },
                 },
                 2: {
-                        requirementDescription: "<b>The Universe</b><br>Requires: 36 Goals", 
+                        requirementDescription() {
+                                return "<b>The Universe</b><br>Requires: " + formatWhole(this.req()) + " Goals"
+                        }, 
                         effectDescription: "You permanently keep all <b>B</b> upgrades",
                         done(){
-                                return player.ach.points.gte(36)
+                                return player.ach.points.gte(this.req())
+                        },
+                        req(){
+                                let a = 36
+                                if (hasMilestone("goalsii", 7)) a /= 2
+                                return new Decimal(a).floor()
                         },
                         unlocked(){
                                 return true
                         },
                 },
                 3: {
-                        requirementDescription: "<b>And Everything</b><br>Requires: 49 Goals", 
+                        requirementDescription(){
+                                return "<b>And Everything</b><br>Requires: " + formatWhole(this.req()) + " Goals"
+                        }, 
                         effectDescription: "You permanently keep all <b>C</b> upgrades",
                         done(){
-                                return player.ach.points.gte(49)
+                                return player.ach.points.gte(this.req())
+                        },
+                        req(){
+                                let a = 49
+                                if (hasMilestone("goalsii", 7)) a /= 2
+                                return new Decimal(a).floor()
                         },
                         unlocked(){
                                 return true
                         },
                 },
                 4: {
-                        requirementDescription: "<b>Tell me and I forget</b><br>Requires: 52 Goals", 
+                        requirementDescription() {
+                                return "<b>Tell me and I forget</b><br>Requires: " + formatWhole(this.req()) + " Goals"
+                        }, 
                         effectDescription: "All autobuyers buy 100x more",
                         done(){
-                                return player.ach.points.gte(52)
+                                return player.ach.points.gte(this.req())
+                        },
+                        req(){
+                                let a = 52
+                                if (hasMilestone("goalsii", 7)) a /= 2
+                                return new Decimal(a).floor()
                         },
                         unlocked(){
                                 return true
                         },
                 },
                 5: {
-                        requirementDescription: "<b>Teach me and I remember</b><br>Requires: wil prb change currently 99 Goals", 
+                        requirementDescription() {
+                                return "<b>Teach me and I remember</b><br>Requires: " + formatWhole(this.req()) + " Goals"
+                        }, 
                         effectDescription: "You permanently keep all <b>D</b> upgrades",
                         done(){
-                                return player.ach.points.gte(99)
+                                return player.ach.points.gte(this.req())
+                        },
+                        req(){
+                                let a = 70
+                                if (hasMilestone("goalsii", 7)) a /= 2
+                                return new Decimal(a).floor()
                         },
                         unlocked(){
                                 return true
@@ -6424,7 +6473,11 @@ addLayer("goalsii", {
 
                 let ret = amt.times(3).plus(1)
 
-                if (ret.gt(10)) ret = ret.pow(2).div(10)
+                if (ret.gt(1e1))  ret = ret.pow(2).div(1e1)
+                if (ret.gt(1e3))  ret = ret.pow(2).div(1e3)
+                if (ret.gt(1e6))  ret = ret.pow(2).div(1e6)
+
+                if (hasMilestone("goalsii", 6)) ret = ret.times(2)
 
                 return ret
         },
@@ -6480,7 +6533,8 @@ addLayer("goalsii", {
                         for (k in trylist) {
                                 //if we have the upgrade continue
                                 if (hasUpgrade(i, trylist[k])) continue
-                                if (layers[i].buyables[trylist[k]] == undefined) continue
+                                if (layers[i].upgrades[trylist[k]] == undefined) continue
+                                
                                 //if we dont have it, try to buy it and then break, so we only buy one
                                 buyUpgrade(i, trylist[k])
                                 break
@@ -6662,8 +6716,8 @@ addLayer("goalsii", {
                         },
                         display(){
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["10"]) + "<br>"
-                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("10")) + " to<br>"
-                                let c = "guess"
+                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("10")) + "<br>"
+                                let c = "Free <b>Director</b> levels"
                                 return a + b + c
                         },
                         unlocked(){
@@ -7199,7 +7253,7 @@ addLayer("goalsii", {
                 }, // hasMilestone("goalsii", 1)
                 2: {
                         requirementDescription: "<b>Liberty</b><br>Requires: 3 Medals", 
-                        effectDescription: "Automatically buy <b>A</b> upgrades and <b>A</b> buyables don't cost anything",
+                        effectDescription: "Automatically buy <b>A</b> upgrades, <b>A</b> buyables don't cost anything, and keep <b>Also</b>",
                         done(){
                                 return player.goalsii.points.gte(3)
                         },
@@ -7210,7 +7264,7 @@ addLayer("goalsii", {
                 }, // hasMilestone("goalsii", 2)
                 3: {
                         requirementDescription: "<b>Pursuit of Happiness</b><br>Requires: 5 Medals", 
-                        effectDescription: "Automatically buy <b>B</b> upgrades",
+                        effectDescription: "Automatically buy <b>B</b> upgrades, <b>B</b> buyables don't cost anything, and keep <b>Buy</b>",
                         done(){
                                 return player.goalsii.points.gte(5)
                         },
@@ -7221,7 +7275,7 @@ addLayer("goalsii", {
                 }, // hasMilestone("goalsii", 3)
                 4: {
                         requirementDescription: "<b>Carpe Diem</b><br>Requires: 8 Medals", 
-                        effectDescription: "Automatically buy <b>C</b> upgrades",
+                        effectDescription: "Automatically buy <b>C</b> upgrades, <b>C</b> buyables don't cost anything, and keep <b>County</b>",
                         done(){
                                 return player.goalsii.points.gte(8)
                         },
@@ -7232,7 +7286,7 @@ addLayer("goalsii", {
                 }, // hasMilestone("goalsii", 4)
                 5: {
                         requirementDescription: "<b>Cogito ergo sum</b><br>Requires: 13 Medals", 
-                        effectDescription: "Automatically buy <b>D</b> upgrades",
+                        effectDescription: "Automatically buy <b>D</b> upgrades, <b>D</b> buyables don't cost anything, and keep <b>Development</b>",
                         done(){
                                 return player.goalsii.points.gte(13)
                         },
@@ -7243,7 +7297,7 @@ addLayer("goalsii", {
                 }, // hasMilestone("goalsii", 5)
                 6: {
                         requirementDescription: "<b>Aut viam inveniam aut faciam tibi</b><br>Requires: 21 Medals", 
-                        effectDescription: "Automatically buy <b>E</b> upgrades",
+                        effectDescription: "Automatically buy <b>E</b> upgrades, keep <b>Every</b>, and double Medal effect",
                         done(){
                                 return player.goalsii.points.gte(21)
                         },
@@ -7252,6 +7306,16 @@ addLayer("goalsii", {
                         },
                         toggles: [["goalsii", "autobuyE"]]
                 }, // hasMilestone("goalsii", 6)
+                7: {
+                        requirementDescription: "<b>[name]</b><br>Requires: 34 Medals", 
+                        effectDescription: "The first five <b>Goal</b> milestones require half as many goals to unlock",
+                        done(){
+                                return player.goalsii.points.gte(34)
+                        },
+                        unlocked(){
+                                return true
+                        },
+                }, // hasMilestone("goalsii", 7)
         },
         tabFormat: {
                 "Challenges": {
@@ -7263,7 +7327,19 @@ addLayer("goalsii", {
                                         return "You are currently in challenge <h3 style = 'color: #CC00FF'>" + player.goalsii.currentChallenge + "</h3>"
                                 }],
                                 ["display-text", function() {
-                                        return "<h3 style = 'color: #CC0000'>Warning!<br> Challenges other than 00 are not balanced and might break, 01 will be balanced soon</h3>"
+                                        let a = "That means you have the following effects due to challenges: " 
+                                        if (getChallengeDepth(1) == 0) return ""
+                                        a += "<br>Prestige Gain: <h3 style = 'color: #CC00FF'>^" + format(Decimal.pow(.985, getChallengeDepth(1)), 4) + "</h3>"
+                                        if (getChallengeDepth(2) == 0) return a
+                                        a += ", Point Gain: <h3 style = 'color: #CC00FF'>^" + format(Decimal.pow(.8, getChallengeDepth(2))) + "</h3>"
+                                        if (getChallengeDepth(3) == 0) return a
+                                        a += ",<br>First column buyables have no effect in the first <h3 style = 'color: #CC00FF'>" + formatWhole(getChallengeDepth(3)) + "</h3> layers"
+                                        if (getChallengeDepth(3) == 0) return a
+                                        a += ",<br>You get no free buyables for the first <h3 style = 'color: #CC00FF'>" + formatWhole(getChallengeDepth(3)) + "</h3> layers"
+                                        return a
+                                }],
+                                ["display-text", function() {
+                                        return "<h3 style = 'color: #CC0000'>Warning!<br> Balanced challenges: 00, 01, 02</h3>"
                                 }],
                                 "prestige-button",
                                 "clickables",
@@ -7294,7 +7370,7 @@ addLayer("goalsii", {
                                         Each completion gives tokens<br>
                                         The following only applies to layers unlocked before Goals II<br>
                                         C0: Nothing<br>
-                                        C1: Raise all prestige gains ^.95 + C0<br>
+                                        C1: Raise all prestige gains ^.985 + C0<br>
                                         C2: Raise point gain ^.8 (makes challenges harder) + C1<br>
                                         C3: First column buyables do not give effects in the first n layers + C2<br>
                                         C4: No buyables automatically give free levels to buyables in the first n layers + C3<br>
