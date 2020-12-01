@@ -6480,6 +6480,7 @@ addLayer("goalsii", {
                         for (k in trylist) {
                                 //if we have the upgrade continue
                                 if (hasUpgrade(i, trylist[k])) continue
+                                if (layers.i.buyables[trylist[k]] == undefined) continue
                                 //if we dont have it, try to buy it and then break, so we only buy one
                                 buyUpgrade(i, trylist[k])
                                 break
@@ -6608,8 +6609,8 @@ addLayer("goalsii", {
                                 return "<h3 style='color: #C03000'>03</h3>"
                         },
                         display(){
-                                let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["02"]) + "<br>"
-                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("02")) + " to<br>"
+                                let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["03"]) + "<br>"
+                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("03")) + " to<br>"
                                 let c = "guess"
                                 return a + b + c
                         },
@@ -6634,8 +6635,8 @@ addLayer("goalsii", {
                                 return "<h3 style='color: #C03000'>04</h3>"
                         },
                         display(){
-                                let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["02"]) + "<br>"
-                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("02")) + " to<br>"
+                                let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["04"]) + "<br>"
+                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("04")) + " to<br>"
                                 let c = "guess"
                                 return a + b + c
                         },
