@@ -6480,7 +6480,7 @@ addLayer("goalsii", {
                         for (k in trylist) {
                                 //if we have the upgrade continue
                                 if (hasUpgrade(i, trylist[k])) continue
-                                if (layers.i.buyables[trylist[k]] == undefined) continue
+                                if (layers[i]buyables[trylist[k]] == undefined) continue
                                 //if we dont have it, try to buy it and then break, so we only buy one
                                 buyUpgrade(i, trylist[k])
                                 break
