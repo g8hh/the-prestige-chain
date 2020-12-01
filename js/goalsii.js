@@ -20,13 +20,15 @@ var GOALS_REWARD_FUNCTIONS = {
                 return ret
         },
         "01"(x){
-                if (x.eq(0)) return new Decimal(0)
                 let ret = x.div(10)
                 if (ret.gt(1)) ret = ret.log10().plus(1)
                 return ret.div(1000)
         },
         "02"(x){
-                return new Decimal(0)
+                let ret = x.div(10)
+                if (ret.gt(1)) ret = ret.div(1).log10().plus(1)
+                if (ret.gt(2)) ret = ret.div(2).log10().plus(2)
+                return ret
         },
         "03"(x){
                 return new Decimal(0)

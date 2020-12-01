@@ -21,13 +21,17 @@ function getPointGen() {
 
         
 
-        gain = gain.pow(Decimal.pow(.8, getChallengeDepth(2)))
+        gain = gain.pow(Decimal.pow(.9, getChallengeDepth(2)))
 
 	return gain
 }
 
 function filter(list, keep){
         return list.filter(x => keep.includes(x))
+}
+
+function filterout(list, remove){
+        return list.filter(x => !remove.includes(x))
 }
 
 function canBuyMax(layer, id) {
@@ -4267,9 +4271,13 @@ addLayer("d", {
 
                 let amt = player.d.points
 
-                let ret = amt.times(15).plus(1).sqrt()
+                let exp = new Decimal(.5)
+                exp = exp.plus(getGoalChallengeReward("02"))
+
+                let ret = amt.times(15).plus(1).pow(exp)
 
                 ret = softcap(ret, "d_eff")
+
 
                 return ret
         },
@@ -6185,7 +6193,6 @@ addLayer("ach", {
                                 return PROGRESSION_MILESTONES_TEXT[53]
                         },
                 },
-                /*
                 85: {
                         name: "Fifty-four",
                         done(){
@@ -6193,6 +6200,9 @@ addLayer("ach", {
                         },
                         tooltip() {
                                 return "Get " + PROGRESSION_MILESTONES_TEXT[54]
+                        },
+                        unlocked(){
+                                return hasMilestone("goalsii", 7)
                         },
                 },
                 /*
@@ -6204,6 +6214,9 @@ addLayer("ach", {
                         tooltip() {
                                 return "Get " + PROGRESSION_MILESTONES_TEXT[55]
                         },
+                        unlocked(){
+                                return hasMilestone("goalsii", 7)
+                        },
                 },
                 /*
                 87: {
@@ -6213,6 +6226,9 @@ addLayer("ach", {
                         },
                         tooltip() {
                                 return "Get " + PROGRESSION_MILESTONES_TEXT[56]
+                        },
+                        unlocked(){
+                                return hasMilestone("goalsii", 7)
                         },
                 },
                 /*
@@ -6343,11 +6359,17 @@ addLayer("ach", {
 
                 let data = player.ach
 
-                data.achievements = []
-                /*
-                this needs to be changed to remove all before and including fifty-three which is "84"
+                let remove = [
+                        "11", "12", "13", "14", "15", "16", "17", 
+                        "21", "22", "23", "24", "25", "26", "27", 
+                        "31", "32", "33", "34", "35", "36", "37", 
+                        "41", "42", "43", "44", "45", "46", "47", 
+                        "51", "52", "53", "54", "55", "56", "57", 
+                        "61", "62", "63", "64", "65", "66", "67", 
+                        "71", "72", "73", "74", "75", "76", "77", 
+                        "81", "82", "83", "84"]
 
-                */
+                data.achievements = filterout(data.achievements, remove)
                 data.best = new Decimal(0)
                 data.points = new Decimal(0)
 
@@ -6638,8 +6660,8 @@ addLayer("goalsii", {
                         },
                         display(){
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["02"]) + "<br>"
-                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("02")) + " to<br>"
-                                let c = "guess"
+                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + format(getGoalChallengeReward("02")) + " to<br>"
+                                let c = "Doodle effect exponent"
                                 return a + b + c
                         },
                         unlocked(){
@@ -7274,10 +7296,10 @@ addLayer("goalsii", {
                         toggles: [["goalsii", "autobuyB"]]
                 }, // hasMilestone("goalsii", 3)
                 4: {
-                        requirementDescription: "<b>Carpe Diem</b><br>Requires: 8 Medals", 
+                        requirementDescription: "<b>Carpe Diem</b><br>Requires: 7 Medals", 
                         effectDescription: "Automatically buy <b>C</b> upgrades, <b>C</b> buyables don't cost anything, and keep <b>County</b>",
                         done(){
-                                return player.goalsii.points.gte(8)
+                                return player.goalsii.points.gte(7)
                         },
                         unlocked(){
                                 return true
@@ -7285,10 +7307,10 @@ addLayer("goalsii", {
                         toggles: [["goalsii", "autobuyC"]]
                 }, // hasMilestone("goalsii", 4)
                 5: {
-                        requirementDescription: "<b>Cogito ergo sum</b><br>Requires: 13 Medals", 
+                        requirementDescription: "<b>Cogito ergo sum</b><br>Requires: 11 Medals", 
                         effectDescription: "Automatically buy <b>D</b> upgrades, <b>D</b> buyables don't cost anything, and keep <b>Development</b>",
                         done(){
-                                return player.goalsii.points.gte(13)
+                                return player.goalsii.points.gte(11)
                         },
                         unlocked(){
                                 return true
@@ -7296,10 +7318,10 @@ addLayer("goalsii", {
                         toggles: [["goalsii", "autobuyD"]]
                 }, // hasMilestone("goalsii", 5)
                 6: {
-                        requirementDescription: "<b>Aut viam inveniam aut faciam tibi</b><br>Requires: 21 Medals", 
+                        requirementDescription: "<b>Aut viam inveniam aut faciam tibi</b><br>Requires: 15 Medals", 
                         effectDescription: "Automatically buy <b>E</b> upgrades, keep <b>Every</b>, and double Medal effect",
                         done(){
-                                return player.goalsii.points.gte(21)
+                                return player.goalsii.points.gte(15)
                         },
                         unlocked(){
                                 return true
@@ -7307,15 +7329,17 @@ addLayer("goalsii", {
                         toggles: [["goalsii", "autobuyE"]]
                 }, // hasMilestone("goalsii", 6)
                 7: {
-                        requirementDescription: "<b>[name]</b><br>Requires: 34 Medals", 
+                        requirementDescription: "<b>[name]</b><br>Requires: 22 Medals", 
                         effectDescription: "The first five <b>Goal</b> milestones require half as many goals to unlock",
                         done(){
-                                return player.goalsii.points.gte(34)
+                                return player.goalsii.points.gte(22)
                         },
                         unlocked(){
                                 return true
                         },
                 }, // hasMilestone("goalsii", 7)
+
+                //Numbers: Partitions
         },
         tabFormat: {
                 "Challenges": {
@@ -7331,7 +7355,7 @@ addLayer("goalsii", {
                                         if (getChallengeDepth(1) == 0) return ""
                                         a += "<br>Prestige Gain: <h3 style = 'color: #CC00FF'>^" + format(Decimal.pow(.985, getChallengeDepth(1)), 4) + "</h3>"
                                         if (getChallengeDepth(2) == 0) return a
-                                        a += ", Point Gain: <h3 style = 'color: #CC00FF'>^" + format(Decimal.pow(.8, getChallengeDepth(2))) + "</h3>"
+                                        a += ", Point Gain: <h3 style = 'color: #CC00FF'>^" + format(Decimal.pow(.9, getChallengeDepth(2))) + "</h3>"
                                         if (getChallengeDepth(3) == 0) return a
                                         a += ",<br>First column buyables have no effect in the first <h3 style = 'color: #CC00FF'>" + formatWhole(getChallengeDepth(3)) + "</h3> layers"
                                         if (getChallengeDepth(3) == 0) return a
@@ -7339,7 +7363,7 @@ addLayer("goalsii", {
                                         return a
                                 }],
                                 ["display-text", function() {
-                                        return "<h3 style = 'color: #CC0000'>Warning!<br> Balanced challenges: 00, 01, 02</h3>"
+                                        return "<h3 style = 'color: #CC0000'>Warning!<br> Balanced challenges: 00, 01, 02, 10</h3>"
                                 }],
                                 "prestige-button",
                                 "clickables",
@@ -7371,7 +7395,7 @@ addLayer("goalsii", {
                                         The following only applies to layers unlocked before Goals II<br>
                                         C0: Nothing<br>
                                         C1: Raise all prestige gains ^.985 + C0<br>
-                                        C2: Raise point gain ^.8 (makes challenges harder) + C1<br>
+                                        C2: Raise point gain ^.9 (makes challenges harder) + C1<br>
                                         C3: First column buyables do not give effects in the first n layers + C2<br>
                                         C4: No buyables automatically give free levels to buyables in the first n layers + C3<br>
                                         <br>
