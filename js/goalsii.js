@@ -13,10 +13,14 @@ Todo:
 var GOALS_REWARD_FUNCTIONS = {
         "00"(x){
                 if (x.eq(0)) return new Decimal(0)
-                return x.plus(1).times(x.plus(3).min(100)).times(.05)
+                let ret = x.plus(3).times(x.plus(4).min(100)).times(.02)
+                return ret
         },
         "01"(x){
-                return new Decimal(0)
+                if (x.eq(0)) return new Decimal(0)
+                let ret = x.div(10)
+                if (ret.gt(1)) ret = ret.log10().plus(1)
+                return ret.div(1000)
         },
         "02"(x){
                 return new Decimal(0)

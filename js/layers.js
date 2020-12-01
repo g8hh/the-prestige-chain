@@ -21,7 +21,7 @@ function getPointGen() {
 
         
 
-        gain = gain.pow(Decimal.pow(.9, getChallengeDepth(2)))
+        gain = gain.pow(Decimal.pow(.8, getChallengeDepth(2)))
 
 	return gain
 }
@@ -110,6 +110,8 @@ function getABBulk(layer){
         if (hasUpgrade("d", 35)) amt *= 100
         if (hasUpgrade("e", 23)) amt *= 100
         if (hasMilestone("ach", 4)) amt *= 100
+        if (hasMilestone("goalsii", 0)) amt *= 10
+        if (hasMilestone("goalsii", 1)) amt *= 10
         if (layer == "a") {
                 if (hasUpgrade("a", 35)) amt *= 10
                 if (hasUpgrade("b", 21)) {
@@ -159,6 +161,7 @@ function getABSpeed(layer){
         let diffmult = 1
         if (hasUpgrade("e", 22)) diffmult *= 2
         if (hasUpgrade("e", 24)) diffmult *= 3
+        if (hasMilestone("goalsii", 0)) diffmult *= 3
         if (layer == "a"){
                 if (hasUpgrade("b", 45)) diffmult *= 2
         }
@@ -304,7 +307,7 @@ addLayer("a", {
                                 player.a.times ++
                         }
                 }
-                if (hasUpgrade("b", 14)) {
+                if (hasUpgrade("b", 14) || hasMilestone("goalsii", 1)) {
                         player.a.abtime += diff * getABSpeed("a")
 
                         if (player.a.abtime > 10) player.a.abtime = 10
@@ -1445,6 +1448,7 @@ addLayer("a", {
                                 let base = new Decimal(.5)
                                 if (hasUpgrade("b", 53)) base = base.plus(totalChallengeComps("b") / 10)
                                 if (hasUpgrade("c", 35)) base = base.plus(tmp.a.buyables[23].total.times(.0001))
+                                base = base.plus(getGoalChallengeReward("01"))
                                 return base
                         },
                         effect(){
@@ -1671,7 +1675,7 @@ addLayer("b", {
                                 player.b.times ++
                         }
                 }
-                if (hasUpgrade("b", 32)) {
+                if (hasUpgrade("b", 32) || hasMilestone("goalsii", 1)) {
                         player.b.abtime += diff * getABSpeed("b")
                         
                         if (player.b.abtime > 10) player.b.abtime = 10
@@ -2618,9 +2622,9 @@ addLayer("b", {
                         title: "Brand",
                         display(){
                                 let start = "<b><h2>Amount</h2>: " + this.getAmountDisplay() + "</b><br>"
-                                let eff = "<b><h2>Effect</h2>: +" + format(this.effect()) + " Circle gain exp</b><br>"
+                                let eff = "<b><h2>Effect</h2>: +" + format(this.effect(), 4) + " Circle gain exp</b><br>"
                                 let cost = "<b><h2>Cost</h2>: " + format(this.cost()) + " Bacteria</b><br>"
-                                let eformula = "<b><h2>Effect formula</h2>:<br>" + format(this.effectBase()) + "*x</b><br>"
+                                let eformula = "<b><h2>Effect formula</h2>:<br>" + format(this.effectBase(), 4) + "*x</b><br>"
                                 let exformula = this.getExtraFormulaText()
 
                                 let end = shiftDown ? eformula + exformula : "Shift to see details"
@@ -3085,7 +3089,7 @@ addLayer("c", {
                                 data.times ++
                         }
                 }
-                if (hasUpgrade("e", 11)) {
+                if (hasUpgrade("e", 11) || hasMilestone("goalsii", 1)) {
                         data.abtime += diff * getABSpeed("c")
                         if (data.abtime > 10) data.abtime = 10
                         if (data.abtime > 1) {
@@ -3591,6 +3595,7 @@ addLayer("c", {
                                 if (!isBuyableActive("c", 13)) return new Decimal(0)
 
                                 let base = new Decimal(.02)
+                                base = base.plus(getGoalChallengeReward("01"))
                                 return base
                         },
                         effect(){
@@ -4276,7 +4281,7 @@ addLayer("d", {
                                 data.times ++
                         }
                 }
-                if (hasUpgrade("e", 14)) {
+                if (hasUpgrade("e", 14) || hasMilestone("goalsii", 1)) {
                         data.abtime += diff * getABSpeed("d")
                         if (data.abtime > 10) data.abtime = 10
                         if (data.abtime > 1) {
@@ -5044,7 +5049,7 @@ addLayer("d", {
                                 "challenges",
                         ],
                         unlocked(){
-                                return false || hasUnlockedPast("f")
+                                return false || hasUnlockedPast("g")
                         },
                 },
         },
@@ -5551,7 +5556,7 @@ addLayer("f", {
                                 ["display-text",
                                         function() {
                                                 if (hasUnlockedPast("f")) return ""
-                                                return "You have done " + formatWhole(player.f.times) + " Featur resets"
+                                                return "You have done " + formatWhole(player.f.times) + " Feature resets"
                                         }
                                 ],
                                 ["display-text",
@@ -6277,12 +6282,6 @@ addLayer("ach", {
                         content: [
                                 "main-display-goals",
                                 "milestones",
-                                ["display-text", function(){
-                                        return "Next idea: <br> " + coolideathang
-                                }, 
-                                function (){ 
-                                        return !player.ach.points.gte(52) ? {'display': 'none'} : {}
-                                }],
                         ],
                         unlocked(){
                                 return player.ach.points.gte(28) || player.goalsii.times > 0
@@ -6296,6 +6295,10 @@ addLayer("ach", {
                 let data = player.ach
 
                 data.achievements = []
+                /*
+                this needs to be changed to remove all before and including fifty-three which is "84"
+
+                */
                 data.best = new Decimal(0)
                 data.points = new Decimal(0)
 
@@ -6370,6 +6373,12 @@ addLayer("goalsii", {
                 times: 0,
                 challtimes: d,
                 autotimes: 0,
+                autobuyA: false,
+                autobuyB: false,
+                autobuyC: false,
+                autobuyD: false,
+                autobuyE: false,
+                abupgstime: 0,
                 currentChallenge: "00",
                 points: new Decimal(0),
                 best: new Decimal(0),
@@ -6389,7 +6398,7 @@ addLayer("goalsii", {
         type: "custom", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
         getResetGain() {
                 let a 
-                if (player.f.best.eq(0)) a = new Decimal(0)
+                if (player.f.time > 0) a = new Decimal(0)
                 else a = new Decimal(1)
 
                 let pre = this.getGainMultPre()
@@ -6449,12 +6458,39 @@ addLayer("goalsii", {
                         data.abtime = 0
                 }
                 data.time += diff
+                data.abupgstime += diff
+
+                if (data.abupgstime > 10) data.abupgstime = 10
+                if (data.abupgstime < 1) return
+                data.abupgstime += -1
+
+                //Autobuy A-E 
+                let l =  ["a", "b", "c", "d", "e"]
+                let l2 = ["A", "B", "C", "D", "E"]
+                let trylist = [11, 12, 13, 14, 15, 
+                               21, 22, 23, 24, 25,
+                               31, 32, 33, 34, 35,
+                               41, 42, 43, 44, 45,
+                               51, 52, 53, 54, 55,]
+                for (j in l){
+                        i = l[j] //i is our layer
+                        let can = player.goalsii["autobuy" + l2[j]] && hasMilestone("goalsii", String(Number(j) + 2))
+                        // check if the ab is on and unlocked
+                        if (!can) continue
+                        for (k in trylist) {
+                                //if we have the upgrade continue
+                                if (hasUpgrade(i, trylist[k])) continue
+                                //if we dont have it, try to buy it and then break, so we only buy one
+                                buyUpgrade(i, trylist[k])
+                                break
+                        }
+                }
         },
         row: "side", // Row the layer is in on the tree (0 is the first row)
         hotkeys: [
             //{key: "p", description: "Reset for prestige points", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
         ],
-        layerShown(){return player.goalsii.times > 0 || player.f.best.gt(0)},
+        layerShown(){return player.goalsii.times > 0 || player.f.time > 0},
         prestigeButtonText(){
                 let b = ""
                 if (player.goalsii.times > 0) {
@@ -6468,7 +6504,7 @@ addLayer("goalsii", {
                 return b + a
         },
         canReset(){
-                return player.f.best.gt(0)
+                return player.f.times > 0
         },
         achievements: {
                 rows: 8,
@@ -6506,7 +6542,12 @@ addLayer("goalsii", {
                                 return tmp.goalsii.canReset || player.goalsii.currentChallenge != "00"
                         },
                         onClick(){
-                                return
+                                if (!this.canClick()) return 
+                                let gain = layers.goalsii.getResetGain()
+                                layers.goalsii.onPrestige(gain)
+                                addPoints("goalsii", gain)
+                                doReset("goalsii", true)
+                                player.goalsii.currentChallenge = "00"
                         },
                 },
                 12: {
@@ -6516,8 +6557,8 @@ addLayer("goalsii", {
                         },
                         display(){
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["01"]) + "<br>"
-                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("01")) + " to<br>"
-                                let c = "guess"
+                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + format(getGoalChallengeReward("01"), 4) + " to<br>"
+                                let c = "<b>Country</b> and <b>Omnipotent I</b> base"
                                 return a + b + c
                         },
                         unlocked(){
@@ -6527,7 +6568,12 @@ addLayer("goalsii", {
                                 return tmp.goalsii.canReset && player.goalsii.tokens.best["00"].gt(0)
                         },
                         onClick(){
-                                return
+                                if (!tmp.goalsii.canReset) return 
+                                let gain = layers.goalsii.getResetGain()
+                                layers.goalsii.onPrestige(gain)
+                                addPoints("goalsii", gain)
+                                doReset("goalsii", true)
+                                player.goalsii.currentChallenge = "01"
                         },
                 },
                 13: {
@@ -6548,7 +6594,12 @@ addLayer("goalsii", {
                                 return tmp.goalsii.canReset && player.goalsii.tokens.best["01"].gt(0)
                         },
                         onClick(){
-                                return
+                                if (!tmp.goalsii.canReset) return 
+                                let gain = layers.goalsii.getResetGain()
+                                layers.goalsii.onPrestige(gain)
+                                addPoints("goalsii", gain)
+                                doReset("goalsii", true)
+                                player.goalsii.currentChallenge = "02"
                         },
                 },
                 14: {
@@ -6569,7 +6620,12 @@ addLayer("goalsii", {
                                 return tmp.goalsii.canReset && player.goalsii.tokens.best["02"].gt(0)
                         },
                         onClick(){
-                                return
+                                if (!tmp.goalsii.canReset) return 
+                                let gain = layers.goalsii.getResetGain()
+                                layers.goalsii.onPrestige(gain)
+                                addPoints("goalsii", gain)
+                                doReset("goalsii", true)
+                                player.goalsii.currentChallenge = "03"
                         },
                 },
                 15: {
@@ -6590,7 +6646,12 @@ addLayer("goalsii", {
                                 return tmp.goalsii.canReset && player.goalsii.tokens.best["03"].gt(0)
                         },
                         onClick(){
-                                return
+                                if (!tmp.goalsii.canReset) return 
+                                let gain = layers.goalsii.getResetGain()
+                                layers.goalsii.onPrestige(gain)
+                                addPoints("goalsii", gain)
+                                doReset("goalsii", true)
+                                player.goalsii.currentChallenge = "04"
                         },
                 },
                 21: {
@@ -6611,7 +6672,12 @@ addLayer("goalsii", {
                                 return tmp.goalsii.canReset && player.goalsii.tokens.best["00"].gt(0)
                         },
                         onClick(){
-                                return
+                                if (!tmp.goalsii.canReset) return 
+                                let gain = layers.goalsii.getResetGain()
+                                layers.goalsii.onPrestige(gain)
+                                addPoints("goalsii", gain)
+                                doReset("goalsii", true)
+                                player.goalsii.currentChallenge = "10"
                         },
                 },
                 22: {
@@ -6632,7 +6698,12 @@ addLayer("goalsii", {
                                 return tmp.goalsii.canReset && player.goalsii.tokens.best["10"].gt(0) && player.goalsii.tokens.best["01"].gt(0)
                         },
                         onClick(){
-                                return
+                                if (!tmp.goalsii.canReset) return 
+                                let gain = layers.goalsii.getResetGain()
+                                layers.goalsii.onPrestige(gain)
+                                addPoints("goalsii", gain)
+                                doReset("goalsii", true)
+                                player.goalsii.currentChallenge = "11"
                         },
                 },
                 23: {
@@ -6653,7 +6724,12 @@ addLayer("goalsii", {
                                 return tmp.goalsii.canReset && player.goalsii.tokens.best["11"].gt(0) && player.goalsii.tokens.best["02"].gt(0)
                         },
                         onClick(){
-                                return
+                                if (!tmp.goalsii.canReset) return 
+                                let gain = layers.goalsii.getResetGain()
+                                layers.goalsii.onPrestige(gain)
+                                addPoints("goalsii", gain)
+                                doReset("goalsii", true)
+                                player.goalsii.currentChallenge = "12"
                         },
                 },
                 24: {
@@ -6674,7 +6750,12 @@ addLayer("goalsii", {
                                 return tmp.goalsii.canReset && player.goalsii.tokens.best["12"].gt(0) && player.goalsii.tokens.best["03"].gt(0)
                         },
                         onClick(){
-                                return
+                                if (!tmp.goalsii.canReset) return 
+                                let gain = layers.goalsii.getResetGain()
+                                layers.goalsii.onPrestige(gain)
+                                addPoints("goalsii", gain)
+                                doReset("goalsii", true)
+                                player.goalsii.currentChallenge = "13"
                         },
                 },
                 25: {
@@ -6695,7 +6776,12 @@ addLayer("goalsii", {
                                 return tmp.goalsii.canReset && player.goalsii.tokens.best["13"].gt(0) && player.goalsii.tokens.best["04"].gt(0)
                         },
                         onClick(){
-                                return
+                                if (!tmp.goalsii.canReset) return 
+                                let gain = layers.goalsii.getResetGain()
+                                layers.goalsii.onPrestige(gain)
+                                addPoints("goalsii", gain)
+                                doReset("goalsii", true)
+                                player.goalsii.currentChallenge = "14"
                         },
                 },
                 31: {
@@ -6716,7 +6802,12 @@ addLayer("goalsii", {
                                 return tmp.goalsii.canReset && player.goalsii.tokens.best["10"].gt(0)
                         },
                         onClick(){
-                                return
+                                if (!tmp.goalsii.canReset) return 
+                                let gain = layers.goalsii.getResetGain()
+                                layers.goalsii.onPrestige(gain)
+                                addPoints("goalsii", gain)
+                                doReset("goalsii", true)
+                                player.goalsii.currentChallenge = "20"
                         },
                 },
                 32: {
@@ -6737,7 +6828,12 @@ addLayer("goalsii", {
                                 return tmp.goalsii.canReset && player.goalsii.tokens.best["20"].gt(0) && player.goalsii.tokens.best["11"].gt(0)
                         },
                         onClick(){
-                                return
+                                if (!tmp.goalsii.canReset) return 
+                                let gain = layers.goalsii.getResetGain()
+                                layers.goalsii.onPrestige(gain)
+                                addPoints("goalsii", gain)
+                                doReset("goalsii", true)
+                                player.goalsii.currentChallenge = "21"
                         },
                 },
                 33: {
@@ -6758,7 +6854,12 @@ addLayer("goalsii", {
                                 return tmp.goalsii.canReset && player.goalsii.tokens.best["21"].gt(0) && player.goalsii.tokens.best["12"].gt(0)
                         },
                         onClick(){
-                                return
+                                if (!tmp.goalsii.canReset) return 
+                                let gain = layers.goalsii.getResetGain()
+                                layers.goalsii.onPrestige(gain)
+                                addPoints("goalsii", gain)
+                                doReset("goalsii", true)
+                                player.goalsii.currentChallenge = "22"
                         },
                 },
                 34: {
@@ -6779,7 +6880,12 @@ addLayer("goalsii", {
                                 return tmp.goalsii.canReset && player.goalsii.tokens.best["22"].gt(0) && player.goalsii.tokens.best["13"].gt(0)
                         },
                         onClick(){
-                                return
+                                if (!tmp.goalsii.canReset) return 
+                                let gain = layers.goalsii.getResetGain()
+                                layers.goalsii.onPrestige(gain)
+                                addPoints("goalsii", gain)
+                                doReset("goalsii", true)
+                                player.goalsii.currentChallenge = "23"
                         },
                 },
                 35: {
@@ -6800,7 +6906,12 @@ addLayer("goalsii", {
                                 return tmp.goalsii.canReset && player.goalsii.tokens.best["23"].gt(0) && player.goalsii.tokens.best["14"].gt(0)
                         },
                         onClick(){
-                                return
+                                if (!tmp.goalsii.canReset) return 
+                                let gain = layers.goalsii.getResetGain()
+                                layers.goalsii.onPrestige(gain)
+                                addPoints("goalsii", gain)
+                                doReset("goalsii", true)
+                                player.goalsii.currentChallenge = "24"
                         },
                 },
                 41: {
@@ -6821,7 +6932,12 @@ addLayer("goalsii", {
                                 return tmp.goalsii.canReset && player.goalsii.tokens.best["20"].gt(0)
                         },
                         onClick(){
-                                return
+                                if (!tmp.goalsii.canReset) return 
+                                let gain = layers.goalsii.getResetGain()
+                                layers.goalsii.onPrestige(gain)
+                                addPoints("goalsii", gain)
+                                doReset("goalsii", true)
+                                player.goalsii.currentChallenge = "30"
                         },
                 },
                 42: {
@@ -6842,7 +6958,12 @@ addLayer("goalsii", {
                                 return tmp.goalsii.canReset && player.goalsii.tokens.best["30"].gt(0) && player.goalsii.tokens.best["21"].gt(0)
                         },
                         onClick(){
-                                return
+                                if (!tmp.goalsii.canReset) return 
+                                let gain = layers.goalsii.getResetGain()
+                                layers.goalsii.onPrestige(gain)
+                                addPoints("goalsii", gain)
+                                doReset("goalsii", true)
+                                player.goalsii.currentChallenge = "31"
                         },
                 },
                 43: {
@@ -6863,7 +6984,12 @@ addLayer("goalsii", {
                                 return tmp.goalsii.canReset && player.goalsii.tokens.best["31"].gt(0) && player.goalsii.tokens.best["22"].gt(0)
                         },
                         onClick(){
-                                return
+                                if (!tmp.goalsii.canReset) return 
+                                let gain = layers.goalsii.getResetGain()
+                                layers.goalsii.onPrestige(gain)
+                                addPoints("goalsii", gain)
+                                doReset("goalsii", true)
+                                player.goalsii.currentChallenge = "32"
                         },
                 },
                 44: {
@@ -6884,7 +7010,12 @@ addLayer("goalsii", {
                                 return tmp.goalsii.canReset && player.goalsii.tokens.best["32"].gt(0) && player.goalsii.tokens.best["23"].gt(0)
                         },
                         onClick(){
-                                return
+                                if (!tmp.goalsii.canReset) return 
+                                let gain = layers.goalsii.getResetGain()
+                                layers.goalsii.onPrestige(gain)
+                                addPoints("goalsii", gain)
+                                doReset("goalsii", true)
+                                player.goalsii.currentChallenge = "33"
                         },
                 },
                 45: {
@@ -6905,7 +7036,12 @@ addLayer("goalsii", {
                                 return tmp.goalsii.canReset && player.goalsii.tokens.best["33"].gt(0) && player.goalsii.tokens.best["24"].gt(0)
                         },
                         onClick(){
-                                return
+                                if (!tmp.goalsii.canReset) return 
+                                let gain = layers.goalsii.getResetGain()
+                                layers.goalsii.onPrestige(gain)
+                                addPoints("goalsii", gain)
+                                doReset("goalsii", true)
+                                player.goalsii.currentChallenge = "34"
                         },
                 },
                 51: {
@@ -6926,7 +7062,12 @@ addLayer("goalsii", {
                                 return tmp.goalsii.canReset && player.goalsii.tokens.best["30"].gt(0)
                         },
                         onClick(){
-                                return
+                                if (!tmp.goalsii.canReset) return 
+                                let gain = layers.goalsii.getResetGain()
+                                layers.goalsii.onPrestige(gain)
+                                addPoints("goalsii", gain)
+                                doReset("goalsii", true)
+                                player.goalsii.currentChallenge = "40"
                         },
                 },
                 52: {
@@ -6947,7 +7088,12 @@ addLayer("goalsii", {
                                 return tmp.goalsii.canReset && player.goalsii.tokens.best["40"].gt(0) && player.goalsii.tokens.best["31"].gt(0)
                         },
                         onClick(){
-                                return
+                                if (!tmp.goalsii.canReset) return 
+                                let gain = layers.goalsii.getResetGain()
+                                layers.goalsii.onPrestige(gain)
+                                addPoints("goalsii", gain)
+                                doReset("goalsii", true)
+                                player.goalsii.currentChallenge = "41"
                         },
                 },
                 53: {
@@ -6968,7 +7114,12 @@ addLayer("goalsii", {
                                 return tmp.goalsii.canReset && player.goalsii.tokens.best["41"].gt(0) && player.goalsii.tokens.best["32"].gt(0)
                         },
                         onClick(){
-                                return
+                                if (!tmp.goalsii.canReset) return 
+                                let gain = layers.goalsii.getResetGain()
+                                layers.goalsii.onPrestige(gain)
+                                addPoints("goalsii", gain)
+                                doReset("goalsii", true)
+                                player.goalsii.currentChallenge = "42"
                         },
                 },
                 54: {
@@ -6989,7 +7140,12 @@ addLayer("goalsii", {
                                 return tmp.goalsii.canReset && player.goalsii.tokens.best["42"].gt(0) && player.goalsii.tokens.best["33"].gt(0)
                         },
                         onClick(){
-                                return
+                                if (!tmp.goalsii.canReset) return 
+                                let gain = layers.goalsii.getResetGain()
+                                layers.goalsii.onPrestige(gain)
+                                addPoints("goalsii", gain)
+                                doReset("goalsii", true)
+                                player.goalsii.currentChallenge = "43"
                         },
                 },
                 55: {
@@ -7010,9 +7166,91 @@ addLayer("goalsii", {
                                 return tmp.goalsii.canReset && player.goalsii.tokens.best["43"].gt(0) && player.goalsii.tokens.best["34"].gt(0)
                         },
                         onClick(){
-                                return
+                                if (!tmp.goalsii.canReset) return 
+                                let gain = layers.goalsii.getResetGain()
+                                layers.goalsii.onPrestige(gain)
+                                addPoints("goalsii", gain)
+                                doReset("goalsii", true)
+                                player.goalsii.currentChallenge = "44"
                         },
                 },
+        },
+        milestones: {
+                0: {
+                        requirementDescription: "<b>M???</b><br>Requires: 1 Medal", 
+                        effectDescription: "Autobuyers are 3x faster and buy 10x more",
+                        done(){
+                                return player.goalsii.points.gte(1)
+                        },
+                        unlocked(){
+                                return true
+                        },
+                }, // hasMilestone("goalsii", 0)
+                1: {
+                        requirementDescription: "<b>Life</b><br>Requires: 2 Medals", 
+                        effectDescription: "You keep all autobuyers and they buy 10x more",
+                        done(){
+                                return player.goalsii.points.gte(2)
+                        },
+                        unlocked(){
+                                return true
+                        },
+                }, // hasMilestone("goalsii", 1)
+                2: {
+                        requirementDescription: "<b>Liberty</b><br>Requires: 3 Medals", 
+                        effectDescription: "Automatically buy <b>A</b> upgrades",
+                        done(){
+                                return player.goalsii.points.gte(3)
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        toggles: [["goalsii", "autobuyA"]]
+                }, // hasMilestone("goalsii", 2)
+                3: {
+                        requirementDescription: "<b>Pursuit of Happiness</b><br>Requires: 5 Medals", 
+                        effectDescription: "Automatically buy <b>B</b> upgrades",
+                        done(){
+                                return player.goalsii.points.gte(5)
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        toggles: [["goalsii", "autobuyB"]]
+                }, // hasMilestone("goalsii", 3)
+                4: {
+                        requirementDescription: "<b>Carpe Diem</b><br>Requires: 8 Medals", 
+                        effectDescription: "Automatically buy <b>C</b> upgrades",
+                        done(){
+                                return player.goalsii.points.gte(8)
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        toggles: [["goalsii", "autobuyC"]]
+                }, // hasMilestone("goalsii", 4)
+                5: {
+                        requirementDescription: "<b>Cogito ergo sum</b><br>Requires: 13 Medals", 
+                        effectDescription: "Automatically buy <b>D</b> upgrades",
+                        done(){
+                                return player.goalsii.points.gte(13)
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        toggles: [["goalsii", "autobuyD"]]
+                }, // hasMilestone("goalsii", 5)
+                6: {
+                        requirementDescription: "<b>Aut viam inveniam aut faciam tibi</b><br>Requires: 21 Medals", 
+                        effectDescription: "Automatically buy <b>E</b> upgrades",
+                        done(){
+                                return player.goalsii.points.gte(21)
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        toggles: [["goalsii", "autobuyE"]]
+                }, // hasMilestone("goalsii", 6)
         },
         tabFormat: {
                 "Challenges": {
@@ -7022,6 +7260,9 @@ addLayer("goalsii", {
                                 ["display-text", "Click a button below to enter a challenge", function (){ return !player.goalsii.best.gt(0) ? {'display': 'none'} : {}}],
                                 ["display-text", function() {
                                         return "You are currently in challenge <h3 style = 'color: #CC00FF'>" + player.goalsii.currentChallenge + "</h3>"
+                                }],
+                                ["display-text", function() {
+                                        return "<h3 style = 'color: #CC0000'>Warning!<br> Challenges other than 00 are not balanced and might break, 01 will be balanced soon</h3>"
                                 }],
                                 "prestige-button",
                                 "clickables",
@@ -7033,15 +7274,16 @@ addLayer("goalsii", {
                 "Details": {
                         content: [
                                 "main-display",
-                                ["display-text", `
-                                        Each challenge has a reward, and upon claiming said reward<br>
+                                ["display-text", function(){
+                                        let a = `Each challenge has a reward, and upon claiming said reward<br>
                                         all prior unlocked main layers are totally reset, and goals are also reset<br>
                                         <br>
                                         There are 5 challenges, and the first is nothing<br>
                                         <br>
                                         Challenge AB means you are in Challenge A twice and Challenge B once<br>
+                                        For example Challenge 03 means you are in challenge 0 twice and challenge 3 once<br>
                                         <br>
-                                        Challenge table:<br>
+                                        The Challenge table is as follows:<br>
                                         00, 01, 02, 03, 04<br>
                                         10, 11, 12, 13, 14<br>
                                         20, 21, 22, 23, 24<br>
@@ -7052,30 +7294,37 @@ addLayer("goalsii", {
                                         The following only applies to layers unlocked before Goals II<br>
                                         C0: Nothing<br>
                                         C1: Raise all prestige gains ^.95 + C0<br>
-                                        C2: Raise point gain ^.9 (makes challenges harder) + C1<br>
+                                        C2: Raise point gain ^.8 (makes challenges harder) + C1<br>
                                         C3: First column buyables do not give effects in the first n layers + C2<br>
                                         C4: No buyables automatically give free levels to buyables in the first n layers + C3<br>
                                         <br>
+                                        You can only enter challenges if you can medal reset, or if you aren't in challenge 00,<br>
+                                        and want to enter challenge 00 to avoid softlocking <br>
+                                        To unlock the ability to enter a given challenge you need to have gotten<br> at least one token for the challenge
+                                        to the left and above<br>
+                                        <br><br>
+                                        Complete a challenge by medal resetting, which requires <b>F</b> resetting at least once.
                                         <br>
                                         Completion of a challenge gives a token to that "upgrade" which gives an effect<br>
-                                        You get one token per reset, though multipliers will exist<br>
-                                        Rewards:<br> 00 tokens add to all prior prestige gain exponents .05*(x*Math.min(x + 3,100))<br>`],
+                                        You get one token per reset, though multipliers exist<br><br>
+                                        Rewards:<br> 00 tokens add to all prior prestige gain exponents<br>`
+                                        return a
+                                        },
+                                ],
                         ],
                         unlocked(){
                                 return player.goalsii.best.gt(0)
                         },
                 },
-                /*
                 "Milestones": {
                         content: [
                                 "main-display",
                                 "milestones",
                         ],
                         unlocked(){
-                                return false
+                                return player.goalsii.times > 1
                         },
                 },
-                */
         },
         doReset(layer){
                 if (layers[layer].row != "side") return 
@@ -7101,40 +7350,6 @@ addLayer("goalsii", {
         },
 })
 
-var coolideathang = `
-Goals II: <br>
-Unlocked by: Doing an <b>F</b> reset<br>
-Each challenge has a reward, and upon claiming said reward,<br>
-all prior unlocked main layers are totally reset, and goals are also reset<br>
-<br>
-5 challenges, one of them is nothing<br>
-<br>
-Chall AB means you are in A twice and B once<br>
-<br>
-Challenge table: (will be clickables to enter/exit and to disp reward)<br>
-00, 01, 02, 03, 04<br>
-10, 11, 12, 13, 14<br>
-20, 21, 22, 23, 24<br>
-30, 31, 32, 33, 34<br>
-40, 41, 42, 43, 44<br>
-<br>
-Each completion gives tokens<br>
-Only applies to layers unlocked before Goals II<br>
-C0: Nothing<br>
-C1: Raise all prestige gains ^.95 + C0<br>
-C2: Raise point gain ^.9 (makes challenges harder) + C1<br>
-C3: First column buyables do not give effects + C2<br>
-C4: No buyables automatically give free levels to other buyables + C3<br>
-<br>
-<br>
-Completion of a challenge gives a token to that "upgrade" which gives an effect<br>
-You get one token per reset, though multipliers will exist<br>
-Rewards: 00 tokens add to all prestige gain exponents .05*(x*Math.min(x + 1,100))<br>
-<br>
-<br>
-<br>
-1, 2, 3, 5, 7, 11, ... what comes next?
-<br>
-<br>
-<br>
-`
+
+
+

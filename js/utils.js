@@ -31,7 +31,7 @@ function commaFormat(num, precision) {
 
 function regularFormat(num, precision) {
 	if (num === null || num === undefined) return "NaN"
-	if (num.mag < 0.001) return (0).toFixed(precision)
+	if (num.mag < Math.pow(10, -precision)) return (0).toFixed(precision)
 	return num.toStringWithDecimalPlaces(precision)
 }
 
