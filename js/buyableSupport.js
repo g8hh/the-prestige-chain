@@ -349,12 +349,22 @@ var FREE_BUYABLE_DATA = {
                                 return hasUpgrade("d", 43)
                         },
                 },
+                c32: {
+                        active: function(){
+                                return hasMilestone("goalsii", 10)
+                        },
+                },
         },
         c31: {
                 name: "Conditions",
+                c32: {
+                        active: function(){
+                                return hasMilestone("goalsii", 10)
+                        },
+                },
         },
         c32: {
-                name: "Catagories",
+                name: "Catagory",
         },
         d11: {
                 name: "Department",
@@ -545,6 +555,14 @@ var EXTRA_FREE_BUYABLE_DATA = {
                         },
                         amount: function(){
                                 return 1
+                        },
+                },
+                2: {
+                        active: function(){
+                                return true
+                        },
+                        amount: function(){
+                                return getGoalChallengeReward("22")
                         },
                 },
         },

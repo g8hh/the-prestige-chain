@@ -260,11 +260,28 @@ var softcap_data = {
 			func: "pow",
 			start: 1e100,
 			pow: .9,
-		}
+		},
 	},
 	f_eff:{
 		
 	},
+	goalsii_eff: {
+		1: {
+			func: "pow",
+			start: 1e18,
+			pow: .5,
+		},
+		2: {
+			func: "pow",
+			start: 1e19,
+			pow: .4,
+		},
+		3: {
+			func: "pow",
+			start: 1e20,
+			pow: .3,
+		},
+	}
 }
 
 var softcap_vars = {

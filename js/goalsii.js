@@ -31,7 +31,10 @@ var GOALS_REWARD_FUNCTIONS = {
                 return ret
         },
         "03"(x){
-                return new Decimal(0)
+                let ret = x.div(10)
+                if (ret.gt(1)) ret = ret.div(1).log10().plus(1)
+                if (ret.gt(2)) ret = ret.div(2).log10().plus(2)
+                return ret.div(100)
         },
         "04"(x){
                 return new Decimal(0)
@@ -65,10 +68,16 @@ var GOALS_REWARD_FUNCTIONS = {
                 return ret
         },
         "21"(x){
-                return new Decimal(0)
+                let ret = x.div(10)
+                if (ret.gt(1)) ret = ret.div(1).log10().plus(1)
+                if (ret.gt(2)) ret = ret.div(2).log10().plus(2)
+                return ret.times(10).plus(1)
         },
         "22"(x){
-                return new Decimal(0)
+                let ret = x.div(5)
+                if (ret.gt(1)) ret = ret.div(1).log10().plus(1)
+                if (ret.gt(2)) ret = ret.div(2).log10().plus(2)
+                return ret.times(14).floor()
         },
         "23"(x){
                 return new Decimal(0)
@@ -125,7 +134,28 @@ function getGoalChallengeReward(challnum){
         return CURRENT_GOALS_EFFECTS[challnum]
 }
 
+var CURRENT_DEPTH_VALUES = {
+        0: 0,
+        1: 0,
+        2: 0,
+        3: 0,
+        4: 0,
+}
+
+function updateCurrentDepthValues(){
+        if (typeof player == "undefined") return
+        for (let i = 4; i >= 0; i--){
+                CURRENT_DEPTH_VALUES[i] = updateChallengeDepth(i)
+        }
+}
+
+updateCurrentDepthValues()
+
 function getChallengeDepth(chall){
+        return CURRENT_DEPTH_VALUES[chall] || 0
+}
+
+function updateChallengeDepth(chall){
         chall = Number(chall)
         if (chall > 4) return 0
         let c = player.goalsii.currentChallenge

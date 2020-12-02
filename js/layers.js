@@ -116,6 +116,7 @@ function getABBulk(layer){
         if (hasMilestone("ach", 4)) amt *= 100
         if (hasMilestone("goalsii", 0)) amt *= 10
         if (hasMilestone("goalsii", 1)) amt *= 10
+        if (hasMilestone("goalsii", 8)) amt *= player.goalsii.points.max(1).toNumber()
         if (layer == "a") {
                 if (hasUpgrade("a", 35)) amt *= 10
                 if (hasUpgrade("b", 21)) {
@@ -187,8 +188,12 @@ function doPrestigeGainChange(amt, layer){
         if (["a", "b", "c", "d", "e", "f"].includes(layer)) {
                 amt = amt.pow(Decimal.pow(.985, getChallengeDepth(1)))
         }
+        if (["f"].includes(layer)) {
+                amt = amt.pow(Decimal.pow(.9, getChallengeDepth(1)))
+        }
         if (layer == "e"){
                 amt = amt.pow(Decimal.pow(.9, getChallengeDepth(2)))
+                amt = amt.pow(Decimal.pow(.8, getChallengeDepth(3)))
         }
         return amt
 }
@@ -1055,6 +1060,8 @@ addLayer("a", {
                                 
                                 let base = new Decimal(1.2)
                                 if (hasUpgrade("a", 45)) base = base.plus(this.total().div(100))
+
+                                base = base.times(getGoalChallengeReward("21"))
                                 return base
                         },
                         effect(){
@@ -4766,6 +4773,7 @@ addLayer("d", {
                                 if (!isBuyableActive("d", 12)) return new Decimal(0)
 
                                 let base = new Decimal(.01)
+                                base = base.plus(getGoalChallengeReward("03"))
                                 return base
                         },
                         effect(){
@@ -4862,6 +4870,7 @@ addLayer("d", {
                                 if (!isBuyableActive("d", 13)) return new Decimal(0)
 
                                 let base = new Decimal(.1)
+                                base = base.plus(getGoalChallengeReward("03"))
                                 return base
                         },
                         effect(){
@@ -5266,6 +5275,7 @@ addLayer("e", {
                 }
 
                 x = x.times(tmp.goalsii.effect)
+                x = x.times(getGoalChallengeReward("21"))
 
 
                 return x
@@ -5607,7 +5617,7 @@ addLayer("f", {
                 let data = player.f
 
                 data.best = data.best.max(data.points)
-                if (false) {
+                if (hasMilestone("goalsii", 9)) {
                         data.points = data.points.plus(this.getResetGain().times(diff))
                         data.total = data.total.plus(this.getResetGain().times(diff))
                         data.autotimes += diff
@@ -5654,7 +5664,7 @@ addLayer("f", {
                 return a + nextAt
         },
         canReset(){
-                return this.getResetGain().gt(0) && player.f.time >= 5 && !false
+                return this.getResetGain().gt(0) && player.f.time >= 2 && !hasMilestone("goalsii", 9)
         },
         upgrades: {
                 rows: 5,
@@ -5673,7 +5683,7 @@ addLayer("f", {
         tabFormat: {
                 "Upgrades": {
                         content: ["main-display",
-                                ["prestige-button", "", function (){ return false ? {'display': 'none'} : {}}],
+                                ["prestige-button", "", function (){ return hasMilestone("goalsii", 9) ? {'display': 'none'} : {}}],
                                 ["display-text",
                                         function() {return shiftDown ? "Your best Features is " + format(player.f.best) : ""}],
                                 ["display-text",
@@ -5684,8 +5694,8 @@ addLayer("f", {
                                 ],
                                 ["display-text",
                                         function() {
-                                                if (false) return "You are gaining " + format(tmp.f.getResetGain) + " Features per second"
-                                                return "There is a five second cooldown for prestiging (" + format(Math.max(0, 5-player.f.time)) + ")" 
+                                                if (hasMilestone("goalsii", 9)) return "You are gaining " + format(tmp.f.getResetGain) + " Features per second"
+                                                return "There is a two second cooldown for prestiging (" + format(Math.max(0, 2-player.f.time)) + ")" 
                                         },
                                         //{"font-size": "20px"}
                                 ],
@@ -6390,7 +6400,6 @@ addLayer("ach", {
                                 return hasMilestone("goalsii", 7)
                         },
                 },
-                /*
                 96: {
                         name: "Sixty-two",
                         done(){
@@ -6403,7 +6412,6 @@ addLayer("ach", {
                                 return hasMilestone("goalsii", 7)
                         },
                 },
-                /*
                 97: {
                         name: "Sixty-three",
                         done(){
@@ -6411,6 +6419,92 @@ addLayer("ach", {
                         },
                         tooltip() {
                                 return "Get " + PROGRESSION_MILESTONES_TEXT[63]
+                        },
+                        unlocked(){
+                                return hasMilestone("goalsii", 7)
+                        },
+                },
+                101: {
+                        name: "Sixty-four",
+                        done(){
+                                return PROGRESSION_MILESTONES[64]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[64]
+                        },
+                        unlocked(){
+                                return hasMilestone("goalsii", 7)
+                        },
+                },
+                102: {
+                        name: "Sixty-five",
+                        done(){
+                                return PROGRESSION_MILESTONES[65]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[65]
+                        },
+                        unlocked(){
+                                return hasMilestone("goalsii", 7)
+                        },
+                },
+                103: {
+                        name: "Sixty-six",
+                        done(){
+                                return PROGRESSION_MILESTONES[66]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[66]
+                        },
+                        unlocked(){
+                                return hasMilestone("goalsii", 7)
+                        },
+                },
+                104: {
+                        name: "Sixty-seven",
+                        done(){
+                                return PROGRESSION_MILESTONES[67]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[67]
+                        },
+                        unlocked(){
+                                return hasMilestone("goalsii", 7)
+                        },
+                },
+                105: {
+                        name: "Sixty-eight",
+                        done(){
+                                return PROGRESSION_MILESTONES[68]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[68]
+                        },
+                        unlocked(){
+                                return hasMilestone("goalsii", 7)
+                        },
+                },
+                /*
+                106: {
+                        name: "Sixty-nine",
+                        done(){
+                                return PROGRESSION_MILESTONES[69]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[69]
+                        },
+                        unlocked(){
+                                return hasMilestone("goalsii", 7)
+                        },
+                },
+                /*
+                107: {
+                        name: "Seventy",
+                        done(){
+                                return PROGRESSION_MILESTONES[70]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[70]
                         },
                         unlocked(){
                                 return hasMilestone("goalsii", 7)
@@ -6559,7 +6653,6 @@ addLayer("ach", {
                 data.points = new Decimal(0)
 
                 let keep = []
-                if (false) keep.push(4)
                 data.milestones = filter(data.milestones, keep)
                 updateMilestones("ach")
         },
@@ -6656,14 +6749,16 @@ addLayer("goalsii", {
         type: "custom", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
         getResetGain() {
                 let a 
-                if (player.f.times == 0) a = new Decimal(0)
+                if (player.f.best.eq(0)) a = new Decimal(0)
                 else a = new Decimal(1)
+
+                a = a.times(player.f.best.max(1).log10().max(1).log10().plus(1))
 
                 let pre = this.getGainMultPre()
                 let exp = this.getGainExp()
                 let pst = this.getGainMultPost()
 
-                return a.times(pre).pow(exp).times(pst)
+                return a.times(pre).pow(exp).times(pst).floor()
         },
         getGainExp(){
                 let x = new Decimal(1)
@@ -6688,6 +6783,8 @@ addLayer("goalsii", {
                 if (ret.gt(1e8))  ret = ret.pow(2).div(1e8)
 
                 if (hasMilestone("goalsii", 6)) ret = ret.times(2)
+
+                ret = softcap(ret, "goalsii_eff")
 
                 return ret
         },
@@ -6766,10 +6863,12 @@ addLayer("goalsii", {
 
                 let a = "Reset for " + formatWhole(gain) + " " + this.resource
 
+                a += "<br> and " + formatWhole(this.getTokenToMedalGain(gain)) + " " + player.goalsii.currentChallenge + " tokens"
+
                 return b + a
         },
         canReset(){
-                return player.f.times > 0 && this.getResetGain().gt(0)
+                return player.f.best.gt(0) && this.getResetGain().gt(0)
         },
         achievements: {
                 rows: 8,
@@ -6878,7 +6977,7 @@ addLayer("goalsii", {
                         display(){
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["03"]) + "<br>"
                                 let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + format(getGoalChallengeReward("03"), 4) + " to<br>"
-                                let c = "guess"
+                                let c = "<b>Delivery</b> and <b>December</b> base"
                                 return a + b + c
                         },
                         unlocked(){
@@ -7066,7 +7165,7 @@ addLayer("goalsii", {
                         },
                         display(){
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["20"]) + "<br>"
-                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("20")) + " to<br>"
+                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + format(getGoalChallengeReward("20"), 4) + " to<br>"
                                 let c = "<b>Department</b><br>base"
                                 return a + b + c
                         },
@@ -7093,8 +7192,8 @@ addLayer("goalsii", {
                         },
                         display(){
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["21"]) + "<br>"
-                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("21")) + " to<br>"
-                                let c = "guess"
+                                let b = "<h3 style='color: #00FF66'>Reward</h3>: x" + format(getGoalChallengeReward("21")) + "<br>"
+                                let c = "<b>Egg</b> gain and <b>Account</b> base"
                                 return a + b + c
                         },
                         unlocked(){
@@ -7120,8 +7219,8 @@ addLayer("goalsii", {
                         },
                         display(){
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["22"]) + "<br>"
-                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("22")) + " to<br>"
-                                let c = "guess"
+                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("22")) + "<br>"
+                                let c = "free <b>Drive</b><br>levels"
                                 return a + b + c
                         },
                         unlocked(){
@@ -7467,7 +7566,7 @@ addLayer("goalsii", {
         },
         milestones: {
                 0: {
-                        requirementDescription: "<b>M???</b><br>Requires: 1 Medal", 
+                        requirementDescription: "<b>Give a man a fish</b><br>Requires: 1 Medal", 
                         effectDescription: "Autobuyers are 3x faster and buy 10x more",
                         done(){
                                 return player.goalsii.points.gte(1)
@@ -7477,7 +7576,7 @@ addLayer("goalsii", {
                         },
                 }, // hasMilestone("goalsii", 0)
                 1: {
-                        requirementDescription: "<b>Life</b><br>Requires: 2 Medals", 
+                        requirementDescription: "<b>He is fed for a night</b><br>Requires: 2 Medals", 
                         effectDescription: "You keep all autobuyers and they buy 10x more",
                         done(){
                                 return player.goalsii.points.gte(2)
@@ -7487,7 +7586,7 @@ addLayer("goalsii", {
                         },
                 }, // hasMilestone("goalsii", 1)
                 2: {
-                        requirementDescription: "<b>Liberty</b><br>Requires: 3 Medals", 
+                        requirementDescription: "<b>Teach a man to fish</b><br>Requires: 3 Medals", 
                         effectDescription: "Automatically buy <b>A</b> upgrades, <b>A</b> buyables don't cost anything, and keep <b>Also</b>",
                         done(){
                                 return player.goalsii.points.gte(3)
@@ -7498,7 +7597,7 @@ addLayer("goalsii", {
                         toggles: [["goalsii", "autobuyA"]]
                 }, // hasMilestone("goalsii", 2)
                 3: {
-                        requirementDescription: "<b>Pursuit of Happiness</b><br>Requires: 5 Medals", 
+                        requirementDescription: "<b>He is fed for a lifetime</b><br>Requires: 5 Medals", 
                         effectDescription: "Automatically buy <b>B</b> upgrades, <b>B</b> buyables don't cost anything, and keep <b>Buy</b>",
                         done(){
                                 return player.goalsii.points.gte(5)
@@ -7509,7 +7608,7 @@ addLayer("goalsii", {
                         toggles: [["goalsii", "autobuyB"]]
                 }, // hasMilestone("goalsii", 3)
                 4: {
-                        requirementDescription: "<b>Carpe Diem</b><br>Requires: 7 Medals", 
+                        requirementDescription: "<b>Teach a village to fish</b><br>Requires: 7 Medals", 
                         effectDescription: "Automatically buy <b>C</b> upgrades, <b>C</b> buyables don't cost anything, and keep <b>County</b>",
                         done(){
                                 return player.goalsii.points.gte(7)
@@ -7520,7 +7619,7 @@ addLayer("goalsii", {
                         toggles: [["goalsii", "autobuyC"]]
                 }, // hasMilestone("goalsii", 4)
                 5: {
-                        requirementDescription: "<b>Cogito ergo sum</b><br>Requires: 11 Medals", 
+                        requirementDescription: "<b>They run out of fish</b><br>Requires: 11 Medals", 
                         effectDescription: "Automatically buy <b>D</b> upgrades, <b>D</b> buyables don't cost anything, and keep <b>Development</b>",
                         done(){
                                 return player.goalsii.points.gte(11)
@@ -7552,8 +7651,8 @@ addLayer("goalsii", {
                         },
                 }, // hasMilestone("goalsii", 7)
                 8: {
-                        requirementDescription: "<b>[name]</b><br>Requires: 1 11 Token", 
-                        effectDescription: "The above autobuyers can bulk and unlock a <b>C</b> buyable",
+                        requirementDescription: "<b>Cogito ero sum</b><br>Requires: 1 11 Token", 
+                        effectDescription: "The above autobuyers can bulk and unlock a <b>C</b> buyable and buyable autobuyers bulk is multiplied by medals",
                         done(){
                                 return player.goalsii.tokens.best["11"].gte(1)
                         },
@@ -7561,6 +7660,26 @@ addLayer("goalsii", {
                                 return player.goalsii.tokens.best["01"].gte(1)
                         },
                 }, // hasMilestone("goalsii", 8)
+                9: {
+                        requirementDescription: "<b>Features got COVID-19</b><br>Requires: 1 22 Token", 
+                        effectDescription: "Remove the ability to <b>F</b> reset but gain 100% of Features on prestige per second",
+                        done(){
+                                return player.goalsii.tokens.best["22"].gte(1)
+                        },
+                        unlocked(){
+                                return player.goalsii.tokens.best["11"].gte(1)
+                        },
+                }, // hasMilestone("goalsii", 9)
+                10: {
+                        requirementDescription: "<b>Carpe Diem</b><br>Requires: 1 03 Token", 
+                        effectDescription: "<b>Category</b> gives free <b>Conditions</b> and <b>Canada</b> levels",
+                        done(){
+                                return player.goalsii.tokens.best["03"].gte(1)
+                        },
+                        unlocked(){
+                                return player.goalsii.tokens.best["22"].gte(1)
+                        },
+                }, // hasMilestone("goalsii", 10)
 
                 //Numbers: Partitions
         },
@@ -7574,19 +7693,7 @@ addLayer("goalsii", {
                                         return "You are currently in challenge <h3 style = 'color: #CC00FF'>" + player.goalsii.currentChallenge + "</h3>"
                                 }],
                                 ["display-text", function() {
-                                        let a = "That means you have the following effects due to challenges: " 
-                                        if (getChallengeDepth(1) == 0) return ""
-                                        a += "<br>Prestige Gain: <h3 style = 'color: #CC00FF'>^" + format(Decimal.pow(.985, getChallengeDepth(1)), 4) + "</h3>"
-                                        if (getChallengeDepth(2) == 0) return a
-                                        a += ", Point Gain: <h3 style = 'color: #CC00FF'>^" + format(Decimal.pow(.9, getChallengeDepth(2)), 4) + "</h3>"
-                                        if (getChallengeDepth(3) == 0) return a
-                                        a += ",<br>First column buyables have no effect in the first <h3 style = 'color: #CC00FF'>" + formatWhole(getChallengeDepth(3)) + "</h3> layers"
-                                        if (getChallengeDepth(4) == 0) return a
-                                        a += ",<br>You get no free buyables for the first <h3 style = 'color: #CC00FF'>" + formatWhole(getChallengeDepth(4)) + "</h3> layers"
-                                        return a
-                                }],
-                                ["display-text", function() {
-                                        return "<h3 style = 'color: #CC0000'>Warning!<br> Balanced challenges: 00, 01, 02, 10, 11, 12, 20</h3>"
+                                        return getChallengeDepth(3) == 0 ? "" : "You have " + format(player.f.points) + " features"
                                 }],
                                 "prestige-button",
                                 "clickables",
@@ -7598,8 +7705,27 @@ addLayer("goalsii", {
                 "Details": {
                         content: [
                                 "main-display",
+                                ["display-text", function() {
+                                        return "You are currently in challenge <h3 style = 'color: #CC00FF'>" + player.goalsii.currentChallenge + "</h3>"
+                                }],
+                                ["display-text", function() {
+                                        let a = "That means you have the following effects due to challenges: " 
+                                        if (getChallengeDepth(1) == 0) return ""
+                                        a += "<br>Prestige Gain: <h3 style = 'color: #CC00FF'>^" + format(Decimal.pow(.985, getChallengeDepth(1)), 4) + "</h3>"
+                                        a += ", Feature Gain: <h3 style = 'color: #CC00FF'>^" + format(Decimal.pow(.9, getChallengeDepth(1)), 4) + "</h3>"
+                                        if (getChallengeDepth(2) == 0) return a
+                                        a += ", Point and Egg Gain: <h3 style = 'color: #CC00FF'>^" + format(Decimal.pow(.9, getChallengeDepth(2)), 4) + "</h3>"
+                                        if (getChallengeDepth(3) == 0) return a
+                                        a += ",<br>First column buyables have no effect in the first <h3 style = 'color: #CC00FF'>" + formatWhole(getChallengeDepth(3)) + "</h3> layers"
+                                        if (getChallengeDepth(4) == 0) return a
+                                        a += ",<br>You get no free buyables for the first <h3 style = 'color: #CC00FF'>" + formatWhole(getChallengeDepth(4)) + "</h3> layers"
+                                        return a
+                                }],
                                 ["display-text", function(){
-                                        let a = `Each challenge has a reward, and upon claiming said reward<br>
+                                        let a = `<br><br>
+                                        <h2 style = 'color: #CC0033'>Explination</h2><h2>:</h2> <br><br>
+
+                                        Each challenge has a reward, and upon claiming said reward<br>
                                         all prior unlocked main layers are totally reset, and goals are also reset<br>
                                         <br>
                                         There are 5 challenges, and the first is nothing<br>
@@ -7617,9 +7743,9 @@ addLayer("goalsii", {
                                         Each completion gives tokens<br>
                                         The following only applies to layers unlocked before Goals II<br>
                                         C0: Nothing<br>
-                                        C1: Raise all prestige gains ^.985 + C0<br>
-                                        C2: Raise point and Egg gain ^.9 (makes challenges harder) + C1<br>
-                                        C3: First column buyables do not give effects in the first n layers + 2xC2<br>
+                                        C1: Raise all prestige gains ^.985 and Feature gain ^.9 + C0<br>
+                                        C2: Raise point and Egg gain ^.9 + C1<br>
+                                        C3: First column buyables do not give effects in the first n layers<br> and raise <b>Egg</b> gain ^.8 + 2xC2<br>
                                         C4: No buyables automatically give free levels to buyables in the first n layers + 2xC3<br>
                                         <br>
                                         You can only enter challenges if you can medal reset, or if you aren't in challenge 00,<br>
@@ -7627,10 +7753,11 @@ addLayer("goalsii", {
                                         To unlock the ability to enter a given challenge you need to have gotten<br> at least one token for the challenge
                                         to the left and above<br>
                                         <br><br>
-                                        Complete a challenge by medal resetting, which requires <b>F</b> resetting at least once.
+                                        Complete a challenge by medal resetting, which requires <b>F</b> resetting at least once.<br>
+                                        To get tokens in challenge 3 you need at least 1e19 Features.<br>
                                         <br>
                                         Completion of a challenge gives a token to that "upgrade" which gives an effect<br>
-                                        You get one token per reset, though multipliers exist<br><br>
+                                        You get tokens per reset based on Medals gained, with the base gain being 1<br><br>
                                         Rewards:<br> 00 tokens add to all prior prestige gain exponents<br>`
                                         return a
                                         },
@@ -7655,18 +7782,15 @@ addLayer("goalsii", {
                 if (layer == "ach") return
                 if (layer == "goalsii") return
 
-                return //not done yet lol
-
-                let data = player.ach
-
-                data.achievements = []
-                data.best = new Decimal(0)
-
-                let keep = []
-                if (false) keep.push(4)
-                data.milestones = filter(data.milestones, keep)
+                return 
+        },
+        getTokenToMedalGain(gain){
+                if (gain == undefined) return new Decimal(0)
+                if (getChallengeDepth(3) > 0 && player.f.best.lt(1e19)) return new Decimal(0)
+                return gain.times(2).pow(.75).floor()
         },
         onPrestige(gain){
+                gain = this.getTokenToMedalGain(gain)
                 let data = player.goalsii.tokens
                 let chall = player.goalsii.currentChallenge
                 data.points[chall] = data.points[chall].plus(gain)

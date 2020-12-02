@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".3 Fireworks",
+	num: ".3.1 Fireworks",
 	name: "",
 }
 
@@ -96,6 +96,13 @@ PROGRESSION_MILESTONES = {
 	59:() => player.goalsii.tokens.best["20"].gte(1) || hasAchievement("ach", 93),
 	60:() => player.goalsii.tokens.best["21"].gte(1) || hasAchievement("ach", 94),
 	61:() => player.goalsii.tokens.best["22"].gte(1) || hasAchievement("ach", 95),
+	62:() => player.goalsii.tokens.best["03"].gte(1) || hasAchievement("ach", 96),
+	63:() => player.goalsii.tokens.best["13"].gte(1) || hasAchievement("ach", 97),
+	64:() => player.goalsii.tokens.best["23"].gte(1) || hasAchievement("ach",101),
+	65:() => player.goalsii.tokens.best["30"].gte(1) || hasAchievement("ach",102),
+	66:() => player.goalsii.tokens.best["31"].gte(1) || hasAchievement("ach",103),
+	67:() => player.goalsii.tokens.best["32"].gte(1) || hasAchievement("ach",104),
+	68:() => player.goalsii.tokens.best["33"].gte(1) || hasAchievement("ach",105),
 }
 
 /*
@@ -166,6 +173,13 @@ PROGRESSION_MILESTONES_TEXT = {
 	59: "a 20 token",
 	60: "a 21 token",
 	61: "a 22 token",
+	62: "a 03 token",
+	63: "a 13 token",
+	64: "a 23 token",
+	65: "a 30 token",
+	66: "a 31 token",
+	67: "a 32 token",
+	68: "a 33 token",
 }
 
 function progressReachedNum(){
@@ -189,7 +203,7 @@ function nextMilestone(){
 
 // Display extra things at the top of the page
 var displayThings = [
-	"This may be incorrect: Last updated 8:35 PM pacific 12.01",
+	"This may be incorrect: Last updated 12:07 PM pacific 12.02",
 	function (){
 		return "Endgame: One 02 tokens " + (player.goalsii.tokens.best["02"].gt(0) ? "(done)" : "(not done)")
 		/*

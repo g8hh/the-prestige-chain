@@ -84,6 +84,7 @@ function updateTemp() {
 
 	updateAllBuyableExtras()
 	updateCurrentGoalEffects()
+	updateCurrentDepthValues()
 }
 
 function updateTempData(layerData, tmpData) {
