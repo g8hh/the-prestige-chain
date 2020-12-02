@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".2.11 Ideas are a Dime a Dozen",
+	num: ".3 Fireworks",
 	name: "",
 }
 
@@ -89,6 +89,13 @@ PROGRESSION_MILESTONES = {
 	52:() => totalChallengeComps("c") >= 34          || hasAchievement("ach", 83),
 	53:() => player.f.times >= 1                     || hasAchievement("ach", 84),
 	54:() => player.goalsii.tokens.best["01"].gte(1) || hasAchievement("ach", 85),
+	55:() => player.goalsii.tokens.best["02"].gte(1) || hasAchievement("ach", 86),
+	56:() => player.goalsii.tokens.best["10"].gte(1) || hasAchievement("ach", 87),
+	57:() => player.goalsii.tokens.best["11"].gte(1) || hasAchievement("ach", 91),
+	58:() => player.goalsii.tokens.best["12"].gte(1) || hasAchievement("ach", 92),
+	59:() => player.goalsii.tokens.best["20"].gte(1) || hasAchievement("ach", 93),
+	60:() => player.goalsii.tokens.best["21"].gte(1) || hasAchievement("ach", 94),
+	61:() => player.goalsii.tokens.best["22"].gte(1) || hasAchievement("ach", 95),
 }
 
 /*
@@ -151,7 +158,14 @@ PROGRESSION_MILESTONES_TEXT = {
 	51: "22 Circle challenge completions",
 	52: "34 Circle challenge completions",
 	53: "F reset once",
-	54: "a 01 tokens",
+	54: "a 01 token",
+	55: "a 02 token",
+	56: "a 10 token",
+	57: "a 11 token",
+	58: "a 12 token",
+	59: "a 20 token",
+	60: "a 21 token",
+	61: "a 22 token",
 }
 
 function progressReachedNum(){
@@ -175,7 +189,7 @@ function nextMilestone(){
 
 // Display extra things at the top of the page
 var displayThings = [
-	"This may be incorrect: Last updated 3:50 PM pacific 12.01",
+	"This may be incorrect: Last updated 8:35 PM pacific 12.01",
 	function (){
 		return "Endgame: One 02 tokens " + (player.goalsii.tokens.best["02"].gt(0) ? "(done)" : "(not done)")
 		/*

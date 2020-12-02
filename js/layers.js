@@ -187,6 +187,9 @@ function doPrestigeGainChange(amt, layer){
         if (["a", "b", "c", "d", "e", "f"].includes(layer)) {
                 amt = amt.pow(Decimal.pow(.985, getChallengeDepth(1)))
         }
+        if (layer == "e"){
+                amt = amt.pow(Decimal.pow(.9, getChallengeDepth(2)))
+        }
         return amt
 }
 
@@ -3068,6 +3071,7 @@ addLayer("c", {
                 if (hasUpgrade("c", 23)) x = x.times(player.c.upgrades.length).max(x)
                                          x = x.times(getBuyableEffect("b", 13))
                                          x = x.times(tmp.goalsii.effect)
+                                         x = x.times(getBuyableEffect("c", 32))
 
                 return x
         },
@@ -3117,6 +3121,7 @@ addLayer("c", {
                                 if (tmp.c.buyables[22].unlocked) layers.c.buyables[22].buyMax(amt)
                                 if (tmp.c.buyables[23].unlocked) layers.c.buyables[23].buyMax(amt)
                                 if (tmp.c.buyables[31].unlocked) layers.c.buyables[31].buyMax(amt)
+                                if (tmp.c.buyables[32].unlocked) layers.c.buyables[32].buyMax(amt)
                         }
                 } else {
                         data.abtime = 0
@@ -3359,7 +3364,6 @@ addLayer("c", {
                 },
 
                 /*
-                category
                 cost
                 come
                 cart
@@ -4055,6 +4059,102 @@ addLayer("c", {
                                 return hasUpgrade("e", 13) || hasUnlockedPast("e")
                         },
                 },
+                32: {
+                        title: "Category",
+                        display(){
+                                let start = "<b><h2>Amount</h2>: " + this.getAmountDisplay() + "</b><br>"
+                                let eff = "<b><h2>Effect</h2>: *" + format(this.effect()) + " Circles</b><br>"
+                                let cost = "<b><h2>Cost</h2>: " + format(this.cost()) + " Circles</b><br>"
+                                let eformula = "<b><h2>Effect formula</h2>:<br>" + format(this.effectBase()) + "^x</b><br>"
+                                let exformula = this.getExtraFormulaText()
+
+                                let end = shiftDown ? eformula + exformula : "Shift to see details"
+                                return "<br>" + start + eff + cost + end
+                        },
+                        getExtraFormulaText(){
+                                return getBuyableExtraText("c", 32)
+                        },
+                        getAmountDisplay(){
+                                let extra = this.extra()
+                                if (extra.eq(0)) return formatWhole(getBuyableAmount("c", 32))
+                                return formatWhole(getBuyableAmount("c", 32)) + "+" + formatWhole(extra)
+                        },
+                        getBases(){
+                                //currently an example
+                                let b0 = new Decimal("1e1000")
+                                let b1 = new Decimal("10")
+                                let b2 = 100
+                                return [b0, b1, b2]
+                        },
+                        cost(add){
+                                let x = getBuyableAmount("c", 32).plus(add)
+                                let bases = this.getBases()
+                                let base0 = bases[0]
+                                let base1 = bases[1]
+                                let base2 = bases[2]
+                                let exp0 = 1
+                                let exp1 = x
+                                let exp2 = x.times(x)
+
+                                return Decimal.pow(base0, exp0).times(Decimal.pow(base1, exp1)).times(Decimal.pow(base2, exp2)).ceil()
+                        },
+                        effectBase(){
+                                if (!isBuyableActive("c", 32)) return new Decimal(1)
+
+                                let base = new Decimal(100)
+                                return base
+                        },
+                        effect(){
+                                let x = this.total()
+                                let base = this.effectBase()
+                                let ret = Decimal.pow(base, x)
+                                return ret
+                        },
+                        canAfford(){
+                                return player.c.points.gte(this.cost())
+                        },
+                        total(){
+                                return getBuyableAmount("c", 32).plus(this.extra())
+                        },
+                        extra(){
+                                return calcBuyableExtra("c", 32)
+                        },
+                        buy(){
+                                let cost = this.cost()
+                                if (!this.canAfford()) return
+                                player.c.buyables[32] = player.c.buyables[32].plus(1)
+                                if (hasUpgrade("e", 12) || hasMilestone("goalsii", 4)) return 
+                                player.c.points = player.c.points.minus(cost)
+                        },
+                        buyMax(maximum){
+                                let bases = this.getBases()
+                                if (!this.unlocked()) return 
+                                if (player.c.points.lt(bases[0])) return
+
+                                // let exp2 = x.times(x)
+                                let pttarget = player.c.points.div(bases[0]).log(1.01)
+                                let bfactor = Decimal.log(bases[1], 3).div(Decimal.log(1.01, 3))
+                                //want to find ax^2+bx = c
+                                let c = pttarget
+                                let b = bfactor
+                                let a = Decimal.log(bases[2], 3).div(Decimal.log(1.01, 3))
+                                // let a = 1 this is constant so remove it
+
+                                let target = c.times(a).times(4).plus(b * b).sqrt().minus(b).div(2).div(a).floor().plus(1)
+                                //-b + sqrt(b*b+4*c*a)
+
+                                let diff = target.minus(player.c.buyables[32]).max(0)
+                                if (maximum != undefined) diff = diff.min(maximum)
+
+                                player.c.buyables[32] = player.c.buyables[32].plus(diff)
+
+                                if (hasUpgrade("e", 12) || hasMilestone("goalsii", 4) || diff.eq(0)) return 
+                                player.c.points = player.c.points.sub(this.cost(-1)).max(0)
+                        },
+                        unlocked(){ 
+                                return hasMilestone("goalsii", 8) || hasUnlockedPast("g")
+                        },
+                },
         },
         challenges: {
                 rows: 2,
@@ -4569,6 +4669,7 @@ addLayer("d", {
 
                                 let base = new Decimal(5)
                                 base = base.plus(tmp.d.buyables[13].effect)
+                                base = base.plus(getGoalChallengeReward("11"))
                                 return base
                         },
                         effect(){
@@ -5714,7 +5815,7 @@ addLayer("ach", {
                 return false
         },
         achievements: {
-                rows: 8,
+                rows: 11,
                 cols: 7,
                 11: {
                         name: "One",
@@ -6205,7 +6306,6 @@ addLayer("ach", {
                                 return hasMilestone("goalsii", 7)
                         },
                 },
-                /*
                 86: {
                         name: "Fifty-five",
                         done(){
@@ -6218,7 +6318,6 @@ addLayer("ach", {
                                 return hasMilestone("goalsii", 7)
                         },
                 },
-                /*
                 87: {
                         name: "Fifty-six",
                         done(){
@@ -6226,6 +6325,92 @@ addLayer("ach", {
                         },
                         tooltip() {
                                 return "Get " + PROGRESSION_MILESTONES_TEXT[56]
+                        },
+                        unlocked(){
+                                return hasMilestone("goalsii", 7)
+                        },
+                },
+                91: {
+                        name: "Fifty-seven",
+                        done(){
+                                return PROGRESSION_MILESTONES[57]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[57]
+                        },
+                        unlocked(){
+                                return hasMilestone("goalsii", 7)
+                        },
+                },
+                92: {
+                        name: "Fifty-eight",
+                        done(){
+                                return PROGRESSION_MILESTONES[58]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[58]
+                        },
+                        unlocked(){
+                                return hasMilestone("goalsii", 7)
+                        },
+                },
+                93: {
+                        name: "Fifty-nine",
+                        done(){
+                                return PROGRESSION_MILESTONES[59]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[59]
+                        },
+                        unlocked(){
+                                return hasMilestone("goalsii", 7)
+                        },
+                },
+                94: {
+                        name: "Sixty",
+                        done(){
+                                return PROGRESSION_MILESTONES[60]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[60]
+                        },
+                        unlocked(){
+                                return hasMilestone("goalsii", 7)
+                        },
+                },
+                95: {
+                        name: "Sixty-one",
+                        done(){
+                                return PROGRESSION_MILESTONES[61]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[61]
+                        },
+                        unlocked(){
+                                return hasMilestone("goalsii", 7)
+                        },
+                },
+                /*
+                96: {
+                        name: "Sixty-two",
+                        done(){
+                                return PROGRESSION_MILESTONES[62]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[62]
+                        },
+                        unlocked(){
+                                return hasMilestone("goalsii", 7)
+                        },
+                },
+                /*
+                97: {
+                        name: "Sixty-three",
+                        done(){
+                                return PROGRESSION_MILESTONES[63]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[63]
                         },
                         unlocked(){
                                 return hasMilestone("goalsii", 7)
@@ -6376,6 +6561,7 @@ addLayer("ach", {
                 let keep = []
                 if (false) keep.push(4)
                 data.milestones = filter(data.milestones, keep)
+                updateMilestones("ach")
         },
 })
 
@@ -6438,28 +6624,29 @@ addLayer("goalsii", {
                         d[i] = 0
                 }
                 return {
-                unlocked: true,
-                abtime: 0,
-                time: 0,
-                times: 0,
-                challtimes: d,
-                autotimes: 0,
-                autobuyA: false,
-                autobuyB: false,
-                autobuyC: false,
-                autobuyD: false,
-                autobuyE: false,
-                abupgstime: 0,
-                currentChallenge: "00",
-                points: new Decimal(0),
-                best: new Decimal(0),
-                total: new Decimal(0),
-                tokens: {
-                        points: a,
-                        best: b,
-                        total: c,
-                },
-        }},
+                        unlocked: true,
+                        abtime: 0,
+                        time: 0,
+                        times: 0,
+                        challtimes: d,
+                        autotimes: 0,
+                        autobuyA: false,
+                        autobuyB: false,
+                        autobuyC: false,
+                        autobuyD: false,
+                        autobuyE: false,
+                        abupgstime: 0,
+                        currentChallenge: "00",
+                        points: new Decimal(0),
+                        best: new Decimal(0),
+                        total: new Decimal(0),
+                        tokens: {
+                                points: a,
+                                best: b,
+                                total: c,
+                        },
+                }
+        },
         color: "#CC66CC",
         branches: ["ach"],
         requires: new Decimal(0), // Can be a function that takes requirement increases into account
@@ -6560,7 +6747,7 @@ addLayer("goalsii", {
                                 
                                 //if we dont have it, try to buy it and then break, so we only buy one
                                 buyUpgrade(i, trylist[k])
-                                break
+                                if (!hasMilestone("goalsii", 8)) break
                         }
                 }
         },
@@ -6626,6 +6813,7 @@ addLayer("goalsii", {
                                 addPoints("goalsii", gain)
                                 doReset("goalsii", true)
                                 player.goalsii.currentChallenge = "00"
+                                player.goalsii.times ++
                         },
                 },
                 12: {
@@ -6652,6 +6840,7 @@ addLayer("goalsii", {
                                 addPoints("goalsii", gain)
                                 doReset("goalsii", true)
                                 player.goalsii.currentChallenge = "01"
+                                player.goalsii.times ++
                         },
                 },
                 13: {
@@ -6678,6 +6867,7 @@ addLayer("goalsii", {
                                 addPoints("goalsii", gain)
                                 doReset("goalsii", true)
                                 player.goalsii.currentChallenge = "02"
+                                player.goalsii.times ++
                         },
                 },
                 14: {
@@ -6704,6 +6894,7 @@ addLayer("goalsii", {
                                 addPoints("goalsii", gain)
                                 doReset("goalsii", true)
                                 player.goalsii.currentChallenge = "03"
+                                player.goalsii.times ++
                         },
                 },
                 15: {
@@ -6730,6 +6921,7 @@ addLayer("goalsii", {
                                 addPoints("goalsii", gain)
                                 doReset("goalsii", true)
                                 player.goalsii.currentChallenge = "04"
+                                player.goalsii.times ++
                         },
                 },
                 21: {
@@ -6756,6 +6948,7 @@ addLayer("goalsii", {
                                 addPoints("goalsii", gain)
                                 doReset("goalsii", true)
                                 player.goalsii.currentChallenge = "10"
+                                player.goalsii.times ++
                         },
                 },
                 22: {
@@ -6765,8 +6958,8 @@ addLayer("goalsii", {
                         },
                         display(){
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["11"]) + "<br>"
-                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + format(getGoalChallengeReward("11"), 4) + " to<br>"
-                                let c = "guess"
+                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("11")) + "<br>"
+                                let c = "Free <b>Omnipotent II</b> levels"
                                 return a + b + c
                         },
                         unlocked(){
@@ -6782,6 +6975,7 @@ addLayer("goalsii", {
                                 addPoints("goalsii", gain)
                                 doReset("goalsii", true)
                                 player.goalsii.currentChallenge = "11"
+                                player.goalsii.times ++
                         },
                 },
                 23: {
@@ -6791,8 +6985,8 @@ addLayer("goalsii", {
                         },
                         display(){
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["12"]) + "<br>"
-                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("12")) + " to<br>"
-                                let c = "guess"
+                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("12")) + "<br>"
+                                let c = "Free <b>Categroy</b> levels"
                                 return a + b + c
                         },
                         unlocked(){
@@ -6808,6 +7002,7 @@ addLayer("goalsii", {
                                 addPoints("goalsii", gain)
                                 doReset("goalsii", true)
                                 player.goalsii.currentChallenge = "12"
+                                player.goalsii.times ++
                         },
                 },
                 24: {
@@ -6834,6 +7029,7 @@ addLayer("goalsii", {
                                 addPoints("goalsii", gain)
                                 doReset("goalsii", true)
                                 player.goalsii.currentChallenge = "13"
+                                player.goalsii.times ++
                         },
                 },
                 25: {
@@ -6860,6 +7056,7 @@ addLayer("goalsii", {
                                 addPoints("goalsii", gain)
                                 doReset("goalsii", true)
                                 player.goalsii.currentChallenge = "14"
+                                player.goalsii.times ++
                         },
                 },
                 31: {
@@ -6870,7 +7067,7 @@ addLayer("goalsii", {
                         display(){
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["20"]) + "<br>"
                                 let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("20")) + " to<br>"
-                                let c = "guess"
+                                let c = "<b>Department</b><br>base"
                                 return a + b + c
                         },
                         unlocked(){
@@ -6886,6 +7083,7 @@ addLayer("goalsii", {
                                 addPoints("goalsii", gain)
                                 doReset("goalsii", true)
                                 player.goalsii.currentChallenge = "20"
+                                player.goalsii.times ++
                         },
                 },
                 32: {
@@ -6912,6 +7110,7 @@ addLayer("goalsii", {
                                 addPoints("goalsii", gain)
                                 doReset("goalsii", true)
                                 player.goalsii.currentChallenge = "21"
+                                player.goalsii.times ++
                         },
                 },
                 33: {
@@ -6938,6 +7137,7 @@ addLayer("goalsii", {
                                 addPoints("goalsii", gain)
                                 doReset("goalsii", true)
                                 player.goalsii.currentChallenge = "22"
+                                player.goalsii.times ++
                         },
                 },
                 34: {
@@ -6964,6 +7164,7 @@ addLayer("goalsii", {
                                 addPoints("goalsii", gain)
                                 doReset("goalsii", true)
                                 player.goalsii.currentChallenge = "23"
+                                player.goalsii.times ++
                         },
                 },
                 35: {
@@ -6990,6 +7191,7 @@ addLayer("goalsii", {
                                 addPoints("goalsii", gain)
                                 doReset("goalsii", true)
                                 player.goalsii.currentChallenge = "24"
+                                player.goalsii.times ++
                         },
                 },
                 41: {
@@ -7016,6 +7218,7 @@ addLayer("goalsii", {
                                 addPoints("goalsii", gain)
                                 doReset("goalsii", true)
                                 player.goalsii.currentChallenge = "30"
+                                player.goalsii.times ++
                         },
                 },
                 42: {
@@ -7042,6 +7245,7 @@ addLayer("goalsii", {
                                 addPoints("goalsii", gain)
                                 doReset("goalsii", true)
                                 player.goalsii.currentChallenge = "31"
+                                player.goalsii.times ++
                         },
                 },
                 43: {
@@ -7068,6 +7272,7 @@ addLayer("goalsii", {
                                 addPoints("goalsii", gain)
                                 doReset("goalsii", true)
                                 player.goalsii.currentChallenge = "32"
+                                player.goalsii.times ++
                         },
                 },
                 44: {
@@ -7094,6 +7299,7 @@ addLayer("goalsii", {
                                 addPoints("goalsii", gain)
                                 doReset("goalsii", true)
                                 player.goalsii.currentChallenge = "33"
+                                player.goalsii.times ++
                         },
                 },
                 45: {
@@ -7120,6 +7326,7 @@ addLayer("goalsii", {
                                 addPoints("goalsii", gain)
                                 doReset("goalsii", true)
                                 player.goalsii.currentChallenge = "34"
+                                player.goalsii.times ++
                         },
                 },
                 51: {
@@ -7146,6 +7353,7 @@ addLayer("goalsii", {
                                 addPoints("goalsii", gain)
                                 doReset("goalsii", true)
                                 player.goalsii.currentChallenge = "40"
+                                player.goalsii.times ++
                         },
                 },
                 52: {
@@ -7172,6 +7380,7 @@ addLayer("goalsii", {
                                 addPoints("goalsii", gain)
                                 doReset("goalsii", true)
                                 player.goalsii.currentChallenge = "41"
+                                player.goalsii.times ++
                         },
                 },
                 53: {
@@ -7198,6 +7407,7 @@ addLayer("goalsii", {
                                 addPoints("goalsii", gain)
                                 doReset("goalsii", true)
                                 player.goalsii.currentChallenge = "42"
+                                player.goalsii.times ++
                         },
                 },
                 54: {
@@ -7224,6 +7434,7 @@ addLayer("goalsii", {
                                 addPoints("goalsii", gain)
                                 doReset("goalsii", true)
                                 player.goalsii.currentChallenge = "43"
+                                player.goalsii.times ++
                         },
                 },
                 55: {
@@ -7250,6 +7461,7 @@ addLayer("goalsii", {
                                 addPoints("goalsii", gain)
                                 doReset("goalsii", true)
                                 player.goalsii.currentChallenge = "44"
+                                player.goalsii.times ++
                         },
                 },
         },
@@ -7330,7 +7542,7 @@ addLayer("goalsii", {
                         toggles: [["goalsii", "autobuyE"]]
                 }, // hasMilestone("goalsii", 6)
                 7: {
-                        requirementDescription: "<b>[name]</b><br>Requires: 22 Medals", 
+                        requirementDescription: "<b>Intelligence is the ability to adapt to change</b><br>Requires: 22 Medals", 
                         effectDescription: "The first five <b>Goal</b> milestones require half as many goals to unlock",
                         done(){
                                 return player.goalsii.points.gte(22)
@@ -7339,6 +7551,16 @@ addLayer("goalsii", {
                                 return true
                         },
                 }, // hasMilestone("goalsii", 7)
+                8: {
+                        requirementDescription: "<b>[name]</b><br>Requires: 1 11 Token", 
+                        effectDescription: "The above autobuyers can bulk and unlock a <b>C</b> buyable",
+                        done(){
+                                return player.goalsii.tokens.best["11"].gte(1)
+                        },
+                        unlocked(){
+                                return player.goalsii.tokens.best["01"].gte(1)
+                        },
+                }, // hasMilestone("goalsii", 8)
 
                 //Numbers: Partitions
         },
@@ -7356,15 +7578,15 @@ addLayer("goalsii", {
                                         if (getChallengeDepth(1) == 0) return ""
                                         a += "<br>Prestige Gain: <h3 style = 'color: #CC00FF'>^" + format(Decimal.pow(.985, getChallengeDepth(1)), 4) + "</h3>"
                                         if (getChallengeDepth(2) == 0) return a
-                                        a += ", Point Gain: <h3 style = 'color: #CC00FF'>^" + format(Decimal.pow(.9, getChallengeDepth(2))) + "</h3>"
+                                        a += ", Point Gain: <h3 style = 'color: #CC00FF'>^" + format(Decimal.pow(.9, getChallengeDepth(2)), 4) + "</h3>"
                                         if (getChallengeDepth(3) == 0) return a
                                         a += ",<br>First column buyables have no effect in the first <h3 style = 'color: #CC00FF'>" + formatWhole(getChallengeDepth(3)) + "</h3> layers"
-                                        if (getChallengeDepth(3) == 0) return a
-                                        a += ",<br>You get no free buyables for the first <h3 style = 'color: #CC00FF'>" + formatWhole(getChallengeDepth(3)) + "</h3> layers"
+                                        if (getChallengeDepth(4) == 0) return a
+                                        a += ",<br>You get no free buyables for the first <h3 style = 'color: #CC00FF'>" + formatWhole(getChallengeDepth(4)) + "</h3> layers"
                                         return a
                                 }],
                                 ["display-text", function() {
-                                        return "<h3 style = 'color: #CC0000'>Warning!<br> Balanced challenges: 00, 01, 02, 10</h3>"
+                                        return "<h3 style = 'color: #CC0000'>Warning!<br> Balanced challenges: 00, 01, 02, 10, 11, 12, 20</h3>"
                                 }],
                                 "prestige-button",
                                 "clickables",
@@ -7396,7 +7618,7 @@ addLayer("goalsii", {
                                         The following only applies to layers unlocked before Goals II<br>
                                         C0: Nothing<br>
                                         C1: Raise all prestige gains ^.985 + C0<br>
-                                        C2: Raise point gain ^.9 (makes challenges harder) + C1<br>
+                                        C2: Raise point and Egg gain ^.9 (makes challenges harder) + C1<br>
                                         C3: First column buyables do not give effects in the first n layers + 2xC2<br>
                                         C4: No buyables automatically give free levels to buyables in the first n layers + 2xC3<br>
                                         <br>

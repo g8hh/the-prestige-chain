@@ -353,6 +353,9 @@ var FREE_BUYABLE_DATA = {
         c31: {
                 name: "Conditions",
         },
+        c32: {
+                name: "Catagories",
+        },
         d11: {
                 name: "Department",
                 d13: {
@@ -505,6 +508,16 @@ var EXTRA_FREE_BUYABLE_DATA = {
                         name: "B Upgrades"
                 },
         },
+        b33: {
+                1: {
+                        active: function(){
+                                return true
+                        },
+                        amount: function(){
+                                return getGoalChallengeReward("11")
+                        },
+                },
+        },
         c23: {
                 1: {
                         active: function(){
@@ -512,6 +525,16 @@ var EXTRA_FREE_BUYABLE_DATA = {
                         },
                         amount: function(){
                                 return tmp.c.challenges[12].rewardEffect
+                        },
+                },
+        },
+        c32: {
+                1: {
+                        active: function(){
+                                return true
+                        },
+                        amount: function(){
+                                return getGoalChallengeReward("12")
                         },
                 },
         },

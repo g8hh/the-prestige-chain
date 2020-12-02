@@ -43,10 +43,16 @@ var GOALS_REWARD_FUNCTIONS = {
                 return ret.times(10).floor()
         },
         "11"(x){
-                return new Decimal(0)
+                let ret = x.div(5)
+                if (ret.gt(1)) ret = ret.div(1).log10().plus(1)
+                if (ret.gt(2)) ret = ret.div(2).log10().plus(2)
+                return ret.times(10).floor()
         },
         "12"(x){
-                return new Decimal(0)
+                let ret = x.div(5)
+                if (ret.gt(1)) ret = ret.div(1).log10().plus(1)
+                if (ret.gt(2)) ret = ret.div(2).log10().plus(2)
+                return ret.times(9).floor()
         },
         "13"(x){
                 return new Decimal(0)
@@ -55,7 +61,8 @@ var GOALS_REWARD_FUNCTIONS = {
                 return new Decimal(0)
         },
         "20"(x){
-                return new Decimal(0)
+                let ret = x.sqrt().div(4)
+                return ret
         },
         "21"(x){
                 return new Decimal(0)
@@ -126,7 +133,7 @@ function getChallengeDepth(chall){
         if (c.slice(0, 1) == chall) a += 2
         if (c.slice(1, 2) == chall) a += 1
         a = a + getChallengeDepth(chall + 1)
-        if (chall > 2) a = a + getChallengeDepth(chall + 1)
+        if (chall >= 2) a = a + getChallengeDepth(chall + 1)
         return a
 }
 
