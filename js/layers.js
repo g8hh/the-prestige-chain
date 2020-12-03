@@ -188,8 +188,8 @@ function doPrestigeGainChange(amt, layer){
         if (["a", "b", "c", "d", "e", "f"].includes(layer)) {
                 amt = amt.pow(Decimal.pow(.985, getChallengeDepth(1)))
         }
-        if (["f"].includes(layer)) {
-                amt = amt.pow(Decimal.pow(.9, getChallengeDepth(1)))
+        if (layer == "f") {
+                amt = amt.pow(Decimal.pow(.9, getChallengeDepth(2)))
         }
         if (layer == "e"){
                 amt = amt.pow(Decimal.pow(.9, getChallengeDepth(2)))
@@ -5258,6 +5258,8 @@ addLayer("e", {
                 let x = new Decimal(2)
                 if (hasUpgrade("e", 25)) x = x.plus(1)
                 x = x.plus(getGoalChallengeReward("00"))
+                let l = player.goalsii.milestones.length
+                if (hasMilestone("goalsii", 11)) x = x.plus(l*l*.01)
                 return x
         },
         getGainMultPre(){
@@ -5576,6 +5578,7 @@ addLayer("f", {
         },
         getGainMultPre(){
                 let x = new Decimal(1/3)
+                x = x.times(getGoalChallengeReward("13"))
                 return x
         },
         getGainMultPost(){
@@ -6703,6 +6706,7 @@ addLayer("goalsii", {
                 let b = {}
                 let c = {}
                 let d = {}
+                let e = {}
                 let l = ["00", "01", "02", "03", "04",
                          "10", "11", "12", "13", "14",
                          "20", "21", "22", "23", "24",
@@ -6715,6 +6719,7 @@ addLayer("goalsii", {
                         b[i] = new Decimal(0)
                         c[i] = new Decimal(0)
                         d[i] = 0
+                        e[i] = new Decimal(0)
                 }
                 return {
                         unlocked: true,
@@ -6737,6 +6742,7 @@ addLayer("goalsii", {
                                 points: a,
                                 best: b,
                                 total: c,
+                                copy: e,
                         },
                 }
         },
@@ -6800,6 +6806,7 @@ addLayer("goalsii", {
                 data.best = data.best.max(data.points)
                 for (i in data.tokens.best){
                         data.tokens.best[i] = data.tokens.best[i].max(data.tokens.points[i])
+                        data.tokens.copy[i] = data.tokens.points[i]
                 }
                 if (false) {
                         data.points = data.points.plus(this.getResetGain().times(diff))
@@ -7111,8 +7118,8 @@ addLayer("goalsii", {
                         },
                         display(){
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["13"]) + "<br>"
-                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("13")) + " to<br>"
-                                let c = "guess"
+                                let b = "<h3 style='color: #00FF66'>Reward</h3>: *" + format(getGoalChallengeReward("13"), 4) + " to<br>"
+                                let c = "base <b>F</b> gain"
                                 return a + b + c
                         },
                         unlocked(){
@@ -7566,7 +7573,7 @@ addLayer("goalsii", {
         },
         milestones: {
                 0: {
-                        requirementDescription: "<b>Give a man a fish</b><br>Requires: 1 Medal", 
+                        requirementDescription: "<b>άλφα (Alpha)</b><br>Requires: 1 Medal", 
                         effectDescription: "Autobuyers are 3x faster and buy 10x more",
                         done(){
                                 return player.goalsii.points.gte(1)
@@ -7576,112 +7583,127 @@ addLayer("goalsii", {
                         },
                 }, // hasMilestone("goalsii", 0)
                 1: {
-                        requirementDescription: "<b>He is fed for a night</b><br>Requires: 2 Medals", 
+                        requirementDescription: "<b>βήτα (Beta)</b><br>Requires: 2 Medals", 
                         effectDescription: "You keep all autobuyers and they buy 10x more",
                         done(){
                                 return player.goalsii.points.gte(2)
                         },
                         unlocked(){
-                                return true
+                                return hasMilestone("goalsii", 0)
                         },
                 }, // hasMilestone("goalsii", 1)
                 2: {
-                        requirementDescription: "<b>Teach a man to fish</b><br>Requires: 3 Medals", 
+                        requirementDescription: "<b>γάμμα (Gamma)</b><br>Requires: 3 Medals", 
                         effectDescription: "Automatically buy <b>A</b> upgrades, <b>A</b> buyables don't cost anything, and keep <b>Also</b>",
                         done(){
                                 return player.goalsii.points.gte(3)
                         },
                         unlocked(){
-                                return true
+                                return hasMilestone("goalsii", 1)
                         },
                         toggles: [["goalsii", "autobuyA"]]
                 }, // hasMilestone("goalsii", 2)
                 3: {
-                        requirementDescription: "<b>He is fed for a lifetime</b><br>Requires: 5 Medals", 
+                        requirementDescription: "<b>δέλτα (Delta)</b><br>Requires: 5 Medals", 
                         effectDescription: "Automatically buy <b>B</b> upgrades, <b>B</b> buyables don't cost anything, and keep <b>Buy</b>",
                         done(){
                                 return player.goalsii.points.gte(5)
                         },
                         unlocked(){
-                                return true
+                                return hasMilestone("goalsii", 2)
                         },
                         toggles: [["goalsii", "autobuyB"]]
                 }, // hasMilestone("goalsii", 3)
                 4: {
-                        requirementDescription: "<b>Teach a village to fish</b><br>Requires: 7 Medals", 
+                        requirementDescription: "<b>έψιλον (Epsilon)</b><br>Requires: 7 Medals", 
                         effectDescription: "Automatically buy <b>C</b> upgrades, <b>C</b> buyables don't cost anything, and keep <b>County</b>",
                         done(){
                                 return player.goalsii.points.gte(7)
                         },
                         unlocked(){
-                                return true
+                                return hasMilestone("goalsii", 3)
                         },
                         toggles: [["goalsii", "autobuyC"]]
                 }, // hasMilestone("goalsii", 4)
                 5: {
-                        requirementDescription: "<b>They run out of fish</b><br>Requires: 11 Medals", 
+                        requirementDescription: "<b>ζήτα (Zeta)</b><br>Requires: 11 Medals", 
                         effectDescription: "Automatically buy <b>D</b> upgrades, <b>D</b> buyables don't cost anything, and keep <b>Development</b>",
                         done(){
                                 return player.goalsii.points.gte(11)
                         },
                         unlocked(){
-                                return true
+                                return hasMilestone("goalsii", 4)
                         },
                         toggles: [["goalsii", "autobuyD"]]
                 }, // hasMilestone("goalsii", 5)
                 6: {
-                        requirementDescription: "<b>Aut viam inveniam aut faciam tibi</b><br>Requires: 15 Medals", 
+                        requirementDescription: "<b>ήτα (Eta)</b><br>Requires: 15 Medals", 
                         effectDescription: "Automatically buy <b>E</b> upgrades, keep <b>Every</b>, and double Medal effect",
                         done(){
                                 return player.goalsii.points.gte(15)
                         },
                         unlocked(){
-                                return true
+                                return hasMilestone("goalsii", 5)
                         },
                         toggles: [["goalsii", "autobuyE"]]
                 }, // hasMilestone("goalsii", 6)
                 7: {
-                        requirementDescription: "<b>Intelligence is the ability to adapt to change</b><br>Requires: 22 Medals", 
+                        requirementDescription: "<b>θήτα (Theta)</b><br>Requires: 22 Medals", 
                         effectDescription: "The first five <b>Goal</b> milestones require half as many goals to unlock",
                         done(){
                                 return player.goalsii.points.gte(22)
                         },
                         unlocked(){
-                                return true
+                                return hasMilestone("goalsii", 6)
                         },
                 }, // hasMilestone("goalsii", 7)
                 8: {
-                        requirementDescription: "<b>Cogito ero sum</b><br>Requires: 1 11 Token", 
+                        requirementDescription: "<b>ιώτα (Iota)</b><br>Requires: 1 11 Token", 
                         effectDescription: "The above autobuyers can bulk and unlock a <b>C</b> buyable and buyable autobuyers bulk is multiplied by medals",
                         done(){
                                 return player.goalsii.tokens.best["11"].gte(1)
                         },
                         unlocked(){
-                                return player.goalsii.tokens.best["01"].gte(1)
+                                return hasMilestone("goalsii", 7)
                         },
                 }, // hasMilestone("goalsii", 8)
                 9: {
-                        requirementDescription: "<b>Features got COVID-19</b><br>Requires: 1 22 Token", 
+                        requirementDescription: "<b>κάππα (Kappa)</b><br>Requires: 1 22 Token", 
                         effectDescription: "Remove the ability to <b>F</b> reset but gain 100% of Features on prestige per second",
                         done(){
                                 return player.goalsii.tokens.best["22"].gte(1)
                         },
                         unlocked(){
-                                return player.goalsii.tokens.best["11"].gte(1)
+                                return hasMilestone("goalsii", 8)
                         },
                 }, // hasMilestone("goalsii", 9)
                 10: {
-                        requirementDescription: "<b>Carpe Diem</b><br>Requires: 1 03 Token", 
+                        requirementDescription: "<b>λάμβδα (Lambda)</b><br>Requires: 1 03 Token", 
                         effectDescription: "<b>Category</b> gives free <b>Conditions</b> and <b>Canada</b> levels",
                         done(){
                                 return player.goalsii.tokens.best["03"].gte(1)
                         },
                         unlocked(){
-                                return player.goalsii.tokens.best["22"].gte(1)
+                                return hasMilestone("goalsii", 9)
                         },
                 }, // hasMilestone("goalsii", 10)
+                11: {
+                        requirementDescription: "<b>μυ (Mu)</b><br>Requires: 20 03 Tokens", 
+                        effectDescription: "Per milestone squared add .01 to the <b>E</b> gain exponent",
+                        done(){
+                                return player.goalsii.tokens.best["03"].gte(20)
+                        },
+                        unlocked(){
+                                return hasMilestone("goalsii", 10)
+                        },
+                }, // hasMilestone("goalsii", 11)
+                
+                /*
+                https://en.wikipedia.org/wiki/Greek_alphabet
 
-                //Numbers: Partitions
+                
+                
+                */
         },
         tabFormat: {
                 "Challenges": {
@@ -7743,8 +7765,8 @@ addLayer("goalsii", {
                                         Each completion gives tokens<br>
                                         The following only applies to layers unlocked before Goals II<br>
                                         C0: Nothing<br>
-                                        C1: Raise all prestige gains ^.985 and Feature gain ^.9 + C0<br>
-                                        C2: Raise point and Egg gain ^.9 + C1<br>
+                                        C1: Raise all prestige gains ^.985 + C0<br>
+                                        C2: Raise point, Egg, and Feature gain ^.9 + C1<br>
                                         C3: First column buyables do not give effects in the first n layers<br> and raise <b>Egg</b> gain ^.8 + 2xC2<br>
                                         C4: No buyables automatically give free levels to buyables in the first n layers + 2xC3<br>
                                         <br>
@@ -7785,16 +7807,33 @@ addLayer("goalsii", {
                 return 
         },
         getTokenToMedalGain(gain){
-                if (gain == undefined) return new Decimal(0)
                 if (getChallengeDepth(3) > 0 && player.f.best.lt(1e19)) return new Decimal(0)
                 return gain.times(2).pow(.75).floor()
+        },
+        getAllPrior(chall){
+                if (chall == undefined) chall = player.goalsii.currentChallenge
+                let a = Number(chall.slice(0,1))
+                let b = Number(chall.slice(1,2))
+                let l = []
+                for (i = 0; i <= a; i ++){
+                        for (j = 0; j <= b; j ++){
+                                l.push(String(i)+String(j)) 
+                        }
+                }
+                return l
         },
         onPrestige(gain){
                 gain = this.getTokenToMedalGain(gain)
                 let data = player.goalsii.tokens
                 let chall = player.goalsii.currentChallenge
-                data.points[chall] = data.points[chall].plus(gain)
-                data.total[chall]  = data.total[chall].plus(gain)
+                let toAdd = [chall]
+                if (false) toAdd = this.getAllPrior()
+
+                for (i in toAdd) {
+                        c = toAdd[i]
+                        data.points[c] = data.points[c].plus(gain)
+                        data.total[c]  = data.total[c].plus(gain)
+                }
         },
 })
 

@@ -13,13 +13,15 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".3.1 Fireworks",
+	num: ".3.2 Works of fire",
 	name: "",
 }
 
 // If you add new functions anywhere inside of a layer, and those functions have an effect when called, add them here.
 // (The ones here are examples, all official functions are already taken care of)
-var doNotCallTheseFunctionsEveryTick = ["blowUpEverything"]
+var doNotCallTheseFunctionsEveryTick = ["blowUpEverything",
+					"getTokenToMedalGain",
+					"getAllPrior"]
 
 function getStartPoints(){
     return new Decimal(modInfo.initialStartPoints)
@@ -203,9 +205,9 @@ function nextMilestone(){
 
 // Display extra things at the top of the page
 var displayThings = [
-	"This may be incorrect: Last updated 12:07 PM pacific 12.02",
+	"This may be incorrect: Last updated 11:33 PM pacific 12.02",
 	function (){
-		return "Endgame: One 02 tokens " + (player.goalsii.tokens.best["02"].gt(0) ? "(done)" : "(not done)")
+		return "Endgame: 20 13 tokens " + (player.goalsii.tokens.best["13"].gt(20) ? "(done)" : "(not done)")
 		/*
 		let a = "Endgame: All goals"
 		if (player.ach.achievements.length == Object.keys(PROGRESSION_MILESTONES).length) {

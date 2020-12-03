@@ -58,7 +58,9 @@ var GOALS_REWARD_FUNCTIONS = {
                 return ret.times(9).floor()
         },
         "13"(x){
-                return new Decimal(0)
+                let ret = x.pow(2).div(10).plus(1)
+                if (ret.gt(5)) ret = ret.times(2).log10().times(5)
+                return ret
         },
         "14"(x){
                 return new Decimal(0)
