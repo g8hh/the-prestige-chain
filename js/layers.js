@@ -3764,7 +3764,7 @@ addLayer("c", {
                                 return Decimal.pow(base0, exp0).times(Decimal.pow(base1, exp1)).times(Decimal.pow(base2, exp2)).ceil()
                         },
                         effectBase(){
-                                if (!isBuyableActive("c", 21)) return new Decimal(0)
+                                if (!isBuyableActive("c", 21)) return new Decimal(1)
 
                                 let base = new Decimal(2)
                                 return base
@@ -6832,6 +6832,8 @@ addLayer("goalsii", {
                 if (getChallengeDepth(3) > 0) b = b.minus(2).max(0)
 
                 a = a.times(b)
+
+                if (a.lt(1)) return new Decimal(0)
 
                 let pre = this.getGainMultPre()
                 let exp = this.getGainExp()
