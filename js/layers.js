@@ -110,13 +110,14 @@ function totalChallengeComps(layer){
 
 function getABBulk(layer){
         let amt = 1
-        if (hasUpgrade("e", 11)) amt *= Math.max(player.ach.achievements.length, 1)
-        if (hasUpgrade("d", 35)) amt *= 100
-        if (hasUpgrade("e", 23)) amt *= 100
-        if (hasMilestone("ach", 4)) amt *= 100
-        if (hasMilestone("goalsii", 0)) amt *= 10
-        if (hasMilestone("goalsii", 1)) amt *= 10
-        if (hasMilestone("goalsii", 8)) amt *= player.goalsii.points.max(1).toNumber()
+        if (hasUpgrade("e", 11))           amt *= Math.max(player.ach.achievements.length, 1)
+        if (hasUpgrade("d", 35))           amt *= 100
+        if (hasUpgrade("e", 23))           amt *= 100
+        if (hasMilestone("ach", 4))        amt *= 100
+        if (hasMilestone("goalsii", 0))    amt *= 10
+        if (hasMilestone("goalsii", 1))    amt *= 10
+        if (hasMilestone("goalsii", 8))    amt *= player.goalsii.points.max(1).toNumber()
+        if (hasMilestone("goalsii", 11))   amt *= Math.pow(2, player.goalsii.milestones.length)
         if (layer == "a") {
                 if (hasUpgrade("a", 35)) amt *= 10
                 if (hasUpgrade("b", 21)) {
@@ -196,6 +197,10 @@ function doPrestigeGainChange(amt, layer){
                 amt = amt.pow(Decimal.pow(.8, getChallengeDepth(3)))
         }
         return amt
+}
+
+function getMaxBuyablesAmount(layer){
+        return Decimal.pow(10, 20)
 }
 
 var devSpeedUp = false
@@ -674,7 +679,7 @@ addLayer("a", {
                                 return Decimal.pow(base, x)
                         },
                         canAfford(){
-                                return player.a.points.gte(this.cost())
+                                return player.a.points.gte(this.cost()) && getBuyableAmount("a", 11).lt(getMaxBuyablesAmount("a"))
                         },
                         total(){
                                 return getBuyableAmount("a", 11).plus(this.extra())
@@ -708,6 +713,8 @@ addLayer("a", {
 
                                 let target = c.times(a).times(4).plus(b * b).sqrt().minus(b).div(2).div(a).floor().plus(1)
                                 //-b + sqrt(b*b+4*c*a)
+
+                                target = target.min(getMaxBuyablesAmount("a"))
 
                                 let diff = target.minus(player.a.buyables[11]).max(0)
                                 if (maximum != undefined) diff = diff.min(maximum)
@@ -775,7 +782,7 @@ addLayer("a", {
                                 return Decimal.pow(base, x)
                         },
                         canAfford(){
-                                return player.a.points.gte(this.cost())
+                                return player.a.points.gte(this.cost()) && getBuyableAmount("a", 12).lt(getMaxBuyablesAmount("a"))
                         },
                         total(){
                                 return getBuyableAmount("a", 12).plus(this.extra())
@@ -809,6 +816,8 @@ addLayer("a", {
 
                                 let target = c.times(a).times(4).plus(b * b).sqrt().minus(b).div(2).div(a).floor().plus(1)
                                 //-b + sqrt(b*b+4*c*a)
+
+                                target = target.min(getMaxBuyablesAmount("a"))
 
                                 let diff = target.minus(player.a.buyables[12]).max(0)
                                 if (maximum != undefined) diff = diff.min(maximum)
@@ -870,7 +879,7 @@ addLayer("a", {
                                 return ret
                         },
                         canAfford(){
-                                return player.a.points.gte(this.cost())
+                                return player.a.points.gte(this.cost()) && getBuyableAmount("a", 13).lt(getMaxBuyablesAmount("a"))
                         },
                         total(){
                                 return getBuyableAmount("a", 13).plus(this.extra())
@@ -904,6 +913,8 @@ addLayer("a", {
 
                                 let target = c.times(a).times(4).plus(b * b).sqrt().minus(b).div(2).div(a).floor().plus(1)
                                 //-b + sqrt(b*b+4*c*a)
+
+                                target = target.min(getMaxBuyablesAmount("a"))
 
                                 let diff = target.minus(player.a.buyables[13]).max(0)
                                 if (maximum != undefined) diff = diff.min(maximum)
@@ -969,7 +980,7 @@ addLayer("a", {
                                 return Decimal.times(base, x)
                         },
                         canAfford(){
-                                return player.a.points.gte(this.cost())
+                                return player.a.points.gte(this.cost()) && getBuyableAmount("a", 21).lt(getMaxBuyablesAmount("a"))
                         },
                         total(){
                                 return getBuyableAmount("a", 21).plus(this.extra())
@@ -1003,6 +1014,8 @@ addLayer("a", {
 
                                 let target = c.times(a).times(4).plus(b * b).sqrt().minus(b).div(2).div(a).floor().plus(1)
                                 //-b + sqrt(b*b+4*c*a)
+
+                                target = target.min(getMaxBuyablesAmount("a"))
 
                                 let diff = target.minus(player.a.buyables[21]).max(0)
                                 if (maximum != undefined) diff = diff.min(maximum)
@@ -1070,7 +1083,7 @@ addLayer("a", {
                                 return Decimal.pow(base, x)
                         },
                         canAfford(){
-                                return player.a.points.gte(this.cost())
+                                return player.a.points.gte(this.cost()) && getBuyableAmount("a", 22).lt(getMaxBuyablesAmount("a"))
                         },
                         total(){
                                 return getBuyableAmount("a", 22).plus(this.extra())
@@ -1104,6 +1117,8 @@ addLayer("a", {
 
                                 let target = c.times(a).times(4).plus(b * b).sqrt().minus(b).div(2).div(a).floor().plus(1)
                                 //-b + sqrt(b*b+4*c*a)
+
+                                target = target.min(getMaxBuyablesAmount("a"))
 
                                 let diff = target.minus(player.a.buyables[22]).max(0)
                                 if (maximum != undefined) diff = diff.min(maximum)
@@ -1169,7 +1184,7 @@ addLayer("a", {
                                 return Decimal.pow(base, x)
                         },
                         canAfford(){
-                                return player.a.points.gte(this.cost())
+                                return player.a.points.gte(this.cost()) && getBuyableAmount("a", 23).lt(getMaxBuyablesAmount("a"))
                         },
                         total(){
                                 return getBuyableAmount("a", 23).plus(this.extra())
@@ -1203,6 +1218,8 @@ addLayer("a", {
 
                                 let target = c.times(a).times(4).plus(b * b).sqrt().minus(b).div(2).div(a).floor().plus(1)
                                 //-b + sqrt(b*b+4*c*a)
+
+                                target = target.min(getMaxBuyablesAmount("a"))
 
                                 let diff = target.minus(player.a.buyables[23]).max(0)
                                 if (maximum != undefined) diff = diff.min(maximum)
@@ -1267,7 +1284,7 @@ addLayer("a", {
                                 return Decimal.pow(base, x)
                         },
                         canAfford(){
-                                return player.a.points.gte(this.cost())
+                                return player.a.points.gte(this.cost()) && getBuyableAmount("a", 31).lt(getMaxBuyablesAmount("a"))
                         },
                         total(){
                                 return getBuyableAmount("a", 31).plus(this.extra())
@@ -1301,6 +1318,8 @@ addLayer("a", {
 
                                 let target = c.times(a).times(4).plus(b * b).sqrt().minus(b).div(2).div(a).floor().plus(1)
                                 //-b + sqrt(b*b+4*c*a)
+
+                                target = target.min(getMaxBuyablesAmount("a"))
 
                                 let diff = target.minus(player.a.buyables[31]).max(0)
                                 if (maximum != undefined) diff = diff.min(maximum)
@@ -1370,7 +1389,7 @@ addLayer("a", {
                                 return ret
                         },
                         canAfford(){
-                                return player.a.points.gte(this.cost())
+                                return player.a.points.gte(this.cost()) && getBuyableAmount("a", 32).lt(getMaxBuyablesAmount("a"))
                         },
                         total(){
                                 return getBuyableAmount("a", 32).plus(this.extra())
@@ -1404,6 +1423,8 @@ addLayer("a", {
 
                                 let target = c.times(a).times(4).plus(b * b).sqrt().minus(b).div(2).div(a).floor().plus(1)
                                 //-b + sqrt(b*b+4*c*a)
+
+                                target = target.min(getMaxBuyablesAmount("a"))
 
                                 let diff = target.minus(player.a.buyables[32]).max(0)
                                 if (maximum != undefined) diff = diff.min(maximum)
@@ -1473,7 +1494,7 @@ addLayer("a", {
                                 return ret
                         },
                         canAfford(){
-                                return player.a.points.gte(this.cost())
+                                return player.a.points.gte(this.cost()) && getBuyableAmount("a", 33).lt(getMaxBuyablesAmount("a"))
                         },
                         total(){
                                 return getBuyableAmount("a", 33).plus(this.extra())
@@ -1507,6 +1528,8 @@ addLayer("a", {
 
                                 let target = c.times(a).times(4).plus(b * b).sqrt().minus(b).div(2).div(a).floor().plus(1)
                                 //-b + sqrt(b*b+4*c*a)
+
+                                target = target.min(getMaxBuyablesAmount("a"))
 
                                 let diff = target.minus(player.a.buyables[33]).max(0)
                                 if (maximum != undefined) diff = diff.min(maximum)
@@ -2013,7 +2036,7 @@ addLayer("b", {
                                 return Decimal.pow(base, x)
                         },
                         canAfford(){
-                                return player.b.points.gte(this.cost())
+                                return player.b.points.gte(this.cost()) && getBuyableAmount("b", 11).lt(getMaxBuyablesAmount("b"))
                         },
                         total(){
                                 return getBuyableAmount("b", 11).plus(this.extra())
@@ -2044,6 +2067,8 @@ addLayer("b", {
 
                                 let target = c.times(a).times(4).plus(b * b).sqrt().minus(b).div(2).div(a).floor().plus(1)
                                 //-b + sqrt(b*b+4*c*a)
+
+                                target = target.min(getMaxBuyablesAmount("b"))
 
                                 let diff = target.minus(player.b.buyables[11]).max(0)
                                 if (maximum != undefined) diff = diff.min(maximum)
@@ -2117,7 +2142,7 @@ addLayer("b", {
                                 return Decimal.pow(base.plus(x), x)
                         },
                         canAfford(){
-                                return player.b.points.gte(this.cost())
+                                return player.b.points.gte(this.cost()) && getBuyableAmount("b", 12).lt(getMaxBuyablesAmount("b"))
                         },
                         total(){
                                 return getBuyableAmount("b", 12).plus(this.extra())
@@ -2148,6 +2173,8 @@ addLayer("b", {
 
                                 let target = c.times(a).times(4).plus(b * b).sqrt().minus(b).div(2).div(a).floor().plus(1)
                                 //-b + sqrt(b*b+4*c*a)
+
+                                target = target.min(getMaxBuyablesAmount("b"))
 
                                 let diff = target.minus(player.b.buyables[12]).max(0)
                                 if (maximum != undefined) diff = diff.min(maximum)
@@ -2213,7 +2240,7 @@ addLayer("b", {
                                 return Decimal.pow(base, x)
                         },
                         canAfford(){
-                                return player.b.points.gte(this.cost())
+                                return player.b.points.gte(this.cost()) && getBuyableAmount("b", 13).lt(getMaxBuyablesAmount("b"))
                         },
                         total(){
                                 return getBuyableAmount("b", 13).plus(this.extra())
@@ -2244,6 +2271,8 @@ addLayer("b", {
 
                                 let target = c.times(a).times(4).plus(b * b).sqrt().minus(b).div(2).div(a).floor().plus(1)
                                 //-b + sqrt(b*b+4*c*a)
+
+                                target = target.min(getMaxBuyablesAmount("b"))
 
                                 let diff = target.minus(player.b.buyables[13]).max(0)
                                 if (maximum != undefined) diff = diff.min(maximum)
@@ -2309,7 +2338,7 @@ addLayer("b", {
                                 return Decimal.pow(base, x)
                         },
                         canAfford(){
-                                return player.b.points.gte(this.cost())
+                                return player.b.points.gte(this.cost()) && getBuyableAmount("b", 21).lt(getMaxBuyablesAmount("b"))
                         },
                         total(){
                                 return getBuyableAmount("b", 21).plus(this.extra())
@@ -2340,6 +2369,8 @@ addLayer("b", {
 
                                 let target = c.times(a).times(4).plus(b * b).sqrt().minus(b).div(2).div(a).floor().plus(1)
                                 //-b + sqrt(b*b+4*c*a)
+
+                                target = target.min(getMaxBuyablesAmount("b"))
 
                                 let diff = target.minus(player.b.buyables[21]).max(0)
                                 if (maximum != undefined) diff = diff.min(maximum)
@@ -2405,7 +2436,7 @@ addLayer("b", {
                                 return Decimal.pow(base, x.sqrt())
                         },
                         canAfford(){
-                                return player.b.points.gte(this.cost())
+                                return player.b.points.gte(this.cost()) && getBuyableAmount("b", 22).lt(getMaxBuyablesAmount("b"))
                         },
                         total(){
                                 return getBuyableAmount("b", 22).plus(this.extra())
@@ -2436,6 +2467,8 @@ addLayer("b", {
 
                                 let target = c.times(a).times(4).plus(b * b).sqrt().minus(b).div(2).div(a).floor().plus(1)
                                 //-b + sqrt(b*b+4*c*a)
+
+                                target = target.min(getMaxBuyablesAmount("b"))
 
                                 let diff = target.minus(player.b.buyables[22]).max(0)
                                 if (maximum != undefined) diff = diff.min(maximum)
@@ -2501,7 +2534,7 @@ addLayer("b", {
                                 return Decimal.pow(base, x)
                         },
                         canAfford(){
-                                return player.b.points.gte(this.cost())
+                                return player.b.points.gte(this.cost()) && getBuyableAmount("b", 23).lt(getMaxBuyablesAmount("b"))
                         },
                         total(){
                                 return getBuyableAmount("b", 23).plus(this.extra())
@@ -2532,6 +2565,8 @@ addLayer("b", {
 
                                 let target = c.times(a).times(4).plus(b * b).sqrt().minus(b).div(2).div(a).floor().plus(1)
                                 //-b + sqrt(b*b+4*c*a)
+
+                                target = target.min(getMaxBuyablesAmount("b"))
 
                                 let diff = target.minus(player.b.buyables[23]).max(0)
                                 if (maximum != undefined) diff = diff.min(maximum)
@@ -2596,7 +2631,7 @@ addLayer("b", {
                                 return Decimal.pow(base, x)
                         },
                         canAfford(){
-                                return player.b.points.gte(this.cost())
+                                return player.b.points.gte(this.cost()) && getBuyableAmount("b", 31).lt(getMaxBuyablesAmount("b"))
                         },
                         total(){
                                 return getBuyableAmount("b", 31).plus(this.extra())
@@ -2627,6 +2662,8 @@ addLayer("b", {
 
                                 let target = c.times(a).times(4).plus(b * b).sqrt().minus(b).div(2).div(a).floor().plus(1)
                                 //-b + sqrt(b*b+4*c*a)
+
+                                target = target.min(getMaxBuyablesAmount("b"))
 
                                 let diff = target.minus(player.b.buyables[31]).max(0)
                                 if (maximum != undefined) diff = diff.min(maximum)
@@ -2692,7 +2729,7 @@ addLayer("b", {
                                 return Decimal.times(base, x)
                         },
                         canAfford(){
-                                return player.b.points.gte(this.cost())
+                                return player.b.points.gte(this.cost()) && getBuyableAmount("b", 32).lt(getMaxBuyablesAmount("b"))
                         },
                         total(){
                                 return getBuyableAmount("b", 32).plus(this.extra())
@@ -2723,6 +2760,8 @@ addLayer("b", {
 
                                 let target = c.times(a).times(4).plus(b * b).sqrt().minus(b).div(2).div(a).floor().plus(1)
                                 //-b + sqrt(b*b+4*c*a)
+
+                                target = target.min(getMaxBuyablesAmount("b"))
 
                                 let diff = target.minus(player.b.buyables[32]).max(0)
                                 if (maximum != undefined) diff = diff.min(maximum)
@@ -2788,7 +2827,7 @@ addLayer("b", {
                                 return Decimal.pow(base, x)
                         },
                         canAfford(){
-                                return player.b.points.gte(this.cost())
+                                return player.b.points.gte(this.cost()) && getBuyableAmount("b", 33).lt(getMaxBuyablesAmount("b"))
                         },
                         total(){
                                 return getBuyableAmount("b", 33).plus(this.extra())
@@ -2819,6 +2858,8 @@ addLayer("b", {
 
                                 let target = c.times(a).times(4).plus(b * b).sqrt().minus(b).div(2).div(a).floor().plus(1)
                                 //-b + sqrt(b*b+4*c*a)
+
+                                target = target.min(getMaxBuyablesAmount("b"))
 
                                 let diff = target.minus(player.b.buyables[33]).max(0)
                                 if (maximum != undefined) diff = diff.min(maximum)
@@ -3436,7 +3477,7 @@ addLayer("c", {
                                 return ret
                         },
                         canAfford(){
-                                return player.c.points.gte(this.cost())
+                                return player.c.points.gte(this.cost()) && getBuyableAmount("c", 11).lt(getMaxBuyablesAmount("c"))
                         },
                         total(){
                                 return getBuyableAmount("c", 11).plus(this.extra())
@@ -3467,6 +3508,8 @@ addLayer("c", {
 
                                 let target = c.times(a).times(4).plus(b * b).sqrt().minus(b).div(2).div(a).floor().plus(1)
                                 //-b + sqrt(b*b+4*c*a)
+
+                                target = target.min(getMaxBuyablesAmount("c"))
 
                                 let diff = target.minus(player.c.buyables[11]).max(0)
                                 if (maximum != undefined) diff = diff.min(maximum)
@@ -3533,7 +3576,7 @@ addLayer("c", {
                                 return ret
                         },
                         canAfford(){
-                                return player.c.points.gte(this.cost())
+                                return player.c.points.gte(this.cost()) && getBuyableAmount("c", 12).lt(getMaxBuyablesAmount("c"))
                         },
                         total(){
                                 return getBuyableAmount("c", 12).plus(this.extra())
@@ -3564,6 +3607,8 @@ addLayer("c", {
 
                                 let target = c.times(a).times(4).plus(b * b).sqrt().minus(b).div(2).div(a).floor().plus(1)
                                 //-b + sqrt(b*b+4*c*a)
+
+                                target = target.min(getMaxBuyablesAmount("c"))
 
                                 let diff = target.minus(player.c.buyables[12]).max(0)
                                 if (maximum != undefined) diff = diff.min(maximum)
@@ -3632,7 +3677,7 @@ addLayer("c", {
                                 return ret
                         },
                         canAfford(){
-                                return player.c.points.gte(this.cost())
+                                return player.c.points.gte(this.cost()) && getBuyableAmount("c", 13).lt(getMaxBuyablesAmount("c"))
                         },
                         total(){
                                 return getBuyableAmount("c", 13).plus(this.extra())
@@ -3663,6 +3708,8 @@ addLayer("c", {
 
                                 let target = c.times(a).times(4).plus(b * b).sqrt().minus(b).div(2).div(a).floor().plus(1)
                                 //-b + sqrt(b*b+4*c*a)
+
+                                target = target.min(getMaxBuyablesAmount("c"))
 
                                 let diff = target.minus(player.c.buyables[13]).max(0)
                                 if (maximum != undefined) diff = diff.min(maximum)
@@ -3730,7 +3777,7 @@ addLayer("c", {
                                 return ret
                         },
                         canAfford(){
-                                return player.c.points.gte(this.cost())
+                                return player.c.points.gte(this.cost()) && getBuyableAmount("c", 21).lt(getMaxBuyablesAmount("c"))
                         },
                         total(){
                                 return getBuyableAmount("c", 21).plus(this.extra())
@@ -3761,6 +3808,8 @@ addLayer("c", {
 
                                 let target = c.times(a).times(4).plus(b * b).sqrt().minus(b).div(2).div(a).floor().plus(1)
                                 //-b + sqrt(b*b+4*c*a)
+
+                                target = target.min(getMaxBuyablesAmount("c"))
 
                                 let diff = target.minus(player.c.buyables[21]).max(0)
                                 if (maximum != undefined) diff = diff.min(maximum)
@@ -3828,7 +3877,7 @@ addLayer("c", {
                                 return ret
                         },
                         canAfford(){
-                                return player.c.points.gte(this.cost())
+                                return player.c.points.gte(this.cost()) && getBuyableAmount("c", 22).lt(getMaxBuyablesAmount("c"))
                         },
                         total(){
                                 return getBuyableAmount("c", 22).plus(this.extra())
@@ -3859,6 +3908,8 @@ addLayer("c", {
 
                                 let target = c.times(a).times(4).plus(b * b).sqrt().minus(b).div(2).div(a).floor().plus(1)
                                 //-b + sqrt(b*b+4*c*a)
+
+                                target = target.min(getMaxBuyablesAmount("c"))
 
                                 let diff = target.minus(player.c.buyables[22]).max(0)
                                 if (maximum != undefined) diff = diff.min(maximum)
@@ -3924,7 +3975,7 @@ addLayer("c", {
                                 return ret
                         },
                         canAfford(){
-                                return player.c.points.gte(this.cost())
+                                return player.c.points.gte(this.cost()) && getBuyableAmount("c", 23).lt(getMaxBuyablesAmount("c"))
                         },
                         total(){
                                 return getBuyableAmount("c", 23).plus(this.extra())
@@ -3955,6 +4006,8 @@ addLayer("c", {
 
                                 let target = c.times(a).times(4).plus(b * b).sqrt().minus(b).div(2).div(a).floor().plus(1)
                                 //-b + sqrt(b*b+4*c*a)
+
+                                target = target.min(getMaxBuyablesAmount("c"))
 
                                 let diff = target.minus(player.c.buyables[23]).max(0)
                                 if (maximum != undefined) diff = diff.min(maximum)
@@ -4022,7 +4075,7 @@ addLayer("c", {
                                 return ret
                         },
                         canAfford(){
-                                return player.c.points.gte(this.cost())
+                                return player.c.points.gte(this.cost()) && getBuyableAmount("c", 31).lt(getMaxBuyablesAmount("c"))
                         },
                         total(){
                                 return getBuyableAmount("c", 31).plus(this.extra())
@@ -4053,6 +4106,8 @@ addLayer("c", {
 
                                 let target = c.times(a).times(4).plus(b * b).sqrt().minus(b).div(2).div(a).floor().plus(1)
                                 //-b + sqrt(b*b+4*c*a)
+
+                                target = target.min(getMaxBuyablesAmount("c"))
 
                                 let diff = target.minus(player.c.buyables[31]).max(0)
                                 if (maximum != undefined) diff = diff.min(maximum)
@@ -4118,7 +4173,7 @@ addLayer("c", {
                                 return ret
                         },
                         canAfford(){
-                                return player.c.points.gte(this.cost())
+                                return player.c.points.gte(this.cost()) && getBuyableAmount("c", 32).lt(getMaxBuyablesAmount("c"))
                         },
                         total(){
                                 return getBuyableAmount("c", 32).plus(this.extra())
@@ -4149,6 +4204,8 @@ addLayer("c", {
 
                                 let target = c.times(a).times(4).plus(b * b).sqrt().minus(b).div(2).div(a).floor().plus(1)
                                 //-b + sqrt(b*b+4*c*a)
+
+                                target = target.min(getMaxBuyablesAmount("c"))
 
                                 let diff = target.minus(player.c.buyables[32]).max(0)
                                 if (maximum != undefined) diff = diff.min(maximum)
@@ -4686,7 +4743,7 @@ addLayer("d", {
                                 return ret
                         },
                         canAfford(){
-                                return player.d.points.gte(this.cost())
+                                return player.d.points.gte(this.cost()) && getBuyableAmount("d", 11).lt(getMaxBuyablesAmount("d"))
                         },
                         total(){
                                 return getBuyableAmount("d", 11).plus(this.extra())
@@ -4717,6 +4774,8 @@ addLayer("d", {
 
                                 let target = c.times(a).times(4).plus(b * b).sqrt().minus(b).div(2).div(a).floor().plus(1)
                                 //-b + sqrt(b*b+4*c*a)
+
+                                target = target.min(getMaxBuyablesAmount("d"))
 
                                 let diff = target.minus(player.d.buyables[11]).max(0)
                                 if (maximum != undefined) diff = diff.min(maximum)
@@ -4783,7 +4842,7 @@ addLayer("d", {
                                 return ret
                         },
                         canAfford(){
-                                return player.d.points.gte(this.cost())
+                                return player.d.points.gte(this.cost()) && getBuyableAmount("d", 12).lt(getMaxBuyablesAmount("d"))
                         },
                         total(){
                                 return getBuyableAmount("d", 12).plus(this.extra())
@@ -4814,6 +4873,8 @@ addLayer("d", {
 
                                 let target = c.times(a).times(4).plus(b * b).sqrt().minus(b).div(2).div(a).floor().plus(1)
                                 //-b + sqrt(b*b+4*c*a)
+
+                                target = target.min(getMaxBuyablesAmount("d"))
 
                                 let diff = target.minus(player.d.buyables[12]).max(0)
                                 if (maximum != undefined) diff = diff.min(maximum)
@@ -4880,7 +4941,7 @@ addLayer("d", {
                                 return ret
                         },
                         canAfford(){
-                                return player.d.points.gte(this.cost())
+                                return player.d.points.gte(this.cost()) && getBuyableAmount("d", 13).lt(getMaxBuyablesAmount("d"))
                         },
                         total(){
                                 return getBuyableAmount("d", 13).plus(this.extra())
@@ -4911,6 +4972,8 @@ addLayer("d", {
 
                                 let target = c.times(a).times(4).plus(b * b).sqrt().minus(b).div(2).div(a).floor().plus(1)
                                 //-b + sqrt(b*b+4*c*a)
+
+                                target = target.min(getMaxBuyablesAmount("d"))
 
                                 let diff = target.minus(player.d.buyables[13]).max(0)
                                 if (maximum != undefined) diff = diff.min(maximum)
@@ -4977,7 +5040,7 @@ addLayer("d", {
                                 return ret
                         },
                         canAfford(){
-                                return player.d.points.gte(this.cost())
+                                return player.d.points.gte(this.cost()) && getBuyableAmount("d", 21).lt(getMaxBuyablesAmount("d"))
                         },
                         total(){
                                 return getBuyableAmount("d", 21).plus(this.extra())
@@ -5008,6 +5071,8 @@ addLayer("d", {
 
                                 let target = c.times(a).times(4).plus(b * b).sqrt().minus(b).div(2).div(a).floor().plus(1)
                                 //-b + sqrt(b*b+4*c*a)
+
+                                target = target.min(getMaxBuyablesAmount("d"))
 
                                 let diff = target.minus(player.d.buyables[21]).max(0)
                                 if (maximum != undefined) diff = diff.min(maximum)
@@ -5075,7 +5140,7 @@ addLayer("d", {
                                 return ret
                         },
                         canAfford(){
-                                return player.d.points.gte(this.cost())
+                                return player.d.points.gte(this.cost()) && getBuyableAmount("d", 22).lt(getMaxBuyablesAmount("d"))
                         },
                         total(){
                                 return getBuyableAmount("d", 22).plus(this.extra())
@@ -5106,6 +5171,8 @@ addLayer("d", {
 
                                 let target = c.times(a).times(4).plus(b * b).sqrt().minus(b).div(2).div(a).floor().plus(1)
                                 //-b + sqrt(b*b+4*c*a)
+
+                                target = target.min(getMaxBuyablesAmount("d"))
 
                                 let diff = target.minus(player.d.buyables[22]).max(0)
                                 if (maximum != undefined) diff = diff.min(maximum)
@@ -6487,7 +6554,6 @@ addLayer("ach", {
                                 return hasMilestone("goalsii", 7)
                         },
                 },
-                /*
                 106: {
                         name: "Sixty-nine",
                         done(){
@@ -6857,7 +6923,7 @@ addLayer("goalsii", {
         },
         row: "side", // Row the layer is in on the tree (0 is the first row)
         hotkeys: [
-            //{key: "p", description: "Reset for prestige points", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+            {key: "[", description: "[ Reset for Medal reset", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
         ],
         layerShown(){return player.goalsii.times > 0 || player.f.times > 0},
         prestigeButtonText(){
@@ -6870,7 +6936,10 @@ addLayer("goalsii", {
 
                 let a = "Reset for " + formatWhole(gain) + " " + this.resource
 
-                a += "<br> and " + formatWhole(this.getTokenToMedalGain(gain)) + " " + player.goalsii.currentChallenge + " tokens"
+                let mid = ""
+                if (!hasMilestone("goalsii", 12)) mid += " " + player.goalsii.currentChallenge
+
+                a += "<br> and " + formatWhole(this.getTokenToMedalGain(gain)) + mid + " tokens"
 
                 return b + a
         },
@@ -7689,7 +7758,7 @@ addLayer("goalsii", {
                 }, // hasMilestone("goalsii", 10)
                 11: {
                         requirementDescription: "<b>μυ (Mu)</b><br>Requires: 20 03 Tokens", 
-                        effectDescription: "Per milestone squared add .01 to the <b>E</b> gain exponent",
+                        effectDescription: "Per milestone squared add .01 to the <b>E</b> gain exponent and each milestone lets the buyable autobuyer buy 2x more",
                         done(){
                                 return player.goalsii.tokens.best["03"].gte(20)
                         },
@@ -7697,11 +7766,31 @@ addLayer("goalsii", {
                                 return hasMilestone("goalsii", 10)
                         },
                 }, // hasMilestone("goalsii", 11)
+                12: {
+                        requirementDescription: "<b>νυ (Nu)</b><br>Requires: 20 13 Tokens", 
+                        effectDescription: "Upon completing a challenge you get tokens for all challenges to the left and above",
+                        done(){
+                                return player.goalsii.tokens.best["13"].gte(20)
+                        },
+                        unlocked(){
+                                return hasMilestone("goalsii", 11)
+                        },
+                }, // hasMilestone("goalsii", 12)
                 
                 /*
                 https://en.wikipedia.org/wiki/Greek_alphabet
-
-                
+ 
+                ξι (Xi)
+                όμικρον (Omicron)
+                πι (Pi)
+                ρώ (Rho)
+                σίγμα (Sigma)
+                ταυ (Tau)
+                ύψιλον (Upsilon)
+                φι (Phi)
+                χι (Chi)
+                ψι (Psi)
+                ωμέγα (Omega)
                 
                 */
         },
@@ -7734,8 +7823,8 @@ addLayer("goalsii", {
                                         let a = "That means you have the following effects due to challenges: " 
                                         if (getChallengeDepth(1) == 0) return ""
                                         a += "<br>Prestige Gain: <h3 style = 'color: #CC00FF'>^" + format(Decimal.pow(.985, getChallengeDepth(1)), 4) + "</h3>"
-                                        a += ", Feature Gain: <h3 style = 'color: #CC00FF'>^" + format(Decimal.pow(.9, getChallengeDepth(1)), 4) + "</h3>"
                                         if (getChallengeDepth(2) == 0) return a
+                                        a += ", Feature Gain: <h3 style = 'color: #CC00FF'>^" + format(Decimal.pow(.9, getChallengeDepth(2)), 4) + "</h3>"
                                         a += ", Point and Egg Gain: <h3 style = 'color: #CC00FF'>^" + format(Decimal.pow(.9, getChallengeDepth(2)), 4) + "</h3>"
                                         if (getChallengeDepth(3) == 0) return a
                                         a += ",<br>First column buyables have no effect in the first <h3 style = 'color: #CC00FF'>" + formatWhole(getChallengeDepth(3)) + "</h3> layers"
@@ -7827,7 +7916,7 @@ addLayer("goalsii", {
                 let data = player.goalsii.tokens
                 let chall = player.goalsii.currentChallenge
                 let toAdd = [chall]
-                if (false) toAdd = this.getAllPrior()
+                if (hasMilestone("goalsii", 12)) toAdd = this.getAllPrior()
 
                 for (i in toAdd) {
                         c = toAdd[i]

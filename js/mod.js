@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".3.2 Works of fire",
+	num: ".3.3 Works of fire",
 	name: "",
 }
 
@@ -105,6 +105,7 @@ PROGRESSION_MILESTONES = {
 	66:() => player.goalsii.tokens.best["31"].gte(1) || hasAchievement("ach",103),
 	67:() => player.goalsii.tokens.best["32"].gte(1) || hasAchievement("ach",104),
 	68:() => player.goalsii.tokens.best["33"].gte(1) || hasAchievement("ach",105),
+	69:() => getBuyableAmount("b", 11).gte(1e20)     || hasAchievement("ach",106),
 }
 
 /*
@@ -182,6 +183,7 @@ PROGRESSION_MILESTONES_TEXT = {
 	66: "a 31 token",
 	67: "a 32 token",
 	68: "a 33 token",
+	69: "1e20 Because levels",
 }
 
 function progressReachedNum(){
@@ -205,7 +207,7 @@ function nextMilestone(){
 
 // Display extra things at the top of the page
 var displayThings = [
-	"This may be incorrect: Last updated 11:33 PM pacific 12.02",
+	"This may be incorrect: Last updated 4:25 PM pacific 12.03",
 	function (){
 		return "Endgame: 20 13 tokens " + (player.goalsii.tokens.best["13"].gt(20) ? "(done)" : "(not done)")
 		/*
