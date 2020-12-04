@@ -263,7 +263,9 @@ function startChallenge(layer, x) {
 
 function completeMaxPossibleChallenges(layer){
 	let a = true
-	while (a){
+	let b = 0
+	while (a && b < 50){
+		b ++ 
 		a = completeOncePossibleChallenges(layer)
 	}
 }
@@ -292,27 +294,42 @@ function hasGoalForChallenge(layer, x){
 	}
 
 	if (player[layer].challenges[x] >= tmp[layer].challenges[x].completionLimit) return false
-	
-	if (challenge.currencyInternalName){
+
+	if (challenge.currencyInternalName != undefined){
 		let name = challenge.currencyInternalName
 		if (challenge.currencyLocation){
-			return !(challenge.currencyLocation[name].lt(challenge.goal)) 
+			return challenge.currencyLocation[name].gte(challenge.goal)
 		}
 		else if (challenge.currencyLayer){
 			let lr = challenge.currencyLayer
-			return !(player[lr][name].lt(readData(challenge.goal))) 
+			return player[lr][name].gte(readData(challenge.goal))
 		}
 		else {
-			return !(player[name].lt(challenge.goal))
+			return player[name].gte(challenge.goal)
 		}
 	}
-	return !(player[layer].points.lt(challenge.goal))
+	return player[layer].points.gte(challenge.goal)
 }
 
 function canCompleteChallenge(layer, x){
 	if (x != player[layer].activeChallenge) return
 
-	return hasGoalForChallenge(layer, x)
+	let challenge = tmp[layer].challenges[x] 
+
+	if (challenge.currencyInternalName != undefined){
+		let name = challenge.currencyInternalName
+		if (challenge.currencyLocation){
+			return challenge.currencyLocation[name].gte(challenge.goal)
+		}
+		else if (challenge.currencyLayer){
+			let lr = challenge.currencyLayer
+			return player[lr][name].gte(readData(challenge.goal))
+		}
+		else {
+			return player[name].gte(challenge.goal)
+		}
+	}
+	return player[layer].points.gte(challenge.goal)
 }
 
 function completeChallenge(layer, x) {
@@ -327,7 +344,9 @@ function completeChallenge(layer, x) {
 		player[layer].challenges[x] += 1
 		if (layers[layer].challenges[x].onComplete) layers[layer].challenges[x].onComplete()
 	}
-	while (player[layer].challenges[x] < tmp[layer].challenges[x].completionLimit) {
+	let b = 0
+	while (player[layer].challenges[x] < tmp[layer].challenges[x].completionLimit && b < 100) {
+		b ++
 		tmp[layer].challenges[x].goal = layers[layer].challenges[x].goal
 		if (typeof tmp[layer].challenges[x].goal == "function"){
 			tmp[layer].challenges[x].goal = tmp[layer].challenges[x].goal()
