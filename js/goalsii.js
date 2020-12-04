@@ -59,7 +59,7 @@ var GOALS_REWARD_FUNCTIONS = {
         },
         "13"(x){
                 let ret = x.pow(2).div(10).plus(1)
-                if (ret.gt(5)) ret = ret.times(2).log10().times(5)
+                if (ret.gt(5)) ret = ret.times(2).log10().minus(1/3).times(15/2)
                 return ret
         },
         "14"(x){
@@ -82,16 +82,22 @@ var GOALS_REWARD_FUNCTIONS = {
                 return ret.times(14).floor()
         },
         "23"(x){
-                return new Decimal(0)
+                let ret = x.pow(2).div(1000)
+                if (ret.gt(1)) ret = ret.log10().plus(1)
+                return ret.times(10)
         },
         "24"(x){
                 return new Decimal(0)
         },
         "30"(x){
-                return new Decimal(0)
+                let ret = x.div(5)
+                if (ret.gt(1)) ret = ret.div(1).log10().plus(1)
+                if (ret.gt(2)) ret = ret.div(2).log10().plus(2)
+                return ret.div(2)
         },
         "31"(x){
-                return new Decimal(0)
+                let ret = x.cbrt().div(10).plus(1)
+                return ret
         },
         "32"(x){
                 return new Decimal(0)

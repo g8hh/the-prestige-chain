@@ -5327,10 +5327,12 @@ addLayer("e", {
                 x = x.plus(getGoalChallengeReward("00"))
                 let l = player.goalsii.milestones.length
                 if (hasMilestone("goalsii", 11)) x = x.plus(l*l*.01)
+                x = x.plus(getGoalChallengeReward("23"))
                 return x
         },
         getGainMultPre(){
                 let x = new Decimal(.5)
+                x = x.times(getGoalChallengeReward("31"))
                 return x
         },
         getGainMultPost(){
@@ -5641,6 +5643,7 @@ addLayer("f", {
         getGainExp(){
                 let x = new Decimal(2)
                 x = x.plus(getGoalChallengeReward("00"))
+                x = x.plus(getGoalChallengeReward("30"))
                 return x
         },
         getGainMultPre(){
@@ -6824,7 +6827,11 @@ addLayer("goalsii", {
                 if (player.f.best.eq(0)) a = new Decimal(0)
                 else a = new Decimal(1)
 
-                a = a.times(player.f.best.max(1).log10().max(1).log10().plus(1))
+                let b = player.f.best.max(1).log10().div(9.5).plus(1)
+
+                if (getChallengeDepth(3) > 0) b = b.minus(2).max(0)
+
+                a = a.times(b)
 
                 let pre = this.getGainMultPre()
                 let exp = this.getGainExp()
@@ -6834,6 +6841,7 @@ addLayer("goalsii", {
         },
         getGainExp(){
                 let x = new Decimal(1)
+                if (hasMilestone("goalsii", 13)) x = x.plus(1)
                 return x
         },
         getGainMultPre(){
@@ -6842,6 +6850,7 @@ addLayer("goalsii", {
         },
         getGainMultPost(){
                 let x = new Decimal(1)
+                x = x.times(getGoalChallengeReward("31"))
                 return x
         },
         effect(){
@@ -7322,8 +7331,8 @@ addLayer("goalsii", {
                         },
                         display(){
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["23"]) + "<br>"
-                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("23")) + " to<br>"
-                                let c = "guess"
+                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + format(getGoalChallengeReward("23"), 4) + " to<br>"
+                                let c = "<b>E</b> gain exp"
                                 return a + b + c
                         },
                         unlocked(){
@@ -7376,8 +7385,8 @@ addLayer("goalsii", {
                         },
                         display(){
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["30"]) + "<br>"
-                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("30")) + " to<br>"
-                                let c = "guess"
+                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + format(getGoalChallengeReward("30"), 4) + " to<br>"
+                                let c = "<b>F</b> gain exp"
                                 return a + b + c
                         },
                         unlocked(){
@@ -7403,8 +7412,8 @@ addLayer("goalsii", {
                         },
                         display(){
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["31"]) + "<br>"
-                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("31")) + " to<br>"
-                                let c = "guess"
+                                let b = "<h3 style='color: #00FF66'>Reward</h3>: *" + format(getGoalChallengeReward("31"), 4) + " to<br>"
+                                let c = "medal and base <b>E</b> gain"
                                 return a + b + c
                         },
                         unlocked(){
@@ -7776,11 +7785,20 @@ addLayer("goalsii", {
                                 return hasMilestone("goalsii", 11)
                         },
                 }, // hasMilestone("goalsii", 12)
+                13: {
+                        requirementDescription: "<b>ξι (Xi)</b><br>Requires: 3 23 Token", 
+                        effectDescription: "Add one to the medal gain exponent (1 -> 2)",
+                        done(){
+                                return player.goalsii.tokens.best["23"].gte(3)
+                        },
+                        unlocked(){
+                                return hasMilestone("goalsii", 12)
+                        },
+                }, // hasMilestone("goalsii", 13)
                 
                 /*
                 https://en.wikipedia.org/wiki/Greek_alphabet
  
-                ξι (Xi)
                 όμικρον (Omicron)
                 πι (Pi)
                 ρώ (Rho)
@@ -7834,7 +7852,7 @@ addLayer("goalsii", {
                                 }],
                                 ["display-text", function(){
                                         let a = `<br><br>
-                                        <h2 style = 'color: #CC0033'>Explination</h2><h2>:</h2> <br><br>
+                                        <h2 style = 'color: #CC0033'>Explanation</h2><h2>:</h2> <br><br>
 
                                         Each challenge has a reward, and upon claiming said reward<br>
                                         all prior unlocked main layers are totally reset, and goals are also reset<br>

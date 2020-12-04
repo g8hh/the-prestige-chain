@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".3.3 Works of fire",
+	num: ".3.4 Works of fire",
 	name: "",
 }
 
@@ -207,9 +207,9 @@ function nextMilestone(){
 
 // Display extra things at the top of the page
 var displayThings = [
-	"This may be incorrect: Last updated 4:25 PM pacific 12.03",
+	"This may be incorrect: Last updated 11:50 PM pacific 12.03",
 	function (){
-		return "Endgame: 20 13 tokens " + (player.goalsii.tokens.best["13"].gt(20) ? "(done)" : "(not done)")
+		return "Endgame: 20 31 tokens " + (player.goalsii.tokens.best["31"].gt(20) ? "(done)" : "(not done)")
 		/*
 		let a = "Endgame: All goals"
 		if (player.ach.achievements.length == Object.keys(PROGRESSION_MILESTONES).length) {
