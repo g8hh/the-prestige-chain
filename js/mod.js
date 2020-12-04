@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".3.4.1 Works of fire",
+	num: ".3.5 Salvaged Wasteland",
 	name: "",
 }
 
@@ -106,6 +106,16 @@ PROGRESSION_MILESTONES = {
 	67:() => player.goalsii.tokens.best["32"].gte(1) || hasAchievement("ach",104),
 	68:() => player.goalsii.tokens.best["33"].gte(1) || hasAchievement("ach",105),
 	69:() => getBuyableAmount("b", 11).gte(1e20)     || hasAchievement("ach",106),
+	70:() => getBuyableAmount("b", 12).gte(1e20)     || hasAchievement("ach",107),
+	71:() => player.goalsii.tokens.best["04"].gte(1) || hasAchievement("ach",111),
+	72:() => player.goalsii.tokens.best["14"].gte(1) || hasAchievement("ach",112),
+	73:() => player.goalsii.tokens.best["24"].gte(1) || hasAchievement("ach",113),
+	74:() => player.goalsii.tokens.best["34"].gte(1) || hasAchievement("ach",114),
+	75:() => player.goalsii.tokens.best["40"].gte(1) || hasAchievement("ach",115),
+	76:() => player.goalsii.tokens.best["41"].gte(1) || hasAchievement("ach",116),
+	77:() => player.goalsii.tokens.best["42"].gte(1) || hasAchievement("ach",117),
+	78:() => player.goalsii.tokens.best["43"].gte(1) || hasAchievement("ach",121),
+	79:() => player.goalsii.tokens.best["44"].gte(1) || hasAchievement("ach",122),
 }
 
 /*
@@ -184,6 +194,16 @@ PROGRESSION_MILESTONES_TEXT = {
 	67: "a 32 token",
 	68: "a 33 token",
 	69: "1e20 Because levels",
+	70: "1e20 Based levels",
+	71: "a 04 token",
+	72: "a 14 token",
+	73: "a 24 token",
+	74: "a 34 token",
+	75: "a 40 token",
+	76: "a 41 token",
+	77: "a 42 token",
+	78: "a 43 token",
+	79: "a 44 token",
 }
 
 function progressReachedNum(){
@@ -207,9 +227,9 @@ function nextMilestone(){
 
 // Display extra things at the top of the page
 var displayThings = [
-	"This may be incorrect: Last updated 11:50 PM pacific 12.03",
+	"This may be incorrect: Last updated 9:17 AM pacific 12.04",
 	function (){
-		return "Endgame: 20 31 tokens " + (player.goalsii.tokens.best["31"].gt(20) ? "(done)" : "(not done)")
+		return "Endgame: 20 33 tokens " + (player.goalsii.tokens.best["33"].gte(20) ? "(done)" : "(not done)")
 		/*
 		let a = "Endgame: All goals"
 		if (player.ach.achievements.length == Object.keys(PROGRESSION_MILESTONES).length) {

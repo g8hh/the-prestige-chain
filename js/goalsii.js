@@ -100,10 +100,14 @@ var GOALS_REWARD_FUNCTIONS = {
                 return ret
         },
         "32"(x){
-                return new Decimal(0)
+                let ret = x.div(100)
+                if (ret.gt(1)) ret = ret.div(1).log10().plus(1)
+                return ret
         },
         "33"(x){
-                return new Decimal(0)
+                let ret = x.sqrt().div(20)
+                if (ret.gt(1)) ret = ret.div(1).log10().plus(1)
+                return ret.times(100)
         },
         "34"(x){
                 return new Decimal(0)
@@ -170,8 +174,9 @@ function updateChallengeDepth(chall){
         let a = 0
         if (c.slice(0, 1) == chall) a += 2
         if (c.slice(1, 2) == chall) a += 1
-        a = a + getChallengeDepth(chall + 1)
-        if (chall >= 2) a = a + getChallengeDepth(chall + 1)
+        let factor = Math.ceil(Math.pow(2, chall-1))
+        if (factor == 4) factor = 3
+        a = a + getChallengeDepth(chall + 1) * factor
         return a
 }
 

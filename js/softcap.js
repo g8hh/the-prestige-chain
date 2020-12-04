@@ -239,6 +239,18 @@ var softcap_data = {
 			pow: 500 / Math.log10(500),
 		},
 	},
+	c_buy33: {
+		1: {
+			func: "log",
+			start: new Decimal(1e10),
+			mul: 1e10 / Math.log10(1e10),
+		},
+		2: {
+			func: "log",
+			start: new Decimal(1e20),
+			mul: 1e20 / Math.log10(1e20),
+		},
+	},
 	d_buy21:{
 		1: {
 			func: "log",

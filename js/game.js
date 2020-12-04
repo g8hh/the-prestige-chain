@@ -261,11 +261,38 @@ function startChallenge(layer, x) {
 	updateChallengeTemp(layer)
 }
 
-function canCompleteChallenge(layer, x){
-	if (x != player[layer].activeChallenge) return
+function completeMaxPossibleChallenges(layer){
+	let a = true
+	while (a){
+		a = completeOncePossibleChallenges(layer)
+	}
+}
 
+function completeOncePossibleChallenges(layer){
+	let a = false
+	for (i in tmp[layer].challenges){
+		j = Number(i)
+		if (isNaN(j)) continue
+		if (hasGoalForChallenge(layer, j)) {
+			player[layer].challenges[j] ++
+			a = true
+		}
+	}
+	return a
+}
+
+function hasGoalForChallenge(layer, x){
+	if (tmp[layer] == undefined) return false
 	let challenge = tmp[layer].challenges[x] 
+	if (challenge == undefined) return false
 
+	tmp[layer].challenges[x].goal = layers[layer].challenges[x].goal
+	if (typeof tmp[layer].challenges[x].goal == "function"){
+		tmp[layer].challenges[x].goal = tmp[layer].challenges[x].goal()
+	}
+
+	if (player[layer].challenges[x] >= tmp[layer].challenges[x].completionLimit) return false
+	
 	if (challenge.currencyInternalName){
 		let name = challenge.currencyInternalName
 		if (challenge.currencyLocation){
@@ -279,9 +306,13 @@ function canCompleteChallenge(layer, x){
 			return !(player[name].lt(challenge.goal))
 		}
 	}
-	else {
-		return !(player[layer].points.lt(challenge.goal))
-	}
+	return !(player[layer].points.lt(challenge.goal))
+}
+
+function canCompleteChallenge(layer, x){
+	if (x != player[layer].activeChallenge) return
+
+	return hasGoalForChallenge(layer, x)
 }
 
 function completeChallenge(layer, x) {

@@ -190,7 +190,7 @@ function doPrestigeGainChange(amt, layer){
                 amt = amt.pow(Decimal.pow(.985, getChallengeDepth(1)))
         }
         if (layer == "f") {
-                amt = amt.pow(Decimal.pow(.9, getChallengeDepth(2)))
+                amt = amt.pow(Decimal.pow(.9, getChallengeDepth(2) + getChallengeDepth(4)))
         }
         if (layer == "e"){
                 amt = amt.pow(Decimal.pow(.9, getChallengeDepth(2)))
@@ -3170,6 +3170,7 @@ addLayer("c", {
                                 if (tmp.c.buyables[23].unlocked) layers.c.buyables[23].buyMax(amt)
                                 if (tmp.c.buyables[31].unlocked) layers.c.buyables[31].buyMax(amt)
                                 if (tmp.c.buyables[32].unlocked) layers.c.buyables[32].buyMax(amt)
+                                if (tmp.c.buyables[33].unlocked) layers.c.buyables[33].buyMax(amt)
                         }
                 } else {
                         data.abtime = 0
@@ -4219,6 +4220,106 @@ addLayer("c", {
                                 return hasMilestone("goalsii", 8) || hasUnlockedPast("g")
                         },
                 },
+                33: {
+                        title: "Omnipotent III",
+                        display(){
+                                let start = "<b><h2>Amount</h2>: " + this.getAmountDisplay() + "</b><br>"
+                                let eff = "<b><h2>Effect</h2>: *" + format(this.effect()) + " Features</b><br>"
+                                let cost = "<b><h2>Cost</h2>: " + format(this.cost()) + " Circles</b><br>"
+                                let eformula = "<b><h2>Effect formula</h2>:<br>" + format(this.effectBase()) + "^sqrt(x)</b><br>"
+                                let exformula = this.getExtraFormulaText()
+
+                                let end = shiftDown ? eformula + exformula : "Shift to see details"
+                                return "<br>" + start + eff + cost + end
+                        },
+                        getExtraFormulaText(){
+                                return getBuyableExtraText("c", 33)
+                        },
+                        getAmountDisplay(){
+                                let extra = this.extra()
+                                if (extra.eq(0)) return formatWhole(getBuyableAmount("c", 33))
+                                return formatWhole(getBuyableAmount("c", 33)) + "+" + formatWhole(extra)
+                        },
+                        getBases(){
+                                //currently an example
+                                let b0 = Decimal.pow(10, 5e6)
+                                let b1 = Decimal.pow(10, 1e6)
+                                let b2 = Decimal.pow(10, 1e4)
+                                return [b0, b1, b2]
+                        },
+                        cost(add){
+                                let x = getBuyableAmount("c", 33).plus(add)
+                                let bases = this.getBases()
+                                let base0 = bases[0]
+                                let base1 = bases[1]
+                                let base2 = bases[2]
+                                let exp0 = 1
+                                let exp1 = x
+                                let exp2 = x.times(x)
+
+                                return Decimal.pow(base0, exp0).times(Decimal.pow(base1, exp1)).times(Decimal.pow(base2, exp2)).ceil()
+                        },
+                        effectBase(){
+                                if (!isBuyableActive("c", 33)) return new Decimal(1)
+
+                                let base = new Decimal(2)
+                                if (hasMilestone("goalsii", 16)) base = base.plus(player.goalsii.milestones.length/10)
+                                return base
+                        },
+                        effect(){
+                                let x = this.total()
+                                let base = this.effectBase()
+                                let ret = Decimal.pow(base, x.sqrt())
+                                ret = softcap(ret, "c_buy33")
+                                return ret
+                        },
+                        canAfford(){
+                                return player.c.points.gte(this.cost()) && getBuyableAmount("c", 33).lt(getMaxBuyablesAmount("c"))
+                        },
+                        total(){
+                                return getBuyableAmount("c", 33).plus(this.extra())
+                        },
+                        extra(){
+                                return calcBuyableExtra("c", 33)
+                        },
+                        buy(){
+                                let cost = this.cost()
+                                if (!this.canAfford()) return
+                                player.c.buyables[33] = player.c.buyables[33].plus(1)
+                                if (hasUpgrade("e", 12) || hasMilestone("goalsii", 4)) return 
+                                player.c.points = player.c.points.minus(cost)
+                        },
+                        buyMax(maximum){
+                                let bases = this.getBases()
+                                if (!this.unlocked()) return 
+                                if (player.c.points.lt(bases[0])) return
+
+                                // let exp2 = x.times(x)
+                                let pttarget = player.c.points.div(bases[0]).log(1.01)
+                                let bfactor = Decimal.log(bases[1], 3).div(Decimal.log(1.01, 3))
+                                //want to find ax^2+bx = c
+                                let c = pttarget
+                                let b = bfactor
+                                let a = Decimal.log(bases[2], 3).div(Decimal.log(1.01, 3))
+                                // let a = 1 this is constant so remove it
+
+                                let target = c.times(a).times(4).plus(b * b).sqrt().minus(b).div(2).div(a).floor().plus(1)
+                                //-b + sqrt(b*b+4*c*a)
+
+                                target = target.min(getMaxBuyablesAmount("c"))
+
+                                let diff = target.minus(player.c.buyables[33]).max(0)
+                                if (maximum != undefined) diff = diff.min(maximum)
+
+                                player.c.buyables[33] = player.c.buyables[33].plus(diff)
+
+                                if (hasUpgrade("e", 12) || hasMilestone("goalsii", 4) || diff.eq(0)) return 
+                                player.c.points = player.c.points.sub(this.cost(-1)).max(0)
+                        },
+                        unlocked(){ 
+                                return hasMilestone("goalsii", 15) || hasUnlockedPast("g")
+                        },
+                },
         },
         challenges: {
                 rows: 2,
@@ -4993,7 +5094,8 @@ addLayer("d", {
                                 let start = "<b><h2>Amount</h2>: " + this.getAmountDisplay() + "</b><br>"
                                 let eff = "<b><h2>Effect</h2>: *" + format(this.effect()) + " Based base</b><br>"
                                 let cost = "<b><h2>Cost</h2>: " + format(this.cost()) + " Doodles</b><br>"
-                                let eformula = "<b><h2>Effect formula</h2>:<br>" + format(this.effectBase()) + "^x</b><br>"
+                                let scs = this.effect().gt(1e150)
+                                let eformula = "<b><h2>Effect formula</h2>:<br>" + format(this.effectBase()) + "^x" + (scs ? " (softcapped)" : "") + "</b><br>"
                                 let exformula = this.getExtraFormulaText()
 
                                 let end = shiftDown ? eformula + exformula : "Shift to see details"
@@ -5130,6 +5232,7 @@ addLayer("d", {
 
                                 let base = new Decimal(10)
                                 if (hasUpgrade("e", 25)) base = base.plus(1)
+                                base = base.plus(this.total().times(getGoalChallengeReward("32")))
                                 return base
                         },
                         effect(){
@@ -5328,6 +5431,7 @@ addLayer("e", {
                 let l = player.goalsii.milestones.length
                 if (hasMilestone("goalsii", 11)) x = x.plus(l*l*.01)
                 x = x.plus(getGoalChallengeReward("23"))
+                x = x.plus(getGoalChallengeReward("33"))
                 return x
         },
         getGainMultPre(){
@@ -5649,6 +5753,7 @@ addLayer("f", {
         getGainMultPre(){
                 let x = new Decimal(1/3)
                 x = x.times(getGoalChallengeReward("13"))
+                if (hasMilestone("goalsii", 14)) x = x.times(player.goalsii.points.plus(10).log10())
                 return x
         },
         getGainMultPost(){
@@ -5662,6 +5767,7 @@ addLayer("f", {
                 }
 
                 x = x.times(tmp.goalsii.effect)
+                x = x.times(getBuyableEffect("c", 33))
 
 
                 return x
@@ -5898,7 +6004,7 @@ addLayer("ach", {
                 return false
         },
         achievements: {
-                rows: 11,
+                rows: 20,
                 cols: 7,
                 11: {
                         name: "One",
@@ -6569,7 +6675,6 @@ addLayer("ach", {
                                 return hasMilestone("goalsii", 7)
                         },
                 },
-                /*
                 107: {
                         name: "Seventy",
                         done(){
@@ -6577,6 +6682,179 @@ addLayer("ach", {
                         },
                         tooltip() {
                                 return "Get " + PROGRESSION_MILESTONES_TEXT[70]
+                        },
+                        unlocked(){
+                                return hasMilestone("goalsii", 7)
+                        },
+                },
+                111: {
+                        name: "Seventy-one",
+                        done(){
+                                return PROGRESSION_MILESTONES[71]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[71]
+                        },
+                        unlocked(){
+                                return hasMilestone("goalsii", 7)
+                        },
+                },
+                112: {
+                        name: "Seventy-two",
+                        done(){
+                                return PROGRESSION_MILESTONES[72]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[72]
+                        },
+                        unlocked(){
+                                return hasMilestone("goalsii", 7)
+                        },
+                },
+                113: {
+                        name: "Seventy-three",
+                        done(){
+                                return PROGRESSION_MILESTONES[73]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[73]
+                        },
+                        unlocked(){
+                                return hasMilestone("goalsii", 7)
+                        },
+                },
+                114: {
+                        name: "Seventy-four",
+                        done(){
+                                return PROGRESSION_MILESTONES[74]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[74]
+                        },
+                        unlocked(){
+                                return hasMilestone("goalsii", 7)
+                        },
+                },
+                115: {
+                        name: "Seventy-five",
+                        done(){
+                                return PROGRESSION_MILESTONES[75]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[75]
+                        },
+                        unlocked(){
+                                return hasMilestone("goalsii", 7)
+                        },
+                },
+                116: {
+                        name: "Seventy-six",
+                        done(){
+                                return PROGRESSION_MILESTONES[76]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[76]
+                        },
+                        unlocked(){
+                                return hasMilestone("goalsii", 7)
+                        },
+                },
+                117: {
+                        name: "Seventy-seven",
+                        done(){
+                                return PROGRESSION_MILESTONES[77]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[77]
+                        },
+                        unlocked(){
+                                return hasMilestone("goalsii", 7)
+                        },
+                },
+                121: {
+                        name: "Seventy-eight",
+                        done(){
+                                return PROGRESSION_MILESTONES[78]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[78]
+                        },
+                        unlocked(){
+                                return hasMilestone("goalsii", 7)
+                        },
+                },
+                122: {
+                        name: "Seventy-nine",
+                        done(){
+                                return PROGRESSION_MILESTONES[79]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[79]
+                        },
+                        unlocked(){
+                                return hasMilestone("goalsii", 7)
+                        },
+                },
+                /*
+                123: {
+                        name: "Eighty",
+                        done(){
+                                return PROGRESSION_MILESTONES[80]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[80]
+                        },
+                        unlocked(){
+                                return hasMilestone("goalsii", 7)
+                        },
+                },
+                /*
+                124: {
+                        name: "Eighty-one",
+                        done(){
+                                return PROGRESSION_MILESTONES[81]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[81]
+                        },
+                        unlocked(){
+                                return hasMilestone("goalsii", 7)
+                        },
+                },
+                /*
+                125: {
+                        name: "Eighty-two",
+                        done(){
+                                return PROGRESSION_MILESTONES[82]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[82]
+                        },
+                        unlocked(){
+                                return hasMilestone("goalsii", 7)
+                        },
+                },
+                /*
+                126: {
+                        name: "Eighty-three",
+                        done(){
+                                return PROGRESSION_MILESTONES[83]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[83]
+                        },
+                        unlocked(){
+                                return hasMilestone("goalsii", 7)
+                        },
+                },
+                /*
+                127: {
+                        name: "Eighty-four",
+                        done(){
+                                return PROGRESSION_MILESTONES[84]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[84]
                         },
                         unlocked(){
                                 return hasMilestone("goalsii", 7)
@@ -6930,6 +7208,11 @@ addLayer("goalsii", {
                                 buyUpgrade(i, trylist[k])
                                 if (!hasMilestone("goalsii", 8)) break
                         }
+                }
+                
+                if (hasMilestone("goalsii", 17)) {
+                        completeMaxPossibleChallenges("b")
+                        completeMaxPossibleChallenges("c")
                 }
         },
         row: "side", // Row the layer is in on the tree (0 is the first row)
@@ -7441,8 +7724,8 @@ addLayer("goalsii", {
                         },
                         display(){
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["32"]) + "<br>"
-                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("32")) + " to<br>"
-                                let c = "guess"
+                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + format(getGoalChallengeReward("32"), 4) + " to<br>"
+                                let c = "<b>Director</b> base per <b>Director</b>"
                                 return a + b + c
                         },
                         unlocked(){
@@ -7468,8 +7751,8 @@ addLayer("goalsii", {
                         },
                         display(){
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["33"]) + "<br>"
-                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("33")) + " to<br>"
-                                let c = "guess"
+                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + format(getGoalChallengeReward("33"), 2) + " to<br>"
+                                let c = "<b>E</b> gain exp"
                                 return a + b + c
                         },
                         unlocked(){
@@ -7797,14 +8080,57 @@ addLayer("goalsii", {
                                 return hasMilestone("goalsii", 12)
                         },
                 }, // hasMilestone("goalsii", 13)
-                
+                14: {
+                        requirementDescription: "<b>όμικρον (Omicron)</b><br>Requires: 20 31 Token", 
+                        effectDescription(){
+                                let a = "log10(10+medals) boosts base <b>F</b> gain, currently: "
+                                return a + format(player.goalsii.points.plus(10).log10(), 4)
+                        },
+                        done(){
+                                return player.goalsii.tokens.best["31"].gte(20)
+                        },
+                        unlocked(){
+                                return hasMilestone("goalsii", 13)
+                        },
+                }, // hasMilestone("goalsii", 14)
+                15: {
+                        requirementDescription: "<b>πι (Pi)</b><br>Requires: 3 32 Tokens", 
+                        effectDescription: "Unlock <b>Omnipotent III</b> which gives free levels to all <b>C</b> buyables",
+                        done(){
+                                return player.goalsii.tokens.best["32"].gte(3)
+                        },
+                        unlocked(){
+                                return hasMilestone("goalsii", 14)
+                        },
+                }, // hasMilestone("goalsii", 15)
+                16: {
+                        requirementDescription: "<b>ρώ (Rho)</b><br>Requires: 20 32 Tokens", 
+                        effectDescription: "Each milestone adds .1 to the <b>Omnipotent III</b> base and gives two free levels",
+                        done(){
+                                return player.goalsii.tokens.best["32"].gte(20)
+                        },
+                        unlocked(){
+                                return hasMilestone("goalsii", 15)
+                        },
+                }, // hasMilestone("goalsii", 16)
+                17: {
+                        requirementDescription: "<b>σίγμα (Sigma)</b><br>Requires: 10 33 Tokens", 
+                        effectDescription: "Once per second, automatically complete <b>B</b> and <b>C</b> challenges if you have enough points",
+                        done(){
+                                return player.goalsii.tokens.best["33"].gte(10)
+                        },
+                        unlocked(){
+                                return hasMilestone("goalsii", 16)
+                        },
+                }, // hasMilestone("goalsii", 17) 
+
+
+                //completeOncePossibleChallenges(layer) to complete once possible challenges
+                //completeMaxPossibleChallenges
                 /*
                 https://en.wikipedia.org/wiki/Greek_alphabet
  
-                όμικρον (Omicron)
-                πι (Pi)
-                ρώ (Rho)
-                σίγμα (Sigma)
+                
                 ταυ (Tau)
                 ύψιλον (Upsilon)
                 φι (Phi)
@@ -7844,12 +8170,12 @@ addLayer("goalsii", {
                                         if (getChallengeDepth(1) == 0) return ""
                                         a += "<br>Prestige Gain: <h3 style = 'color: #CC00FF'>^" + format(Decimal.pow(.985, getChallengeDepth(1)), 4) + "</h3>"
                                         if (getChallengeDepth(2) == 0) return a
-                                        a += ", Feature Gain: <h3 style = 'color: #CC00FF'>^" + format(Decimal.pow(.9, getChallengeDepth(2)), 4) + "</h3>"
+                                        a += ", Feature Gain: <h3 style = 'color: #CC00FF'>^" + format(Decimal.pow(.9, getChallengeDepth(2) + getChallengeDepth(4)), 4) + "</h3>"
                                         a += ", Point and Egg Gain: <h3 style = 'color: #CC00FF'>^" + format(Decimal.pow(.9, getChallengeDepth(2)), 4) + "</h3>"
                                         if (getChallengeDepth(3) == 0) return a
-                                        a += ",<br>First column buyables have no effect in the first <h3 style = 'color: #CC00FF'>" + formatWhole(getChallengeDepth(3)) + "</h3> layers"
+                                        a += ",<br>First column buyables have no effect in the first <h3 style = 'color: #CC00FF'>" + formatWhole(Math.min(getChallengeDepth(3), 4)) + "</h3> layers"
                                         if (getChallengeDepth(4) == 0) return a
-                                        a += ",<br>You get no free buyables for the first <h3 style = 'color: #CC00FF'>" + formatWhole(getChallengeDepth(4)) + "</h3> layers"
+                                        a += ",<br>You get no extra buyables in the first <h3 style = 'color: #CC00FF'>" + formatWhole(getChallengeDepth(4)) + "</h3> layers"
                                         return a
                                 }],
                                 ["display-text", function(){
@@ -7877,7 +8203,7 @@ addLayer("goalsii", {
                                         C1: Raise all prestige gains ^.985 + C0<br>
                                         C2: Raise point, Egg, and Feature gain ^.9 + C1<br>
                                         C3: First column buyables do not give effects in the first n layers<br> and raise <b>Egg</b> gain ^.8 + 2xC2<br>
-                                        C4: No buyables automatically give free levels to buyables in the first n layers + 2xC3<br>
+                                        C4: No buyables give free levels to buyables in the first n layers<br> and raise <b>Feature</b> gain ^.9 + 3xC3<br>
                                         <br>
                                         You can only enter challenges if you can medal reset, or if you aren't in challenge 00,<br>
                                         and want to enter challenge 00 to avoid softlocking <br>

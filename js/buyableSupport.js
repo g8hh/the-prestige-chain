@@ -366,6 +366,9 @@ var FREE_BUYABLE_DATA = {
         c32: {
                 name: "Catagory",
         },
+        c33: {
+                name: "Omnipotent III",
+        },
         d11: {
                 name: "Department",
                 d13: {
@@ -548,6 +551,16 @@ var EXTRA_FREE_BUYABLE_DATA = {
                         },
                 },
         },
+        c33: {
+                1: {
+                        active: function(){
+                                return hasMilestone("goalsii", 16)
+                        },
+                        amount: function(){
+                                return player.goalsii.milestones.length * 2
+                        },
+                },
+        },
         d21: {
                 1: {
                         active: function(){
@@ -595,8 +608,9 @@ function isBuyableDefined(layer, id){
 
 function getBuyableTotal(layer, id){
         if (!isBuyableDefined(layer, id)) return new Decimal(0)
-        let a = new Decimal(0)
-        if (CURRENT_BUYABLE_EXTRAS[layer+id] != undefined) a = CURRENT_BUYABLE_EXTRAS[layer+id]
+
+        let a = calcBuyableExtra(layer, id)
+
         return getBuyableAmount(layer, id).plus(a)
 }
 
@@ -620,6 +634,12 @@ function calcBuyableExtra(layer, id){
         if (!isBuyableDefined(layer, id)) return new Decimal(0)
         let a = new Decimal(0)
         if (CURRENT_BUYABLE_EXTRAS[layer+id] != undefined) a = CURRENT_BUYABLE_EXTRAS[layer+id]
+
+        let depth = getChallengeDepth(4)
+        if (depth > 0 && layer == "a") a = new Decimal(0)
+        else if (depth > 1 && layer == "b") a = new Decimal(0)
+        else if (depth > 2 && layer == "c") a = new Decimal(0)
+        
         return a 
 }
 
@@ -658,11 +678,6 @@ function updateAllBuyableExtras(){
 }
 
 function getAlwaysActiveAdditionalBuyables(layer, id){
-        let depth = getChallengeDepth(4)
-        if (depth > 0 && layer == "a") return []
-        if (depth > 1 && layer == "b") return []
-        if (depth > 2 && layer == "c") return []
-
         let l = []
         let yet1 = false
         for (j in LAYERS){
