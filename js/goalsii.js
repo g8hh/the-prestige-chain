@@ -37,7 +37,10 @@ var GOALS_REWARD_FUNCTIONS = {
                 return ret.div(100)
         },
         "04"(x){
-                return new Decimal(0)
+                let ret = x.div(100)
+                if (ret.gt(1)) ret = ret.div(1).log10().plus(1)
+                if (ret.gt(2)) ret = ret.div(2).log10().plus(2)
+                return ret.times(100)
         },
         "10"(x){
                 let ret = x.div(10)
@@ -63,7 +66,9 @@ var GOALS_REWARD_FUNCTIONS = {
                 return ret
         },
         "14"(x){
-                return new Decimal(0)
+                let ret = x.plus(3).times(x).div(400)
+                if (ret.gt(1)) ret = ret.div(1).log10().plus(1)
+                return ret.times(100).floor()
         },
         "20"(x){
                 let ret = x.sqrt().div(4)

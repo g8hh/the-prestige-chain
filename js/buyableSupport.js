@@ -381,6 +381,11 @@ var FREE_BUYABLE_DATA = {
                                 return hasUpgrade("e", 21)
                         },
                 },
+                d21: {
+                        active: function(){
+                                return hasMilestone("goalsii", 19) 
+                        },
+                },
         },
         d12: {
                 name: "December",
@@ -423,6 +428,17 @@ var FREE_BUYABLE_DATA = {
         },
         d22: {
                 name: "Director",
+                e11: {
+                        active: function(){
+                                return hasMilestone("goalsii", 20) 
+                        },
+                },
+        },
+        d23: {
+                name: "Due",
+        },
+        e11: {
+                name: "Experience",
         },
 }
 
@@ -586,6 +602,24 @@ var EXTRA_FREE_BUYABLE_DATA = {
                         },
                         amount: function(){
                                 return getGoalChallengeReward("10")
+                        }
+                },
+        },
+        e11: {
+                1: {
+                        active: function(){
+                                return hasMilestone("goalsii", 21) 
+                        },
+                        amount: function(){
+                                return 1
+                        },
+                },
+                2: {
+                        active: function(){
+                                return true
+                        },
+                        amount: function(){
+                                return getGoalChallengeReward("14")
                         }
                 }
         },

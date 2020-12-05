@@ -256,6 +256,14 @@ var softcap_data = {
 			func: "log",
 			start: new Decimal("1e150"),
 			pow: 150 / Math.log10(150),
+			active(){
+				return !hasMilestone("goalsii", 21) 
+			},
+		},
+		2: {
+			func: "pow",
+			start: new Decimal("1e150"),
+			pow: .99,
 		},
 	},
 	d_buy22:{
