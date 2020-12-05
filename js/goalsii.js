@@ -94,6 +94,8 @@ var GOALS_REWARD_FUNCTIONS = {
         "24"(x){
                 let ret = x.cbrt()
                 if (ret.gte(3)) ret = ret.times(2)
+                if (ret.gt(20)) ret = ret.div(2).log10().times(10).plus(10)
+                if (ret.gt(30)) ret = ret.div(3).log10().times(10).plus(20)
                 return ret.div(10)
         },
         "30"(x){
@@ -117,19 +119,27 @@ var GOALS_REWARD_FUNCTIONS = {
                 return ret.times(100)
         },
         "34"(x){
-                return new Decimal(0)
+                return Decimal.pow(1e50, x.sqrt())
         },
         "40"(x){
-                return new Decimal(0)
+                let ret = x.sqrt().div(20)
+                if (ret.gt(1)) ret = ret.div(1).log10().plus(1)
+                return ret.times(100).floor()
         },
         "41"(x){
-                return new Decimal(0)
+                let ret = x.sqrt().div(10)
+                if (ret.gt(1)) ret = ret.div(1).log10().plus(1)
+                return ret.times(5).plus(1)
         },
         "42"(x){
-                return new Decimal(0)
+                let ret = x.sqrt().div(10)
+                if (ret.gt(1)) ret = ret.div(1).log10().plus(1)
+                return ret
         },
         "43"(x){
-                return new Decimal(0)
+                let ret = x.sqrt().div(10)
+                if (ret.gt(1)) ret = ret.div(1).log10().plus(1)
+                return ret.times(30).floor()
         },
         "44"(x){
                 return new Decimal(0)

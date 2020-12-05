@@ -452,6 +452,9 @@ var FREE_BUYABLE_DATA = {
                         },
                 },
         },
+        d31: {
+                name: "Database",
+        },
         e11: {
                 name: "Experience",
                 e12: {
@@ -459,9 +462,25 @@ var FREE_BUYABLE_DATA = {
                                 return hasMilestone("goalsii", 23) 
                         },
                 },
+                e13: {
+                        active: function(){
+                                return hasUpgrade("goalsii", 12)
+                        },
+                },
         },
         e12: {
                 name: "East",
+                e13: {
+                        active: function(){
+                                return hasUpgrade("goalsii", 11)
+                        },
+                },
+        },
+        e13: {
+                name: "Example",
+        },
+        e21: {
+                name: "Easy",
         },
 }
 
@@ -628,6 +647,16 @@ var EXTRA_FREE_BUYABLE_DATA = {
                         }
                 },
         },
+        d31: {
+                1: {
+                        active: function(){
+                                return true
+                        },
+                        amount: function(){
+                                return getGoalChallengeReward("40")
+                        },
+                },
+        },
         e11: {
                 1: {
                         active: function(){
@@ -653,6 +682,26 @@ var EXTRA_FREE_BUYABLE_DATA = {
                         },
                         amount: function(){
                                 return player.goalsii.milestones.length
+                        },
+                },
+        },
+        e13: {
+                1: {
+                        active: function(){
+                                return true
+                        },
+                        amount: function(){
+                                return getGoalChallengeReward("40")
+                        },
+                },
+        },
+        e21: {
+                1: {
+                        active: function(){
+                                return true
+                        },
+                        amount: function(){
+                                return getGoalChallengeReward("43")
                         },
                 },
         },

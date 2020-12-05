@@ -196,6 +196,7 @@ function getPrestigeGainChangeExp(layer){
         if (layer == "e"){
                 exp = exp.times(Decimal.pow(.9, getChallengeDepth(2)))
                 exp = exp.times(Decimal.pow(.8, getChallengeDepth(3)))
+                if (hasUpgrade("goalsii", 14) && getChallengeDepth(4) > 0) exp = exp.times(2)
         }
         return exp
 }
@@ -654,7 +655,6 @@ addLayer("a", {
                                 return formatWhole(getBuyableAmount("a", 11)) + "+" + formatWhole(extra)
                         },
                         getBases(){
-                                //currently an example
                                 let b0 = 500
                                 let b1 = 2
                                 let b2 = 1.001
@@ -756,7 +756,6 @@ addLayer("a", {
                                 return formatWhole(getBuyableAmount("a", 12)) + "+" + formatWhole(extra)
                         },
                         getBases(){
-                                //currently an example
                                 let b0 = 1e4
                                 let b1 = 3
                                 let b2 = 1.005
@@ -956,7 +955,6 @@ addLayer("a", {
                                 return formatWhole(getBuyableAmount("a", 21)) + "+" + formatWhole(extra)
                         },
                         getBases(){
-                                //currently an example
                                 let b0 = 1e67
                                 let b1 = 100
                                 let b2 = 2
@@ -1057,7 +1055,6 @@ addLayer("a", {
                                 return formatWhole(getBuyableAmount("a", 22)) + "+" + formatWhole(extra)
                         },
                         getBases(){
-                                //currently an example
                                 let b0 = 1e149
                                 let b1 = 1e4
                                 let b2 = 5
@@ -1160,7 +1157,6 @@ addLayer("a", {
                                 return formatWhole(getBuyableAmount("a", 23)) + "+" + formatWhole(extra)
                         },
                         getBases(){
-                                //currently an example
                                 let b0 = new Decimal("1e625")
                                 let b1 = 1
                                 let b2 = 7
@@ -1362,7 +1358,6 @@ addLayer("a", {
                                 return formatWhole(getBuyableAmount("a", 32)) + "+" + formatWhole(extra)
                         },
                         getBases(){
-                                //currently an example
                                 let b0 = new Decimal("1e12086")
                                 let b1 = new Decimal("1.5e99")
                                 let b2 = 20
@@ -1466,7 +1461,6 @@ addLayer("a", {
                                 return formatWhole(getBuyableAmount("a", 33)) + "+" + formatWhole(extra)
                         },
                         getBases(){
-                                //currently an example
                                 let b0 = new Decimal("1e32099")
                                 let b1 = Decimal.pow(10, 777)
                                 let b2 = Decimal.pow(10, 22)
@@ -2011,7 +2005,6 @@ addLayer("b", {
                                 return formatWhole(getBuyableAmount("b", 11)) + "+" + formatWhole(extra)
                         },
                         getBases(){
-                                //currently an example
                                 let b0 = 1e15
                                 let b1 = 4
                                 let b2 = 1.5
@@ -2113,7 +2106,6 @@ addLayer("b", {
                                 return formatWhole(getBuyableAmount("b", 12)) + "+" + formatWhole(extra)
                         },
                         getBases(){
-                                //currently an example
                                 let b0 = 1e71
                                 let b1 = 10
                                 let b2 = 2
@@ -2216,7 +2208,6 @@ addLayer("b", {
                                 return formatWhole(getBuyableAmount("b", 13)) + "+" + formatWhole(extra)
                         },
                         getBases(){
-                                //currently an example
                                 let b0 = new Decimal("1e1270")
                                 let b1 = 1
                                 let b2 = 5
@@ -2314,7 +2305,6 @@ addLayer("b", {
                                 return formatWhole(getBuyableAmount("b", 21)) + "+" + formatWhole(extra)
                         },
                         getBases(){
-                                //currently an example
                                 let b0 = new Decimal("1e1421")
                                 let b1 = 1e28
                                 let b2 = 100
@@ -2412,7 +2402,6 @@ addLayer("b", {
                                 return formatWhole(getBuyableAmount("b", 22)) + "+" + formatWhole(extra)
                         },
                         getBases(){
-                                //currently an example
                                 let b0 = new Decimal("1e10967")
                                 let b1 = new Decimal("1e419")
                                 let b2 = 1e10
@@ -2510,7 +2499,6 @@ addLayer("b", {
                                 return formatWhole(getBuyableAmount("b", 23)) + "+" + formatWhole(extra)
                         },
                         getBases(){
-                                //currently an example
                                 let b0 = new Decimal("1e11369")
                                 let b1 = new Decimal("1e156")
                                 let b2 = 1e15
@@ -2608,7 +2596,6 @@ addLayer("b", {
                                 return formatWhole(getBuyableAmount("b", 31)) + "+" + formatWhole(extra)
                         },
                         getBases(){
-                                //currently an example
                                 let b0 = new Decimal("1e48252")
                                 let b1 = new Decimal("5e175")
                                 let b2 = 2e27
@@ -2705,7 +2692,6 @@ addLayer("b", {
                                 return formatWhole(getBuyableAmount("b", 32)) + "+" + formatWhole(extra)
                         },
                         getBases(){
-                                //currently an example
                                 let b0 = new Decimal("1e71386")
                                 let b1 = new Decimal(1)
                                 let b2 = 1e37
@@ -2803,7 +2789,6 @@ addLayer("b", {
                                 return formatWhole(getBuyableAmount("b", 33)) + "+" + formatWhole(extra)
                         },
                         getBases(){
-                                //currently an example
                                 let b0 = new Decimal("1e135520")
                                 let b1 = new Decimal("1e3481")
                                 let b2 = 1e150
@@ -3453,7 +3438,6 @@ addLayer("c", {
                                 return formatWhole(getBuyableAmount("c", 11)) + "+" + formatWhole(extra)
                         },
                         getBases(){
-                                //currently an example
                                 let b0 = new Decimal("1e443")
                                 let b1 = 2
                                 let b2 = 1.5
@@ -3552,7 +3536,6 @@ addLayer("c", {
                                 return formatWhole(getBuyableAmount("c", 12)) + "+" + formatWhole(extra)
                         },
                         getBases(){
-                                //currently an example
                                 let b0 = new Decimal("1e1875")
                                 let b1 = new Decimal(1e100)
                                 let b2 = 3
@@ -3652,7 +3635,6 @@ addLayer("c", {
                                 return formatWhole(getBuyableAmount("c", 13)) + "+" + formatWhole(extra)
                         },
                         getBases(){
-                                //currently an example
                                 let b0 = new Decimal("1e5422")
                                 let b1 = new Decimal(1e10)
                                 let b2 = 10
@@ -3753,7 +3735,6 @@ addLayer("c", {
                                 return formatWhole(getBuyableAmount("c", 21)) + "+" + formatWhole(extra)
                         },
                         getBases(){
-                                //currently an example
                                 let b0 = new Decimal("1e10314")
                                 let b1 = new Decimal(1e253)
                                 let b2 = 1000
@@ -3852,7 +3833,6 @@ addLayer("c", {
                                 return formatWhole(getBuyableAmount("c", 22)) + "+" + formatWhole(extra)
                         },
                         getBases(){
-                                //currently an example
                                 let b0 = new Decimal("1e99999")
                                 let b1 = new Decimal(.001)
                                 let b2 = 1e10
@@ -3953,7 +3933,6 @@ addLayer("c", {
                                 return formatWhole(getBuyableAmount("c", 23)) + "+" + formatWhole(extra)
                         },
                         getBases(){
-                                //currently an example
                                 let b0 = new Decimal("1e455951")
                                 let b1 = new Decimal("1e1000")
                                 let b2 = 1e20
@@ -4052,7 +4031,6 @@ addLayer("c", {
                                 return formatWhole(getBuyableAmount("c", 31)) + "+" + formatWhole(extra)
                         },
                         getBases(){
-                                //currently an example
                                 let b0 = new Decimal("1e1507038")
                                 let b1 = new Decimal("1e3000")
                                 let b2 = 1e50
@@ -4151,7 +4129,6 @@ addLayer("c", {
                                 return formatWhole(getBuyableAmount("c", 32)) + "+" + formatWhole(extra)
                         },
                         getBases(){
-                                //currently an example
                                 let b0 = new Decimal("1e1000")
                                 let b1 = new Decimal("10")
                                 let b2 = 100
@@ -4173,6 +4150,7 @@ addLayer("c", {
                                 if (!isBuyableActive("c", 32)) return new Decimal(1)
 
                                 let base = new Decimal(100)
+                                base = base.times(getBuyableEffect("e", 21))
                                 return base
                         },
                         effect(){
@@ -4234,7 +4212,7 @@ addLayer("c", {
                                 let start = "<b><h2>Amount</h2>: " + this.getAmountDisplay() + "</b><br>"
                                 let eff = "<b><h2>Effect</h2>: *" + format(this.effect()) + " Features</b><br>"
                                 let cost = "<b><h2>Cost</h2>: " + format(this.cost()) + " Circles</b><br>"
-                                let eformula = "<b><h2>Effect formula</h2>:<br>" + format(this.effectBase()) + "^sqrt(x)</b><br>"
+                                let eformula = "<b><h2>Effect formula</h2>:<br>" + format(this.effectBase(), 4) + "^sqrt(x)</b><br>"
                                 let exformula = this.getExtraFormulaText()
 
                                 let end = shiftDown ? eformula + exformula : "Shift to see details"
@@ -4249,7 +4227,6 @@ addLayer("c", {
                                 return formatWhole(getBuyableAmount("c", 33)) + "+" + formatWhole(extra)
                         },
                         getBases(){
-                                //currently an example
                                 let b0 = Decimal.pow(10, 5e6)
                                 let b1 = Decimal.pow(10, 1e6)
                                 let b2 = Decimal.pow(10, 1e4)
@@ -4272,6 +4249,7 @@ addLayer("c", {
 
                                 let base = new Decimal(2)
                                 if (hasMilestone("goalsii", 16)) base = base.plus(player.goalsii.milestones.length/10)
+                                base = base.plus(getGoalChallengeReward("42"))
                                 return base
                         },
                         effect(){
@@ -4516,10 +4494,12 @@ addLayer("d", {
                 if (hasUpgrade("d", 25)) x = x.plus(1)
                 x = x.plus(tmp.b.challenges[22].rewardEffect)
                 x = x.plus(getGoalChallengeReward("00"))
+                if (hasUpgrade("goalsii", 14)) x = x.plus(100 * player.goalsii.upgrades.length)
                 return x
         },
         getGainMultPre(){
                 let x = new Decimal(.5)
+                if (hasUpgrade("goalsii", 14)) x = x.times(100 * player.goalsii.upgrades.length + 1)
                 return x
         },
         getGainMultPost(){
@@ -4586,6 +4566,13 @@ addLayer("d", {
                                 if (tmp.d.buyables[21].unlocked) layers.d.buyables[21].buyMax(amt)
                                 if (tmp.d.buyables[22].unlocked) layers.d.buyables[22].buyMax(amt)
                                 if (tmp.d.buyables[23].unlocked) layers.d.buyables[23].buyMax(amt)
+                                if (tmp.d.buyables[31].unlocked) layers.d.buyables[31].buyMax(amt)
+                                /*
+                                if (tmp.d.buyables[32].unlocked) layers.d.buyables[32].buyMax(amt)
+                                /*
+                                if (tmp.d.buyables[33].unlocked) layers.d.buyables[33].buyMax(amt)
+                                /*
+                                */
                         }
                 } else {
                         data.abtime = 0
@@ -4788,7 +4775,6 @@ addLayer("d", {
                 },
 
                 /*
-                database
                 done
                 direct
                 district
@@ -4819,7 +4805,6 @@ addLayer("d", {
                                 return formatWhole(getBuyableAmount("d", 11)) + "+" + formatWhole(extra)
                         },
                         getBases(){
-                                //currently an example
                                 let b0 = new Decimal("1e608")
                                 let b1 = 4.5
                                 let b2 = 1.01
@@ -4843,6 +4828,8 @@ addLayer("d", {
                                 let base = new Decimal(5)
                                 base = base.plus(tmp.d.buyables[13].effect)
                                 base = base.plus(getGoalChallengeReward("11"))
+
+                                base = base.times(getGoalChallengeReward("41"))
                                 return base
                         },
                         effect(){
@@ -4919,7 +4906,6 @@ addLayer("d", {
                                 return formatWhole(getBuyableAmount("d", 12)) + "+" + formatWhole(extra)
                         },
                         getBases(){
-                                //currently an example
                                 let b0 = new Decimal("5e627")
                                 let b1 = 50 / 1.1
                                 let b2 = 1.1
@@ -5018,7 +5004,6 @@ addLayer("d", {
                                 return formatWhole(getBuyableAmount("d", 13)) + "+" + formatWhole(extra)
                         },
                         getBases(){
-                                //currently an example
                                 let b0 = new Decimal("5e687")
                                 let b1 = 50
                                 let b2 = 2
@@ -5118,7 +5103,6 @@ addLayer("d", {
                                 return formatWhole(getBuyableAmount("d", 21)) + "+" + formatWhole(extra)
                         },
                         getBases(){
-                                //currently an example
                                 let b0 = new Decimal("1e1655")
                                 let b1 = .2
                                 let b2 = 5
@@ -5140,6 +5124,7 @@ addLayer("d", {
                                 if (!isBuyableActive("d", 21)) return new Decimal(1)
 
                                 let base = new Decimal(5)
+                                base = base.plus(getBuyableEffect("d", 31))
                                 return base
                         },
                         effect(){
@@ -5217,7 +5202,6 @@ addLayer("d", {
                                 return formatWhole(getBuyableAmount("d", 22)) + "+" + formatWhole(extra)
                         },
                         getBases(){
-                                //currently an example
                                 let b0 = new Decimal("1e1945")
                                 let b1 = new Decimal("1e77")
                                 let b2 = 10
@@ -5318,9 +5302,9 @@ addLayer("d", {
                                 return formatWhole(getBuyableAmount("d", 23)) + "+" + formatWhole(extra)
                         },
                         getBases(){
-                                //currently an example
                                 let b0 = new Decimal("1e22222")
                                 let b1 = new Decimal("1e100")
+                                b1 = b1.div(getGoalChallengeReward("34"))
                                 let b2 = new Decimal(1e3)
                                 return [b0, b1, b2]
                         },
@@ -5340,6 +5324,7 @@ addLayer("d", {
                                 if (!isBuyableActive("d", 23)) return new Decimal(1)
 
                                 let base = new Decimal(5)
+                                base = base.times(getBuyableEffect("e", 13))
                                 return base
                         },
                         effect(){
@@ -5393,6 +5378,103 @@ addLayer("d", {
                         },
                         unlocked(){ 
                                 return hasMilestone("goalsii", 21) || hasUnlockedPast("e")
+                        },
+                },
+                31: {
+                        title: "Database",
+                        display(){
+                                let start = "<b><h2>Amount</h2>: " + this.getAmountDisplay() + "</b><br>"
+                                let eff = "<b><h2>Effect</h2>: +" + format(this.effect()) + " Drive base</b><br>"
+                                let cost = "<b><h2>Cost</h2>: " + format(this.cost()) + " Doodles</b><br>"
+                                let eformula = "<b><h2>Effect formula</h2>:<br>" + format(this.effectBase()) + "*x</b><br>"
+                                let exformula = this.getExtraFormulaText()
+
+                                let end = shiftDown ? eformula + exformula : "Shift to see details"
+                                return "<br>" + start + eff + cost + end
+                        },
+                        getExtraFormulaText(){
+                                return getBuyableExtraText("d", 31)
+                        },
+                        getAmountDisplay(){
+                                let extra = this.extra()
+                                if (extra.eq(0)) return formatWhole(getBuyableAmount("d", 31))
+                                return formatWhole(getBuyableAmount("d", 31)) + "+" + formatWhole(extra)
+                        },
+                        getBases(){
+                                let b0 = new Decimal("1e44444")
+                                let b1 = new Decimal("1e323")
+                                let b2 = new Decimal(1e10)
+                                return [b0, b1, b2]
+                        },
+                        cost(add){
+                                let x = getBuyableAmount("d", 31).plus(add)
+                                let bases = this.getBases()
+                                let base0 = bases[0]
+                                let base1 = bases[1]
+                                let base2 = bases[2]
+                                let exp0 = 1
+                                let exp1 = x
+                                let exp2 = x.times(x)
+
+                                return Decimal.pow(base0, exp0).times(Decimal.pow(base1, exp1)).times(Decimal.pow(base2, exp2)).ceil()
+                        },
+                        effectBase(){
+                                if (!isBuyableActive("d", 31)) return new Decimal(0)
+
+                                let base = new Decimal(.25)
+                                return base
+                        },
+                        effect(){
+                                let x = this.total()
+                                let base = this.effectBase()
+                                let ret = Decimal.times(base, x)
+                                return ret
+                        },
+                        canAfford(){
+                                return player.d.points.gte(this.cost()) && getBuyableAmount("d", 31).lt(getMaxBuyablesAmount("d"))
+                        },
+                        total(){
+                                return getBuyableAmount("d", 31).plus(this.extra())
+                        },
+                        extra(){
+                                return calcBuyableExtra("d", 31)
+                        },
+                        buy(){
+                                let cost = this.cost()
+                                if (!this.canAfford()) return
+                                player.d.buyables[31] = player.d.buyables[31].plus(1)
+                                if (hasMilestone("goalsii", 5)) return
+                                player.d.points = player.d.points.minus(cost)
+                        },
+                        buyMax(maximum){
+                                let bases = this.getBases()
+                                if (!this.unlocked()) return 
+                                if (player.d.points.lt(bases[0])) return
+
+                                // let exp2 = x.times(x)
+                                let pttarget = player.d.points.div(bases[0]).log(1.01)
+                                let bfactor = Decimal.log(bases[1], 3).div(Decimal.log(1.01, 3))
+                                //want to find ax^2+bx = c
+                                let c = pttarget
+                                let b = bfactor
+                                let a = Decimal.log(bases[2], 3).div(Decimal.log(1.01, 3))
+                                // let a = 1 this is constant so remove it
+
+                                let target = c.times(a).times(4).plus(b * b).sqrt().minus(b).div(2).div(a).floor().plus(1)
+                                //-b + sqrt(b*b+4*c*a)
+
+                                target = target.min(getMaxBuyablesAmount("d"))
+
+                                let diff = target.minus(player.d.buyables[31]).max(0)
+                                if (maximum != undefined) diff = diff.min(maximum)
+
+                                player.d.buyables[31] = player.d.buyables[31].plus(diff)
+
+                                if (hasMilestone("goalsii", 5) || diff.eq(0)) return 
+                                player.d.points = player.d.points.sub(this.cost(-1)).max(0)
+                        },
+                        unlocked(){ 
+                                return hasMilestone("goalsii", 24) || hasUnlockedPast("e")
                         },
                 },
         },
@@ -5599,7 +5681,7 @@ addLayer("e", {
                                 data.times ++
                         }
                 }
-                if (hasMilestone("goalsii", 20) ) {
+                if (hasMilestone("goalsii", 20)) {
                         data.abtime += diff * getABSpeed("e")
                         if (data.abtime > 10) data.abtime = 10
                         if (data.abtime > 1) {
@@ -5607,12 +5689,18 @@ addLayer("e", {
                                 let amt = getABBulk("e")
                                 if (tmp.e.buyables[11].unlocked) layers.e.buyables[11].buyMax(amt)
                                 if (tmp.e.buyables[12].unlocked) layers.e.buyables[12].buyMax(amt)
-                                /*
                                 if (tmp.e.buyables[13].unlocked) layers.e.buyables[13].buyMax(amt)
-                                /*
                                 if (tmp.e.buyables[21].unlocked) layers.e.buyables[21].buyMax(amt)
                                 /*
                                 if (tmp.e.buyables[22].unlocked) layers.e.buyables[22].buyMax(amt)
+                                /*
+                                if (tmp.e.buyables[23].unlocked) layers.e.buyables[23].buyMax(amt)
+                                /*
+                                if (tmp.e.buyables[31].unlocked) layers.e.buyables[31].buyMax(amt)
+                                /*
+                                if (tmp.e.buyables[32].unlocked) layers.e.buyables[32].buyMax(amt)
+                                /*
+                                if (tmp.e.buyables[33].unlocked) layers.e.buyables[33].buyMax(amt)
                                 /*
                                 */
                         }
@@ -5737,8 +5825,6 @@ addLayer("e", {
                 },
 
                 /*
-                example
-                easy
                 event
                 enter
                 energy
@@ -5769,7 +5855,6 @@ addLayer("e", {
                                 return formatWhole(getBuyableAmount("e", 11)) + "+" + formatWhole(extra)
                         },
                         getBases(){
-                                //currently an example
                                 let b0 = new Decimal("1e116")
                                 let b1 = 2
                                 if (hasMilestone("goalsii", 22)) b1 = 1 
@@ -5814,7 +5899,7 @@ addLayer("e", {
                                 let cost = this.cost()
                                 if (!this.canAfford()) return
                                 player.e.buyables[11] = player.e.buyables[11].plus(1)
-                                if (false) return
+                                if (hasMilestone("goalsii", 24)) return
                                 player.e.points = player.e.points.minus(cost)
                         },
                         buyMax(maximum){
@@ -5841,7 +5926,7 @@ addLayer("e", {
 
                                 player.e.buyables[11] = player.e.buyables[11].plus(diff)
 
-                                if (false || diff.eq(0)) return 
+                                if (hasMilestone("goalsii", 24) || diff.eq(0)) return 
                                 player.e.points = player.e.points.sub(this.cost(-1)).max(0)
                         },
                         unlocked(){ 
@@ -5869,8 +5954,8 @@ addLayer("e", {
                                 return formatWhole(getBuyableAmount("e", 12)) + "+" + formatWhole(extra)
                         },
                         getBases(){
-                                //currently an example
                                 let b0 = new Decimal("1e350")
+                                b0 = b0.div(getGoalChallengeReward("34"))
                                 let b1 = 10
                                 if (hasMilestone("goalsii", 23)) b1 = 1 
                                 let b2 = 1.1
@@ -5892,6 +5977,8 @@ addLayer("e", {
                                 if (!isBuyableActive("e", 12)) return new Decimal(0)
 
                                 let base = new Decimal(.2)
+                                if (hasMilestone("goalsii", 24)) base = base.plus(.002 * player.ach.achievements.length)
+                                if (hasUpgrade("goalsii", 11)) base = base.plus(.01 * player.goalsii.upgrades.length)
                                 return base
                         },
                         effect(){
@@ -5913,7 +6000,7 @@ addLayer("e", {
                                 let cost = this.cost()
                                 if (!this.canAfford()) return
                                 player.e.buyables[12] = player.e.buyables[12].plus(1)
-                                if (false) return
+                                if (hasMilestone("goalsii", 24)) return
                                 player.e.points = player.e.points.minus(cost)
                         },
                         buyMax(maximum){
@@ -5940,15 +6027,209 @@ addLayer("e", {
 
                                 player.e.buyables[12] = player.e.buyables[12].plus(diff)
 
-                                if (false || diff.eq(0)) return 
+                                if (hasMilestone("goalsii", 24) || diff.eq(0)) return 
                                 player.e.points = player.e.points.sub(this.cost(-1)).max(0)
                         },
                         unlocked(){ 
                                 return hasMilestone("goalsii", 22) || hasUnlockedPast("g")
                         },
                 },
+                13: {
+                        title: "Example",
+                        display(){
+                                let start = "<b><h2>Amount</h2>: " + this.getAmountDisplay() + "</b><br>"
+                                let eff = "<b><h2>Effect</h2>: *" + format(this.effect()) + " Due base</b><br>"
+                                let cost = "<b><h2>Cost</h2>: " + format(this.cost()) + " Eggs</b><br>"
+                                let eformula = "<b><h2>Effect formula</h2>:<br>" + format(this.effectBase(), 4) + "^x</b><br>"
+                                let exformula = this.getExtraFormulaText()
 
-                //hasMilestone("goalsii", 23) 
+                                let end = shiftDown ? eformula + exformula : "Shift to see details"
+                                return "<br>" + start + eff + cost + end
+                        },
+                        getExtraFormulaText(){
+                                return getBuyableExtraText("e", 13)
+                        },
+                        getAmountDisplay(){
+                                let extra = this.extra()
+                                if (extra.eq(0)) return formatWhole(getBuyableAmount("e", 13))
+                                return formatWhole(getBuyableAmount("e", 13)) + "+" + formatWhole(extra)
+                        },
+                        getBases(){
+                                let b0 = new Decimal("1e200")
+                                if (hasUpgrade("goalsii", 12)) b0 = b0.div(getGoalChallengeReward("34"))
+                                let b1 = 10
+                                let b2 = 2
+                                return [b0, b1, b2]
+                        },
+                        cost(add){
+                                let x = getBuyableAmount("e", 13).plus(add)
+                                let bases = this.getBases()
+                                let base0 = bases[0]
+                                let base1 = bases[1]
+                                let base2 = bases[2]
+                                let exp0 = 1
+                                let exp1 = x
+                                let exp2 = x.times(x)
+
+                                return Decimal.pow(base0, exp0).times(Decimal.pow(base1, exp1)).times(Decimal.pow(base2, exp2)).ceil()
+                        },
+                        effectBase(){
+                                if (!isBuyableActive("e", 13)) return new Decimal(1)
+
+                                let base = new Decimal(1.1)
+                                if (hasUpgrade("goalsii", 13)) base = base.plus(.02 * player.goalsii.upgrades.length)
+                                return base
+                        },
+                        effect(){
+                                let x = this.total()
+                                let base = this.effectBase()
+                                let ret = Decimal.pow(base, x)
+                                return ret
+                        },
+                        canAfford(){
+                                return player.e.points.gte(this.cost()) && getBuyableAmount("e", 13).lt(getMaxBuyablesAmount("e"))
+                        },
+                        total(){
+                                return getBuyableAmount("e", 13).plus(this.extra())
+                        },
+                        extra(){
+                                return calcBuyableExtra("e", 13)
+                        },
+                        buy(){
+                                let cost = this.cost()
+                                if (!this.canAfford()) return
+                                player.e.buyables[13] = player.e.buyables[13].plus(1)
+                                if (hasMilestone("goalsii", 24)) return
+                                player.e.points = player.e.points.minus(cost)
+                        },
+                        buyMax(maximum){
+                                let bases = this.getBases()
+                                if (!this.unlocked()) return 
+                                if (player.e.points.lt(bases[0])) return
+
+                                // let exp2 = x.times(x)
+                                let pttarget = player.e.points.div(bases[0]).log(1.01)
+                                let bfactor = Decimal.log(bases[1], 3).div(Decimal.log(1.01, 3))
+                                //want to find ax^2+bx = c
+                                let c = pttarget
+                                let b = bfactor
+                                let a = Decimal.log(bases[2], 3).div(Decimal.log(1.01, 3))
+                                // let a = 1 this is constant so remove it
+
+                                let target = c.times(a).times(4).plus(b * b).sqrt().minus(b).div(2).div(a).floor().plus(1)
+                                //-b + sqrt(b*b+4*c*a)
+
+                                target = target.min(getMaxBuyablesAmount("e"))
+
+                                let diff = target.minus(player.e.buyables[13]).max(0)
+                                if (maximum != undefined) diff = diff.min(maximum)
+
+                                player.e.buyables[13] = player.e.buyables[13].plus(diff)
+
+                                if (hasMilestone("goalsii", 24) || diff.eq(0)) return 
+                                player.e.points = player.e.points.sub(this.cost(-1)).max(0)
+                        },
+                        unlocked(){ 
+                                return hasMilestone("goalsii", 24) || hasUnlockedPast("g")
+                        },
+                },
+                21: {
+                        title: "Easy",
+                        display(){
+                                let start = "<b><h2>Amount</h2>: " + this.getAmountDisplay() + "</b><br>"
+                                let eff = "<b><h2>Effect</h2>: *" + format(this.effect()) + " Category base</b><br>"
+                                let cost = "<b><h2>Cost</h2>: " + format(this.cost()) + " Eggs</b><br>"
+                                let eformula = "<b><h2>Effect formula</h2>:<br>" + format(this.effectBase()) + "^x</b><br>"
+                                let exformula = this.getExtraFormulaText()
+
+                                let end = shiftDown ? eformula + exformula : "Shift to see details"
+                                return "<br>" + start + eff + cost + end
+                        },
+                        getExtraFormulaText(){
+                                return getBuyableExtraText("e", 21)
+                        },
+                        getAmountDisplay(){
+                                let extra = this.extra()
+                                if (extra.eq(0)) return formatWhole(getBuyableAmount("e", 21))
+                                return formatWhole(getBuyableAmount("e", 21)) + "+" + formatWhole(extra)
+                        },
+                        getBases(){
+                                let b0 = new Decimal("1e1000")
+                                let b1 = 20
+                                let b2 = 5
+                                return [b0, b1, b2]
+                        },
+                        cost(add){
+                                let x = getBuyableAmount("e", 21).plus(add)
+                                let bases = this.getBases()
+                                let base0 = bases[0]
+                                let base1 = bases[1]
+                                let base2 = bases[2]
+                                let exp0 = 1
+                                let exp1 = x
+                                let exp2 = x.times(x)
+
+                                return Decimal.pow(base0, exp0).times(Decimal.pow(base1, exp1)).times(Decimal.pow(base2, exp2)).ceil()
+                        },
+                        effectBase(){
+                                if (!isBuyableActive("e", 21)) return new Decimal(1)
+
+                                let base = new Decimal(1e50)
+                                return base
+                        },
+                        effect(){
+                                let x = this.total()
+                                let base = this.effectBase()
+                                let ret = Decimal.pow(base, x)
+                                return ret
+                        },
+                        canAfford(){
+                                return player.e.points.gte(this.cost()) && getBuyableAmount("e", 21).lt(getMaxBuyablesAmount("e"))
+                        },
+                        total(){
+                                return getBuyableAmount("e", 21).plus(this.extra())
+                        },
+                        extra(){
+                                return calcBuyableExtra("e", 21)
+                        },
+                        buy(){
+                                let cost = this.cost()
+                                if (!this.canAfford()) return
+                                player.e.buyables[21] = player.e.buyables[21].plus(1)
+                                if (hasMilestone("goalsii", 24)) return
+                                player.e.points = player.e.points.minus(cost)
+                        },
+                        buyMax(maximum){
+                                let bases = this.getBases()
+                                if (!this.unlocked()) return 
+                                if (player.e.points.lt(bases[0])) return
+
+                                // let exp2 = x.times(x)
+                                let pttarget = player.e.points.div(bases[0]).log(1.01)
+                                let bfactor = Decimal.log(bases[1], 3).div(Decimal.log(1.01, 3))
+                                //want to find ax^2+bx = c
+                                let c = pttarget
+                                let b = bfactor
+                                let a = Decimal.log(bases[2], 3).div(Decimal.log(1.01, 3))
+                                // let a = 1 this is constant so remove it
+
+                                let target = c.times(a).times(4).plus(b * b).sqrt().minus(b).div(2).div(a).floor().plus(1)
+                                //-b + sqrt(b*b+4*c*a)
+
+                                target = target.min(getMaxBuyablesAmount("e"))
+
+                                let diff = target.minus(player.e.buyables[21]).max(0)
+                                if (maximum != undefined) diff = diff.min(maximum)
+
+                                player.e.buyables[21] = player.e.buyables[21].plus(diff)
+
+                                if (hasMilestone("goalsii", 24) || diff.eq(0)) return 
+                                player.e.points = player.e.points.sub(this.cost(-1)).max(0)
+                        },
+                        unlocked(){ 
+                                return hasUpgrade("goalsii", 21) || hasUnlockedPast("g")
+                        },
+                },
         },
         tabFormat: {
                 "Upgrades": {
@@ -6084,6 +6365,7 @@ addLayer("f", {
                 x = x.plus(getGoalChallengeReward("00"))
                 x = x.plus(getGoalChallengeReward("30"))
                 if (hasMilestone("ach", 6)) x = x.plus(1.5)
+                if (hasUpgrade("goalsii", 13)) x = x.plus(0.2 * player.goalsii.upgrades.length)
                 return x
         },
         getGainMultPre(){
@@ -6105,6 +6387,7 @@ addLayer("f", {
 
                 x = x.times(tmp.goalsii.effect)
                 x = x.times(getBuyableEffect("c", 33))
+                x = x.times(upgradeEffect("goalsii", 15))
 
 
                 return x
@@ -7287,11 +7570,11 @@ addLayer("ach", {
                 },
                 6: {
                         requirementDescription() {
-                                return "<b>Teach me and I remember</b><br>Requires: " + formatWhole(this.req()) + " Goals in challenge 4"
+                                return "<b>Involve me and I learn</b><br>Requires: " + formatWhole(this.req()) + " Goals (needs Eighty or in Challenge 4)"
                         }, 
                         effectDescription: "You permanently keep all <b>E</b> upgrades and add 1.5 to the <b>F</b> gain exponent",
                         done(){
-                                return player.ach.points.gte(this.req()) && getChallengeDepth(4) > 0
+                                return player.ach.points.gte(this.req()) && (getChallengeDepth(4) > 0 || hasAchievement("ach", 123))
                         },
                         req(){
                                 let a = 69
@@ -7427,6 +7710,7 @@ addLayer("goalsii", {
                         points: new Decimal(0),
                         best: new Decimal(0),
                         total: new Decimal(0),
+                        bestOnce: new Decimal(0),
                         tokens: {
                                 points: a,
                                 best: b,
@@ -7459,7 +7743,11 @@ addLayer("goalsii", {
                 let exp = this.getGainExp()
                 let pst = this.getGainMultPost()
 
-                return a.times(pre).pow(exp).times(pst).floor()
+                let ret = a.times(pre).pow(exp).times(pst)
+
+                if (ret.gt(1e4)) ret = ret.sqrt().times(100)
+
+                return ret.floor()
         },
         getGainExp(){
                 let x = new Decimal(1)
@@ -7473,6 +7761,7 @@ addLayer("goalsii", {
         getGainMultPost(){
                 let x = new Decimal(1)
                 x = x.times(getGoalChallengeReward("31"))
+                x = x.times(getGoalChallengeReward("41"))
                 return x
         },
         effect(){
@@ -7499,15 +7788,17 @@ addLayer("goalsii", {
         },
         update(diff){
                 let data = player.goalsii
+                let gain = this.getResetGain()
 
                 data.best = data.best.max(data.points)
                 for (i in data.tokens.best){
                         data.tokens.best[i] = data.tokens.best[i].max(data.tokens.points[i])
                         data.tokens.copy[i] = data.tokens.points[i]
                 }
-                if (false) {
-                        data.points = data.points.plus(this.getResetGain().times(diff))
-                        data.total = data.total.plus(this.getResetGain().times(diff))
+                if (hasUpgrade("goalsii", 22)) {
+                        data.points = data.points.plus(gain.times(diff))
+                        data.total = data.total.plus(gain.times(diff))
+                        data.bestOnce = data.bestOnce.max(gain)
                         data.autotimes += diff
                         if (data.autotimes > 3) data.autotimes = 3
                         if (data.autotimes > 1) {
@@ -7552,9 +7843,13 @@ addLayer("goalsii", {
                         }
                 }
                 
-                if (hasMilestone("goalsii", 17)) {
+                if (hasMilestone("goalsii", 18)) {
                         completeMaxPossibleChallenges("b")
                         completeMaxPossibleChallenges("c")
+                }
+
+                if (hasUpgrade("goalsii", 22)) {
+                        layers.goalsii.onPrestige(gain)
                 }
         },
         row: "side", // Row the layer is in on the tree (0 is the first row)
@@ -7634,8 +7929,8 @@ addLayer("goalsii", {
                         },
                         display(){
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["01"]) + "<br>"
-                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + format(getGoalChallengeReward("01"), 4) + " to<br>"
-                                let c = "<b>Country</b> and <b>Omnipotent I</b> base"
+                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + format(getGoalChallengeReward("01").times(100), 4) + "<br>"
+                                let c = "/100 to <b>Country</b> and <b>Omnipotent I</b> base"
                                 return a + b + c
                         },
                         unlocked(){
@@ -8120,8 +8415,8 @@ addLayer("goalsii", {
                         },
                         display(){
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["34"]) + "<br>"
-                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("34")) + " to<br>"
-                                let c = "guess"
+                                let b = "<h3 style='color: #00FF66'>Reward</h3>: /" + format(getGoalChallengeReward("34")) + "<br>"
+                                let c = "<b>East</b> cost and <b>Due</b> linear scaling"
                                 return a + b + c
                         },
                         unlocked(){
@@ -8147,8 +8442,8 @@ addLayer("goalsii", {
                         },
                         display(){
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["40"]) + "<br>"
-                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("40")) + " to<br>"
-                                let c = "guess"
+                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("40")) + "<br>"
+                                let c = "free <b>Example</b> and <b>Database</b> levels"
                                 return a + b + c
                         },
                         unlocked(){
@@ -8174,8 +8469,8 @@ addLayer("goalsii", {
                         },
                         display(){
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["41"]) + "<br>"
-                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("41")) + " to<br>"
-                                let c = "guess"
+                                let b = "<h3 style='color: #00FF66'>Reward</h3>: *" + format(getGoalChallengeReward("41")) + " to<br>"
+                                let c = "medal gain and <b>Department</b> base"
                                 return a + b + c
                         },
                         unlocked(){
@@ -8197,12 +8492,12 @@ addLayer("goalsii", {
                 53: {
                         title(){
                                 if (player.goalsii.tokens.best["42"].gt(0)) return "<h3 style='color: #13ACDF'>42</h3>"
-                                return "<h3 style='color: #C03000'>32</h3>"
+                                return "<h3 style='color: #C03000'>42</h3>"
                         },
                         display(){
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["42"]) + "<br>"
-                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("42")) + " to<br>"
-                                let c = "guess"
+                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + format(getGoalChallengeReward("42"), 4) + " to<br>"
+                                let c = "<b>Omnipotent III</b> base"
                                 return a + b + c
                         },
                         unlocked(){
@@ -8224,12 +8519,12 @@ addLayer("goalsii", {
                 54: {
                         title(){
                                 if (player.goalsii.tokens.best["43"].gt(0)) return "<h3 style='color: #13ACDF'>43</h3>"
-                                return "<h3 style='color: #C03000'>33</h3>"
+                                return "<h3 style='color: #C03000'>43</h3>"
                         },
                         display(){
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["43"]) + "<br>"
-                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("43")) + " to<br>"
-                                let c = "guess"
+                                let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("43")) + "<br>"
+                                let c = "free <br><b>Easy</b> levels"
                                 return a + b + c
                         },
                         unlocked(){
@@ -8455,28 +8750,18 @@ addLayer("goalsii", {
                                 return hasMilestone("goalsii", 15)
                         },
                 }, // hasMilestone("goalsii", 16)
-                17: {
+                18: {
                         requirementDescription: "<b>σίγμα (Sigma)</b><br>Requires: 10 33 Tokens", 
-                        effectDescription: "Once per second, automatically complete <b>B</b> and <b>C</b> challenges if you have enough points",
+                        effectDescription(){
+                                let a = "Once per second, automatically complete <b>B</b> and <b>C</b> challenges if you have enough points and Goals^Goals multiply <b>E</b> gain, currently: "
+                                let b = Math.max(1, player.ach.achievements.length)
+                                return a + format(Decimal.pow(b, b))
+                        },
                         done(){
                                 return player.goalsii.tokens.best["33"].gte(10)
                         },
                         unlocked(){
                                 return hasMilestone("goalsii", 16)
-                        },
-                }, // hasMilestone("goalsii", 17) 
-                18: {
-                        requirementDescription: "<b>σίγμα (Sigma)</b><br>Requires: 33 33 Tokens", 
-                        effectDescription(){
-                                let a = "Goals^Goals multiply <b>E</b> gain, currently: "
-                                let b = Math.max(1, player.ach.achievements.length)
-                                return a + format(Decimal.pow(b, b))
-                        },
-                        done(){
-                                return player.goalsii.tokens.best["33"].gte(33)
-                        },
-                        unlocked(){
-                                return hasMilestone("goalsii", 17)
                         },
                 }, // hasMilestone("goalsii", 18) 
                 19: {
@@ -8521,7 +8806,7 @@ addLayer("goalsii", {
                 }, // hasMilestone("goalsii", 22) 
                 23: {
                         requirementDescription: "<b>ψι (Psi)</b><br>Requires: 50 24 Tokens", 
-                        effectDescription: "Unlock a <b>E</b> buyable, <b>East</b> gives free <b>Experience</b> and <b>Due</b> levels, remove <b>East</b> linear scaling, and get a free <b>East</b> level per milestone",
+                        effectDescription: "<b>East</b> gives free <b>Experience</b> and <b>Due</b> levels, remove <b>East</b> linear scaling, and get a free <b>East</b> level per milestone",
                         done(){
                                 return player.goalsii.tokens.best["24"].gte(50)
                         },
@@ -8529,16 +8814,157 @@ addLayer("goalsii", {
                                 return hasMilestone("goalsii", 22)
                         },
                 }, // hasMilestone("goalsii", 23)
+                24: {
+                        requirementDescription: "<b>ωμέγα (Omega)</b><br>Requires: 10 34 Tokens", 
+                        effectDescription: "Unlock a <b>E</b> and <b>D</b> buyable, <b>E</b> buyables cost nothing, each goal adds .002 to the <b>East</b> base, and unlock upgrades",
+                        done(){
+                                return player.goalsii.tokens.best["34"].gte(10)
+                        },
+                        unlocked(){
+                                return hasMilestone("goalsii", 23)
+                        },
+                }, // hasMilestone("goalsii", 24)
+                //https://en.wikipedia.org/wiki/Greek_alphabet
+        },
+        upgrades: {
+                rows: 5,
+                cols: 5,
+                11: {
+                        title: "Artin",
+                        description: "<b>Example</b> gives free <b>East</b> levels and each upgrade adds .01 to the <b>East</b> base",
+                        cost: new Decimal(6660),
+                        currencyDisplayName: "<br><b style='color: #6600FF'>00</b> Tokens",
+                        currencyLocation(){
+                                return player.goalsii.tokens.copy
+                        },
+                        currencyInternalName(){
+                                return "00"
+                        },
+                        unlocked(){ 
+                                return /*hasUpgrade("goalsii", 10)*/ true || hasUnlockedPast("g")
+                        }, // hasUpgrade("goalsii", 11)
+                },
+                12: {
+                        title: "Bernard",
+                        description: "<b>Example</b> gives free <b>Experience</b> levels and challenge 34 reward effects <b>Example</b>",
+                        cost: new Decimal(3330),
+                        currencyDisplayName: "<br><b style='color: #6600FF'>01</b> Tokens",
+                        currencyLocation(){
+                                return player.goalsii.tokens.copy
+                        },
+                        currencyInternalName(){
+                                return "01"
+                        },
+                        unlocked(){ 
+                                return hasUpgrade("goalsii", 11) || hasUnlockedPast("g")
+                        }, // hasUpgrade("goalsii", 12)
+                },
+                13: {
+                        title: "Cauchy",
+                        description: "Each upgrade adds .02 to the <b>Example</b> base and .2 to the <b>F</b> gain exponent",
+                        cost: new Decimal(5000),
+                        currencyDisplayName: "<br><b style='color: #6600FF'>02</b> Tokens",
+                        currencyLocation(){
+                                return player.goalsii.tokens.copy
+                        },
+                        currencyInternalName(){
+                                return "02"
+                        },
+                        unlocked(){ 
+                                return hasUpgrade("goalsii", 12) || hasUnlockedPast("g")
+                        }, // hasUpgrade("goalsii", 13)
+                },
+                14: {
+                        title: "Diophantine",
+                        description: "Square <b>E</b> gain in challenge 4 and each upgrade adds 100 to the <b>D</b> gain exponent and base gain",
+                        cost: new Decimal(2000),
+                        currencyDisplayName: "<br><b style='color: #6600FF'>03</b> Tokens",
+                        currencyLocation(){
+                                return player.goalsii.tokens.copy
+                        },
+                        currencyInternalName(){
+                                return "03"
+                        },
+                        unlocked(){ 
+                                return hasUpgrade("goalsii", 13) || hasUnlockedPast("g")
+                        }, // hasUpgrade("goalsii", 14)
+                },
+                15: {
+                        title: "Erdős",
+                        description: "Upgrades make medals multiply <b>F</b> gain",
+                        cost: new Decimal(1000),
+                        currencyDisplayName: "<br><b style='color: #6600FF'>04</b> Tokens",
+                        currencyLocation(){
+                                return player.goalsii.tokens.copy
+                        },
+                        currencyInternalName(){
+                                return "04"
+                        },
+                        effect(){
+                                let base = player.goalsii.best.plus(1)
+                                let exp = Math.sqrt(player.goalsii.upgrades.length) / 3
+                                return Decimal.pow(base, exp) 
+                        },
+                        unlocked(){ 
+                                return hasUpgrade("goalsii", 14) || hasUnlockedPast("g")
+                        }, // hasUpgrade("goalsii", 15)
+                },
+                21: {
+                        title: "Fermat",
+                        description: "Each upgrade in this row unlocks an <b>E</b> buyable",
+                        cost: new Decimal(20),
+                        currencyDisplayName: "<br><b style='color: #6600FF'>42</b> Tokens",
+                        currencyLocation(){
+                                return player.goalsii.tokens.copy
+                        },
+                        currencyInternalName(){
+                                return "42"
+                        },
+                        unlocked(){ 
+                                return hasUpgrade("goalsii", 15) || hasUnlockedPast("g")
+                        }, // hasUpgrade("goalsii", 21)
+                },
+                22: {
+                        title: "Gödel",
+                        description: "Tokens and medals per second as if you prestiged [doesnt give buyable yet]",
+                        cost: new Decimal(20),
+                        currencyDisplayName: "<br><b style='color: #6600FF'>43</b> Tokens",
+                        currencyLocation(){
+                                return player.goalsii.tokens.copy
+                        },
+                        currencyInternalName(){
+                                return "43"
+                        },
+                        unlocked(){ 
+                                return hasUpgrade("goalsii", 21) || hasUnlockedPast("g")
+                        }, // hasUpgrade("goalsii", 22)
+                },
 
+                //layers.goalsii.getProductOnePlusTokens(1/3).pow(.1908) is about right
+                //the exp of that is just f gain exp stuffs in c40
 
-                //completeOncePossibleChallenges(layer) to complete once possible challenges
-                //completeMaxPossibleChallenges
                 /*
-                https://en.wikipedia.org/wiki/Greek_alphabet
-
-                ωμέγα (Omega)
                 
+                Hilbert
+                I
+                Jacobsin
+                K
+                Laplace
+                M
+                Noether
+                O
+                P
+                Russell
+                Schrier
+                Turing
+                U
+                Villiani
+                Wiles
+                X
+                Y
+                Z
                 */
+                
         },
         tabFormat: {
                 "Challenges": {
@@ -8615,8 +9041,8 @@ addLayer("goalsii", {
                                         To get tokens in challenge 3 you need at least 1e19 Features.<br>
                                         <br>
                                         Completion of a challenge gives a token to that "upgrade" which gives an effect<br>
-                                        You get tokens per reset based on Medals gained, with the base gain being 1<br><br>
-                                        Rewards:<br> 00 tokens add to all prior prestige gain exponents<br>`
+                                        You get tokens per reset based on Medals gained, with the base gain being 1
+                                        <br><br><br><br>`
                                         return a
                                         },
                                 ],
@@ -8632,6 +9058,19 @@ addLayer("goalsii", {
                         ],
                         unlocked(){
                                 return player.goalsii.times > 1
+                        },
+                },
+                "Upgrades": {
+                        content: [
+                                "main-display",
+                                ["display-text", function(){
+                                        return "Upgrades require a certain number of tokens, but do not cost tokens"
+                                        },
+                                ],
+                                "upgrades",
+                        ],
+                        unlocked(){
+                                return hasMilestone("goalsii", 24)
                         },
                 },
         },
@@ -8671,6 +9110,14 @@ addLayer("goalsii", {
                         data.total[c]  = data.total[c].plus(gain)
                 }
         },
+        getProductOnePlusTokens(exp = 1){
+                let a = new Decimal(1)
+                let b = player.goalsii.tokens.best
+                for (i in b){
+                        a = a.times(b[i].pow(exp).plus(1))
+                }
+                return a
+        }
 })
 
 
