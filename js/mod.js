@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".3.6 Salvaged Wasteland",
+	num: ".3.7 Salvaged Wasteland",
 	name: "",
 }
 
@@ -116,6 +116,7 @@ PROGRESSION_MILESTONES = {
 	77:() => player.goalsii.tokens.best["42"].gte(1) || hasAchievement("ach",117),
 	78:() => player.goalsii.tokens.best["43"].gte(1) || hasAchievement("ach",121),
 	79:() => player.goalsii.tokens.best["44"].gte(1) || hasAchievement("ach",122),
+	80:() => player.f.best.gte(1e58)                 || hasAchievement("ach",123),
 }
 
 /*
@@ -204,6 +205,7 @@ PROGRESSION_MILESTONES_TEXT = {
 	77: "a 42 token",
 	78: "a 43 token",
 	79: "a 44 token",
+	80: "1e58 Features",
 }
 
 function progressReachedNum(){
@@ -227,9 +229,9 @@ function nextMilestone(){
 
 // Display extra things at the top of the page
 var displayThings = [
-	"This may be incorrect: Last updated 8:26 PM pacific 12.04",
+	"This may be incorrect: Last updated 10:56 PM pacific 12.04",
 	function (){
-		return "Endgame: 20 14 tokens " + (player.goalsii.tokens.best["14"].gte(20) ? "(done)" : "(not done)")
+		return "Endgame: 1 34 token " + (player.goalsii.tokens.best["34"].gte(1) ? "(done)" : "(not done)")
 		/*
 		let a = "Endgame: All goals"
 		if (player.ach.achievements.length == Object.keys(PROGRESSION_MILESTONES).length) {

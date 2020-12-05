@@ -425,6 +425,11 @@ var FREE_BUYABLE_DATA = {
                                 return hasUpgrade("e", 24)
                         },
                 },
+                d23: {
+                        active: function(){
+                                return hasMilestone("goalsii", 22) 
+                        },
+                },
         },
         d22: {
                 name: "Director",
@@ -433,12 +438,30 @@ var FREE_BUYABLE_DATA = {
                                 return hasMilestone("goalsii", 20) 
                         },
                 },
+                d23: {
+                        active: function(){
+                                return hasMilestone("goalsii", 22) 
+                        },
+                },
         },
         d23: {
                 name: "Due",
+                e12: {
+                        active: function(){
+                                return hasMilestone("goalsii", 23) 
+                        },
+                },
         },
         e11: {
                 name: "Experience",
+                e12: {
+                        active: function(){
+                                return hasMilestone("goalsii", 23) 
+                        },
+                },
+        },
+        e12: {
+                name: "East",
         },
 }
 
@@ -622,6 +645,16 @@ var EXTRA_FREE_BUYABLE_DATA = {
                                 return getGoalChallengeReward("14")
                         }
                 }
+        },
+        e12: {
+                1: {
+                        active: function(){
+                                return hasMilestone("goalsii", 23)
+                        },
+                        amount: function(){
+                                return player.goalsii.milestones.length
+                        },
+                },
         },
 }
 

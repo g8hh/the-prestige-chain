@@ -92,7 +92,9 @@ var GOALS_REWARD_FUNCTIONS = {
                 return ret.times(10)
         },
         "24"(x){
-                return new Decimal(0)
+                let ret = x.cbrt()
+                if (ret.gte(3)) ret = ret.times(2)
+                return ret.div(10)
         },
         "30"(x){
                 let ret = x.div(5)
