@@ -76,6 +76,7 @@ function getChallengeFactor(comps){
 }
 
 function isBuyableActive(layer, thang){
+        if (layer == "g") return true
         if (layer == "f") return true
         if (layer == "e") return true
         if (layer == "d") return true
@@ -91,6 +92,7 @@ function isBuyableActive(layer, thang){
 }
 
 function isPrestigeEffectActive(layer){
+        if (layer == "g") return true
         if (layer == "f") return true
         if (layer == "e") return true
         if (layer == "d") return true
@@ -160,6 +162,9 @@ function getABBulk(layer){
         if (layer == "f"){
                 return amt
         }
+        if (layer == "g"){
+                return amt
+        }
         return amt
 }
 
@@ -189,6 +194,7 @@ function getPrestigeGainChangeExp(layer){
         if (layer == "a" && inChallenge("c", 12)) exp = exp.div(2)
         if (["a", "b", "c", "d", "e", "f"].includes(layer)) {
                 exp = exp.times(Decimal.pow(.985, getChallengeDepth(1)))
+                if (hasMilestone("g", 1)) exp = exp.times(1.001)
         }
         if (layer == "f") {
                 exp = exp.times(Decimal.pow(.9, getChallengeDepth(2) + getChallengeDepth(4)))
@@ -5537,7 +5543,7 @@ addLayer("d", {
                                 "challenges",
                         ],
                         unlocked(){
-                                return false || hasUnlockedPast("g")
+                                return false || hasUnlockedPast("h")
                         },
                 },
         },
@@ -5691,7 +5697,6 @@ addLayer("e", {
                                 if (tmp.e.buyables[12].unlocked) layers.e.buyables[12].buyMax(amt)
                                 if (tmp.e.buyables[13].unlocked) layers.e.buyables[13].buyMax(amt)
                                 if (tmp.e.buyables[21].unlocked) layers.e.buyables[21].buyMax(amt)
-                                /*
                                 if (tmp.e.buyables[22].unlocked) layers.e.buyables[22].buyMax(amt)
                                 /*
                                 if (tmp.e.buyables[23].unlocked) layers.e.buyables[23].buyMax(amt)
@@ -5825,7 +5830,6 @@ addLayer("e", {
                 },
 
                 /*
-                event
                 enter
                 energy
                 entertainment
@@ -6230,6 +6234,105 @@ addLayer("e", {
                                 return hasUpgrade("goalsii", 21) || hasUnlockedPast("g")
                         },
                 },
+                22: {
+                        title: "Event",
+                        display(){
+                                let start = "<b><h2>Amount</h2>: " + this.getAmountDisplay() + "</b><br>"
+                                let eff = "<b><h2>Effect</h2>: *" + format(this.effect()) + " Medal effect</b><br>"
+                                let cost = "<b><h2>Cost</h2>: " + format(this.cost()) + " Eggs</b><br>"
+                                let scs = this.effect().gt(1e100)
+                                let eformula = "<b><h2>Effect formula</h2>:<br>" + format(this.effectBase()) + "^cbrt(x)" + (scs ? " (softcapped)" : "") + "</b><br>"
+                                let exformula = this.getExtraFormulaText()
+
+                                let end = shiftDown ? eformula + exformula : "Shift to see details"
+                                return "<br>" + start + eff + cost + end
+                        },
+                        getExtraFormulaText(){
+                                return getBuyableExtraText("e", 22)
+                        },
+                        getAmountDisplay(){
+                                let extra = this.extra()
+                                if (extra.eq(0)) return formatWhole(getBuyableAmount("e", 22))
+                                return formatWhole(getBuyableAmount("e", 22)) + "+" + formatWhole(extra)
+                        },
+                        getBases(){
+                                let b0 = new Decimal("1e500")
+                                let b1 = new Decimal(.1)
+                                let b2 = 10
+                                return [b0, b1, b2]
+                        },
+                        cost(add){
+                                let x = getBuyableAmount("e", 22).plus(add)
+                                let bases = this.getBases()
+                                let base0 = bases[0]
+                                let base1 = bases[1]
+                                let base2 = bases[2]
+                                let exp0 = 1
+                                let exp1 = x
+                                let exp2 = x.times(x)
+
+                                return Decimal.pow(base0, exp0).times(Decimal.pow(base1, exp1)).times(Decimal.pow(base2, exp2)).ceil()
+                        },
+                        effectBase(){
+                                if (!isBuyableActive("e", 22)) return new Decimal(1)
+
+                                let base = new Decimal(1e5)
+                                return base
+                        },
+                        effect(){
+                                let x = this.total()
+                                let base = this.effectBase()
+                                let ret = Decimal.pow(base, x.cbrt())
+                                ret = softcap(ret, "e_buy22")
+                                return ret
+                        },
+                        canAfford(){
+                                return player.e.points.gte(this.cost()) && getBuyableAmount("e", 22).lt(getMaxBuyablesAmount("e"))
+                        },
+                        total(){
+                                return getBuyableAmount("e", 22).plus(this.extra())
+                        },
+                        extra(){
+                                return calcBuyableExtra("e", 22)
+                        },
+                        buy(){
+                                let cost = this.cost()
+                                if (!this.canAfford()) return
+                                player.e.buyables[22] = player.e.buyables[22].plus(1)
+                                if (hasMilestone("goalsii", 24)) return
+                                player.e.points = player.e.points.minus(cost)
+                        },
+                        buyMax(maximum){
+                                let bases = this.getBases()
+                                if (!this.unlocked()) return 
+                                if (player.e.points.lt(bases[0])) return
+
+                                // let exp2 = x.times(x)
+                                let pttarget = player.e.points.div(bases[0]).log(1.01)
+                                let bfactor = Decimal.log(bases[1], 3).div(Decimal.log(1.01, 3))
+                                //want to find ax^2+bx = c
+                                let c = pttarget
+                                let b = bfactor
+                                let a = Decimal.log(bases[2], 3).div(Decimal.log(1.01, 3))
+                                // let a = 1 this is constant so remove it
+
+                                let target = c.times(a).times(4).plus(b * b).sqrt().minus(b).div(2).div(a).floor().plus(1)
+                                //-b + sqrt(b*b+4*c*a)
+
+                                target = target.min(getMaxBuyablesAmount("e"))
+
+                                let diff = target.minus(player.e.buyables[22]).max(0)
+                                if (maximum != undefined) diff = diff.min(maximum)
+
+                                player.e.buyables[22] = player.e.buyables[22].plus(diff)
+
+                                if (hasMilestone("goalsii", 24) || diff.eq(0)) return 
+                                player.e.points = player.e.points.sub(this.cost(-1)).max(0)
+                        },
+                        unlocked(){ 
+                                return hasUpgrade("goalsii", 22) || hasUnlockedPast("g")
+                        },
+                },
         },
         tabFormat: {
                 "Upgrades": {
@@ -6286,7 +6389,7 @@ addLayer("e", {
                                 "challenges",
                         ],
                         unlocked(){
-                                return false || hasUnlockedPast("g")
+                                return false || hasUnlockedPast("h")
                         },
                 },
         },
@@ -6326,6 +6429,7 @@ addLayer("f", {
 		points: new Decimal(0),
                 best: new Decimal(0),
                 total: new Decimal(0),
+                bestc44: new Decimal(0),
                 abtime: 0,
                 time: 0,
                 times: 0,
@@ -6416,6 +6520,9 @@ addLayer("f", {
                 let data = player.f
 
                 data.best = data.best.max(data.points)
+                if (player.goalsii.currentChallenge == "44"){
+                        data.bestc44 = data.bestc44.max(data.points)
+                }
                 if (hasMilestone("goalsii", 9)) {
                         data.points = data.points.plus(this.getResetGain().times(diff))
                         data.total = data.total.plus(this.getResetGain().times(diff))
@@ -6509,7 +6616,7 @@ addLayer("f", {
                                 "blank", 
                                 "buyables"],
                         unlocked(){
-                                return false || hasUnlockedPast("g")
+                                return false || hasUnlockedPast("h")
                         },
                 },
                 "Challenges": {
@@ -6527,7 +6634,7 @@ addLayer("f", {
                                 "challenges",
                         ],
                         unlocked(){
-                                return false || hasUnlockedPast("g")
+                                return false || hasUnlockedPast("h")
                         },
                 },
         },
@@ -6557,7 +6664,6 @@ addLayer("f", {
 
         },
 })
-
 
 addLayer("ach", {
         name: "Goals", // This is optional, only used in a few places, If absent it just uses the layer id.
@@ -7629,6 +7735,7 @@ addLayer("ach", {
 
                 let keep = []
                 data.milestones = filter(data.milestones, keep)
+                updateAchievements("ach")
                 updateMilestones("ach")
         },
 })
@@ -7778,6 +7885,9 @@ addLayer("goalsii", {
 
                 ret = softcap(ret, "goalsii_eff")
 
+                ret = ret.times(getBuyableEffect("e", 22))
+                if (hasUpgrade("goalsii", 23)) ret = ret.pow(2)
+
                 return ret
         },
         effectDescription(){
@@ -7856,7 +7966,7 @@ addLayer("goalsii", {
         hotkeys: [
             {key: "[", description: "[ Reset for Medal reset", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
         ],
-        layerShown(){return player.goalsii.times > 0 || player.f.times > 0},
+        layerShown(){return player.goalsii.times > 0 || player.f.times > 0 || layers.g.layerShown() || hasUnlockedPast("g")},
         prestigeButtonText(){
                 let b = ""
                 if (player.goalsii.times > 0) {
@@ -8841,7 +8951,7 @@ addLayer("goalsii", {
                                 return "00"
                         },
                         unlocked(){ 
-                                return /*hasUpgrade("goalsii", 10)*/ true || hasUnlockedPast("g")
+                                return true || hasUnlockedPast("g")
                         }, // hasUpgrade("goalsii", 11)
                 },
                 12: {
@@ -8926,7 +9036,7 @@ addLayer("goalsii", {
                 },
                 22: {
                         title: "Gödel",
-                        description: "Tokens and medals per second as if you prestiged [doesnt give buyable yet]",
+                        description: "Gain tokens and medals per second as if you prestiged",
                         cost: new Decimal(20),
                         currencyDisplayName: "<br><b style='color: #6600FF'>43</b> Tokens",
                         currencyLocation(){
@@ -8939,30 +9049,40 @@ addLayer("goalsii", {
                                 return hasUpgrade("goalsii", 21) || hasUnlockedPast("g")
                         }, // hasUpgrade("goalsii", 22)
                 },
-
-                //layers.goalsii.getProductOnePlusTokens(1/3).pow(.1908) is about right
-                //the exp of that is just f gain exp stuffs in c40
+                23: {
+                        title: "Hilbert",
+                        description: "Square medal effect and <b>Easy</b> gives free <b>Example</b> levels [do not gain a buyable]",
+                        cost: new Decimal(1000),
+                        currencyDisplayName: "<br><b style='color: #6600FF'>43</b> Tokens",
+                        currencyLocation(){
+                                return player.goalsii.tokens.copy
+                        },
+                        currencyInternalName(){
+                                return "43"
+                        },
+                        unlocked(){ 
+                                return hasUpgrade("goalsii", 22) || hasUnlockedPast("g")
+                        }, // hasUpgrade("goalsii", 23)
+                },
 
                 /*
-                
-                Hilbert
                 I
                 Jacobsin
-                K
+                Kempe
                 Laplace
                 M
                 Noether
                 O
-                P
+                Poison
                 Russell
                 Schrier
                 Turing
                 U
                 Villiani
                 Wiles
-                X
-                Y
-                Z
+                Xi
+                Yin
+                Zhao
                 */
                 
         },
@@ -9048,7 +9168,7 @@ addLayer("goalsii", {
                                 ],
                         ],
                         unlocked(){
-                                return player.goalsii.best.gt(0)
+                                return player.goalsii.best.gt(0) || hasUnlockedPast("g") || layers.g.layerShown()
                         },
                 },
                 "Milestones": {
@@ -9057,7 +9177,7 @@ addLayer("goalsii", {
                                 "milestones",
                         ],
                         unlocked(){
-                                return player.goalsii.times > 1
+                                return player.goalsii.times > 1 || hasUnlockedPast("g") || layers.g.layerShown()
                         },
                 },
                 "Upgrades": {
@@ -9070,16 +9190,73 @@ addLayer("goalsii", {
                                 "upgrades",
                         ],
                         unlocked(){
-                                return hasMilestone("goalsii", 24)
+                                return hasMilestone("goalsii", 24) || hasUnlockedPast("g") || layers.g.layerShown()
                         },
                 },
         },
         doReset(layer){
-                if (layers[layer].row != "side") return 
-                if (layer == "ach") return
-                if (layer == "goalsii") return
+                if (["a","b","c","d","e","f","ach","goalsii"].includes(layer)) return
 
-                return 
+                let data = player.goalsii
+
+                data.points = new Decimal(0)
+                data.best = new Decimal(0)
+                data.total = new Decimal(0)
+                data.bestOnce = new Decimal(0)
+                data.currentChallenge = "00"
+                data.times = 0
+                data.upgrades = []
+                let keep1 = []
+                if (hasMilestone("g", 2)) {
+                        let qw = Math.min(25, player.g.times * 3)
+                        keep1.push([
+                                00, 01, 02, 03, 04, 05, 06, 07, 08, 09,
+                                10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
+                                20, 21, 22, 23, 24
+                        ].slice(0, qw))
+                }
+                data.milestones = filter(data.milestones, keep1)
+                player.ach.achievements = []
+                player.ach.milestones = []
+                player.f.bestc44 = new Decimal(0)
+                player.ach.points = new Decimal(0)
+
+                let k = ["a", "b", "c", "d", "e", "f"]
+                for (abcd in k){
+                        i = k[abcd]
+                        z = player[i].challenges
+                        if (z == undefined) continue
+                        for (j in z){
+                                z[j] = new Decimal(0)
+                        }
+                }
+
+                let a = {}
+                let b = {}
+                let c = {}
+                let e = {}
+                let l = ["00", "01", "02", "03", "04",
+                         "10", "11", "12", "13", "14",
+                         "20", "21", "22", "23", "24",
+                         "30", "31", "32", "33", "34",
+                         "40", "41", "42", "43", "44",
+                        ]
+                for (j in l){
+                        i = l[j]
+                        a[i] = new Decimal(0)
+                        b[i] = new Decimal(0)
+                        c[i] = new Decimal(0)
+                        e[i] = new Decimal(0)
+                }
+
+                data.tokens = {
+                                points: a,
+                                best: b,
+                                total: c,
+                                copy: e,
+                        }
+
+
         },
         getTokenToMedalGain(gain){
                 if (getChallengeDepth(3) > 0 && player.f.best.lt(1e19)) return new Decimal(0)
@@ -9110,16 +9287,272 @@ addLayer("goalsii", {
                         data.total[c]  = data.total[c].plus(gain)
                 }
         },
-        getProductOnePlusTokens(exp = 1){
-                let a = new Decimal(1)
-                let b = player.goalsii.tokens.best
-                for (i in b){
-                        a = a.times(b[i].pow(exp).plus(1))
-                }
-                return a
-        }
 })
 
+addLayer("g", {
+        name: "Games", // This is optional, only used in a few places, If absent it just uses the layer id.
+        symbol: "G", // This appears on the layer's node. Default is the id with the first letter capitalized
+        position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+        startData() { return {
+                unlocked: true,
+		points: new Decimal(0),
+                best: new Decimal(0),
+                total: new Decimal(0),
+                abtime: 0,
+                time: 0,
+                times: 0,
+                autotimes: 0,
+        }},
+        color: "#996600",
+        branches: ["f"],
+        requires: new Decimal(0), // Can be a function that takes requirement increases into account
+        resource: "Games", // Name of prestige currency
+        baseResource: "Features", // Name of resource prestige is based on
+        baseAmount() {return player.f.bestc44.floor()}, // Get the current amount of baseResource
+        type: "custom", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+        getResetGain() {
+                let pts = this.baseAmount()
+                let pre = this.getGainMultPre()
+                let exp = this.getGainExp()
+                let pst = this.getGainMultPost()
+                let div = this.getBaseDiv()
 
+                let a = pts.div(div)
+                if (a.lt(1)) return new Decimal(0)
+
+                let ret = a.log10().times(pre).pow(exp).times(pst)
+
+                if (!hasUnlockedPast("g") && player.g.best.eq(0)) ret = ret.min(1)
+
+                ret = doPrestigeGainChange(ret, "g")
+
+                return ret.floor()
+        },
+        getBaseDiv(){
+                let x = new Decimal(1e9)
+                return x
+        },
+        getGainExp(){
+                let x = new Decimal(2)
+                return x
+        },
+        getGainMultPre(){
+                let x = new Decimal(1/10)
+                return x
+        },
+        getGainMultPost(){
+                let x = new Decimal(1)
+
+                let yet = false
+                for (let i = 0; i < LAYERS.length; i++){
+                        if (layers[LAYERS[i]].row == "side") continue
+                        if (yet) x = x.times(tmp[LAYERS[i]].effect)
+                        if (LAYERS[i] == "g") yet = true
+                }
+
+                return x
+        },
+        effect(){
+                if (!isPrestigeEffectActive("g")) return new Decimal(1)
+
+                let amt = player.g.points
+
+                let ret = amt.times(4).plus(1).pow(3)
+
+                //ret = softcap(ret, "g_eff")
+
+                return ret
+        },
+        effectDescription(){
+                let eff = this.effect()
+                let a = "which buffs point and all previous prestige gain by "
+
+                return a + format(eff) + "."
+        },
+        update(diff){
+                let data = player.g
+
+                data.best = data.best.max(data.points)
+                if (false) {
+                        data.points = data.points.plus(this.getResetGain().times(diff))
+                        data.total = data.total.plus(this.getResetGain().times(diff))
+                        data.autotimes += diff
+                        if (data.autotimes > 3) data.autotimes = 3
+                        if (data.autotimes > 1) {
+                                data.autotimes += -1
+                                data.times ++
+                        }
+                }
+                if (false) {
+                        data.abtime += diff
+                        if (data.abtime > 10) data.abtime = 10
+                } else {
+                        data.abtime = 0
+                }
+                data.time += diff
+        },
+        row: 6, // Row the layer is in on the tree (0 is the first row)
+        hotkeys: [
+            {key: "g", description: "G: Reset for Gamee", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+        ],
+        layerShown(){return player.goalsii.tokens.best["44"].gt(0) || player.g.best.gt(0) || hasUnlockedPast("g")},
+        prestigeButtonText(){
+                let gain= this.getResetGain()
+                let pts = this.baseAmount()
+                let pre = this.getGainMultPre()
+                let exp = this.getGainExp()
+                let pst = this.getGainMultPost()
+                let div = this.getBaseDiv()
+
+                let nextnum = Decimal.pow(10, gain.plus(1).div(pst).root(exp).div(pre)).times(div).ceil()
+
+                let nextAt = ""
+                if (gain.lt(1e6) && (hasUnlockedPast("g") || player.g.best.neq(0))) {
+                        nextAt = "<br>Next at " + format(nextnum) + " " + this.baseResource + " in challenge 44"
+                        let ps = gain.div(player.f.time || 1)
+
+                        if (ps.lt(1000/60)) nextAt += "<br>" + format(ps.times(60)) + "/m"
+                        else nextAt += "<br>" + format(ps) + "/s"
+                }
+
+                let a = "Reset for " + formatWhole(gain) + " " + this.resource
+
+                return a + nextAt
+        },
+        canReset(){
+                return this.getResetGain().gt(0) && player.g.time >= 2 && !false
+        },
+        upgrades: {
+                rows: 5,
+                cols: 5,
+                /*
+                11: {
+                        title: "Email",
+                        description: "Keep <b>C</b> and <b>D</b> upgrades, autobuy <b>C</b> buyables once per second, and multiply all autobuyer bulk by the number of goals",
+                        cost: new Decimal(10),
+                        unlocked(){ 
+                                return player.ach.achievements.includes("61") || hasUnlockedPast("e")
+                        }, //hasUpgrade("e", 11)
+                },
+                */
+                /*
+                good
+                group
+                general
+                games (hm)
+                great
+                game {hm^2}
+                guide
+                government
+                */
+        },
+        milestones: {
+                1: {
+                        requirementDescription: "<b>Get</b><br>Requires: 1 Games", 
+                        effectDescription: "Raise all prior prestige gain ^1.001",
+                        done(){
+                                return player.g.points.gte(1)
+                        },
+                        unlocked(){
+                                return true
+                        },
+                }, // hasMilestone("g", 1)
+                2: {
+                        requirementDescription: "<b>Go</b><br>Requires: 2 Games", 
+                        effectDescription: "Each <b>G</b> reset allows you to keep three medal milestones",
+                        done(){
+                                return player.g.points.gte(2)
+                        },
+                        unlocked(){
+                                return hasMilestone("g", 1)
+                        },
+                }, // hasMilestone("g", 2)
+        },
+        tabFormat: {
+                "Upgrades": {
+                        content: ["main-display",
+                                ["prestige-button", "", function (){ return false ? {'display': 'none'} : {}}],
+                                ["display-text",
+                                        function() {return shiftDown ? "Your best Game is " + format(player.g.best) : ""}],
+                                ["display-text",
+                                        function() {
+                                                if (hasUnlockedPast("g")) return ""
+                                                return "You have done " + formatWhole(player.g.times) + " Game resets"
+                                        }
+                                ],
+                                ["display-text",
+                                        function() {
+                                                if (false) return "You are gaining " + format(tmp.g.getResetGain) + " Games per second"
+                                                return "There is a two second cooldown for prestiging (" + format(Math.max(0, 2-player.g.time)) + ")" 
+                                        },
+                                        //{"font-size": "20px"}
+                                ],
+                                "blank", 
+                                "upgrades"],
+                        unlocked(){
+                                return true
+                        },
+                },
+                "Buyables": {
+                        content: ["main-display",
+                                "blank", 
+                                "buyables"],
+                        unlocked(){
+                                return false || hasUnlockedPast("h")
+                        },
+                },
+                "Challenges": {
+                        content: [
+                                ["display-text",
+                                        function() {
+                                                return "Challenge completions are never reset, and you can bulk complete challenges"
+                                        }
+                                ],
+                                ["display-text",
+                                        function() {
+                                                return "You have completed " + formatWhole(totalChallengeComps("g")) + " Game Challenges"
+                                        }
+                                ],
+                                "challenges",
+                        ],
+                        unlocked(){
+                                return false || hasUnlockedPast("h")
+                        },
+                },
+                "Milestones": {
+                        content: [
+                                "main-display",
+                                "milestones",
+                        ],
+                        unlocked(){
+                                return player.g.best.gt(0) || hasUnlockedPast("g")
+                        },
+                }
+        },
+        doReset(layer){
+                if (layer == "g") player.g.time = 0
+                if (!getsReset("g", layer)) return
+                player.g.time = 0
+                player.g.times = 0
+
+                if (!false) {
+                        //upgrades
+                        let keep = []
+                        player.g.upgrades = filter(player.g.upgrades, keep)
+                }
+
+                //resources
+                player.g.points = new Decimal(0)
+                player.g.total = new Decimal(0)
+                player.g.best = new Decimal(0)
+
+                //buyables
+                let resetBuyables = [11, 12, 13, 21, 22, 23, 31, 32, 33]
+                for (let j = 0; j < resetBuyables.length; j++) {
+                        break
+                        player.g.buyables[resetBuyables[j]] = new Decimal(0)
+                }
+        },
+})
 
 

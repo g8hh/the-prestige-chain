@@ -148,10 +148,20 @@ var GOALS_REWARD_FUNCTIONS = {
 
 var CURRENT_GOALS_EFFECTS = {}
 
+function getMaximumTokens(c){
+        if (c == "44") return new Decimal(1/0)
+        if (c.includes("4")) return new Decimal(1e4)
+        if (c.includes("3")) return new Decimal(1e5)
+        if (c.includes("2")) return new Decimal(3e5)
+        if (c.includes("1")) return new Decimal(1e6)
+        return new Decimal(1e7)
+}
+
 function updateCurrentGoalEffects(){
         for (i in GOALS_REWARD_FUNCTIONS){
                 let a = new Decimal(0)
                 if (typeof player != "undefined") a = player.goalsii.tokens.points[i]
+                a = a.min(getMaximumTokens(i))
                 CURRENT_GOALS_EFFECTS[i] = GOALS_REWARD_FUNCTIONS[i](a)
         }
 }

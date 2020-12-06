@@ -478,9 +478,17 @@ var FREE_BUYABLE_DATA = {
         },
         e13: {
                 name: "Example",
+                e21: {
+                        active: function(){
+                                return hasUpgrade("goalsii", 23)
+                        },
+                },
         },
         e21: {
                 name: "Easy",
+        },
+        e22: {
+                name: "Event",
         },
 }
 

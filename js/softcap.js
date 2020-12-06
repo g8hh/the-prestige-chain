@@ -282,6 +282,13 @@ var softcap_data = {
 			pow: .9,
 		},
 	},
+	e_buy22: {
+		1: {
+			func: "log",
+			start: 1e100,
+			pow: 50,
+		},
+	},
 	f_eff:{
 		
 	},
