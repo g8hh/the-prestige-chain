@@ -6371,7 +6371,7 @@ addLayer("e", {
                                 ], 
                                 "buyables"],
                         unlocked(){
-                                return hasMilestone("goalsii", 19) || hasUnlockedPast("g")
+                                return hasMilestone("goalsii", 19) || hasUnlockedPast("g") || player.g.best.gt(0)
                         },
                 },
                 "Challenges": {
