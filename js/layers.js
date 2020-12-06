@@ -56,8 +56,8 @@ function getsReset(layer, layerPrestiging) {
 }
 
 function hasUnlockedPast(layer){
-        if (layers["goalsii"].layerShown()) {
-                if (["a", "b", "c", "d", "e", "f"].includes(layer)) return true
+        if (["a", "b", "c", "d", "e", "f"].includes(layer)) {
+                if (layers["goalsii"].layerShown()) return true
         }
         let on = false
         for (let i = 0; i < LAYERS.length; i++) {
@@ -7966,7 +7966,7 @@ addLayer("goalsii", {
         hotkeys: [
             {key: "[", description: "[ Reset for Medal reset", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
         ],
-        layerShown(){return player.goalsii.times > 0 || player.f.times > 0 || layers.g.layerShown()},
+        layerShown(){return player.goalsii.times > 0 || player.f.times > 0 || player.g.best.gt(0) || hasUnlockedPast("g")},
         prestigeButtonText(){
                 let b = ""
                 if (player.goalsii.times > 0) {
