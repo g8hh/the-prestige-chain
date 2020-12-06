@@ -7966,7 +7966,7 @@ addLayer("goalsii", {
         hotkeys: [
             {key: "[", description: "[ Reset for Medal reset", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
         ],
-        layerShown(){return player.goalsii.times > 0 || player.f.times > 0 || layers.g.layerShown() || hasUnlockedPast("g")},
+        layerShown(){return player.goalsii.times > 0 || player.f.times > 0 || layers.g.layerShown()},
         prestigeButtonText(){
                 let b = ""
                 if (player.goalsii.times > 0) {
@@ -9227,7 +9227,7 @@ addLayer("goalsii", {
                         z = player[i].challenges
                         if (z == undefined) continue
                         for (j in z){
-                                z[j] = new Decimal(0)
+                                z[j] = 0
                         }
                 }
 
