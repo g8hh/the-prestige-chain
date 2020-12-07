@@ -1,5 +1,5 @@
 function getPointGen() {
-	if (!canGenPoints()) return new Decimal(0)
+	//if (!canGenPoints()) return new Decimal(0)
 
 	let gain = new Decimal(1)
 
@@ -14,16 +14,19 @@ function getPointGen() {
                                   gain = gain.times(getBuyableEffect("a", 23))
                                   gain = gain.times(getBuyableEffect("b", 11))
         if (hasUpgrade("c", 51))  gain = gain.times(100)
-
-
-        if (inChallenge("b", 22)) gain = gain.sqrt()
                                   gain = gain.times(tmp.goalsii.effect)
 
-        
 
-        gain = gain.pow(Decimal.pow(.9, getChallengeDepth(2)))
+        gain = gain.pow(getPointGenExp())
 
 	return gain
+}
+
+function getPointGenExp(){
+        let exp = new Decimal(1)
+        if (inChallenge("b", 22)) exp = exp.div(2)
+        exp = exp.times(Decimal.pow(.9, getChallengeDepth(2)))
+        return exp
 }
 
 function filter(list, keep){
@@ -195,7 +198,7 @@ function getPrestigeGainChangeExp(layer){
         if (["a", "b", "c", "d", "e", "f"].includes(layer)) {
                 exp = exp.times(Decimal.pow(.985, getChallengeDepth(1)))
                 if (hasMilestone("g", 1)) exp = exp.times(1.001)
-        }
+        }       
         if (layer == "f") {
                 exp = exp.times(Decimal.pow(.9, getChallengeDepth(2) + getChallengeDepth(4)))
         }
@@ -215,6 +218,18 @@ function doPrestigeGainChange(amt, layer){
 
 function getMaxBuyablesAmount(layer){
         return Decimal.pow(10, 20)
+}
+
+function getPrestigeName(layer){
+        return {
+                a: "Amoebas",
+                b: "Bacterias",
+                c: "Circles",
+                d: "Circles",
+                e: "Doodles",
+                f: "Features",
+                g: "Games",
+        }[layer]
 }
 
 var devSpeedUp = false
@@ -362,6 +377,29 @@ addLayer("a", {
         },
         row: 0, // Row the layer is in on the tree (0 is the first row)
         hotkeys: [
+            {key: " ", description: "Space: Buy max of all upgrades", 
+                onPress(){
+                        let l =  ["a", "b", "c", "d", "e"]
+                        let l2 = ["A", "B", "C", "D", "E"]
+                        let trylist = [11, 12, 13, 14, 15, 
+                                21, 22, 23, 24, 25,
+                                31, 32, 33, 34, 35,
+                                41, 42, 43, 44, 45,
+                                51, 52, 53, 54, 55,]
+                        for (j in l){
+                                i = l[j] //i is our layer
+                                for (k in trylist) {
+                                        //if we have the upgrade continue
+                                        if (hasUpgrade(i, trylist[k])) continue
+                                        if (layers[i].upgrades[trylist[k]] == undefined) continue
+                                        //if the upgrade is undefined continue
+                                        
+                                        //if we dont have it, try to buy it 
+                                        buyUpgrade(i, trylist[k])
+                                }
+                        }
+                }
+            },
             {key: "a", description: "A: Reset for Amoeba", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
         ],
         layerShown(){return true},
@@ -5934,7 +5972,7 @@ addLayer("e", {
                                 player.e.points = player.e.points.sub(this.cost(-1)).max(0)
                         },
                         unlocked(){ 
-                                return hasMilestone("goalsii", 19) || hasUnlockedPast("g")
+                                return hasMilestone("goalsii", 19) || player.g.best.gt(0) || hasUnlockedPast("g")
                         },
                 },
                 12: {
@@ -6035,7 +6073,7 @@ addLayer("e", {
                                 player.e.points = player.e.points.sub(this.cost(-1)).max(0)
                         },
                         unlocked(){ 
-                                return hasMilestone("goalsii", 22) || hasUnlockedPast("g")
+                                return hasMilestone("goalsii", 22) || player.g.best.gt(0) || hasUnlockedPast("g")
                         },
                 },
                 13: {
@@ -6134,7 +6172,7 @@ addLayer("e", {
                                 player.e.points = player.e.points.sub(this.cost(-1)).max(0)
                         },
                         unlocked(){ 
-                                return hasMilestone("goalsii", 24) || hasUnlockedPast("g")
+                                return hasMilestone("goalsii", 24) || player.g.best.gt(0) || hasUnlockedPast("g")
                         },
                 },
                 21: {
@@ -6231,7 +6269,7 @@ addLayer("e", {
                                 player.e.points = player.e.points.sub(this.cost(-1)).max(0)
                         },
                         unlocked(){ 
-                                return hasUpgrade("goalsii", 21) || hasUnlockedPast("g")
+                                return hasUpgrade("goalsii", 21) || player.g.best.gt(0) || hasUnlockedPast("g")
                         },
                 },
                 22: {
@@ -6330,7 +6368,7 @@ addLayer("e", {
                                 player.e.points = player.e.points.sub(this.cost(-1)).max(0)
                         },
                         unlocked(){ 
-                                return hasUpgrade("goalsii", 22) || hasUnlockedPast("g")
+                                return hasUpgrade("goalsii", 22) || player.g.best.gt(0) || hasUnlockedPast("g")
                         },
                 },
         },
@@ -9212,9 +9250,9 @@ addLayer("goalsii", {
                 if (hasMilestone("g", 2)) {
                         let qw = Math.min(25, player.g.times * 3)
                         keep1.push([
-                                00, 01, 02, 03, 04, 05, 06, 07, 08, 09,
-                                10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
-                                20, 21, 22, 23, 24
+                                "00", "01", "02", "03", "04", "05", "06", "07", "08", "09",
+                                "10", "11", "12", "13", "14", "15", "16", "17", "18", "19",
+                                "20", "21", "22", "23", "24"
                         ].slice(0, qw))
                 }
                 data.milestones = filter(data.milestones, keep1)

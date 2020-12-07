@@ -12,9 +12,45 @@ for (i in [0,0,0 ,0,0,0, 0,0,0]) {
 }
 replace "a" with another layer of choice
 */
+
+
+/*
+
+
+FUNCITONS LEFT TO DEAL WITH:
+display
+getAmountDisplay
+getBases
+canAfford
+buyMax
+buy
+unlocked
+*/
 var FREE_BUYABLE_DATA = {
         a11: {
                 name: "All",
+                func: "exp",
+                base: {
+                        initial: new Decimal(1.5),
+                        1: {
+                                active: function(){
+                                        return hasUpgrade("a", 34)
+                                },
+                                amount: function(){
+                                        return tmp.a.buyables[13].total.div(100)
+                                },
+                                type: "add",
+                        },
+                        2: {
+                                active: function(){
+                                        return hasUpgrade("d", 11)
+                                },
+                                amount: function(){
+                                        return tmp.a.buyables[32].total
+                                },
+                                type: "add",
+                        },
+                },
                 a12: {
                         active: function(){
                                 return hasUpgrade("a", 24)
@@ -28,6 +64,37 @@ var FREE_BUYABLE_DATA = {
         },
         a12: {
                 name: "Any",
+                func: "exp",
+                base: {
+                        initial: new Decimal(1.1),
+                        1: {
+                                active: function(){
+                                        return hasUpgrade("b", 12)
+                                },
+                                amount: function(){
+                                        return Decimal.div(player.b.upgrades.length, 10)
+                                },
+                                type: "add",
+                        },
+                        2: {
+                                active: function(){
+                                        return hasUpgrade("a", 43)
+                                },
+                                amount: function(){
+                                        return tmp.a.buyables[22].total.div(20)
+                                },
+                                type: "add",
+                        },
+                        3: {
+                                active: function(){
+                                        return hasUpgrade("a", 51)
+                                },
+                                amount: function(){
+                                        return tmp.a.buyables[21].total.div(100)
+                                },
+                                type: "add",
+                        },
+                },
                 a13: {
                         active: function(){
                                 return hasUpgrade("b", 15)
@@ -41,6 +108,14 @@ var FREE_BUYABLE_DATA = {
         },
         a13: {
                 name: "After",
+                func(a,x){
+                        let ret = Decimal.pow(x, 2).times(.3).plus(1)
+                        return ret
+                },
+                identity: new Decimal(1),
+                base: {
+                        initial: new Decimal(1),
+                },
                 a21: {
                         active: function(){
                                 return hasUpgrade("b", 25)
@@ -59,6 +134,19 @@ var FREE_BUYABLE_DATA = {
         },
         a21: {
                 name: "Access",
+                func: "lin",
+                base: {
+                        initial: new Decimal(1),
+                        1: {
+                                active: function(){
+                                        return true
+                                },
+                                amount: function(){
+                                        return tmp.a.buyables[32].effect
+                                },
+                                type: "add",
+                        },
+                },
                 a22: {
                         active: function(){
                                 return hasUpgrade("a", 42)
@@ -77,6 +165,28 @@ var FREE_BUYABLE_DATA = {
         },
         a22: {
                 name: "Account",
+                func: "exp",
+                base: {
+                        initial: new Decimal(1),
+                        1: {
+                                active: function(){
+                                        return hasUpgrade("a", 45)
+                                },
+                                amount: function(){
+                                        return tmp.a.buyables[22].total.div(100)
+                                },
+                                type: "add",
+                        },
+                        2: {
+                                active: function(){
+                                        return true
+                                },
+                                amount: function(){
+                                        return getGoalChallengeReward("21")
+                                },
+                                type: "mult",
+                        },
+                },
                 a23: {
                         active: function(){
                                 return hasUpgrade("a", 54)
@@ -95,6 +205,19 @@ var FREE_BUYABLE_DATA = {
         },
         a23: {
                 name: "Advanced",
+                func: "exp",
+                base: {
+                        initial: new Decimal(1e5),
+                        1: {
+                                active: function(){
+                                        return true
+                                },
+                                amount: function(){
+                                        return tmp.b.buyables[31].effect
+                                },
+                                type: "mult",
+                        },
+                },
                 a31: {
                         active: function(){
                                 return hasUpgrade("b", 42)
@@ -108,6 +231,19 @@ var FREE_BUYABLE_DATA = {
         },
         a31: {
                 name: "Against",
+                func: "exp",
+                base: {
+                        initial: new Decimal(1e5),
+                        1: {
+                                active: function(){
+                                        return true
+                                },
+                                amount: function(){
+                                        return tmp.b.buyables[22].effect
+                                },
+                                type: "mult",
+                        },
+                },
                 a32: {
                         active: function(){
                                 return hasUpgrade("d", 14)
@@ -121,9 +257,44 @@ var FREE_BUYABLE_DATA = {
         },
         a32: {
                 name: "Above",
+                func: "lin",
+                base: {
+                        initial: new Decimal(.01),
+                },
         },
         a33: {
                 name: "Omnipotent I",
+                func: "lin",
+                base: {
+                        initial: new Decimal(.5),
+                        1: {
+                                active: function(){
+                                        return hasUpgrade("b", 53)
+                                },
+                                amount: function(){
+                                        return totalChallengeComps("b") / 10
+                                },
+                                type: "add",
+                        },
+                        2: {
+                                active: function(){
+                                        return hasUpgrade("c", 35)
+                                },
+                                amount: function(){
+                                        return tmp.a.buyables[23].total.div(1e4)
+                                },
+                                type: "add",
+                        },
+                        3: {
+                                active: function(){
+                                        return true
+                                },
+                                amount: function(){
+                                        return getGoalChallengeReward("01")
+                                },
+                                type: "add",
+                        },
+                },
                 b31: {
                         active: function(){
                                 return hasUpgrade("c", 44)
@@ -137,6 +308,28 @@ var FREE_BUYABLE_DATA = {
         },
         b11: {
                 name: "Because",
+                func: "exp",
+                base: {
+                        initial: new Decimal(1e20),
+                        1: {
+                                active: function(){
+                                        return hasUpgrade("c", 21)
+                                },
+                                amount: function(){
+                                        return tmp.a.buyables[12].total.max(1).pow(2)
+                                },
+                                type: "mult",
+                        },
+                        2: {
+                                active: function(){
+                                        return true
+                                },
+                                amount: function(){
+                                        return tmp.b.buyables[23].effect
+                                },
+                                type: "add",
+                        },
+                },
                 b12: {
                         active: function(){
                                 return hasUpgrade("b", 34)
@@ -150,6 +343,40 @@ var FREE_BUYABLE_DATA = {
         },
         b12: {
                 name: "Based",
+                func(a,x){
+                        return a.plus(x).pow(x)
+                },
+                identity: new Decimal(1),
+                base: {
+                        initial: new Decimal(10),
+                        1: {
+                                active: function(){
+                                        return hasUpgrade("b", 41)
+                                },
+                                amount: function(){
+                                        return tmp.a.buyables[11].total.div(1000)
+                                },
+                                type: "add",
+                        },
+                        2: {
+                                active: function(){
+                                        return hasUpgrade("d", 32)
+                                },
+                                amount: function(){
+                                        return tmp.a.buyables[33].total.pow(2)
+                                },
+                                type: "add",
+                        },
+                        3: {
+                                active: function(){
+                                        return true
+                                },
+                                amount: function(){
+                                        return tmp.d.buyables[21].effect
+                                },
+                                type: "mult",
+                        },
+                },
                 b13: {
                         active: function(){
                                 return hasUpgrade("b", 54)
@@ -163,6 +390,19 @@ var FREE_BUYABLE_DATA = {
         },
         b13: {
                 name: "Become",
+                func: "exp",
+                base: {
+                        initial: new Decimal(5),
+                        1: {
+                                active: function(){
+                                        return hasUpgrade("b", 41)
+                                },
+                                amount: function(){
+                                        return tmp.b.buyables[13].total.div(100)
+                                },
+                                type: "add",
+                        },
+                },
                 b21: {
                         active: function(){
                                 return hasUpgrade("c", 34)
@@ -176,6 +416,19 @@ var FREE_BUYABLE_DATA = {
         },
         b21: {
                 name: "Baby",
+                func: "exp",
+                base: {
+                        initial: new Decimal(1.11e111),
+                        1: {
+                                active: function(){
+                                        return true
+                                },
+                                amount: function(){
+                                        return tmp.b.buyables[33].effect
+                                },
+                                type: "times",
+                        },
+                },
                 b22: {
                         active: function(){
                                 return hasUpgrade("b", 55)
@@ -194,6 +447,19 @@ var FREE_BUYABLE_DATA = {
         },
         b22: {
                 name: "Bank",
+                func: "exp_sqrt",
+                base: {
+                        initial: new Decimal(1e5),
+                        1: {
+                                active: function(){
+                                        return true
+                                },
+                                amount: function(){
+                                        return tmp.c.challenges[11].rewardEffect
+                                },
+                                type: "times",
+                        },
+                },
                 b23: {
                         active: function(){
                                 return hasUpgrade("d", 15)
@@ -212,6 +478,19 @@ var FREE_BUYABLE_DATA = {
         },
         b23: {
                 name: "Beauty",
+                func: "exp",
+                base: {
+                        initial: new Decimal(1e10),
+                        1: {
+                                active: function(){
+                                        return true
+                                },
+                                amount: function(){
+                                        return tmp.c.buyables[11].effect
+                                },
+                                type: "times",
+                        },
+                },
                 b31: {
                         active: function(){
                                 return hasUpgrade("c", 41)
@@ -230,6 +509,10 @@ var FREE_BUYABLE_DATA = {
         },
         b31: {
                 name: "Basic",
+                func: "exp",
+                base: {
+                        initial: new Decimal(1e50),
+                },
                 b32: {
                         active: function(){
                                 return hasUpgrade("c", 45)
@@ -243,6 +526,19 @@ var FREE_BUYABLE_DATA = {
         },
         b32: {
                 name: "Brand",
+                func: "lin",
+                base: {
+                        initial: new Decimal(1),
+                        1: {
+                                active: function(){
+                                        return true
+                                },
+                                amount: function(){
+                                        return tmp.c.buyables[13].effect
+                                },
+                                type: "plus",
+                        },
+                },
                 c21:{
                         active: function(){
                                 return hasUpgrade("d", 34)
@@ -256,6 +552,19 @@ var FREE_BUYABLE_DATA = {
         },
         b33: {
                 name: "Omnipotent II",
+                func: "exp",
+                base: {
+                        initial: new Decimal(1e40),
+                        1: {
+                                active: function(){
+                                        return true
+                                },
+                                amount: function(){
+                                        return tmp.d.buyables[22].effect
+                                },
+                                type: "times",
+                        },
+                },
                 c22: {
                         active: function(){
                                 return hasUpgrade("c", 54)
@@ -269,6 +578,10 @@ var FREE_BUYABLE_DATA = {
         },
         c11: {
                 name: "Case",
+                func: "exp",
+                base: {
+                        initial: new Decimal(100),
+                },
                 c12: {
                         active: function(){
                                 return hasUpgrade("d", 25)
@@ -287,6 +600,19 @@ var FREE_BUYABLE_DATA = {
         },
         c12: {
                 name: "Call",
+                func: "exp_sqrt",
+                base: {
+                        initial: new Decimal("1e1624"),
+                        1: {
+                                active: function(){
+                                        return true
+                                },
+                                amount: function(){
+                                        return tmp.c.buyables[31].effect
+                                },
+                                type: "times",
+                        },
+                },
                 c13: {
                         active: function(){
                                 return hasUpgrade("c", 52)
@@ -305,6 +631,19 @@ var FREE_BUYABLE_DATA = {
         },
         c13: {
                 name: "Country",
+                func: "lin",
+                base: {
+                        initial: new Decimal(.02),
+                        1: {
+                                active: function(){
+                                        return true
+                                },
+                                amount: function(){
+                                        return getGoalChallengeReward("01")
+                                },
+                                type: "plus",
+                        },
+                },
                 c21: {
                         active: function(){
                                 return hasUpgrade("d", 33)
@@ -318,6 +657,10 @@ var FREE_BUYABLE_DATA = {
         },
         c21: {
                 name: "Compare",
+                func: "exp",
+                base: {
+                        initial: new Decimal(2),
+                },
                 c22: {
                         active: function(){
                                 return hasUpgrade("c", 54)
@@ -331,6 +674,28 @@ var FREE_BUYABLE_DATA = {
         },
         c22: {
                 name: "Card",
+                func: "exp",
+                base: {
+                        initial: new Decimal(5),
+                        1: {
+                                active: function(){
+                                        return true
+                                },
+                                amount: function(){
+                                        return tmp.d.buyables[12].effect
+                                },
+                                type: "plus",
+                        },
+                        2: {
+                                active: function(){
+                                        return true
+                                },
+                                amount: function(){
+                                        return getGoalChallengeReward("04")
+                                },
+                                type: "plus",
+                        },
+                },
                 c23: {
                         active: function(){
                                 return hasUpgrade("d", 35)
@@ -344,6 +709,10 @@ var FREE_BUYABLE_DATA = {
         },
         c23: {
                 name: "Canada",
+                func: "exp",
+                base: {
+                        initial: Decimal.pow(10, 1572e3),
+                },
                 c31: {
                         active: function(){
                                 return hasUpgrade("d", 43)
@@ -357,6 +726,10 @@ var FREE_BUYABLE_DATA = {
         },
         c31: {
                 name: "Conditions",
+                func: "exp",
+                base: {
+                        initial: new Decimal(1e50),
+                },
                 c32: {
                         active: function(){
                                 return hasMilestone("goalsii", 10)
@@ -365,12 +738,78 @@ var FREE_BUYABLE_DATA = {
         },
         c32: {
                 name: "Catagory",
+                func: "exp",
+                base: {
+                        initial: new Decimal(100),
+                        1: {
+                                active: function(){
+                                        return true
+                                },
+                                amount: function(){
+                                        return getBuyableEffect("e", 21)
+                                },
+                                type: "times",
+                        },
+                },
         },
         c33: {
                 name: "Omnipotent III",
+                func: "exp_sqrt",
+                base: {
+                        initial: new Decimal(2),
+                        1: {
+                                active: function(){
+                                        return hasMilestone("goalsii", 16)
+                                },
+                                amount: function(){
+                                        return player.goalsii.milestones.length/10
+                                },
+                                type: "plus",
+                        },
+                        2: {
+                                active: function(){
+                                        return true
+                                },
+                                amount: function(){
+                                        return getGoalChallengeReward("42")
+                                },
+                                type: "plus",
+                        },
+                },
         },
         d11: {
                 name: "Department",
+                func: "exp",
+                base: {
+                        initial: new Decimal(5),
+                        1: {
+                                active: function(){
+                                        return true
+                                },
+                                amount: function(){
+                                        return tmp.d.buyables[13].effect
+                                },
+                                type: "plus",
+                        },
+                        2: {
+                                active: function(){
+                                        return true
+                                },
+                                amount: function(){
+                                        return getGoalChallengeReward("11")
+                                },
+                                type: "plus",
+                        },
+                        3: {
+                                active: function(){
+                                        return true
+                                },
+                                amount: function(){
+                                        return getGoalChallengeReward("41")
+                                },
+                                type: "times",
+                        },
+                },
                 d13: {
                         active: function(){
                                 return hasUpgrade("e", 14)
@@ -389,6 +828,19 @@ var FREE_BUYABLE_DATA = {
         },
         d12: {
                 name: "December",
+                func: "lin",
+                base: {
+                        initial: new Decimal(.01),
+                        1: {
+                                active: function(){
+                                        return true
+                                },
+                                amount: function(){
+                                        return getGoalChallengeReward("03")
+                                },
+                                type: "plus",
+                        },
+                },
                 d13: {
                         active: function(){
                                 return hasUpgrade("d", 44)
@@ -407,6 +859,19 @@ var FREE_BUYABLE_DATA = {
         },
         d13: {
                 name: "Delivery",
+                func: "lin",
+                base: {
+                        initial: new Decimal(.1),
+                        1: {
+                                active: function(){
+                                        return true
+                                },
+                                amount: function(){
+                                        return getGoalChallengeReward("03")
+                                },
+                                type: "plus",
+                        },
+                },
                 d21: {
                         active: function(){
                                 return hasUpgrade("e", 15)
@@ -420,6 +885,19 @@ var FREE_BUYABLE_DATA = {
         },
         d21: {
                 name: "Drive",
+                func: "exp",
+                base: {
+                        initial: new Decimal(5),
+                        1: {
+                                active: function(){
+                                        return true
+                                },
+                                amount: function(){
+                                        return getBuyableEffect("d", 31)
+                                },
+                                type: "plus",
+                        },
+                },
                 d22: {
                         active: function(){
                                 return hasUpgrade("e", 24)
@@ -433,6 +911,28 @@ var FREE_BUYABLE_DATA = {
         },
         d22: {
                 name: "Director",
+                func: "exp",
+                base: {
+                        initial: new Decimal(10),
+                        1: {
+                                active: function(){
+                                        return hasUpgrade("e", 25)
+                                },
+                                amount: function(){
+                                        return 1
+                                },
+                                type: "plus",
+                        },
+                        2: {
+                                active: function(){
+                                        return true
+                                },
+                                amount: function(){
+                                        return tmp.d.buyables[22].total.times(getGoalChallengeReward("32"))
+                                },
+                                type: "plus",
+                        },
+                },
                 e11: {
                         active: function(){
                                 return hasMilestone("goalsii", 20) 
@@ -446,6 +946,19 @@ var FREE_BUYABLE_DATA = {
         },
         d23: {
                 name: "Due",
+                func: "exp",
+                base: {
+                        initial: new Decimal(5),
+                        1: {
+                                active: function(){
+                                        return true
+                                },
+                                amount: function(){
+                                        return getBuyableEffect("e", 13)
+                                },
+                                type: "times",
+                        },
+                },
                 e12: {
                         active: function(){
                                 return hasMilestone("goalsii", 23) 
@@ -454,9 +967,26 @@ var FREE_BUYABLE_DATA = {
         },
         d31: {
                 name: "Database",
+                func: "lin",
+                base: {
+                        initial: new Decimal(.25),
+                },
         },
         e11: {
                 name: "Experience",
+                func: "exp",
+                base: {
+                        initial: new Decimal(10),
+                        1: {
+                                active: function(){
+                                        return true
+                                },
+                                amount: function(){
+                                        return getGoalChallengeReward("04")
+                                },
+                                type: "plus",
+                        },
+                },
                 e12: {
                         active: function(){
                                 return hasMilestone("goalsii", 23) 
@@ -470,6 +1000,28 @@ var FREE_BUYABLE_DATA = {
         },
         e12: {
                 name: "East",
+                func: "lin",
+                base: {
+                        initial: new Decimal(.2),
+                        1: {
+                                active: function(){
+                                        return hasMilestone("goalsii", 24)
+                                },
+                                amount: function(){
+                                        return .002 * player.ach.achievements.length
+                                },
+                                type: "plus",
+                        },
+                        2: {
+                                active: function(){
+                                        return hasUpgrade("goalsii", 11)
+                                },
+                                amount: function(){
+                                        return .01 * player.goalsii.upgrades.length
+                                },
+                                type: "plus",
+                        },
+                },
                 e13: {
                         active: function(){
                                 return hasUpgrade("goalsii", 11)
@@ -478,6 +1030,19 @@ var FREE_BUYABLE_DATA = {
         },
         e13: {
                 name: "Example",
+                func: "exp",
+                base: {
+                        initial: new Decimal(1.1),
+                        1: {
+                                active: function(){
+                                        return hasUpgrade("goalsii", 13)
+                                },
+                                amount: function(){
+                                        return .02 * player.goalsii.upgrades.length
+                                },
+                                type: "plus",
+                        },
+                },
                 e21: {
                         active: function(){
                                 return hasUpgrade("goalsii", 23)
@@ -486,9 +1051,17 @@ var FREE_BUYABLE_DATA = {
         },
         e21: {
                 name: "Easy",
+                func: "exp",
+                base: {
+                        initial: new Decimal(1e50),
+                },
         },
         e22: {
                 name: "Event",
+                func: "exp_cbrt",
+                base: {
+                        initial: new Decimal(1e5),
+                },
         },
 }
 
@@ -751,6 +1324,7 @@ function isValidBuyableCode(code){
 
 function getBuyableName(code){
         if (FREE_BUYABLE_DATA[code] != undefined && FREE_BUYABLE_DATA[code].name != undefined) return FREE_BUYABLE_DATA[code].name
+        console.log("do this " + code)
         return layers[code.slice(0,1)].buyables[code.slice(1,3)].title
 }
 
@@ -760,9 +1334,9 @@ function calcBuyableExtra(layer, id){
         if (CURRENT_BUYABLE_EXTRAS[layer+id] != undefined) a = CURRENT_BUYABLE_EXTRAS[layer+id]
 
         let depth = getChallengeDepth(4)
-        if (depth > 0 && layer == "a") a = new Decimal(0)
-        else if (depth > 1 && layer == "b") a = new Decimal(0)
-        else if (depth > 2 && layer == "c") a = new Decimal(0)
+        if (depth > 0 && layer == "a") return new Decimal(0)
+        if (depth > 1 && layer == "b") return new Decimal(0)
+        if (depth > 2 && layer == "c") return new Decimal(0)
         
         return a 
 }
@@ -837,6 +1411,97 @@ function getBuyableExtraText(layer, id){
         }
         if (!extra) return ""
         return a.slice(0, a.length-2)
+}
+
+var BUYABLES_FUNCTION_NAMES = {
+        "exp": {
+                "func": BUYABLE_EFFECT_EXPONENTIAL,
+                "identity": new Decimal(1),
+        },
+        "exp_sqrt":{
+                "func": BUYABLE_EFFECT_EXPONENTIAL_SQRT,
+                "identity": new Decimal(1),
+        },
+        "exp_cbrt": {
+                "func": BUYABLE_EFFECT_EXPONENTIAL_CBRT,
+                "identity": new Decimal(1),
+        },
+        "lin": {
+                "func": BUYABLES_EFFECT_LINEAR,
+                "identity": new Decimal(0),
+        },
+}
+
+var CURRENT_BUYABLE_BASES = {}
+var CURRENT_BUYABLE_EFFECTS = {}
+
+function BUYABLE_EFFECT_EXPONENTIAL(a,b){
+        return a.pow(b)
+}
+
+function BUYABLE_EFFECT_EXPONENTIAL_SQRT(a,b){
+        return a.pow(b.sqrt())
+}
+
+function BUYABLE_EFFECT_EXPONENTIAL_CBRT(a,b){
+        return a.pow(b.cbrt())
+}
+
+function BUYABLES_EFFECT_LINEAR(a,b){
+        return a.times(b)
+}
+
+function getBuyableEffectFunction(layer, id){
+        if (!isValidBuyableCode(layer, id)) return BUYABLE_EFFECT_EXPONENTIAL
+        let func = FREE_BUYABLE_DATA[layer+id]["func"]
+        if (typeof func == "function") return func
+        return BUYABLES_FUNCTION_NAMES[func]["func"] || BUYABLE_EFFECT_EXPONENTIAL
+}
+
+function reCalcBuyableBase(layer, id){
+        if (!isValidBuyableCode(layer + id)) {
+                console.log("ya boi broke" + layer+ id)
+                Decimal(0)
+        }
+        let data1 = FREE_BUYABLE_DATA[layer+id]
+        if (!isBuyableActive(layer, id)) {
+                if (typeof data1.func == "function"){
+                        return data1.identity
+                }
+                return BUYABLES_FUNCTION_NAMES[data1.func]["identity"]
+        }
+        let data2 = data1.base
+        let a = data2.initial
+        let b = 0
+        while (b < 10){ //maybe change later
+                b ++
+                let data3 = data2[b]
+                //this is the data
+                if (data3 == undefined) break
+                //if data undefined done w loop
+                if (!data3.active()) continue
+                //if the effect isnt active continue to next effect
+                let func = data3.type
+                let eff = data3.amount()
+                //effect of the effect... (xd)
+                if (func == "add") a = a.plus(eff)
+                if (func == "mult") a = a.times(eff)
+                if (func == "exp") a = a.pow(eff)
+                //do the effect to a
+        }
+        if (softcap_data[layer+"_buy"+id] != undefined){
+                a = softcap(a, layer+"_buy"+id)
+        }
+        return a
+}
+
+function getSavedBuyableEffect(layer, id){
+        if (!isValidBuyableCode(layer + id)) {
+                console.log("ya boi broke" + layer+ id)
+                Decimal(0)
+        }
+        //change this later if we store it in a class
+        return tmp[layer].buyables[id].effect 
 }
 
 
