@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".3.11 Salvaged Wasteland",
+	num: ".3.11.1 Salvaged Wasteland",
 	name: "",
 }
 
@@ -229,7 +229,7 @@ function nextMilestone(){
 
 // Display extra things at the top of the page
 var displayThings = [
-	"This may be incorrect: Last updated 11:54 AM pacific 12.07",
+	"This may be incorrect: Last updated 2:39 PM pacific 12.07",
 	function (){
 		return "Endgame: 2 G resets " + (player.g.best.gte(2) ? "(done)" : "(not done)")
 		/*
