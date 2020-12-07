@@ -7852,7 +7852,8 @@ addLayer("goalsii", {
 
                 let ret = a.times(pre).pow(exp).times(pst)
 
-                if (ret.gt(1e4)) ret = ret.sqrt().times(100)
+                if (ret.gt(1e4)) ret = ret.div(1e4).sqrt().times(1e4)
+                if (ret.gt(1e8)) ret = ret.div(1e8).sqrt().times(1e8)
 
                 return ret.floor()
         },
@@ -7869,6 +7870,7 @@ addLayer("goalsii", {
                 let x = new Decimal(1)
                 x = x.times(getGoalChallengeReward("31"))
                 x = x.times(getGoalChallengeReward("41"))
+                if (hasMilestone("g", 1)) x = x.times(2)
                 return x
         },
         effect(){
@@ -8699,7 +8701,7 @@ addLayer("goalsii", {
                                 return player.goalsii.points.gte(2)
                         },
                         unlocked(){
-                                return hasMilestone("goalsii", 0)
+                                return hasMilestone("goalsii", 0) || player.g.best.gt(0) || hasUnlockedPast("g")
                         },
                 }, // hasMilestone("goalsii", 1)
                 2: {
@@ -8709,7 +8711,7 @@ addLayer("goalsii", {
                                 return player.goalsii.points.gte(3)
                         },
                         unlocked(){
-                                return hasMilestone("goalsii", 1)
+                                return hasMilestone("goalsii", 1) || player.g.best.gt(0) || hasUnlockedPast("g")
                         },
                         toggles: [["goalsii", "autobuyA"]]
                 }, // hasMilestone("goalsii", 2)
@@ -8720,7 +8722,7 @@ addLayer("goalsii", {
                                 return player.goalsii.points.gte(5)
                         },
                         unlocked(){
-                                return hasMilestone("goalsii", 2)
+                                return hasMilestone("goalsii", 2) || player.g.best.gt(0) || hasUnlockedPast("g")
                         },
                         toggles: [["goalsii", "autobuyB"]]
                 }, // hasMilestone("goalsii", 3)
@@ -8731,7 +8733,7 @@ addLayer("goalsii", {
                                 return player.goalsii.points.gte(7)
                         },
                         unlocked(){
-                                return hasMilestone("goalsii", 3)
+                                return hasMilestone("goalsii", 3) || player.g.best.gt(0) || hasUnlockedPast("g")
                         },
                         toggles: [["goalsii", "autobuyC"]]
                 }, // hasMilestone("goalsii", 4)
@@ -8742,7 +8744,7 @@ addLayer("goalsii", {
                                 return player.goalsii.points.gte(11)
                         },
                         unlocked(){
-                                return hasMilestone("goalsii", 4)
+                                return hasMilestone("goalsii", 4) || player.g.best.gt(0) || hasUnlockedPast("g")
                         },
                         toggles: [["goalsii", "autobuyD"]]
                 }, // hasMilestone("goalsii", 5)
@@ -8753,7 +8755,7 @@ addLayer("goalsii", {
                                 return player.goalsii.points.gte(15)
                         },
                         unlocked(){
-                                return hasMilestone("goalsii", 5)
+                                return hasMilestone("goalsii", 5) || player.g.best.gt(0) || hasUnlockedPast("g")
                         },
                         toggles: [["goalsii", "autobuyE"]]
                 }, // hasMilestone("goalsii", 6)
@@ -8764,7 +8766,7 @@ addLayer("goalsii", {
                                 return player.goalsii.points.gte(22)
                         },
                         unlocked(){
-                                return hasMilestone("goalsii", 6)
+                                return hasMilestone("goalsii", 6) || player.g.best.gt(0) || hasUnlockedPast("g")
                         },
                 }, // hasMilestone("goalsii", 7)
                 8: {
@@ -8774,7 +8776,7 @@ addLayer("goalsii", {
                                 return player.goalsii.tokens.best["11"].gte(1)
                         },
                         unlocked(){
-                                return hasMilestone("goalsii", 7)
+                                return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
                         },
                 }, // hasMilestone("goalsii", 8)
                 9: {
@@ -8784,7 +8786,7 @@ addLayer("goalsii", {
                                 return player.goalsii.tokens.best["22"].gte(1)
                         },
                         unlocked(){
-                                return hasMilestone("goalsii", 8)
+                                return hasMilestone("goalsii", 8) || player.g.best.gt(0) || hasUnlockedPast("g")
                         },
                 }, // hasMilestone("goalsii", 9)
                 10: {
@@ -8794,7 +8796,7 @@ addLayer("goalsii", {
                                 return player.goalsii.tokens.best["03"].gte(1)
                         },
                         unlocked(){
-                                return hasMilestone("goalsii", 9)
+                                return hasMilestone("goalsii", 9) || player.g.best.gt(0) || hasUnlockedPast("g")
                         },
                 }, // hasMilestone("goalsii", 10)
                 11: {
@@ -8804,7 +8806,7 @@ addLayer("goalsii", {
                                 return player.goalsii.tokens.best["03"].gte(20)
                         },
                         unlocked(){
-                                return hasMilestone("goalsii", 10)
+                                return hasMilestone("goalsii", 10) || player.g.best.gt(0) || hasUnlockedPast("g")
                         },
                 }, // hasMilestone("goalsii", 11)
                 12: {
@@ -8814,7 +8816,7 @@ addLayer("goalsii", {
                                 return player.goalsii.tokens.best["13"].gte(20)
                         },
                         unlocked(){
-                                return hasMilestone("goalsii", 11)
+                                return hasMilestone("goalsii", 11) || player.g.best.gt(0) || hasUnlockedPast("g")
                         },
                 }, // hasMilestone("goalsii", 12)
                 13: {
@@ -8824,7 +8826,7 @@ addLayer("goalsii", {
                                 return player.goalsii.tokens.best["23"].gte(3)
                         },
                         unlocked(){
-                                return hasMilestone("goalsii", 12)
+                                return hasMilestone("goalsii", 12) || player.g.best.gt(0) || hasUnlockedPast("g")
                         },
                 }, // hasMilestone("goalsii", 13)
                 14: {
@@ -8837,7 +8839,7 @@ addLayer("goalsii", {
                                 return player.goalsii.tokens.best["31"].gte(20)
                         },
                         unlocked(){
-                                return hasMilestone("goalsii", 13)
+                                return hasMilestone("goalsii", 13) || player.g.best.gt(0) || hasUnlockedPast("g")
                         },
                 }, // hasMilestone("goalsii", 14)
                 15: {
@@ -8847,7 +8849,7 @@ addLayer("goalsii", {
                                 return player.goalsii.tokens.best["32"].gte(3)
                         },
                         unlocked(){
-                                return hasMilestone("goalsii", 14)
+                                return hasMilestone("goalsii", 14) || player.g.best.gt(0) || hasUnlockedPast("g")
                         },
                 }, // hasMilestone("goalsii", 15)
                 16: {
@@ -8857,7 +8859,7 @@ addLayer("goalsii", {
                                 return player.goalsii.tokens.best["32"].gte(20)
                         },
                         unlocked(){
-                                return hasMilestone("goalsii", 15)
+                                return hasMilestone("goalsii", 15) || player.g.best.gt(0) || hasUnlockedPast("g")
                         },
                 }, // hasMilestone("goalsii", 16)
                 18: {
@@ -8871,7 +8873,7 @@ addLayer("goalsii", {
                                 return player.goalsii.tokens.best["33"].gte(10)
                         },
                         unlocked(){
-                                return hasMilestone("goalsii", 16)
+                                return hasMilestone("goalsii", 16) || player.g.best.gt(0) || hasUnlockedPast("g")
                         },
                 }, // hasMilestone("goalsii", 18) 
                 19: {
@@ -8881,7 +8883,7 @@ addLayer("goalsii", {
                                 return player.goalsii.tokens.best["04"].gte(1)
                         },
                         unlocked(){
-                                return hasMilestone("goalsii", 18)
+                                return hasMilestone("goalsii", 18) || player.g.best.gt(0) || hasUnlockedPast("g")
                         },
                 }, // hasMilestone("goalsii", 19) 
                 20: {
@@ -8891,7 +8893,7 @@ addLayer("goalsii", {
                                 return player.goalsii.tokens.best["04"].gte(4)
                         },
                         unlocked(){
-                                return hasMilestone("goalsii", 19)
+                                return hasMilestone("goalsii", 19) || player.g.best.gt(0) || hasUnlockedPast("g")
                         },
                 }, // hasMilestone("goalsii", 20) 
                 21: {
@@ -8901,7 +8903,7 @@ addLayer("goalsii", {
                                 return player.goalsii.tokens.best["04"].gte(16)
                         },
                         unlocked(){
-                                return hasMilestone("goalsii", 20)
+                                return hasMilestone("goalsii", 20) || player.g.best.gt(0) || hasUnlockedPast("g")
                         },
                 }, // hasMilestone("goalsii", 21) 
                 22: {
@@ -8911,7 +8913,7 @@ addLayer("goalsii", {
                                 return player.goalsii.tokens.best["14"].gte(20)
                         },
                         unlocked(){
-                                return hasMilestone("goalsii", 21)
+                                return hasMilestone("goalsii", 21) || player.g.best.gt(0) || hasUnlockedPast("g")
                         },
                 }, // hasMilestone("goalsii", 22) 
                 23: {
@@ -8921,7 +8923,7 @@ addLayer("goalsii", {
                                 return player.goalsii.tokens.best["24"].gte(50)
                         },
                         unlocked(){
-                                return hasMilestone("goalsii", 22)
+                                return hasMilestone("goalsii", 22) || player.g.best.gt(0) || hasUnlockedPast("g")
                         },
                 }, // hasMilestone("goalsii", 23)
                 24: {
@@ -8931,7 +8933,7 @@ addLayer("goalsii", {
                                 return player.goalsii.tokens.best["34"].gte(10)
                         },
                         unlocked(){
-                                return hasMilestone("goalsii", 23)
+                                return hasMilestone("goalsii", 23) || player.g.best.gt(0) || hasUnlockedPast("g")
                         },
                 }, // hasMilestone("goalsii", 24)
                 //https://en.wikipedia.org/wiki/Greek_alphabet
@@ -8951,7 +8953,7 @@ addLayer("goalsii", {
                                 return "00"
                         },
                         unlocked(){ 
-                                return true || hasUnlockedPast("g")
+                                return true || player.g.best.gt(0) || hasUnlockedPast("g")
                         }, // hasUpgrade("goalsii", 11)
                 },
                 12: {
@@ -8966,7 +8968,7 @@ addLayer("goalsii", {
                                 return "01"
                         },
                         unlocked(){ 
-                                return hasUpgrade("goalsii", 11) || hasUnlockedPast("g")
+                                return hasUpgrade("goalsii", 11)  || player.g.best.gt(0) || hasUnlockedPast("g")
                         }, // hasUpgrade("goalsii", 12)
                 },
                 13: {
@@ -8981,7 +8983,7 @@ addLayer("goalsii", {
                                 return "02"
                         },
                         unlocked(){ 
-                                return hasUpgrade("goalsii", 12) || hasUnlockedPast("g")
+                                return hasUpgrade("goalsii", 12) || player.g.best.gt(0) || hasUnlockedPast("g")
                         }, // hasUpgrade("goalsii", 13)
                 },
                 14: {
@@ -8996,7 +8998,7 @@ addLayer("goalsii", {
                                 return "03"
                         },
                         unlocked(){ 
-                                return hasUpgrade("goalsii", 13) || hasUnlockedPast("g")
+                                return hasUpgrade("goalsii", 13) || player.g.best.gt(0) || hasUnlockedPast("g")
                         }, // hasUpgrade("goalsii", 14)
                 },
                 15: {
@@ -9016,7 +9018,7 @@ addLayer("goalsii", {
                                 return Decimal.pow(base, exp) 
                         },
                         unlocked(){ 
-                                return hasUpgrade("goalsii", 14) || hasUnlockedPast("g")
+                                return hasUpgrade("goalsii", 14) || player.g.best.gt(0) || hasUnlockedPast("g")
                         }, // hasUpgrade("goalsii", 15)
                 },
                 21: {
@@ -9031,7 +9033,7 @@ addLayer("goalsii", {
                                 return "42"
                         },
                         unlocked(){ 
-                                return hasUpgrade("goalsii", 15) || hasUnlockedPast("g")
+                                return hasUpgrade("goalsii", 15) || player.g.best.gt(0) || hasUnlockedPast("g")
                         }, // hasUpgrade("goalsii", 21)
                 },
                 22: {
@@ -9046,7 +9048,7 @@ addLayer("goalsii", {
                                 return "43"
                         },
                         unlocked(){ 
-                                return hasUpgrade("goalsii", 21) || hasUnlockedPast("g")
+                                return hasUpgrade("goalsii", 21) || player.g.best.gt(0) || hasUnlockedPast("g")
                         }, // hasUpgrade("goalsii", 22)
                 },
                 23: {
@@ -9061,7 +9063,7 @@ addLayer("goalsii", {
                                 return "43"
                         },
                         unlocked(){ 
-                                return hasUpgrade("goalsii", 22) || hasUnlockedPast("g")
+                                return hasUpgrade("goalsii", 22) || player.g.best.gt(0) || hasUnlockedPast("g")
                         }, // hasUpgrade("goalsii", 23)
                 },
 
@@ -9090,7 +9092,7 @@ addLayer("goalsii", {
                 "Challenges": {
                         content: [
                                 "main-display",
-                                ["display-text", "This resets Goals and all layers before and including F"],
+                                ["display-text", "This resets all prior Goals and all layers before and including F"],
                                 ["display-text", "Click a button below to enter a challenge", function (){ return !player.goalsii.best.gt(0) ? {'display': 'none'} : {}}],
                                 ["display-text", function() {
                                         return "You are currently in challenge <h3 style = 'color: #CC00FF'>" + player.goalsii.currentChallenge + "</h3>"
@@ -9449,7 +9451,7 @@ addLayer("g", {
         milestones: {
                 1: {
                         requirementDescription: "<b>Get</b><br>Requires: 1 Games", 
-                        effectDescription: "Raise all prior prestige gain ^1.001",
+                        effectDescription: "Raise all prior prestige gain ^1.001 and double medal gain",
                         done(){
                                 return player.g.points.gte(1)
                         },
