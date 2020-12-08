@@ -225,8 +225,8 @@ function getPrestigeName(layer){
                 a: "Amoebas",
                 b: "Bacterias",
                 c: "Circles",
-                d: "Circles",
-                e: "Doodles",
+                d: "Doodles",
+                e: "Eggs",
                 f: "Features",
                 g: "Games",
         }[layer]
