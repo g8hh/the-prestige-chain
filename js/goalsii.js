@@ -142,7 +142,9 @@ var GOALS_REWARD_FUNCTIONS = {
                 return ret.times(30).floor()
         },
         "44"(x){
-                return new Decimal(0)
+                let ret = x.sqrt().div(50)
+                if (ret.gt(10)) ret = ret.log10().times(10)
+                return ret.times(10).ceil()
         },
 }
 
@@ -210,40 +212,3 @@ function updateChallengeDepth(chall){
 
 
 
-/*
-Goals II: <br>
-Unlocked by: Doing an <b>F</b> reset<br>
-Each challenge has a reward, and upon claiming said reward,<br>
-all prior unlocked main layers are totally reset, and goals are also reset<br>
-<br>
-5 challenges, one of them is nothing<br>
-<br>
-Chall AB means you are in A twice and B once<br>
-<br>
-Challenge table: (will be clickables to enter/exit and to disp reward)<br>
-00, 01, 02, 03, 04<br>
-10, 11, 12, 13, 14<br>
-20, 21, 22, 23, 24<br>
-30, 31, 32, 33, 34<br>
-40, 41, 42, 43, 44<br>
-<br>
-Each completion gives tokens<br>
-Only applies to layers unlocked before Goals II<br>
-C0: Nothing<br>
-C1: Raise all prestige gains ^.99 + C0<br>
-C2: Raise point gain ^.9 (makes challenges harder) + C1<br>
-C3: First column buyables do not give effects + C2<br>
-C4: No buyables automatically give free levels to other buyables + C3<br>
-<br>
-<br>
-Completion of a challenge gives a token to that "upgrade" which gives an effect<br>
-You get one token per reset, though multipliers will exist<br>
-Rewards: 00 tokens add to all prestige gain exponents .05*(x*Math.min(x + 1,100))<br>
-<br>
-<br>
-<br>
-1, 2, 3, 5, 7, 11, ... what comes next?
-<br>
-<br>
-<br>
-*/

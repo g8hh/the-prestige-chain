@@ -83,6 +83,7 @@ function updateTemp() {
 	}
 
 	updateAllBuyableExtras()
+	updateAllBuyableEffects()
 	updateCurrentGoalEffects()
 	updateCurrentDepthValues()
 }

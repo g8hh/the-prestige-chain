@@ -12,24 +12,11 @@ for (i in [0,0,0 ,0,0,0, 0,0,0]) {
 }
 replace "a" with another layer of choice
 */
-
-
-/*
-
-
-FUNCITONS LEFT TO DEAL WITH:
-display
-getAmountDisplay
-getBases
-canAfford
-buyMax
-buy
-unlocked
-*/
 var FREE_BUYABLE_DATA = {
         a11: {
                 name: "All",
                 func: "exp",
+                effects: "points",
                 base: {
                         initial: new Decimal(1.5),
                         1: {
@@ -51,6 +38,12 @@ var FREE_BUYABLE_DATA = {
                                 type: "add",
                         },
                 },
+                bases(){
+                        let b0 = new Decimal("500")
+                        let b1 = new Decimal("2")
+                        let b2 = new Decimal("1.001")
+                        return [b0, b1, b2]
+                },
                 a12: {
                         active: function(){
                                 return hasUpgrade("a", 24)
@@ -65,6 +58,7 @@ var FREE_BUYABLE_DATA = {
         a12: {
                 name: "Any",
                 func: "exp",
+                effects: "Amoebas",
                 base: {
                         initial: new Decimal(1.1),
                         1: {
@@ -95,6 +89,12 @@ var FREE_BUYABLE_DATA = {
                                 type: "add",
                         },
                 },
+                bases(){
+                        let b0 = new Decimal("1e4")
+                        let b1 = new Decimal("3")
+                        let b2 = new Decimal("1.005")
+                        return [b0, b1, b2]
+                },
                 a13: {
                         active: function(){
                                 return hasUpgrade("b", 15)
@@ -113,8 +113,17 @@ var FREE_BUYABLE_DATA = {
                         return ret
                 },
                 identity: new Decimal(1),
+                effects: "Are effect",
+                effectSymbol: "^",
+                eFormula: "x^2*.3 + 1",
                 base: {
                         initial: new Decimal(1),
+                },
+                bases(){
+                        let b0 = new Decimal("1e8")
+                        let b1 = new Decimal("8")
+                        let b2 = new Decimal("1.25")
+                        return [b0, b1, b2]
                 },
                 a21: {
                         active: function(){
@@ -135,6 +144,7 @@ var FREE_BUYABLE_DATA = {
         a21: {
                 name: "Access",
                 func: "lin",
+                effects: "Amoeba gain exponent",
                 base: {
                         initial: new Decimal(1),
                         1: {
@@ -146,6 +156,12 @@ var FREE_BUYABLE_DATA = {
                                 },
                                 type: "add",
                         },
+                },
+                bases(){
+                        let b0 = new Decimal("1e67")
+                        let b1 = new Decimal("100")
+                        let b2 = new Decimal("2")
+                        return [b0, b1, b2]
                 },
                 a22: {
                         active: function(){
@@ -166,6 +182,7 @@ var FREE_BUYABLE_DATA = {
         a22: {
                 name: "Account",
                 func: "exp",
+                effects: "Bacteria",
                 base: {
                         initial: new Decimal(1),
                         1: {
@@ -187,6 +204,12 @@ var FREE_BUYABLE_DATA = {
                                 type: "mult",
                         },
                 },
+                bases(){
+                        let b0 = new Decimal("1e149")
+                        let b1 = new Decimal("1e4")
+                        let b2 = new Decimal("5")
+                        return [b0, b1, b2]
+                },
                 a23: {
                         active: function(){
                                 return hasUpgrade("a", 54)
@@ -206,6 +229,7 @@ var FREE_BUYABLE_DATA = {
         a23: {
                 name: "Advanced",
                 func: "exp",
+                effects: "points",
                 base: {
                         initial: new Decimal(1e5),
                         1: {
@@ -217,6 +241,12 @@ var FREE_BUYABLE_DATA = {
                                 },
                                 type: "mult",
                         },
+                },
+                bases(){
+                        let b0 = new Decimal("1e625")
+                        let b1 = new Decimal("1")
+                        let b2 = new Decimal("7")
+                        return [b0, b1, b2]
                 },
                 a31: {
                         active: function(){
@@ -232,6 +262,7 @@ var FREE_BUYABLE_DATA = {
         a31: {
                 name: "Against",
                 func: "exp",
+                effects: "Amoebas",
                 base: {
                         initial: new Decimal(1e5),
                         1: {
@@ -243,6 +274,12 @@ var FREE_BUYABLE_DATA = {
                                 },
                                 type: "mult",
                         },
+                },
+                bases(){
+                        let b0 = new Decimal("1e1805")
+                        let b1 = new Decimal("1e5")
+                        let b2 = new Decimal("10")
+                        return [b0, b1, b2]
                 },
                 a32: {
                         active: function(){
@@ -258,13 +295,21 @@ var FREE_BUYABLE_DATA = {
         a32: {
                 name: "Above",
                 func: "lin",
+                effects: "Access base",
                 base: {
                         initial: new Decimal(.01),
+                },
+                bases(){
+                        let b0 = new Decimal("1e12086")
+                        let b1 = new Decimal("1.5e99")
+                        let b2 = new Decimal("20")
+                        return [b0, b1, b2]
                 },
         },
         a33: {
                 name: "Omnipotent I",
                 func: "lin",
+                effects: "B gain exp",
                 base: {
                         initial: new Decimal(.5),
                         1: {
@@ -295,6 +340,12 @@ var FREE_BUYABLE_DATA = {
                                 type: "add",
                         },
                 },
+                bases(){
+                        let b0 = new Decimal("1e32099")
+                        let b1 = new Decimal("1e777")
+                        let b2 = new Decimal("1e22")
+                        return [b0, b1, b2]
+                },
                 b31: {
                         active: function(){
                                 return hasUpgrade("c", 44)
@@ -309,6 +360,7 @@ var FREE_BUYABLE_DATA = {
         b11: {
                 name: "Because",
                 func: "exp",
+                effects: "points",
                 base: {
                         initial: new Decimal(1e20),
                         1: {
@@ -330,6 +382,12 @@ var FREE_BUYABLE_DATA = {
                                 type: "add",
                         },
                 },
+                bases(){
+                        let b0 = new Decimal("1e15")
+                        let b1 = new Decimal("4")
+                        let b2 = new Decimal("1.5")
+                        return [b0, b1, b2]
+                },
                 b12: {
                         active: function(){
                                 return hasUpgrade("b", 34)
@@ -347,6 +405,11 @@ var FREE_BUYABLE_DATA = {
                         return a.plus(x).pow(x)
                 },
                 identity: new Decimal(1),
+                eFormula() {
+                        return "(" + format(CURRENT_BUYABLE_BASES["b12"], 4) + "+x)^x"
+                },
+                effects: "Bacteria",
+                effectSymbol: "*",
                 base: {
                         initial: new Decimal(10),
                         1: {
@@ -377,6 +440,12 @@ var FREE_BUYABLE_DATA = {
                                 type: "mult",
                         },
                 },
+                bases(){
+                        let b0 = new Decimal("1e71")
+                        let b1 = new Decimal("10")
+                        let b2 = new Decimal("2")
+                        return [b0, b1, b2]
+                },
                 b13: {
                         active: function(){
                                 return hasUpgrade("b", 54)
@@ -391,6 +460,7 @@ var FREE_BUYABLE_DATA = {
         b13: {
                 name: "Become",
                 func: "exp",
+                effects: "Circles",
                 base: {
                         initial: new Decimal(5),
                         1: {
@@ -402,6 +472,12 @@ var FREE_BUYABLE_DATA = {
                                 },
                                 type: "add",
                         },
+                },
+                bases(){
+                        let b0 = new Decimal("1e1270")
+                        let b1 = new Decimal("1")
+                        let b2 = new Decimal("5")
+                        return [b0, b1, b2]
                 },
                 b21: {
                         active: function(){
@@ -417,6 +493,7 @@ var FREE_BUYABLE_DATA = {
         b21: {
                 name: "Baby",
                 func: "exp",
+                effects: "Amoebas",
                 base: {
                         initial: new Decimal(1.11e111),
                         1: {
@@ -428,6 +505,12 @@ var FREE_BUYABLE_DATA = {
                                 },
                                 type: "times",
                         },
+                },
+                bases(){
+                        let b0 = new Decimal("1e1421")
+                        let b1 = new Decimal("1e28")
+                        let b2 = new Decimal("100")
+                        return [b0, b1, b2]
                 },
                 b22: {
                         active: function(){
@@ -448,6 +531,7 @@ var FREE_BUYABLE_DATA = {
         b22: {
                 name: "Bank",
                 func: "exp_sqrt",
+                effects: "Against base",
                 base: {
                         initial: new Decimal(1e5),
                         1: {
@@ -459,6 +543,12 @@ var FREE_BUYABLE_DATA = {
                                 },
                                 type: "times",
                         },
+                },
+                bases(){
+                        let b0 = new Decimal("1e10967")
+                        let b1 = new Decimal("1e419")
+                        let b2 = new Decimal("1e10")
+                        return [b0, b1, b2]
                 },
                 b23: {
                         active: function(){
@@ -479,6 +569,7 @@ var FREE_BUYABLE_DATA = {
         b23: {
                 name: "Beauty",
                 func: "exp",
+                effects: "Because base",
                 base: {
                         initial: new Decimal(1e10),
                         1: {
@@ -490,6 +581,12 @@ var FREE_BUYABLE_DATA = {
                                 },
                                 type: "times",
                         },
+                },
+                bases(){
+                        let b0 = new Decimal("1e11369")
+                        let b1 = new Decimal("1e156")
+                        let b2 = new Decimal("1e15")
+                        return [b0, b1, b2]
                 },
                 b31: {
                         active: function(){
@@ -510,8 +607,15 @@ var FREE_BUYABLE_DATA = {
         b31: {
                 name: "Basic",
                 func: "exp",
+                effects: "Advanced base",
                 base: {
                         initial: new Decimal(1e50),
+                },
+                bases(){
+                        let b0 = new Decimal("1e48252")
+                        let b1 = new Decimal("5e175")
+                        let b2 = new Decimal("2e27")
+                        return [b0, b1, b2]
                 },
                 b32: {
                         active: function(){
@@ -527,6 +631,7 @@ var FREE_BUYABLE_DATA = {
         b32: {
                 name: "Brand",
                 func: "lin",
+                effects: "Circle gain exponent",
                 base: {
                         initial: new Decimal(1),
                         1: {
@@ -538,6 +643,12 @@ var FREE_BUYABLE_DATA = {
                                 },
                                 type: "plus",
                         },
+                },
+                bases(){
+                        let b0 = new Decimal("1e71386")
+                        let b1 = new Decimal("1")
+                        let b2 = new Decimal("1e37")
+                        return [b0, b1, b2]
                 },
                 c21:{
                         active: function(){
@@ -553,6 +664,7 @@ var FREE_BUYABLE_DATA = {
         b33: {
                 name: "Omnipotent II",
                 func: "exp",
+                effects: "Baby base",
                 base: {
                         initial: new Decimal(1e40),
                         1: {
@@ -564,6 +676,12 @@ var FREE_BUYABLE_DATA = {
                                 },
                                 type: "times",
                         },
+                },
+                bases(){
+                        let b0 = new Decimal("1e135520")
+                        let b1 = new Decimal("1e3481")
+                        let b2 = new Decimal("1e150")
+                        return [b0, b1, b2]
                 },
                 c22: {
                         active: function(){
@@ -579,8 +697,15 @@ var FREE_BUYABLE_DATA = {
         c11: {
                 name: "Case",
                 func: "exp",
+                effects: "Beauty base",
                 base: {
                         initial: new Decimal(100),
+                },
+                bases(){
+                        let b0 = new Decimal("1e443")
+                        let b1 = new Decimal("2")
+                        let b2 = new Decimal("1.5")
+                        return [b0, b1, b2]
                 },
                 c12: {
                         active: function(){
@@ -601,6 +726,7 @@ var FREE_BUYABLE_DATA = {
         c12: {
                 name: "Call",
                 func: "exp_sqrt",
+                effects: "Circle effect",
                 base: {
                         initial: new Decimal("1e1624"),
                         1: {
@@ -612,6 +738,12 @@ var FREE_BUYABLE_DATA = {
                                 },
                                 type: "times",
                         },
+                },
+                bases(){
+                        let b0 = new Decimal("1e1875")
+                        let b1 = new Decimal("1e100")
+                        let b2 = new Decimal("3")
+                        return [b0, b1, b2]
                 },
                 c13: {
                         active: function(){
@@ -632,6 +764,7 @@ var FREE_BUYABLE_DATA = {
         c13: {
                 name: "Country",
                 func: "lin",
+                effects: "Brand base",
                 base: {
                         initial: new Decimal(.02),
                         1: {
@@ -643,6 +776,12 @@ var FREE_BUYABLE_DATA = {
                                 },
                                 type: "plus",
                         },
+                },
+                bases(){
+                        let b0 = new Decimal("1e5422")
+                        let b1 = new Decimal("1e10")
+                        let b2 = new Decimal("10")
+                        return [b0, b1, b2]
                 },
                 c21: {
                         active: function(){
@@ -658,8 +797,15 @@ var FREE_BUYABLE_DATA = {
         c21: {
                 name: "Compare",
                 func: "exp",
+                effects: "base Bacteria gain",
                 base: {
                         initial: new Decimal(2),
+                },
+                bases(){
+                        let b0 = new Decimal("1e10314")
+                        let b1 = new Decimal("1e253")
+                        let b2 = new Decimal("1000")
+                        return [b0, b1, b2]
                 },
                 c22: {
                         active: function(){
@@ -675,6 +821,7 @@ var FREE_BUYABLE_DATA = {
         c22: {
                 name: "Card",
                 func: "exp",
+                effects: "Doodles",
                 base: {
                         initial: new Decimal(5),
                         1: {
@@ -696,6 +843,12 @@ var FREE_BUYABLE_DATA = {
                                 type: "plus",
                         },
                 },
+                bases(){
+                        let b0 = new Decimal("1e99999")
+                        let b1 = new Decimal(".001")
+                        let b2 = new Decimal("1e10")
+                        return [b0, b1, b2]
+                },
                 c23: {
                         active: function(){
                                 return hasUpgrade("d", 35)
@@ -710,8 +863,15 @@ var FREE_BUYABLE_DATA = {
         c23: {
                 name: "Canada",
                 func: "exp",
+                effects: "Amoebas",
                 base: {
                         initial: Decimal.pow(10, 1572e3),
+                },
+                bases(){
+                        let b0 = new Decimal("1e455951")
+                        let b1 = new Decimal("1e1000")
+                        let b2 = new Decimal("1e20")
+                        return [b0, b1, b2]
                 },
                 c31: {
                         active: function(){
@@ -727,8 +887,15 @@ var FREE_BUYABLE_DATA = {
         c31: {
                 name: "Conditions",
                 func: "exp",
+                effects: "Call base",
                 base: {
                         initial: new Decimal(1e50),
+                },
+                bases(){
+                        let b0 = new Decimal("1e1507038")
+                        let b1 = new Decimal("1e3000")
+                        let b2 = new Decimal("1e50")
+                        return [b0, b1, b2]
                 },
                 c32: {
                         active: function(){
@@ -739,6 +906,7 @@ var FREE_BUYABLE_DATA = {
         c32: {
                 name: "Catagory",
                 func: "exp",
+                effects: "Circles",
                 base: {
                         initial: new Decimal(100),
                         1: {
@@ -751,10 +919,17 @@ var FREE_BUYABLE_DATA = {
                                 type: "times",
                         },
                 },
+                bases(){
+                        let b0 = new Decimal("1e1000")
+                        let b1 = new Decimal("10")
+                        let b2 = new Decimal("100")
+                        return [b0, b1, b2]
+                },
         },
         c33: {
                 name: "Omnipotent III",
                 func: "exp_sqrt",
+                effects: "Features",
                 base: {
                         initial: new Decimal(2),
                         1: {
@@ -776,10 +951,17 @@ var FREE_BUYABLE_DATA = {
                                 type: "plus",
                         },
                 },
+                bases(){
+                        let b0 = Decimal.pow(10, 5e6)
+                        let b1 = Decimal.pow(10, 1e6)
+                        let b2 = Decimal.pow(10, 1e4)
+                        return [b0, b1, b2]
+                },
         },
         d11: {
                 name: "Department",
                 func: "exp",
+                effects: "Doodles",
                 base: {
                         initial: new Decimal(5),
                         1: {
@@ -810,6 +992,12 @@ var FREE_BUYABLE_DATA = {
                                 type: "times",
                         },
                 },
+                bases(){
+                        let b0 = new Decimal("1e608")
+                        let b1 = new Decimal("4.5")
+                        let b2 = new Decimal("1.01")
+                        return [b0, b1, b2]
+                },
                 d13: {
                         active: function(){
                                 return hasUpgrade("e", 14)
@@ -829,6 +1017,7 @@ var FREE_BUYABLE_DATA = {
         d12: {
                 name: "December",
                 func: "lin",
+                effects: "Card base",
                 base: {
                         initial: new Decimal(.01),
                         1: {
@@ -840,6 +1029,12 @@ var FREE_BUYABLE_DATA = {
                                 },
                                 type: "plus",
                         },
+                },
+                bases(){
+                        let b0 = new Decimal("5e627")
+                        let b1 = new Decimal(50).div(1.1)
+                        let b2 = new Decimal("1.1")
+                        return [b0, b1, b2]
                 },
                 d13: {
                         active: function(){
@@ -860,6 +1055,7 @@ var FREE_BUYABLE_DATA = {
         d13: {
                 name: "Delivery",
                 func: "lin",
+                effects: "Department base",
                 base: {
                         initial: new Decimal(.1),
                         1: {
@@ -871,6 +1067,12 @@ var FREE_BUYABLE_DATA = {
                                 },
                                 type: "plus",
                         },
+                },
+                bases(){
+                        let b0 = new Decimal("5e687")
+                        let b1 = new Decimal("50")
+                        let b2 = new Decimal("2")
+                        return [b0, b1, b2]
                 },
                 d21: {
                         active: function(){
@@ -886,6 +1088,7 @@ var FREE_BUYABLE_DATA = {
         d21: {
                 name: "Drive",
                 func: "exp",
+                effects: "Based base",
                 base: {
                         initial: new Decimal(5),
                         1: {
@@ -897,6 +1100,12 @@ var FREE_BUYABLE_DATA = {
                                 },
                                 type: "plus",
                         },
+                },
+                bases(){
+                        let b0 = new Decimal("1e1655")
+                        let b1 = new Decimal(".02")
+                        let b2 = new Decimal("50")
+                        return [b0, b1, b2]
                 },
                 d22: {
                         active: function(){
@@ -912,6 +1121,7 @@ var FREE_BUYABLE_DATA = {
         d22: {
                 name: "Director",
                 func: "exp",
+                effects: "Omnipotent II base",
                 base: {
                         initial: new Decimal(10),
                         1: {
@@ -933,6 +1143,12 @@ var FREE_BUYABLE_DATA = {
                                 type: "plus",
                         },
                 },
+                bases(){
+                        let b0 = new Decimal("1e1945")
+                        let b1 = new Decimal("1e77")
+                        let b2 = new Decimal("10")
+                        return [b0, b1, b2]
+                },
                 e11: {
                         active: function(){
                                 return hasMilestone("goalsii", 20) 
@@ -947,6 +1163,7 @@ var FREE_BUYABLE_DATA = {
         d23: {
                 name: "Due",
                 func: "exp",
+                effects: "Eggs",
                 base: {
                         initial: new Decimal(5),
                         1: {
@@ -959,6 +1176,13 @@ var FREE_BUYABLE_DATA = {
                                 type: "times",
                         },
                 },
+                bases(){
+                        let b0 = new Decimal("1e22222")
+                        let b1 = new Decimal("1e100")
+                        b1 = b1.div(getGoalChallengeReward("34"))
+                        let b2 = new Decimal("1e3")
+                        return [b0, b1, b2]
+                },
                 e12: {
                         active: function(){
                                 return hasMilestone("goalsii", 23) 
@@ -968,13 +1192,21 @@ var FREE_BUYABLE_DATA = {
         d31: {
                 name: "Database",
                 func: "lin",
+                effects: "Drive base",
                 base: {
                         initial: new Decimal(.25),
+                },
+                bases(){
+                        let b0 = new Decimal("1e44444")
+                        let b1 = new Decimal("1e323")
+                        let b2 = new Decimal("1e10")
+                        return [b0, b1, b2]
                 },
         },
         e11: {
                 name: "Experience",
                 func: "exp",
+                effects: "Eggs",
                 base: {
                         initial: new Decimal(10),
                         1: {
@@ -986,6 +1218,13 @@ var FREE_BUYABLE_DATA = {
                                 },
                                 type: "plus",
                         },
+                },
+                bases(){
+                        let b0 = new Decimal("1e116")
+                        let b1 = new Decimal("2")
+                        if (hasMilestone("goalsii", 22)) b1 = new Decimal(1)
+                        let b2 = new Decimal("1.001")
+                        return [b0, b1, b2]
                 },
                 e12: {
                         active: function(){
@@ -1001,6 +1240,7 @@ var FREE_BUYABLE_DATA = {
         e12: {
                 name: "East",
                 func: "lin",
+                effects: "Egg gain exponent",
                 base: {
                         initial: new Decimal(.2),
                         1: {
@@ -1022,6 +1262,14 @@ var FREE_BUYABLE_DATA = {
                                 type: "plus",
                         },
                 },
+                bases(){
+                        let b0 = new Decimal("1e350")
+                        b0 = b0.div(getGoalChallengeReward("34"))
+                        let b1 = new Decimal("10")
+                        if (hasMilestone("goalsii", 23)) b1 = new Decimal("1") 
+                        let b2 = new Decimal("1.1")
+                        return [b0, b1, b2]
+                },
                 e13: {
                         active: function(){
                                 return hasUpgrade("goalsii", 11)
@@ -1031,6 +1279,7 @@ var FREE_BUYABLE_DATA = {
         e13: {
                 name: "Example",
                 func: "exp",
+                effects: "Due base",
                 base: {
                         initial: new Decimal(1.1),
                         1: {
@@ -1043,6 +1292,13 @@ var FREE_BUYABLE_DATA = {
                                 type: "plus",
                         },
                 },
+                bases(){
+                        let b0 = new Decimal("1e200")
+                        if (hasUpgrade("goalsii", 12)) b0 = b0.div(getGoalChallengeReward("34"))
+                        let b1 = new Decimal("10")
+                        let b2 = new Decimal("2")
+                        return [b0, b1, b2]
+                },
                 e21: {
                         active: function(){
                                 return hasUpgrade("goalsii", 23)
@@ -1052,15 +1308,43 @@ var FREE_BUYABLE_DATA = {
         e21: {
                 name: "Easy",
                 func: "exp",
+                effects: "Category base",
                 base: {
                         initial: new Decimal(1e50),
+                },
+                bases(){
+                        let b0 = new Decimal("1e1000")
+                        let b1 = new Decimal("20")
+                        let b2 = new Decimal("5")
+                        return [b0, b1, b2]
                 },
         },
         e22: {
                 name: "Event",
                 func: "exp_cbrt",
+                effects: "Medal effect",
                 base: {
                         initial: new Decimal(1e5),
+                },
+                bases(){
+                        let b0 = new Decimal("1e500")
+                        let b1 = new Decimal(".1")
+                        let b2 = new Decimal("10")
+                        return [b0, b1, b2]
+                },
+        },
+        e23: {
+                name: "Enter",
+                func: "lin",
+                effects: "Doodle gain exponent",
+                base: {
+                        initial: new Decimal(1),
+                },
+                bases(){
+                        let b0 = new Decimal("1e2000")
+                        let b1 = new Decimal("1e67")
+                        let b2 = new Decimal("100")
+                        return [b0, b1, b2]
                 },
         },
 }
@@ -1286,9 +1570,81 @@ var EXTRA_FREE_BUYABLE_DATA = {
                         },
                 },
         },
+        e23: {
+                1: {
+                        active: function(){
+                                return true
+                        },
+                        amount: function(){
+                                return getGoalChallengeReward("44")
+                        },
+                },
+        },
 }
 
+
+/*
+Function order:
+- Reset buyable extras
+- Reset buyable effects
+- Update buyable extras
+- Update buyable effects
+- is buyable defined (bool)
+- is buyable unlocked (booL)
+- getBuyableTotal (Decimal, amount)
+- getCodedBuyableAmount (Decimal, amount)
+- isValidBuyableCode (bool)
+- getBuyableName (string)
+- calcBuyableExtra (recalls it)
+- reCalcBuyableExtra (calcs it)
+- getAlwaysActiveAdditionalBuyables (returns list)
+- getBuyableExtraText (returns text)
+- getBuyableEffectFunction (returns function for inputted buyable)
+- getBuyableEffectSymbol (returns the symbol that the effect has)
+- getBuyableEffectString (returns the effect display string)
+- reCalcBuyableBase (calcs it)
+- getIdentity (recalls what happens with no effect/disabled)
+- reCalcBuyableEffect (calcs it)
+- getBuyableBase (recalls it)
+- getBuyableBases (recalls it)
+- getBuyableCost (calcs it)
+- canAffordBuyable (calcs it)
+- isBuyableFree
+- buyManualBuyable
+- buyMaximumBuyable
+- getBuyableAmountDisplay (calcs it)
+- getBuyableDisplay (calcs it)
+*/
+
 var CURRENT_BUYABLE_EXTRAS = {}
+var CURRENT_BUYABLE_BASES = {}
+var CURRENT_BUYABLE_EFFECTS = {}
+var BUYABLES_FUNCTION_NAMES = {
+        "exp": {
+                "func": BUYABLE_EFFECT_EXPONENTIAL,
+                "identity": new Decimal(1),
+                "string": "^x",
+                "eff": "*",
+        },
+        "exp_sqrt":{
+                "func": BUYABLE_EFFECT_EXPONENTIAL_SQRT,
+                "identity": new Decimal(1),
+                "string": "^sqrt(x)",
+                "eff": "*",
+        },
+        "exp_cbrt": {
+                "func": BUYABLE_EFFECT_EXPONENTIAL_CBRT,
+                "identity": new Decimal(1),
+                "string": "^cbrt(x)",
+                "eff": "*",
+        },
+        "lin": {
+                "func": BUYABLES_EFFECT_LINEAR,
+                "identity": new Decimal(0),
+                "string": "*x",
+                "eff": "+",
+        },
+}
 
 function resetCurrBuyableExtras(){
         for (i in FREE_BUYABLE_DATA){
@@ -1297,10 +1653,53 @@ function resetCurrBuyableExtras(){
 }
 resetCurrBuyableExtras()
 
+function resetCurrBuyableEffects(){
+        for (i in FREE_BUYABLE_DATA){
+                data1 = FREE_BUYABLE_DATA[i]
+
+                let id = getIdentity(i.slice(0,1), i.slice(1,3))
+                CURRENT_BUYABLE_BASES[i] = id
+                CURRENT_BUYABLE_EFFECTS[i] = id
+        }
+}
+resetCurrBuyableEffects()
+
+function updateAllBuyableExtras(){
+        resetCurrBuyableExtras()
+        let order = []
+        for (i in FREE_BUYABLE_DATA){
+                order.push(i)
+        }
+        order.reverse()
+        for (j in order){
+                i = order[j]
+                CURRENT_BUYABLE_EXTRAS[i] = reCalcBuyableExtra(i.slice(0,1), i.slice(1,3))
+        }
+}
+
+function updateAllBuyableEffects(){
+        resetCurrBuyableEffects()
+        let order = []
+        for (i in FREE_BUYABLE_DATA){
+                order.push(i)
+        }
+        order.reverse()
+        for (j in order){
+                i = order[j]
+                CURRENT_BUYABLE_BASES[i]   = reCalcBuyableBase(  i.slice(0,1), i.slice(1,3))
+                CURRENT_BUYABLE_EFFECTS[i] = reCalcBuyableEffect(i.slice(0,1), i.slice(1,3))
+        }
+}
+
 function isBuyableDefined(layer, id){
         if (layers[layer] == undefined) return false
         if (layers[layer].buyables == undefined) return false
         return layers[layer].buyables[id] != undefined
+}
+
+function isBuyableUnlocked(layer, id){
+        if (!isBuyableDefined(layer, id)) return false
+        return layers[layer].buyables[id].unlocked()
 }
 
 function getBuyableTotal(layer, id){
@@ -1362,19 +1761,6 @@ function reCalcBuyableExtra(layer, id){
         return amt
 }
 
-function updateAllBuyableExtras(){
-        resetCurrBuyableExtras()
-        let order = []
-        for (i in FREE_BUYABLE_DATA){
-                order.push(i)
-        }
-        order.reverse()
-        for (j in order){
-                i = order[j]
-                CURRENT_BUYABLE_EXTRAS[i] = reCalcBuyableExtra(i.slice(0,1), i.slice(1,3))
-        }
-}
-
 function getAlwaysActiveAdditionalBuyables(layer, id){
         let l = []
         let yet1 = false
@@ -1413,28 +1799,6 @@ function getBuyableExtraText(layer, id){
         return a.slice(0, a.length-2)
 }
 
-var BUYABLES_FUNCTION_NAMES = {
-        "exp": {
-                "func": BUYABLE_EFFECT_EXPONENTIAL,
-                "identity": new Decimal(1),
-        },
-        "exp_sqrt":{
-                "func": BUYABLE_EFFECT_EXPONENTIAL_SQRT,
-                "identity": new Decimal(1),
-        },
-        "exp_cbrt": {
-                "func": BUYABLE_EFFECT_EXPONENTIAL_CBRT,
-                "identity": new Decimal(1),
-        },
-        "lin": {
-                "func": BUYABLES_EFFECT_LINEAR,
-                "identity": new Decimal(0),
-        },
-}
-
-var CURRENT_BUYABLE_BASES = {}
-var CURRENT_BUYABLE_EFFECTS = {}
-
 function BUYABLE_EFFECT_EXPONENTIAL(a,b){
         return a.pow(b)
 }
@@ -1452,10 +1816,24 @@ function BUYABLES_EFFECT_LINEAR(a,b){
 }
 
 function getBuyableEffectFunction(layer, id){
-        if (!isValidBuyableCode(layer, id)) return BUYABLE_EFFECT_EXPONENTIAL
+        if (!isValidBuyableCode(layer + id)) return BUYABLE_EFFECT_EXPONENTIAL
         let func = FREE_BUYABLE_DATA[layer+id]["func"]
         if (typeof func == "function") return func
         return BUYABLES_FUNCTION_NAMES[func]["func"] || BUYABLE_EFFECT_EXPONENTIAL
+}
+
+function getBuyableEffectSymbol(layer, id){
+        if (!isValidBuyableCode(layer + id)) return "bug"
+        let func = FREE_BUYABLE_DATA[layer+id]["func"]
+        if (typeof func == "function") return FREE_BUYABLE_DATA[layer+id]["effectSymbol"]
+        return BUYABLES_FUNCTION_NAMES[func]["eff"] || "bug"
+}
+
+function getBuyableEffectString(layer, id){
+        if (!isValidBuyableCode(layer + id)) return "bug"
+        let func = FREE_BUYABLE_DATA[layer+id]["func"]
+        if (typeof func == "function") return FREE_BUYABLE_DATA[layer+id]["effectSymbol"]
+        return BUYABLES_FUNCTION_NAMES[func]["string"] || "bug"
 }
 
 function reCalcBuyableBase(layer, id){
@@ -1465,10 +1843,7 @@ function reCalcBuyableBase(layer, id){
         }
         let data1 = FREE_BUYABLE_DATA[layer+id]
         if (!isBuyableActive(layer, id)) {
-                if (typeof data1.func == "function"){
-                        return data1.identity
-                }
-                return BUYABLES_FUNCTION_NAMES[data1.func]["identity"]
+                return getIdentity(layer, id)
         }
         let data2 = data1.base
         let a = data2.initial
@@ -1484,25 +1859,160 @@ function reCalcBuyableBase(layer, id){
                 let func = data3.type
                 let eff = data3.amount()
                 //effect of the effect... (xd)
-                if (func == "add") a = a.plus(eff)
-                if (func == "mult") a = a.times(eff)
-                if (func == "exp") a = a.pow(eff)
+                if (func == "add" || func == "plus") a = a.plus(eff)
+                else if (func == "mult" || func == "times") a = a.times(eff)
+                else if (func == "exp") a = a.pow(eff)
+                else console.log("ahh")
                 //do the effect to a
-        }
-        if (softcap_data[layer+"_buy"+id] != undefined){
-                a = softcap(a, layer+"_buy"+id)
         }
         return a
 }
 
-function getSavedBuyableEffect(layer, id){
+function getIdentity(layer, id){
+        let data1 = FREE_BUYABLE_DATA[layer+id]
+        if (typeof data1.func == "function") return data1.identity
+        return BUYABLES_FUNCTION_NAMES[data1.func]["identity"]
+}
+
+function reCalcBuyableEffect(layer, id){
+        if (!isBuyableActive(layer, id)) return getIdentity(layer, id)
+        let base = CURRENT_BUYABLE_BASES[layer + id]
+        let amt = getBuyableTotal(layer, id)
+        let ret = getBuyableEffectFunction(layer,id)(base, amt)
+
+        if (softcap_data[layer+"_buy"+id] != undefined){
+                ret = softcap(ret, layer+"_buy"+id)
+        }
+
+        return ret
+}
+
+function getBuyableBase(layer, id){
+        return CURRENT_BUYABLE_BASES[layer + id]
+}
+
+function getBuyableBases(layer, id){
         if (!isValidBuyableCode(layer + id)) {
                 console.log("ya boi broke" + layer+ id)
                 Decimal(0)
         }
-        //change this later if we store it in a class
-        return tmp[layer].buyables[id].effect 
+        return FREE_BUYABLE_DATA[layer+id].bases()
 }
+
+function getBuyableCost(layer, id, delta = new Decimal(0)){
+        let bases = getBuyableBases(layer, id)
+        let x = getBuyableAmount(layer, id).plus(delta)
+
+        let base0 = bases[0]
+        let base1 = bases[1]
+        let base2 = bases[2]
+        let exp0 = 1
+        let exp1 = x
+        let exp2 = x.times(x)
+
+        return Decimal.pow(base0, exp0).times(Decimal.pow(base1, exp1)).times(Decimal.pow(base2, exp2)).ceil()
+}
+
+function canAffordBuyable(layer, id, cost = undefined){
+        if (cost == undefined) cost = getBuyableCost(layer, id, 0)
+        let a = player[layer].points.gte(cost)
+        let b = getBuyableAmount(layer, id).lt(getMaxBuyablesAmount(layer))
+        return a && b
+}
+
+function isBuyableFree(layer){
+        if (layer == "a") return hasUpgrade("a", 35) || hasMilestone("goalsii", 2)
+        if (layer == "b") return hasUpgrade("b", 52) || hasMilestone("goalsii", 3)
+        if (layer == "c") return hasUpgrade("e", 12) || hasMilestone("goalsii", 4)
+        if (layer == "d") return hasMilestone("goalsii", 5)
+        if (layer == "e") return hasMilestone("goalsii", 24)
+        if (layer == "f") return false
+        if (layer == "g") return false
+
+        return false
+}
+
+function buyManualBuyable(layer, id){
+        let cost = getBuyableCost(layer, id)
+        if (!canAffordBuyable(layer, id, cost)) return
+        player[layer].buyables[id] = player[layer].buyables[id].plus(1)
+        if (isBuyableFree(layer)) return
+        player[layer].points = player[layer].points.minus(cost)
+}
+
+function buyMaximumBuyable(layer, id, maximum){
+        let bases = getBuyableBases(layer, id)
+        let pts = player[layer].points
+        if (!isBuyableUnlocked(layer, id)) return 
+        if (pts.lt(bases[0])) return 
+        
+        let pttarget = pts.div(bases[0]).log(1.01)
+        let bfactor = Decimal.log(bases[1], 3).div(Decimal.log(1.01, 3))
+        //want to find ax^2+bx = c
+        let c = pttarget
+        let b = bfactor
+        let a = Decimal.log(bases[2], 3).div(Decimal.log(1.01, 3))
+        // let a = 1 this is constant so remove it
+
+        let target = c.times(a).times(4).plus(b.times(b)).sqrt().minus(b).div(2).div(a).floor().plus(1)
+        //-b + sqrt(b*b+4*c*a)
+
+        target = target.min(getMaxBuyablesAmount(layer))
+
+        let diff = target.minus(player[layer].buyables[id]).max(0)
+        if (maximum != undefined) diff = diff.min(maximum)
+                                
+        player[layer].buyables[id] = player[layer].buyables[id].plus(diff)
+
+        if (isBuyableFree(layer) || diff.eq(0)) return 
+        pts = pts.sub(getBuyableCost(layer, id, -1)).max(0)
+        //max 0 so nothing goes horribly wrong with weird errors and stuffs
+}
+
+function getBuyableAmountDisplay(layer, id){
+        let extra = calcBuyableExtra(layer, id)
+        if (extra.eq(0)) return formatWhole(getBuyableAmount(layer, id))
+        return formatWhole(getBuyableAmount(layer, id)) + "+" + formatWhole(extra)
+}
+
+function getBuyableDisplay(layer, id){
+        let start = "<b><h2>Amount</h2>: " + getBuyableAmountDisplay(layer, id) + "</b><br>"
+        let eff1 = "<b><h2>Effect</h2>: " + getBuyableEffectSymbol(layer, id) 
+        let savedEff = CURRENT_BUYABLE_EFFECTS[layer + id]
+        let eff2 = format(savedEff, 4) + " " + FREE_BUYABLE_DATA[layer + id]["effects"] + "</b><br>"
+        let cost = "<b><h2>Cost</h2>: " + format(getBuyableCost(layer, id)) + " " + getPrestigeName(layer) + "</b><br>"
+        let eformula = ""
+        if (FREE_BUYABLE_DATA[layer + id]["eFormula"] != undefined) {
+                eformula = FREE_BUYABLE_DATA[layer + id]["eFormula"]
+                if (typeof eformula == "function") eformula = eformula()
+        } else {
+                eformula = format(getBuyableBase(layer, id), 4) + getBuyableEffectString(layer, id)
+        }
+        //if its undefined set it to that
+        //otherwise use normal formula
+        let ef1 = "<b><h2>Effect formula</h2>:<br>"
+        let ef2 = "</b><br>"
+
+        let exformula = getBuyableExtraText(layer, id)
+
+        let scs = false
+        if (softcap_data[layer+"_buy"+id] != undefined && softcap_data[layer+"_buy"+id][1] != undefined){
+                scs = softcap_data[layer+"_buy"+id][1].active
+                if (scs == undefined) scs = true
+                if (typeof scs == "function") scs = scs()
+                scs = scs && Decimal.lte(softcap_data[layer+"_buy"+id][1].start, savedEff)
+        }
+
+        
+        let scsText = scs ? " (softcapped)" : ""
+
+        let end = shiftDown ? ef1 + eformula + scsText + ef2 + exformula : "Shift to see details"
+        return "<br>" + start + eff1 + eff2 + cost + end
+}
+
+
+
+
 
 
 
