@@ -12,7 +12,7 @@ for (i in [0,0,0 ,0,0,0, 0,0,0]) {
 }
 replace "a" with another layer of choice
 */
-var FREE_BUYABLE_DATA = {
+var MAIN_BUYABLE_DATA = {
         a11: {
                 name: "All",
                 func: "exp",
@@ -950,6 +950,15 @@ var FREE_BUYABLE_DATA = {
                                 },
                                 type: "plus",
                         },
+                        3: {
+                                active: function(){
+                                        return true
+                                },
+                                amount: function(){
+                                        return CURRENT_BUYABLE_EFFECTS["d32"]
+                                },
+                                type: "plus",
+                        },
                 },
                 bases(){
                         let b0 = Decimal.pow(10, 5e6)
@@ -1032,7 +1041,7 @@ var FREE_BUYABLE_DATA = {
                 },
                 bases(){
                         let b0 = new Decimal("5e627")
-                        let b1 = new Decimal(50).div(1.1)
+                        let b1 = new Decimal("45")
                         let b2 = new Decimal("1.1")
                         return [b0, b1, b2]
                 },
@@ -1200,6 +1209,20 @@ var FREE_BUYABLE_DATA = {
                         let b0 = new Decimal("1e44444")
                         let b1 = new Decimal("1e323")
                         let b2 = new Decimal("1e10")
+                        return [b0, b1, b2]
+                },
+        },
+        d32: {
+                name: "Done",
+                func: "lin",
+                effects: "Omnipotent III base",
+                base: {
+                        initial: new Decimal(.02),
+                },
+                bases(){
+                        let b0 = new Decimal("1e333333")
+                        let b1 = new Decimal("1e1234")
+                        let b2 = new Decimal("1e50")
                         return [b0, b1, b2]
                 },
         },
@@ -1667,18 +1690,26 @@ var BUYABLES_FUNCTION_NAMES = {
                 "string": "*x",
                 "eff": "+",
         },
+        "lin_sqrt": {
+                "func": BUYABLES_EFFECT_LINEAR_SQRT,
+                "identity": new Decimal(0),
+                "string": "*sqrt(x)",
+                "eff": "+",
+        },
 }
 
-function resetCurrBuyableExtras(){
-        for (i in FREE_BUYABLE_DATA){
+function resetCurrBuyableExtras(){ 
+        // Fully general
+        for (i in MAIN_BUYABLE_DATA){
                 CURRENT_BUYABLE_EXTRAS[i] = new Decimal(0)
         }
 }
 resetCurrBuyableExtras()
 
 function resetCurrBuyableEffects(){
-        for (i in FREE_BUYABLE_DATA){
-                data1 = FREE_BUYABLE_DATA[i]
+        // NOT fully general
+        for (i in MAIN_BUYABLE_DATA){
+                data1 = MAIN_BUYABLE_DATA[i]
 
                 let id = getIdentity(i.slice(0,1), i.slice(1,3))
                 CURRENT_BUYABLE_BASES[i] = id
@@ -1688,9 +1719,10 @@ function resetCurrBuyableEffects(){
 resetCurrBuyableEffects()
 
 function updateAllBuyableExtras(){
+        // NOT fully general
         resetCurrBuyableExtras()
         let order = []
-        for (i in FREE_BUYABLE_DATA){
+        for (i in MAIN_BUYABLE_DATA){
                 order.push(i)
         }
         order.reverse()
@@ -1701,9 +1733,10 @@ function updateAllBuyableExtras(){
 }
 
 function updateAllBuyableEffects(){
+        // NOT fully general
         resetCurrBuyableEffects()
         let order = []
-        for (i in FREE_BUYABLE_DATA){
+        for (i in MAIN_BUYABLE_DATA){
                 order.push(i)
         }
         order.reverse()
@@ -1715,17 +1748,20 @@ function updateAllBuyableEffects(){
 }
 
 function isBuyableDefined(layer, id){
+        // Fully general
         if (layers[layer] == undefined) return false
         if (layers[layer].buyables == undefined) return false
         return layers[layer].buyables[id] != undefined
 }
 
 function isBuyableUnlocked(layer, id){
+        // Fully general
         if (!isBuyableDefined(layer, id)) return false
         return layers[layer].buyables[id].unlocked()
 }
 
 function getBuyableTotal(layer, id){
+        // Fully general
         if (!isBuyableDefined(layer, id)) return new Decimal(0)
 
         let a = calcBuyableExtra(layer, id)
@@ -1734,10 +1770,12 @@ function getBuyableTotal(layer, id){
 }
 
 function getCodedBuyableAmount(code){
+        // NOT fully general
         return getBuyableTotal(code.slice(0,1), code.slice(1,3)) 
 }
 
 function isValidBuyableCode(code){
+        // NOT fully general
         if (code.length != 3) return false
         let letter = code.slice(0,1)
         let num = Number(code.slice(1,3))
@@ -1745,27 +1783,35 @@ function isValidBuyableCode(code){
 }
 
 function getBuyableName(code){
-        if (FREE_BUYABLE_DATA[code] != undefined && FREE_BUYABLE_DATA[code].name != undefined) return FREE_BUYABLE_DATA[code].name
+        // NOT fully general
+        if (MAIN_BUYABLE_DATA[code] != undefined && MAIN_BUYABLE_DATA[code].name != undefined) return MAIN_BUYABLE_DATA[code].name
         console.log("do this " + code)
         return layers[code.slice(0,1)].buyables[code.slice(1,3)].title
 }
 
+function getNoExtras(layer, id){
+        // remove the lines for this and fully general
+        let depth = getChallengeDepth(4)
+        if (depth > 0 && layer == "a") return true
+        if (depth > 1 && layer == "b") return true
+        if (depth > 2 && layer == "c") return true
+        return false
+}
+
 function calcBuyableExtra(layer, id){
+        // Fully general
         if (!isBuyableDefined(layer, id)) return new Decimal(0)
+        if (getNoExtras(layer, id)) return new Decimal(0)
         let a = new Decimal(0)
         if (CURRENT_BUYABLE_EXTRAS[layer+id] != undefined) a = CURRENT_BUYABLE_EXTRAS[layer+id]
-
-        let depth = getChallengeDepth(4)
-        if (depth > 0 && layer == "a") return new Decimal(0)
-        if (depth > 1 && layer == "b") return new Decimal(0)
-        if (depth > 2 && layer == "c") return new Decimal(0)
         
         return a 
 }
 
 function reCalcBuyableExtra(layer, id){
+        // Fully general
         let key = layer + id
-        let data = FREE_BUYABLE_DATA[key] || {}
+        let data = MAIN_BUYABLE_DATA[key] || {}
         if (data == undefined) return new Decimal(0)
         let amt = new Decimal(0)
         for (i in data) {
@@ -1785,6 +1831,7 @@ function reCalcBuyableExtra(layer, id){
 }
 
 function getAlwaysActiveAdditionalBuyables(layer, id){
+        // kinda a spec thing, but basically general
         let l = []
         let yet1 = false
         for (j in LAYERS){
@@ -1799,10 +1846,11 @@ function getAlwaysActiveAdditionalBuyables(layer, id){
 }
 
 function getBuyableExtraText(layer, id){
+        // Fully general
         let a = "<b><h2>Extra levels from</h2>:<br>"
         let extra = false
         let key = layer + id
-        let data = FREE_BUYABLE_DATA[key] || {}
+        let data = MAIN_BUYABLE_DATA[key] || {}
         for (i in data) {
                 if (!isValidBuyableCode(i)) continue
                 if (data[i].active() == true) {
@@ -1819,7 +1867,7 @@ function getBuyableExtraText(layer, id){
                 }
         }
         if (!extra) return ""
-        return a.slice(0, a.length-2)
+        return a.slice(0, a.length-2) + "<br>"
 }
 
 function BUYABLE_EFFECT_EXPONENTIAL(a,b){
@@ -1838,24 +1886,31 @@ function BUYABLES_EFFECT_LINEAR(a,b){
         return a.times(b)
 }
 
+function BUYABLES_EFFECT_LINEAR_SQRT(a,b){
+        return a.times(b.sqrt())
+}
+
 function getBuyableEffectFunction(layer, id){
+        // Fully general
         if (!isValidBuyableCode(layer + id)) return BUYABLE_EFFECT_EXPONENTIAL
-        let func = FREE_BUYABLE_DATA[layer+id]["func"]
+        let func = MAIN_BUYABLE_DATA[layer+id]["func"]
         if (typeof func == "function") return func
         return BUYABLES_FUNCTION_NAMES[func]["func"] || BUYABLE_EFFECT_EXPONENTIAL
 }
 
 function getBuyableEffectSymbol(layer, id){
+        // Fully general
         if (!isValidBuyableCode(layer + id)) return "bug"
-        let func = FREE_BUYABLE_DATA[layer+id]["func"]
-        if (typeof func == "function") return FREE_BUYABLE_DATA[layer+id]["effectSymbol"]
+        let func = MAIN_BUYABLE_DATA[layer+id]["func"]
+        if (typeof func == "function") return MAIN_BUYABLE_DATA[layer+id]["effectSymbol"]
         return BUYABLES_FUNCTION_NAMES[func]["eff"] || "bug"
 }
 
 function getBuyableEffectString(layer, id){
+        // Fully general
         if (!isValidBuyableCode(layer + id)) return "bug"
-        let func = FREE_BUYABLE_DATA[layer+id]["func"]
-        if (typeof func == "function") return FREE_BUYABLE_DATA[layer+id]["effectSymbol"]
+        let func = MAIN_BUYABLE_DATA[layer+id]["func"]
+        if (typeof func == "function") return MAIN_BUYABLE_DATA[layer+id]["effectSymbol"]
         return BUYABLES_FUNCTION_NAMES[func]["string"] || "bug"
 }
 
@@ -1864,7 +1919,7 @@ function reCalcBuyableBase(layer, id){
                 console.log("ya boi broke" + layer+ id)
                 Decimal(0)
         }
-        let data1 = FREE_BUYABLE_DATA[layer+id]
+        let data1 = MAIN_BUYABLE_DATA[layer+id]
         if (!isBuyableActive(layer, id)) {
                 return getIdentity(layer, id)
         }
@@ -1884,20 +1939,26 @@ function reCalcBuyableBase(layer, id){
                 //effect of the effect... (xd)
                 if (func == "add" || func == "plus") a = a.plus(eff)
                 else if (func == "mult" || func == "times") a = a.times(eff)
-                else if (func == "exp") a = a.pow(eff)
-                else console.log("ahh")
+                else if (func == "exp" || func == "pow") a = a.pow(eff)
+                else {
+                        console.log("ahh")
+                        console.log(b)
+                        console.log(layer + id)
+                }
                 //do the effect to a
         }
         return a
 }
 
 function getIdentity(layer, id){
-        let data1 = FREE_BUYABLE_DATA[layer+id]
+        // Fully general
+        let data1 = MAIN_BUYABLE_DATA[layer+id]
         if (typeof data1.func == "function") return data1.identity
         return BUYABLES_FUNCTION_NAMES[data1.func]["identity"]
 }
 
 function reCalcBuyableEffect(layer, id){
+        // Softcap is not general, otherwise it is
         if (!isBuyableActive(layer, id)) return getIdentity(layer, id)
         let base = CURRENT_BUYABLE_BASES[layer + id]
         let amt = getBuyableTotal(layer, id)
@@ -1911,18 +1972,21 @@ function reCalcBuyableEffect(layer, id){
 }
 
 function getBuyableBase(layer, id){
+        // Fully general
         return CURRENT_BUYABLE_BASES[layer + id]
 }
 
 function getBuyableBases(layer, id){
+        // Fully general
         if (!isValidBuyableCode(layer + id)) {
                 console.log("ya boi broke" + layer+ id)
                 Decimal(0)
         }
-        return FREE_BUYABLE_DATA[layer+id].bases()
+        return MAIN_BUYABLE_DATA[layer+id].bases()
 }
 
 function getBuyableCost(layer, id, delta = new Decimal(0)){
+        // assuming the cost formula is alwuas the same fully general
         let bases = getBuyableBases(layer, id)
         let x = getBuyableAmount(layer, id).plus(delta)
 
@@ -1937,6 +2001,7 @@ function getBuyableCost(layer, id, delta = new Decimal(0)){
 }
 
 function canAffordBuyable(layer, id, cost = undefined){
+        // Fully general
         if (cost == undefined) cost = getBuyableCost(layer, id, 0)
         let a = player[layer].points.gte(cost)
         let b = getBuyableAmount(layer, id).lt(getMaxBuyablesAmount(layer))
@@ -1944,6 +2009,7 @@ function canAffordBuyable(layer, id, cost = undefined){
 }
 
 function isBuyableFree(layer){
+        // Spec function
         if (layer == "a") return hasUpgrade("a", 35) || hasMilestone("goalsii", 2)
         if (layer == "b") return hasUpgrade("b", 52) || hasMilestone("goalsii", 3)
         if (layer == "c") return hasUpgrade("e", 12) || hasMilestone("goalsii", 4)
@@ -1956,6 +2022,7 @@ function isBuyableFree(layer){
 }
 
 function buyManualBuyable(layer, id){
+        // Fully general
         let cost = getBuyableCost(layer, id)
         if (!canAffordBuyable(layer, id, cost)) return
         player[layer].buyables[id] = player[layer].buyables[id].plus(1)
@@ -1964,6 +2031,7 @@ function buyManualBuyable(layer, id){
 }
 
 function buyMaximumBuyable(layer, id, maximum){
+        // Fully general
         let bases = getBuyableBases(layer, id)
         let pts = player[layer].points
         if (!isBuyableUnlocked(layer, id)) return 
@@ -1993,20 +2061,22 @@ function buyMaximumBuyable(layer, id, maximum){
 }
 
 function getBuyableAmountDisplay(layer, id){
+        // Fully general
         let extra = calcBuyableExtra(layer, id)
         if (extra.eq(0)) return formatWhole(getBuyableAmount(layer, id))
         return formatWhole(getBuyableAmount(layer, id)) + "+" + formatWhole(extra)
 }
 
 function getBuyableDisplay(layer, id){
-        let start = "<b><h2>Amount</h2>: " + getBuyableAmountDisplay(layer, id) + "</b><br>"
+        // other than softcapping fully general
+        let amt = "<b><h2>Amount</h2>: " + getBuyableAmountDisplay(layer, id) + "</b><br>"
         let eff1 = "<b><h2>Effect</h2>: " + getBuyableEffectSymbol(layer, id) 
         let savedEff = CURRENT_BUYABLE_EFFECTS[layer + id]
-        let eff2 = format(savedEff, 4) + " " + FREE_BUYABLE_DATA[layer + id]["effects"] + "</b><br>"
+        let eff2 = format(savedEff, 4) + " " + MAIN_BUYABLE_DATA[layer + id]["effects"] + "</b><br>"
         let cost = "<b><h2>Cost</h2>: " + format(getBuyableCost(layer, id)) + " " + getPrestigeName(layer) + "</b><br>"
         let eformula = ""
-        if (FREE_BUYABLE_DATA[layer + id]["eFormula"] != undefined) {
-                eformula = FREE_BUYABLE_DATA[layer + id]["eFormula"]
+        if (MAIN_BUYABLE_DATA[layer + id]["eFormula"] != undefined) {
+                eformula = MAIN_BUYABLE_DATA[layer + id]["eFormula"]
                 if (typeof eformula == "function") eformula = eformula()
         } else {
                 eformula = format(getBuyableBase(layer, id), 4) + getBuyableEffectString(layer, id)
@@ -2026,14 +2096,37 @@ function getBuyableDisplay(layer, id){
                 scs = scs && Decimal.lte(softcap_data[layer+"_buy"+id][1].start, savedEff)
         }
 
-        
         let scsText = scs ? " (softcapped)" : ""
 
-        let end = shiftDown ? ef1 + eformula + scsText + ef2 + exformula : "Shift to see details"
-        return "<br>" + start + eff1 + eff2 + cost + end
+        let allEff = ef1 + eformula + scsText + ef2
+
+        let bases = getBuyableBases(layer, id)
+        let cost1 = "<b><h2>Cost formula</h2>:<br>"
+        let cost3 = "</b><br>"
+        let cost2a = bases[0].eq(1) ? "" :  "(" + formatBuyableCostBase(bases[0]) + ")"
+        let cost2b = bases[1].eq(1) ? "" : "*(" + formatBuyableCostBase(bases[1]) + "^x)"
+        let cost2c = bases[2].eq(1) ? "" : "*(" + formatBuyableCostBase(bases[2]) + "^x^2)" 
+        let cost2 = cost2a + cost2b + cost2c
+        if (cost2.slice(0,1) == "*") cost2 = cost2.slice(1) //removes the star
+        let allCost = cost1 + cost2 + cost3
+
+
+        let end = shiftDown ? allEff + exformula + allCost : "Shift to see details"
+        let start = shiftDown ? "" : amt + eff1 + eff2 + cost 
+        return "<br>" + start + end
 }
 
-
+function formatBuyableCostBase(x){
+        if (x.lt(1)) {
+                let a = formatBuyableCostBase(Decimal.div(1, x))
+                if (a == "1") return "1"
+                return "1/" + a
+        } else if (x.lt(1.0001)) return "1"
+        else if (x.eq(x.floor())) return formatWhole(x)
+        else if (x.lt(1.99)) return format(x, 4)
+        else if (x.lt(10)) return format(x, 3)
+        return format(x)
+}
 
 
 

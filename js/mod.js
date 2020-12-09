@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".3.13 Salvaged Wasteland",
+	num: ".3.14 Salvaged Wasteland",
 	name: "",
 }
 
@@ -233,9 +233,9 @@ function nextMilestone(){
 
 // Display extra things at the top of the page
 var displayThings = [
-	"This may be incorrect: Last updated 7:59 PM pacific 12.08",
+	"This may be incorrect: Last updated 3:59 PM pacific 12.09",
 	function (){
-		return "Endgame: 5 Games " + (player.g.best.gte(5) ? "(done)" : "(not done)")
+		return "Endgame: 6 Games " + (player.g.best.gte(6) ? "(done)" : "(not done)")
 		/*
 		let a = "Endgame: All goals"
 		if (player.ach.achievements.length == Object.keys(PROGRESSION_MILESTONES).length) {

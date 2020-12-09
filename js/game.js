@@ -437,6 +437,14 @@ function hardReset() {
 	window.location.reload();
 }
 
+function toggleShift(){
+	shiftDown = !shiftDown
+}
+
+function toggleControl(){
+	controlDown = !controlDown
+}
+
 var ticking = false
 var devstop = false
 

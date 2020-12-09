@@ -2661,7 +2661,6 @@ addLayer("d", {
                                 if (tmp.d.buyables[22].unlocked) layers.d.buyables[22].buyMax(amt)
                                 if (tmp.d.buyables[23].unlocked) layers.d.buyables[23].buyMax(amt)
                                 if (tmp.d.buyables[31].unlocked) layers.d.buyables[31].buyMax(amt)
-                                /*
                                 if (tmp.d.buyables[32].unlocked) layers.d.buyables[32].buyMax(amt)
                                 /*
                                 if (tmp.d.buyables[33].unlocked) layers.d.buyables[33].buyMax(amt)
@@ -3065,6 +3064,33 @@ addLayer("d", {
                         },
                         unlocked(){ 
                                 return hasMilestone("goalsii", 24) || hasUnlockedPast("e")
+                        },
+                },
+                32: {
+                        title: "Done",
+                        display(){
+                                return getBuyableDisplay("d", 32)
+                        },
+                        effect(){
+                                return CURRENT_BUYABLE_EFFECTS["d32"]
+                        },
+                        canAfford(){
+                                return canAffordBuyable("d", 32)
+                        },
+                        total(){
+                                return getBuyableAmount("d", 32).plus(this.extra())
+                        },
+                        extra(){
+                                return calcBuyableExtra("d", 32)
+                        },
+                        buy(){
+                                buyManualBuyable("d", 32)
+                        },
+                        buyMax(maximum){
+                                buyMaximumBuyable("d", 32, maximum)
+                        },
+                        unlocked(){ 
+                                return hasMilestone("g", 4) || hasUnlockedPast("g")
                         },
                 },
         },
@@ -5218,7 +5244,7 @@ addLayer("goalsii", {
                                51, 52, 53, 54, 55,]
                 for (j in l){
                         i = l[j] //i is our layer
-                        let can = player.goalsii["autobuy" + l2[j]] && hasMilestone("goalsii", String(Number(j) + 2))
+                        let can = data["autobuy" + l2[j]] && hasMilestone("goalsii", String(Number(j) + 2))
                         // check if the ab is on and unlocked
                         if (!can) continue
                         for (k in trylist) {
@@ -5492,7 +5518,7 @@ addLayer("goalsii", {
                         },
                         display(){
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["13"]) + "<br>"
-                                let b = "<h3 style='color: #00FF66'>Reward</h3>: *" + format(getGoalChallengeReward("13"), 4) + " to<br>"
+                                let b = "<h3 style='color: #00FF66'>Reward</h3>: *" + format(getGoalChallengeReward("13"), 4) + " <br>to "
                                 let c = "base <b>F</b> gain"
                                 return a + b + c
                         },
@@ -6483,7 +6509,18 @@ addLayer("goalsii", {
                 data.bestOnce = new Decimal(0)
                 data.currentChallenge = "00"
                 data.times = 0
-                data.upgrades = []
+                let keep2 = []
+                for (i = 0; i < Math.min(25, player.g.times); i++){
+                        if (!hasMilestone("g", 5)) break
+                        keep2.push([
+                                "11", "12", "13", "14", "15",
+                                "21", "22", "23", "24", "25",
+                                "31", "32", "33", "34", "35",
+                                "41", "42", "43", "44", "45",
+                                "51", "52", "53", "54", "55",
+                        ][i])
+                }
+                data.upgrades = filter(data.upgrades, keep2)
                 let keep1 = []
                 if (hasMilestone("g", 2)) {
                         let qw = Math.min(25, player.g.times * 3)
@@ -6631,7 +6668,7 @@ addLayer("g", {
                 return x
         },
         getGainExp(){
-                let x = new Decimal(2)
+                let x = new Decimal(1.5)
                 return x
         },
         getGainMultPre(){
@@ -6735,9 +6772,6 @@ addLayer("g", {
                 },
                 */
                 /*
-                
-                
-                general
                 games (hm)
                 great
                 game {hm^2}
@@ -6778,7 +6812,7 @@ addLayer("g", {
                 }, // hasMilestone("g", 3)
                 4: {
                         requirementDescription: "<b>Group</b><br>Requires: 4 Games", 
-                        effectDescription: "Unlock new Medal upgrades and unlock a <b>D</b> buyable [not coded yet]",
+                        effectDescription: "Unlock new Medal upgrades and unlock a <b>D</b> buyable",
                         done(){
                                 return player.g.points.gte(4)
                         },
@@ -6786,6 +6820,16 @@ addLayer("g", {
                                 return hasMilestone("g", 3)
                         },
                 }, // hasMilestone("g", 4)
+                5: {
+                        requirementDescription: "<b>General</b><br>Requires: 5 Games", 
+                        effectDescription: "Each <b>G</b> reset allows you to keep one Medal upgrade",
+                        done(){
+                                return player.g.points.gte(5)
+                        },
+                        unlocked(){
+                                return hasMilestone("g", 4)
+                        },
+                }, // hasMilestone("g", 5)
         },
         tabFormat: {
                 "Upgrades": {
