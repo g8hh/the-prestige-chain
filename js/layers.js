@@ -3283,7 +3283,6 @@ addLayer("e", {
                                 if (tmp.e.buyables[21].unlocked) layers.e.buyables[21].buyMax(amt)
                                 if (tmp.e.buyables[22].unlocked) layers.e.buyables[22].buyMax(amt)
                                 if (tmp.e.buyables[23].unlocked) layers.e.buyables[23].buyMax(amt)
-                                /*
                                 if (tmp.e.buyables[31].unlocked) layers.e.buyables[31].buyMax(amt)
                                 /*
                                 if (tmp.e.buyables[32].unlocked) layers.e.buyables[32].buyMax(amt)
@@ -3413,7 +3412,6 @@ addLayer("e", {
                 },
 
                 /*
-                energy
                 entertainment
                 */
         },
@@ -3582,6 +3580,33 @@ addLayer("e", {
                                 return hasUpgrade("goalsii", 23) || player.g.best.gt(0) || hasUnlockedPast("g")
                         },
                 },
+                31: {
+                        title: "Energy",
+                        display(){
+                                return getBuyableDisplay("e", 31)
+                        },
+                        effect(){
+                                return CURRENT_BUYABLE_EFFECTS["e31"]
+                        },
+                        canAfford(){
+                                return canAffordBuyable("e", 31)
+                        },
+                        total(){
+                                return getBuyableAmount("e", 31).plus(this.extra())
+                        },
+                        extra(){
+                                return calcBuyableExtra("e", 31)
+                        },
+                        buy(){
+                                buyManualBuyable("e", 31)
+                        },
+                        buyMax(maximum){
+                                buyMaximumBuyable("e", 31, maximum)
+                        },
+                        unlocked(){ 
+                                return hasUpgrade("goalsii", 24) || hasUnlockedPast("g")
+                        },
+                },
         },
         tabFormat: {
                 "Upgrades": {
@@ -3741,6 +3766,9 @@ addLayer("f", {
                 x = x.times(tmp.goalsii.effect)
                 x = x.times(getBuyableEffect("c", 33))
                 x = x.times(upgradeEffect("goalsii", 15))
+                if (hasUpgrade("goalsii", 24) && getChallengeDepth(4) > 0) {
+                        x = x.times(Decimal.pow(1.25, player.goalsii.upgrades.length ** 2))
+                }
 
 
                 return x
@@ -5119,6 +5147,7 @@ addLayer("goalsii", {
                 x = x.times(getGoalChallengeReward("41"))
                 if (hasMilestone("g", 1)) x = x.times(2)
                 if (hasMilestone("g", 3)) x = x.times(Decimal.pow(1.5, player.g.milestones.length))
+                if (hasUpgrade("goalsii", 24)) x = x.times(Decimal.pow(1.1, player.goalsii.upgrades.length))
                 return x
         },
         effect(){
@@ -6299,9 +6328,23 @@ addLayer("goalsii", {
                                 return hasUpgrade("goalsii", 22) || player.g.best.gt(0) || hasUnlockedPast("g")
                         }, // hasUpgrade("goalsii", 23)
                 },
+                24: {
+                        title: "Iwasawa",
+                        description: "Per upgrade, gain 1.1x medals and gain 1.25^upgrades more <b>F</b> in challenge 4",
+                        cost: new Decimal(500),
+                        currencyDisplayName: "<br><b style='color: #6600FF'>00</b> Tokens",
+                        currencyLocation(){
+                                return player.goalsii.tokens.copy
+                        },
+                        currencyInternalName(){
+                                return "00"
+                        },
+                        unlocked(){ 
+                                return hasMilestone("g", "4") || hasUnlockedPast("g")
+                        }, // hasUpgrade("goalsii", 24)
+                },
 
                 /*
-                I
                 Jacobsin
                 Kempe
                 Laplace
@@ -6693,7 +6736,7 @@ addLayer("g", {
                 */
                 /*
                 
-                group
+                
                 general
                 games (hm)
                 great
@@ -6733,6 +6776,16 @@ addLayer("g", {
                                 return hasMilestone("g", 2)
                         },
                 }, // hasMilestone("g", 3)
+                4: {
+                        requirementDescription: "<b>Group</b><br>Requires: 4 Games", 
+                        effectDescription: "Unlock new Medal upgrades and unlock a <b>D</b> buyable [not coded yet]",
+                        done(){
+                                return player.g.points.gte(4)
+                        },
+                        unlocked(){
+                                return hasMilestone("g", 3)
+                        },
+                }, // hasMilestone("g", 4)
         },
         tabFormat: {
                 "Upgrades": {

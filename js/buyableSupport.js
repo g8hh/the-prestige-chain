@@ -1291,6 +1291,15 @@ var FREE_BUYABLE_DATA = {
                                 },
                                 type: "plus",
                         },
+                        2: {
+                                active: function(){
+                                        return true
+                                },
+                                amount: function(){
+                                        return CURRENT_BUYABLE_EFFECTS["e31"]
+                                },
+                                type: "plus",
+                        },
                 },
                 bases(){
                         let b0 = new Decimal("1e200")
@@ -1344,6 +1353,20 @@ var FREE_BUYABLE_DATA = {
                         let b0 = new Decimal("1e2000")
                         let b1 = new Decimal("1e67")
                         let b2 = new Decimal("100")
+                        return [b0, b1, b2]
+                },
+        },
+        e31: {
+                name: "Energy",
+                func: "lin",
+                effects: "Example base",
+                base: {
+                        initial: new Decimal(.01),
+                },
+                bases(){
+                        let b0 = new Decimal("1e4000")
+                        let b1 = new Decimal("1e59")
+                        let b2 = new Decimal("1e10")
                         return [b0, b1, b2]
                 },
         },
