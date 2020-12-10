@@ -5492,7 +5492,7 @@ addLayer("goalsii", {
                         display(){
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["12"]) + "<br>"
                                 let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("12")) + "<br>"
-                                let c = "Free <b>Categroy</b> levels"
+                                let c = "Free <b>Category</b> levels"
                                 return a + b + c
                         },
                         unlocked(){
@@ -6507,7 +6507,7 @@ addLayer("goalsii", {
                 data.best = new Decimal(0)
                 data.total = new Decimal(0)
                 data.bestOnce = new Decimal(0)
-                data.currentChallenge = "00"
+                if (!hasMilestone("g", 8)) data.currentChallenge = "00"
                 data.times = 0
                 let keep2 = []
                 for (i = 0; i < Math.min(25, player.g.times); i++){
@@ -6564,6 +6564,8 @@ addLayer("goalsii", {
                         }
                 }
 
+                if (hasMilestone("g", 8)) return
+
                 let a = {}
                 let b = {}
                 let c = {}
@@ -6574,12 +6576,13 @@ addLayer("goalsii", {
                          "30", "31", "32", "33", "34",
                          "40", "41", "42", "43", "44",
                         ]
+                let initTokens = hasMilestone("g", 7) ? 1 : 0
                 for (j in l){
                         i = l[j]
-                        a[i] = new Decimal(0)
-                        b[i] = new Decimal(0)
-                        c[i] = new Decimal(0)
-                        e[i] = new Decimal(0)
+                        a[i] = new Decimal(initTokens)
+                        b[i] = new Decimal(initTokens)
+                        c[i] = new Decimal(initTokens)
+                        e[i] = new Decimal(initTokens)
                 }
 
                 data.tokens = {
@@ -6628,16 +6631,30 @@ addLayer("g", {
         name: "Games", // This is optional, only used in a few places, If absent it just uses the layer id.
         symbol: "G", // This appears on the layer's node. Default is the id with the first letter capitalized
         position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
-        startData() { return {
-                unlocked: true,
-		points: new Decimal(0),
-                best: new Decimal(0),
-                total: new Decimal(0),
-                abtime: 0,
-                time: 0,
-                times: 0,
-                autotimes: 0,
-        }},
+        startData() { 
+                let l = [11,12,13,14,21,22,23,24,31,32,33,34,41,42,43,44,51,52,53,54]
+                let b = {}
+                for (j in l){
+                        b[l[j]] = new Decimal(0)
+                }
+                
+                return {
+                        unlocked: true,
+                        points: new Decimal(0),
+                        best: new Decimal(0),
+                        total: new Decimal(0),
+                        abtime: 0,
+                        time: 0,
+                        times: 0,
+                        autotimes: 0,
+                        clickableAmounts: b,
+                        charges: 3,
+                        chargesMax: 10,
+                        chargesTime: 0,
+                        partialTally: 0,
+                        completedTally: 0,
+                }
+        },
         color: "#996600",
         branches: ["f"],
         requires: new Decimal(0), // Can be a function that takes requirement increases into account
@@ -6690,7 +6707,7 @@ addLayer("g", {
         effect(){
                 if (!isPrestigeEffectActive("g")) return new Decimal(1)
 
-                let amt = player.g.points
+                let amt = player.g.best
 
                 let ret = amt.times(4).plus(1).pow(3)
 
@@ -6724,6 +6741,26 @@ addLayer("g", {
                 } else {
                         data.abtime = 0
                 }
+                let cpm = layers.g.clickables.chargesPerMinute()
+                if (cpm > 0 && data.charges < data.chargesMax){
+                        data.chargesTime += diff
+                        if (data.chargesTime > 60/cpm) {
+                                data.chargesTime += -60/cpm
+                                data.charges ++
+                        }
+                } else {
+                        data.chargesTime = 0
+                }
+
+                data.completedTally = new Decimal(0)
+                data.partialTally = new Decimal(0)
+                for (i in data.clickableAmounts){
+                        if (["11","12","13","14"].includes(i)) continue
+                        j = data.clickableAmounts[i]
+                        if (j.eq(10)) data.completedTally = data.completedTally.plus(1)
+                        data.partialTally = data.partialTally.plus(j)
+                }
+
                 data.time += diff
         },
         row: 6, // Row the layer is in on the tree (0 is the first row)
@@ -6772,11 +6809,17 @@ addLayer("g", {
                 },
                 */
                 /*
-                games (hm)
-                great
-                game {hm^2}
-                guide
-                government
+                gallery
+                going
+                got
+                give
+                girls
+                gift
+                groups
+                given
+                garden
+                green 
+                gold
                 */
         },
         milestones: {
@@ -6812,7 +6855,7 @@ addLayer("g", {
                 }, // hasMilestone("g", 3)
                 4: {
                         requirementDescription: "<b>Group</b><br>Requires: 4 Games", 
-                        effectDescription: "Unlock new Medal upgrades and unlock a <b>D</b> buyable",
+                        effectDescription: "Unlock a Medal upgrade and unlock a <b>D</b> buyable",
                         done(){
                                 return player.g.points.gte(4)
                         },
@@ -6830,6 +6873,188 @@ addLayer("g", {
                                 return hasMilestone("g", 4)
                         },
                 }, // hasMilestone("g", 5)
+                6: {
+                        requirementDescription: "<b>Great</b><br>Requires: 6 Games", 
+                        effectDescription: "Unlock a Medal upgrade",
+                        done(){
+                                return player.g.points.gte(6)
+                        },
+                        unlocked(){
+                                return hasMilestone("g", 5)
+                        },
+                }, // hasMilestone("g", 6)
+                7: {
+                        requirementDescription: "<b>Government</b><br>Requires: 10 Games", 
+                        effectDescription: "Start with one of each token",
+                        done(){
+                                return player.g.points.gte(10)
+                        },
+                        unlocked(){
+                                return hasMilestone("g", 6)
+                        },
+                }, // hasMilestone("g", 7)
+                8: {
+                        requirementDescription: "<b>Guide</b><br>Requires: 13 Games", 
+                        effectDescription: "Game resetting no longer forces you into challenge 00, keep tokens, and unlock Games",
+                        done(){
+                                return player.g.points.gte(13)
+                        },
+                        unlocked(){
+                                return hasMilestone("g", 7)
+                        },
+                }, // hasMilestone("g", 8)
+        },
+        clickables: {
+                rows: 5,
+                cols: 5,
+                chargesPerMinute(){
+                        let data = player.g.clickableAmounts
+                        let a = data[11].plus(data[12])
+                        let b = data[13].plus(data[14])
+                        return a.plus(b).toNumber()
+                },
+                succChance(x){
+                        return Decimal.minus(1, x.div(10)).pow(2)
+                },
+                11: {
+                        title(){
+                                return "<h3 style='color: #903000'>Tetris</h3>"
+                        },
+                        display(){
+                                let a = "<h3 style='color: #D070C0'>Cost</h3>: " + format(this.cost()) + " Games<br>"
+                                let b = "<h3 style='color: #00CC66'>Gives</h3>: " + formatWhole(player.g.clickableAmounts[11]) + " charges per minute"
+                                let c = ""
+                                return a + b + c
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        cost(){
+                                return Decimal.pow(2, player.g.clickableAmounts[11]).times(10)
+                        },
+                        canClick(){
+                                return player.g.points.gte(tmp.g.clickables[11].cost) && player.g.charges >= 1
+                        },
+                        onClick(){
+                                if (!this.canClick()) return 
+                                let cost = tmp.g.clickables[11].cost
+                                player.g.charges += -1
+                                player.g.clickableAmounts[11] = player.g.clickableAmounts[11].plus(1)
+                                player.g.points = player.g.points.minus(cost).max(0)
+                        },
+                },
+                12: {
+                        title(){
+                                return "<h3 style='color: #903000'>name2</h3>"
+                        },
+                        display(){
+                                let a = "<h3 style='color: #D070C0'>Cost</h3>: " + format(this.cost()) + " Medals<br>"
+                                let b = "<h3 style='color: #00CC66'>Gives</h3>: " + formatWhole(player.g.clickableAmounts[12]) + " charges per minute"
+                                let c = ""
+                                return a + b + c
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        cost(){
+                                return Decimal.pow(10, player.g.clickableAmounts[12].pow(2)).times(1e8)
+                        },
+                        canClick(){
+                                return player.goalsii.points.gte(tmp.g.clickables[12].cost) && player.g.charges >= 1
+                        },
+                        onClick(){
+                                if (!this.canClick()) return 
+                                let cost = tmp.g.clickables[12].cost
+                                player.g.charges += -1
+                                player.g.clickableAmounts[12] = player.g.clickableAmounts[12].plus(1)
+                                player.goalsii.points = player.goalsii.points.minus(cost).max(0)
+                        },
+                },
+                13: {
+                        title(){
+                                return "<h3 style='color: #903000'>name3</h3>"
+                        },
+                        display(){
+                                let a = "<h3 style='color: #D070C0'>Requires</h3>: " + format(this.cost()) + " Goals<br>"
+                                let b = "<h3 style='color: #00CC66'>Gives</h3>: " + formatWhole(player.g.clickableAmounts[13]) + " charges per minute"
+                                let c = ""
+                                return a + b + c
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        cost(){
+                                return 82 + player.g.clickableAmounts[13].times(3).toNumber()
+                        },
+                        canClick(){
+                                return player.ach.points.gte(tmp.g.clickables[13].cost) && player.g.charges >= 1
+                        },
+                        onClick(){
+                                if (!this.canClick()) return 
+                                let cost = tmp.g.clickables[13].cost
+                                player.g.charges += -1
+                                player.g.clickableAmounts[13] = player.g.clickableAmounts[13].plus(1)
+                        },
+                },
+                14: {
+                        title(){
+                                return "<h3 style='color: #903000'>name4</h3>"
+                        },
+                        display(){
+                                let a = "<h3 style='color: #D070C0'>Costs</h3>: " + format(this.cost()) + " Features<br>"
+                                let b = "<h3 style='color: #00CC66'>Gives</h3>: " + formatWhole(player.g.clickableAmounts[14]) + " charges per minute"
+                                let c = ""
+                                return a + b + c
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        cost(){
+                                return Decimal.pow(1e10, player.g.clickableAmounts[14].pow(2)).times("1e1900")
+                        },
+                        canClick(){
+                                return player.f.points.gte(tmp.g.clickables[14].cost) && player.g.charges >= 1
+                        },
+                        onClick(){
+                                if (!this.canClick()) return 
+                                let cost = tmp.g.clickables[14].cost
+                                player.g.charges += -1
+                                player.g.clickableAmounts[14] = player.g.clickableAmounts[14].plus(1)
+                                player.f.points = player.f.points.sub(cost).max(0)
+                        },
+                },
+                21: {
+                        title(){
+                                return "<h3 style='color: #903000'>name5</h3>"
+                        },
+                        display(){
+                                let a = "<h3 style='color: #D070C0'>Costs</h3>: " + format(this.cost()) + " Games<br>"
+                                let b = "<h3 style='color: #00CC66'>Completion</h3>: " + formatWhole(player.g.clickableAmounts[21].times(10)) + "%"
+                                let c = ""
+                                return a + b + c
+                        },
+                        unlocked(){
+                                return player.g.clickableAmounts[11].gt(0) && player.g.clickableAmounts[12].gt(0) && player.g.clickableAmounts[13].gt(0) && player.g.clickableAmounts[14].gt(0)
+                        },
+                        cost(){
+                                return player.g.clickableAmounts[21].plus(3).pow(2).div(4).floor()
+                        },
+                        canClick(){
+                                let a = player.g.points.gte(tmp.g.clickables[21].cost)
+                                let b = player.g.charges >= 1
+                                let c = player.g.clickableAmounts[21].lt(10)
+                                return a && b && c
+                        },
+                        onClick(){
+                                if (!this.canClick()) return 
+                                let cost = tmp.g.clickables[21].cost
+                                let data = player.g
+                                data.charges += -1
+                                data.points = data.points.sub(cost).max(0)
+                                if (Math.random() > layers.g.clickables.succChance(data.clickableAmounts[21])) return
+                                data.clickableAmounts[21] = data.clickableAmounts[21].plus(1)
+                        },
+                },
         },
         tabFormat: {
                 "Upgrades": {
@@ -6864,24 +7089,6 @@ addLayer("g", {
                                 return false || hasUnlockedPast("h")
                         },
                 },
-                "Challenges": {
-                        content: [
-                                ["display-text",
-                                        function() {
-                                                return "Challenge completions are never reset, and you can bulk complete challenges"
-                                        }
-                                ],
-                                ["display-text",
-                                        function() {
-                                                return "You have completed " + formatWhole(totalChallengeComps("g")) + " Game Challenges"
-                                        }
-                                ],
-                                "challenges",
-                        ],
-                        unlocked(){
-                                return false || hasUnlockedPast("h")
-                        },
-                },
                 "Milestones": {
                         content: [
                                 "main-display",
@@ -6890,7 +7097,55 @@ addLayer("g", {
                         unlocked(){
                                 return player.g.best.gt(0) || hasUnlockedPast("g")
                         },
-                }
+                },
+                "Games": {
+                        content: [
+                                ["display-text",
+                                        function() {
+                                                let a = "You have " + format(player.g.points) + " games, "
+                                                let b = format(player.goalsii.points) + " medals, "
+                                                let c = formatWhole(player.ach.points) + " goals, and "
+                                                let d = format(player.f.points) + " features."
+                                                return a + b + c + d
+                                        }
+                                ],
+                                ["display-text",
+                                        function() {
+                                                let a = "You have " + formatWhole(player.g.charges) + "/" + formatWhole(player.g.chargesMax)
+                                                let b = " charges and are gaining " + format(tmp.g.clickables.chargesPerMinute) + " per minute."
+                                                return a + b
+                                        }
+                                ],
+                                "clickables",
+                        ],
+                        unlocked(){
+                                return hasMilestone("g", 8) || hasUnlockedPast("g")
+                        },
+                },
+                "Details": {
+                        content: [
+                                ["display-text",
+                                        function() {
+                                                let a = `<h2 style = 'color: #CC0033'>Explanation</h2><h2>:</h2><br><br>
+                                                There are twenty games which progressively unlock. <br>
+                                                Clicking a game will consume a charge.<br>
+                                                For the first row, you no matter what will gain a level, <br>
+                                                but for subsequent rows you have a non-zero chance of failing and gaining nothing.<br><br>
+                                                The first row of games each generate one charge per minute.<br>
+                                                You can gain buffs by partially deving games,<br>
+                                                and larger buffs for completing games. <br><br>
+                                                <h2 style = 'color: #CC0033'>Rewards</h2><h2>:</h2><br>
+                                                You have fully completed [numbers] games so [balh]<br>
+                                                You have successfully deved [number] games so [blah2]<br>
+                                                `
+                                                return a
+                                        }
+                                ],
+                        ],
+                        unlocked(){
+                                return hasMilestone("g", 8) || hasUnlockedPast("g")
+                        },
+                },
         },
         doReset(layer){
                 if (layer == "g") player.g.time = 0
@@ -6917,5 +7172,35 @@ addLayer("g", {
                 }
         },
 })
+
+
+/*
+Games: (a feature of game prestige lyr)
+
+16 games, (names tbd) each is a clickable
+You have charges, max 10, starting with 3, gain z/minute where z is the number of 1st row upgs bought
+- 1st row upgs are clickables that cost: 
+        10*2^x games, 
+        1e8*10^x^2 medals, 
+        requires 82+3x goals,
+        1e1900 (ish) * 1e100^x * 1e50**(x*x) features
+You can click on a game with attempts to dev some part of that game (10%? intervals)
+- There is a chance you fail, something like 1-(1-x)^2
+Clicking costs a charge and games, costing more games the more progress you have
+
+Each click adds one to "games deved" and successful clicks adds to "completed devs"
+Fully completing a game gives rewards, the first of which is getting more charges/time interval
+
+Things that give rewards:
+Games deved
+Completed devs
+Completed games
+
+
+*/
+
+
+
+
 
 

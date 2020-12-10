@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".3.14.1 Salvaged Wasteland",
+	num: ".3.15 Salvaged Wasteland",
 	name: "",
 }
 
@@ -21,7 +21,8 @@ let VERSION = {
 // (The ones here are examples, all official functions are already taken care of)
 var doNotCallTheseFunctionsEveryTick = ["blowUpEverything",
 					"getTokenToMedalGain",
-					"getAllPrior"]
+					"getAllPrior",
+					"succChance",]
 
 function getStartPoints(){
     return new Decimal(modInfo.initialStartPoints)
@@ -233,7 +234,8 @@ function nextMilestone(){
 
 // Display extra things at the top of the page
 var displayThings = [
-	"This may be incorrect: Last updated 4:30 PM pacific 12.09",
+	"This may be incorrect: Last updated 12:00 AM pacific 12.10",
+	'Give me suggestions for "games" names',
 	function (){
 		return "Endgame: 6 Games " + (player.g.best.gte(6) ? "(done)" : "(not done)")
 		/*
