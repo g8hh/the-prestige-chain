@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".3.15 Salvaged Wasteland",
+	num: ".3.16 Salvaged Wasteland",
 	name: "",
 }
 
@@ -22,7 +22,9 @@ let VERSION = {
 var doNotCallTheseFunctionsEveryTick = ["blowUpEverything",
 					"getTokenToMedalGain",
 					"getAllPrior",
-					"succChance",]
+					"succChance",
+					"getAllPartialEffects"
+					]
 
 function getStartPoints(){
     return new Decimal(modInfo.initialStartPoints)
@@ -120,6 +122,8 @@ PROGRESSION_MILESTONES = {
 	80:() => player.f.best.gte(1e58)                 || hasAchievement("ach",123),
 	81:() => player.g.best.gte(2)                    || hasAchievement("ach",124),
 	82:() => player.g.best.gte(20)                   || hasAchievement("ach",125),
+	83:() => player.g.clickableAmounts[11].gte(2)    || hasAchievement("ach",126),
+	84:() => player.g.clickableAmounts[21].gte(4)    || hasAchievement("ach",127),
 }
 
 /*
@@ -211,6 +215,8 @@ PROGRESSION_MILESTONES_TEXT = {
 	80: "1e58 Features",
 	81: "2 Games",
 	82: "20 Games",
+	83: "two levels of tetris",
+	84: "Quake to 40%",
 }
 
 function progressReachedNum(){
@@ -234,10 +240,10 @@ function nextMilestone(){
 
 // Display extra things at the top of the page
 var displayThings = [
-	"This may be incorrect: Last updated 12:00 AM pacific 12.10",
+	"This may be incorrect: Last updated 3:15 PM pacific 12.10",
 	'Give me suggestions for "games" names',
 	function (){
-		return "Endgame: 6 Games " + (player.g.best.gte(6) ? "(done)" : "(not done)")
+		return "Endgame: 30% done with Portal " + (player.g.clickableAmounts[31].gte(3) ? "(done)" : "(not done)")
 		/*
 		let a = "Endgame: All goals"
 		if (player.ach.achievements.length == Object.keys(PROGRESSION_MILESTONES).length) {
