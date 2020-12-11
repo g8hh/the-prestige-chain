@@ -7489,7 +7489,8 @@ addLayer("g", {
                                                 There are twenty games which progressively unlock. <br>
                                                 Clicking a game will consume a charge.<br>
                                                 For the first row, you no matter what will gain a level, <br>
-                                                but for subsequent rows you have a non-zero chance of failing and gaining nothing.<br><br>
+                                                but for subsequent rows you have a non-zero chance of failing and gaining nothing.<br>
+                                                This fail rate is purely based on how much progress you have made so far.<br><br>
                                                 The first row of games each generate one charge per minute.<br>
                                                 You can gain buffs by partially deving games,<br>
                                                 and larger buffs for completing games. <br><br>
@@ -7501,7 +7502,7 @@ addLayer("g", {
                                                 for (i in data2){
                                                         let j = data2[i]
                                                         if (!j[2]) continue
-                                                        c2 += "<br>• " + j[1] + format(j[0]) + " to " + i 
+                                                        b2 += "<br>• " + j[1] + format(j[0]) + " to " + i 
                                                 }
                                                 let c = "<br><br> You have successfully deved " + formatWhole(player.g.partialTally) + " games so:"
                                                 let c2 = ""
