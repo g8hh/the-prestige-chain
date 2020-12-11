@@ -184,7 +184,7 @@ var MAIN_BUYABLE_DATA = {
                 func: "exp",
                 effects: "Bacteria",
                 base: {
-                        initial: new Decimal(1),
+                        initial: new Decimal(1.2),
                         1: {
                                 active: function(){
                                         return hasUpgrade("a", 45)
