@@ -7173,7 +7173,7 @@ addLayer("g", {
                                 return true
                         },
                         cost(){
-                                return 82 + player.g.clickableAmounts[13].times(3).toNumber()
+                                return 82 + player.g.clickableAmounts[13].sqrt().times(3).floor().toNumber()
                         },
                         canClick(){
                                 return player.ach.points.gte(tmp.g.clickables[13].cost) && player.g.charges >= 1
@@ -7247,7 +7247,7 @@ addLayer("g", {
                 },
                 22: {
                         title(){
-                                return "<h3 style='color: #903000'>name6</h3>"
+                                return "<h3 style='color: #903000'>Minecraft</h3>"
                         },
                         display(){
                                 let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(this.cost()) + " Games<br>"
@@ -7280,7 +7280,7 @@ addLayer("g", {
                 },
                 23: {
                         title(){
-                                return "<h3 style='color: #903000'>name7</h3>"
+                                return "<h3 style='color: #903000'>GTA V</h3>"
                         },
                         display(){
                                 let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(this.cost()) + " Games<br>"
@@ -7313,7 +7313,7 @@ addLayer("g", {
                 },
                 24: {
                         title(){
-                                return "<h3 style='color: #903000'>name8</h3>"
+                                return "<h3 style='color: #903000'>FIFA</h3>"
                         },
                         display(){
                                 let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(this.cost()) + " Games<br>"
@@ -7379,7 +7379,7 @@ addLayer("g", {
                 },
                 32: {
                         title(){
-                                return "<h3 style='color: #903000'>name10</h3>"
+                                return "<h3 style='color: #903000'>Pokemon</h3>"
                         },
                         display(){
                                 let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(this.cost()) + " Games<br>"
@@ -7412,7 +7412,7 @@ addLayer("g", {
                 },
                 33: {
                         title(){
-                                return "<h3 style='color: #903000'>name11</h3>"
+                                return "<h3 style='color: #903000'>Diablo III</h3>"
                         },
                         display(){
                                 let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(this.cost()) + " Games<br>"
@@ -7445,7 +7445,7 @@ addLayer("g", {
                 },
                 34: {
                         title(){
-                                return "<h3 style='color: #903000'>name12</h3>"
+                                return "<h3 style='color: #903000'>Terraria</h3>"
                         },
                         display(){
                                 let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(this.cost()) + " Games<br>"
@@ -7539,7 +7539,7 @@ addLayer("g", {
                                                 let b = " charges and are gaining " + format(cpm) + " per minute"
                                                 let c = ""
                                                 if (cpm > 0) {
-                                                        c = " (next in " + format(Math.max(60/cpm -player.g.chargesTime, 0)) + ")"
+                                                        c = " (next in " + format(Math.max(60/cpm -player.g.chargesTime, 0)) + "s)"
                                                 }
                                                 return a + b + c +"."
                                         }

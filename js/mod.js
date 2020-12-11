@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".3.17 Salvaged Wasteland",
+	num: ".3.18 Salvaged Wasteland",
 	name: "",
 }
 
@@ -242,7 +242,7 @@ function nextMilestone(){
 
 // Display extra things at the top of the page
 var displayThings = [
-	"This may be incorrect: Last updated 3:15 PM pacific 12.10",
+	"This may be incorrect: Last updated 11:45 PM pacific 12.10",
 	'Give me suggestions for "games" names',
 	function (){
 		return "Endgame: 30% done with Portal " + (player.g.clickableAmounts[31].gte(3) ? "(done)" : "(not done)")
