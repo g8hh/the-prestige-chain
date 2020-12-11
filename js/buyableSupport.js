@@ -1393,6 +1393,26 @@ var MAIN_BUYABLE_DATA = {
                         return [b0, b1, b2]
                 },
         },
+        e32: {
+                name: "Entertainment",
+                func(a,x){
+                        let ret = Decimal.plus(x, 10).log10().times(a)
+                        return ret
+                },
+                identity: new Decimal(1),
+                effectSymbol: "*",
+                eFormula: "log10(10+x)*base",
+                effects: "Medal gain",
+                base: {
+                        initial: new Decimal(1),
+                },
+                bases(){
+                        let b0 = new Decimal("1e39000")
+                        let b1 = new Decimal("1e1234")
+                        let b2 = new Decimal("1e50")
+                        return [b0, b1, b2]
+                },
+        },
 }
 
 var EXTRA_FREE_BUYABLE_DATA = {

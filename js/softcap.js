@@ -289,6 +289,8 @@ var softcap_data = {
 			pow: 50,
 		},
 	},
+	e_buy32: {
+	},
 	f_eff:{
 		
 	},
