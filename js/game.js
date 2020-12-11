@@ -445,6 +445,14 @@ function toggleControl(){
 	controlDown = !controlDown
 }
 
+function doPreTempStuff(){
+	player.g.partialTally = new Decimal(player.g.partialTally)
+	player.g.completedTally = new Decimal(player.g.completedTally)
+}
+
+function doPreTickStuff(){
+}
+
 var ticking = false
 var devstop = false
 
@@ -468,6 +476,7 @@ var interval = setInterval(function() {
 	if (player.devSpeed != undefined) diff *= player.devSpeed
 	player.time = now
 	if (needCanvasUpdate) resizeCanvas();
+	doPreTickStuff()
 	updateTemp();
 	gameLoop(diff)
 	ticking = false

@@ -59,6 +59,7 @@ function setupTempData(layerData, tmpData) {
 }
 
 function updateTemp() {
+	doPreTempStuff()
 	if (tmp === undefined)
 		setupTemp()
 

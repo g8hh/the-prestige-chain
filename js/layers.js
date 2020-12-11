@@ -3822,6 +3822,7 @@ addLayer("f", {
                         x = x.times(Decimal.pow(1.25, player.goalsii.upgrades.length ** 2))
                 }
                 x = x.times(layers.g.clickables.getAllPartialEffects()["Features"][0])
+                x = x.times(layers.g.clickables.getAllCompletedEffects()["Features"][0])
 
 
                 return x
@@ -4923,7 +4924,6 @@ addLayer("ach", {
                                 return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
                         },
                 },
-                /*
                 132: {
                         name: "Eighty-six",
                         done(){
@@ -5268,8 +5268,7 @@ addLayer("goalsii", {
 
                 let ret = a.times(pre).pow(exp).times(pst)
 
-                if (ret.gt(1e4)) ret = ret.div(1e4).sqrt().times(1e4)
-                if (ret.gt(1e8)) ret = ret.div(1e8).sqrt().times(1e8)
+                if (ret.gt(1e4) && !hasMilestone("g", 10)) ret = ret.div(1e4).sqrt().times(1e4)
 
                 return ret.floor()
         },
@@ -5290,6 +5289,7 @@ addLayer("goalsii", {
                 if (hasMilestone("g", 3)) x = x.times(Decimal.pow(1.5, player.g.milestones.length))
                 if (hasUpgrade("goalsii", 24)) x = x.times(Decimal.pow(1.1, player.goalsii.upgrades.length))
                 x = x.times(getBuyableEffect("e", 32))
+                x = x.times(layers.g.clickables.getAllPartialEffects()["Medals"][0])
                 return x
         },
         effect(){
@@ -6819,6 +6819,8 @@ addLayer("g", {
         },
         getGainExp(){
                 let x = new Decimal(1.5)
+                if (hasMilestone("g", 10)) x = x.plus(player.g.partialTally.times(.01))
+                x = x.plus(layers.g.clickables.getAllPartialEffects()["G Gain exponent"][0])
                 return x
         },
         getGainMultPre(){
@@ -6836,6 +6838,8 @@ addLayer("g", {
                 }
 
                 x = x.times(layers.g.clickables.getAllPartialEffects()["Games"][0])
+                x = x.times(layers.g.clickables.getAllCompletedEffects()["Games"][0])
+                if (hasMilestone("g", 13)) x = x.times(Math.sqrt(Math.max(player.g.charges, 1)))
 
                 return x
         },
@@ -6855,6 +6859,12 @@ addLayer("g", {
                 let a = "which buffs point and all previous prestige gain by "
 
                 return a + format(eff) + "."
+        },
+        getMaxCharges(){
+                let ret = 10
+                if (hasMilestone("g", 11)) ret += 90
+                ret = ret + layers.g.clickables.getAllPartialEffects()["Max Charges"][0].toNumber()
+                return ret
         },
         update(diff){
                 let data = player.g
@@ -6881,8 +6891,10 @@ addLayer("g", {
                 if (cpm > 0 && data.charges < data.chargesMax){
                         data.chargesTime += diff
                         if (data.chargesTime > 60/cpm) {
-                                data.chargesTime += -60/cpm
-                                data.charges ++
+                                let x = Math.floor(data.chargesTime * cpm / 60)
+                                data.chargesTime += -60 / cpm * x
+                                data.charges += x
+                                if (data.charges > data.chargesMax) data.charges = data.chargesMax
                         }
                 } else {
                         data.chargesTime = 0
@@ -6896,6 +6908,8 @@ addLayer("g", {
                         if (j.eq(10)) data.completedTally = data.completedTally.plus(1)
                         data.partialTally = data.partialTally.plus(j)
                 }
+
+                data.chargesMax = this.getMaxCharges()
 
                 data.time += diff
         },
@@ -6946,9 +6960,6 @@ addLayer("g", {
                 },
                 */
                 /*
-                going
-                got
-                give
                 girls
                 gift
                 groups
@@ -7049,6 +7060,46 @@ addLayer("g", {
                                 return hasMilestone("g", 8)
                         },
                 }, // hasMilestone("g", 9)
+                10: {
+                        requirementDescription: "<b>Going</b><br>Requires: 72 Successful devs", 
+                        effectDescription: "Remove the medal gain softcap and each successful dev adds .01 to the <b>G</b> gain exponent",
+                        done(){
+                                return player.g.partialTally.gte(72)
+                        },
+                        unlocked(){
+                                return hasMilestone("g", 9)
+                        },
+                }, // hasMilestone("g", 10)
+                11: {
+                        requirementDescription: "<b>Got</b><br>Requires: 77 Successful devs", 
+                        effectDescription: "Your maximum charges is 100 and raise charge gain per minute ^1.2",
+                        done(){
+                                return player.g.partialTally.gte(77)
+                        },
+                        unlocked(){
+                                return hasMilestone("g", 10)
+                        },
+                }, // hasMilestone("g", 11)
+                12: {
+                        requirementDescription: "<b>Give</b><br>Requires: 2 Completed games", 
+                        effectDescription: "Raise charge gain per minute ^1.2 and hold shift to attempt buy 10 clickables",
+                        done(){
+                                return player.g.completedTally.gte(2)
+                        },
+                        unlocked(){
+                                return hasMilestone("g", 11)
+                        },
+                }, // hasMilestone("g", 12)
+                13: {
+                        requirementDescription: "<b>Give</b><br>Requires: 8 Completed games", 
+                        effectDescription: "Raise charge gain per minute ^1.2 and sqrt(Charges) multiplies <b>G</b> gain",
+                        done(){
+                                return player.g.completedTally.gte(8)
+                        },
+                        unlocked(){
+                                return hasMilestone("g", 12)
+                        },
+                }, // hasMilestone("g", 13)
         },
         clickables: {
                 rows: 5,
@@ -7057,14 +7108,19 @@ addLayer("g", {
                         let data = player.g.clickableAmounts
                         let a = data[11].plus(data[12])
                         let b = data[13].plus(data[14])
-                        return a.plus(b).toNumber()
+                        let ret = a.plus(b).toNumber()
+                        let exp = 1
+                        if (hasMilestone("g", 11)) exp *= 1.2
+                        if (hasMilestone("g", 12)) exp *= 1.2
+                        if (hasMilestone("g", 13)) exp *= 1.2
+                        return Math.pow(ret, exp)
                 },
-                succChance(x){
-                        return Decimal.minus(1, x.div(10)).pow(2)
+                succChance(x, change = 1){
+                        return Decimal.minus(1, x.div(10)).pow(2).times(change)
                 },
                 getAllPartialEffects(){
-                        let names = ["Features", "Games"]
-                        let symbols = ["*", "*"]
+                        let names = ["Features", "Games", "Medals", "Max Charges", "G Gain exponent"]
+                        let symbols = ["*", "*", "*", "+", "+"]
                         let functions = [
                                 function(x){
                                         return Decimal.pow(x.plus(1), x.sqrt())
@@ -7073,6 +7129,22 @@ addLayer("g", {
                                         if (x.lte(4)) return new Decimal(1)
                                         let exp = Math.max(.5, Math.min(1.5, x.div(30).toNumber()))
                                         let ret = x.div(2).pow(exp)
+                                        return ret
+                                },
+                                function(x){
+                                        if (x.lte(80)) return new Decimal(1)
+                                        let exp = x.sqrt().div(3)
+                                        let ret = x.pow(exp)
+                                        return ret
+                                },
+                                function(x){
+                                        if (x.lte(108)) return new Decimal(0)
+                                        let ret = x.minus(50).sqrt().times(20)
+                                        return ret.floor()
+                                },
+                                function(x){
+                                        if (x.lte(110)) return new Decimal(0)
+                                        let ret = x.minus(102).sqrt().div(3)
                                         return ret
                                 },
                         ]
@@ -7086,14 +7158,15 @@ addLayer("g", {
                         return ret
                 },
                 getAllCompletedEffects(){
-                        let names = ["Features", "bleh"]
-                        let symbols = ["*", "+"]
+                        let names = ["Features", "Games"]
+                        let symbols = ["*", "*"]
                         let functions = [
                                 function(x){
-                                        return Decimal.pow(x.plus(1), x.sqrt().times(4))
+                                        return Decimal.pow(x.plus(4), x.sqrt().times(4))
                                 },
                                 function(x){
-                                        return new Decimal(1)
+                                        if (x.lte(6)) return new Decimal(1)
+                                        return x.div(6).pow(x.sqrt())
                                 },
                         ]
                         let ret = {}
@@ -7104,6 +7177,11 @@ addLayer("g", {
                                 ret[names[i]] = [v, symbols[i], v.neq(functions[i](new Decimal(0)))]
                         }
                         return ret
+                },
+                getAttemptAmount(){
+                        let ret = 1
+                        if (hasMilestone("g", 12) && shiftDown) ret *= 10
+                        return ret 
                 },
                 11: {
                         title(){
@@ -7122,14 +7200,16 @@ addLayer("g", {
                                 return Decimal.pow(2, player.g.clickableAmounts[11]).times(10)
                         },
                         canClick(){
-                                return player.g.points.gte(tmp.g.clickables[11].cost) && player.g.charges >= 1
+                                return player.g.points.gte(this.cost()) && player.g.charges >= 1
                         },
                         onClick(){
-                                if (!this.canClick()) return 
-                                let cost = tmp.g.clickables[11].cost
-                                player.g.charges += -1
-                                player.g.clickableAmounts[11] = player.g.clickableAmounts[11].plus(1)
-                                player.g.points = player.g.points.minus(cost).max(0)
+                                for (let i = 0; i < layers.g.clickables.getAttemptAmount(); i++){
+                                        if (!this.canClick()) return 
+                                        let cost = this.cost()
+                                        player.g.charges += -1
+                                        player.g.clickableAmounts[11] = player.g.clickableAmounts[11].plus(1)
+                                        player.g.points = player.g.points.minus(cost).max(0)
+                                }
                         },
                 },
                 12: {
@@ -7149,14 +7229,16 @@ addLayer("g", {
                                 return Decimal.pow(10, player.g.clickableAmounts[12].pow(2)).times(1e8)
                         },
                         canClick(){
-                                return player.goalsii.points.gte(tmp.g.clickables[12].cost) && player.g.charges >= 1
+                                return player.goalsii.points.gte(this.cost()) && player.g.charges >= 1
                         },
                         onClick(){
-                                if (!this.canClick()) return 
-                                let cost = tmp.g.clickables[12].cost
-                                player.g.charges += -1
-                                player.g.clickableAmounts[12] = player.g.clickableAmounts[12].plus(1)
-                                player.goalsii.points = player.goalsii.points.minus(cost).max(0)
+                                for (let i = 0; i < layers.g.clickables.getAttemptAmount(); i++){
+                                        if (!this.canClick()) return 
+                                        let cost = this.cost()
+                                        player.g.charges += -1
+                                        player.g.clickableAmounts[12] = player.g.clickableAmounts[12].plus(1)
+                                        player.goalsii.points = player.goalsii.points.minus(cost).max(0)
+                                }
                         },
                 },
                 13: {
@@ -7176,13 +7258,15 @@ addLayer("g", {
                                 return 82 + player.g.clickableAmounts[13].sqrt().times(3).floor().toNumber()
                         },
                         canClick(){
-                                return player.ach.points.gte(tmp.g.clickables[13].cost) && player.g.charges >= 1
+                                return player.ach.points.gte(this.cost()) && player.g.charges >= 1
                         },
                         onClick(){
-                                if (!this.canClick()) return 
-                                let cost = tmp.g.clickables[13].cost
-                                player.g.charges += -1
-                                player.g.clickableAmounts[13] = player.g.clickableAmounts[13].plus(1)
+                                for (let i = 0; i < layers.g.clickables.getAttemptAmount(); i++){
+                                        if (!this.canClick()) return 
+                                        let cost = this.cost()
+                                        player.g.charges += -1
+                                        player.g.clickableAmounts[13] = player.g.clickableAmounts[13].plus(1)
+                                }
                         },
                 },
                 14: {
@@ -7199,17 +7283,19 @@ addLayer("g", {
                                 return true
                         },
                         cost(){
-                                return Decimal.pow(1e10, player.g.clickableAmounts[14].pow(2)).times("1e1900")
+                                return Decimal.pow(1e10, player.g.clickableAmounts[14].pow(1.5)).times("1e1900")
                         },
                         canClick(){
-                                return player.f.points.gte(tmp.g.clickables[14].cost) && player.g.charges >= 1
+                                return player.f.points.gte(this.cost()) && player.g.charges >= 1
                         },
                         onClick(){
-                                if (!this.canClick()) return 
-                                let cost = tmp.g.clickables[14].cost
-                                player.g.charges += -1
-                                player.g.clickableAmounts[14] = player.g.clickableAmounts[14].plus(1)
-                                player.f.points = player.f.points.sub(cost).max(0)
+                                for (let i = 0; i < layers.g.clickables.getAttemptAmount(); i++){
+                                        if (!this.canClick()) return 
+                                        let cost = this.cost()
+                                        player.g.charges += -1
+                                        player.g.clickableAmounts[14] = player.g.clickableAmounts[14].plus(1)
+                                        player.f.points = player.f.points.sub(cost).max(0)
+                                }
                         },
                 },
                 21: {
@@ -7230,19 +7316,21 @@ addLayer("g", {
                                 return player.g.clickableAmounts[21].plus(3).pow(2).div(4).floor()
                         },
                         canClick(){
-                                let a = player.g.points.gte(tmp.g.clickables[21].cost)
+                                let a = player.g.points.gte(this.cost())
                                 let b = player.g.charges >= 1
                                 let c = player.g.clickableAmounts[21].lt(10)
                                 return a && b && c
                         },
                         onClick(){
-                                if (!this.canClick()) return 
-                                let cost = tmp.g.clickables[21].cost
-                                let data = player.g
-                                data.charges += -1
-                                data.points = data.points.sub(cost).max(0)
-                                if (Math.random() > layers.g.clickables.succChance(data.clickableAmounts[21])) return
-                                data.clickableAmounts[21] = data.clickableAmounts[21].plus(1)
+                                for (let i = 0; i < layers.g.clickables.getAttemptAmount(); i++){
+                                        if (!this.canClick()) return 
+                                        let cost = this.cost()
+                                        let data = player.g
+                                        data.charges += -1
+                                        data.points = data.points.sub(cost).max(0)
+                                        if (Math.random() > layers.g.clickables.succChance(data.clickableAmounts[21])) continue
+                                        data.clickableAmounts[21] = data.clickableAmounts[21].plus(1)
+                                }
                         },
                 },
                 22: {
@@ -7263,19 +7351,21 @@ addLayer("g", {
                                 return player.g.clickableAmounts[22].plus(3).pow(2).div(4).floor()
                         },
                         canClick(){
-                                let a = player.g.points.gte(tmp.g.clickables[22].cost)
+                                let a = player.g.points.gte(this.cost())
                                 let b = player.g.charges >= 1
                                 let c = player.g.clickableAmounts[22].lt(10)
                                 return a && b && c
                         },
                         onClick(){
-                                if (!this.canClick()) return 
-                                let cost = tmp.g.clickables[22].cost
-                                let data = player.g
-                                data.charges += -1
-                                data.points = data.points.sub(cost).max(0)
-                                if (Math.random() > layers.g.clickables.succChance(data.clickableAmounts[22])) return
-                                data.clickableAmounts[22] = data.clickableAmounts[22].plus(1)
+                                for (let i = 0; i < layers.g.clickables.getAttemptAmount(); i++){
+                                        if (!this.canClick()) return 
+                                        let cost = this.cost()
+                                        let data = player.g
+                                        data.charges += -1
+                                        data.points = data.points.sub(cost).max(0)
+                                        if (Math.random() > layers.g.clickables.succChance(data.clickableAmounts[22])) continue
+                                        data.clickableAmounts[22] = data.clickableAmounts[22].plus(1)
+                                }
                         },
                 },
                 23: {
@@ -7296,19 +7386,21 @@ addLayer("g", {
                                 return player.g.clickableAmounts[23].plus(3).pow(2).div(4).floor()
                         },
                         canClick(){
-                                let a = player.g.points.gte(tmp.g.clickables[23].cost)
+                                let a = player.g.points.gte(this.cost())
                                 let b = player.g.charges >= 1
                                 let c = player.g.clickableAmounts[23].lt(10)
                                 return a && b && c
                         },
                         onClick(){
-                                if (!this.canClick()) return 
-                                let cost = tmp.g.clickables[23].cost
-                                let data = player.g
-                                data.charges += -1
-                                data.points = data.points.sub(cost).max(0)
-                                if (Math.random() > layers.g.clickables.succChance(data.clickableAmounts[23])) return
-                                data.clickableAmounts[23] = data.clickableAmounts[23].plus(1)
+                                for (let i = 0; i < layers.g.clickables.getAttemptAmount(); i++){
+                                        if (!this.canClick()) return 
+                                        let cost = this.cost()
+                                        let data = player.g
+                                        data.charges += -1
+                                        data.points = data.points.sub(cost).max(0)
+                                        if (Math.random() > layers.g.clickables.succChance(data.clickableAmounts[23])) continue
+                                        data.clickableAmounts[23] = data.clickableAmounts[23].plus(1)
+                                }
                         },
                 },
                 24: {
@@ -7329,19 +7421,22 @@ addLayer("g", {
                                 return player.g.clickableAmounts[24].plus(3).pow(2).div(4).floor()
                         },
                         canClick(){
-                                let a = player.g.points.gte(tmp.g.clickables[24].cost)
+                                let a = player.g.points.gte(this.cost())
                                 let b = player.g.charges >= 1
                                 let c = player.g.clickableAmounts[24].lt(10)
                                 return a && b && c
                         },
                         onClick(){
-                                if (!this.canClick()) return 
-                                let cost = tmp.g.clickables[24].cost
-                                let data = player.g
-                                data.charges += -1
-                                data.points = data.points.sub(cost).max(0)
-                                if (Math.random() > layers.g.clickables.succChance(data.clickableAmounts[24])) return
-                                data.clickableAmounts[24] = data.clickableAmounts[24].plus(1)
+                                for (let i = 0; i < layers.g.clickables.getAttemptAmount(); i++){
+                                        console.log(i)
+                                        if (!this.canClick()) return 
+                                        let cost = this.cost()
+                                        let data = player.g
+                                        data.charges += -1
+                                        data.points = data.points.sub(cost).max(0)
+                                        if (Math.random() > layers.g.clickables.succChance(data.clickableAmounts[24])) continue
+                                        data.clickableAmounts[24] = data.clickableAmounts[24].plus(1)
+                                }
                         },
                 },
                 31: {
@@ -7362,19 +7457,21 @@ addLayer("g", {
                                 return player.g.clickableAmounts[31].plus(3).pow(3).div(4).floor()
                         },
                         canClick(){
-                                let a = player.g.points.gte(tmp.g.clickables[31].cost)
+                                let a = player.g.points.gte(this.cost())
                                 let b = player.g.charges >= 1
                                 let c = player.g.clickableAmounts[31].lt(10)
                                 return a && b && c
                         },
                         onClick(){
-                                if (!this.canClick()) return 
-                                let cost = tmp.g.clickables[31].cost
-                                let data = player.g
-                                data.charges += -1
-                                data.points = data.points.sub(cost).max(0)
-                                if (Math.random() > layers.g.clickables.succChance(data.clickableAmounts[31])) return
-                                data.clickableAmounts[31] = data.clickableAmounts[31].plus(1)
+                                for (let i = 0; i < layers.g.clickables.getAttemptAmount(); i++){
+                                        if (!this.canClick()) return 
+                                        let cost = this.cost()
+                                        let data = player.g
+                                        data.charges += -1
+                                        data.points = data.points.sub(cost).max(0)
+                                        if (Math.random() > layers.g.clickables.succChance(data.clickableAmounts[31])) continue
+                                        data.clickableAmounts[31] = data.clickableAmounts[31].plus(1)
+                                }
                         },
                 },
                 32: {
@@ -7395,19 +7492,21 @@ addLayer("g", {
                                 return player.g.clickableAmounts[32].plus(3).pow(3).div(4).floor()
                         },
                         canClick(){
-                                let a = player.g.points.gte(tmp.g.clickables[32].cost)
+                                let a = player.g.points.gte(this.cost())
                                 let b = player.g.charges >= 1
                                 let c = player.g.clickableAmounts[32].lt(10)
                                 return a && b && c
                         },
                         onClick(){
-                                if (!this.canClick()) return 
-                                let cost = tmp.g.clickables[32].cost
-                                let data = player.g
-                                data.charges += -1
-                                data.points = data.points.sub(cost).max(0)
-                                if (Math.random() > layers.g.clickables.succChance(data.clickableAmounts[32])) return
-                                data.clickableAmounts[32] = data.clickableAmounts[32].plus(1)
+                                for (let i = 0; i < layers.g.clickables.getAttemptAmount(); i++){
+                                        if (!this.canClick()) return 
+                                        let cost = this.cost()
+                                        let data = player.g
+                                        data.charges += -1
+                                        data.points = data.points.sub(cost).max(0)
+                                        if (Math.random() > layers.g.clickables.succChance(data.clickableAmounts[32])) continue
+                                        data.clickableAmounts[32] = data.clickableAmounts[32].plus(1)
+                                }
                         },
                 },
                 33: {
@@ -7428,19 +7527,21 @@ addLayer("g", {
                                 return player.g.clickableAmounts[33].plus(3).pow(3).div(4).floor()
                         },
                         canClick(){
-                                let a = player.g.points.gte(tmp.g.clickables[33].cost)
+                                let a = player.g.points.gte(this.cost())
                                 let b = player.g.charges >= 1
                                 let c = player.g.clickableAmounts[33].lt(10)
                                 return a && b && c
                         },
                         onClick(){
-                                if (!this.canClick()) return 
-                                let cost = tmp.g.clickables[33].cost
-                                let data = player.g
-                                data.charges += -1
-                                data.points = data.points.sub(cost).max(0)
-                                if (Math.random() > layers.g.clickables.succChance(data.clickableAmounts[33])) return
-                                data.clickableAmounts[33] = data.clickableAmounts[33].plus(1)
+                                for (let i = 0; i < layers.g.clickables.getAttemptAmount(); i++){
+                                        if (!this.canClick()) return 
+                                        let cost = this.cost()
+                                        let data = player.g
+                                        data.charges += -1
+                                        data.points = data.points.sub(cost).max(0)
+                                        if (Math.random() > layers.g.clickables.succChance(data.clickableAmounts[33])) continue
+                                        data.clickableAmounts[33] = data.clickableAmounts[33].plus(1)
+                                }
                         },
                 },
                 34: {
@@ -7461,19 +7562,161 @@ addLayer("g", {
                                 return player.g.clickableAmounts[34].plus(3).pow(3).div(4).floor()
                         },
                         canClick(){
-                                let a = player.g.points.gte(tmp.g.clickables[34].cost)
+                                let a = player.g.points.gte(this.cost())
                                 let b = player.g.charges >= 1
                                 let c = player.g.clickableAmounts[34].lt(10)
                                 return a && b && c
                         },
                         onClick(){
-                                if (!this.canClick()) return 
-                                let cost = tmp.g.clickables[34].cost
-                                let data = player.g
-                                data.charges += -1
-                                data.points = data.points.sub(cost).max(0)
-                                if (Math.random() > layers.g.clickables.succChance(data.clickableAmounts[34])) return
-                                data.clickableAmounts[34] = data.clickableAmounts[34].plus(1)
+                                for (let i = 0; i < layers.g.clickables.getAttemptAmount(); i++){
+                                        if (!this.canClick()) return 
+                                        let cost = this.cost()
+                                        let data = player.g
+                                        data.charges += -1
+                                        data.points = data.points.sub(cost).max(0)
+                                        if (Math.random() > layers.g.clickables.succChance(data.clickableAmounts[34])) continue
+                                        data.clickableAmounts[34] = data.clickableAmounts[34].plus(1)
+                                }
+                        },
+                },
+                41: {
+                        title(){
+                                return "<h3 style='color: #903000'>name1</h3>"
+                        },
+                        display(){
+                                let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(this.cost()) + " Games<br>"
+                                let b = "<h3 style='color: #00CC66'>Completion</h3>: " + formatWhole(player.g.clickableAmounts[41].times(10)) + "%"
+                                let c = ""
+                                if (shiftDown) c = "<br>Chance to succeed:<br>" + formatWhole(layers.g.clickables.succChance(player.g.clickableAmounts[41]).times(100).round()) + "%"
+                                return a + b + c
+                        },
+                        unlocked(){
+                                return player.g.clickableAmounts[31].gt(6) && player.g.clickableAmounts[32].gt(6) && player.g.clickableAmounts[33].gt(6) && player.g.clickableAmounts[34].gt(6)
+                        },
+                        cost(){
+                                return player.g.clickableAmounts[41].plus(5).pow(6).div(4).floor()
+                        },
+                        canClick(){
+                                let a = player.g.points.gte(this.cost())
+                                let b = player.g.charges >= 1
+                                let c = player.g.clickableAmounts[41].lt(10)
+                                return a && b && c
+                        },
+                        onClick(){
+                                for (let i = 0; i < layers.g.clickables.getAttemptAmount(); i++){
+                                        if (!this.canClick()) return 
+                                        let cost = this.cost()
+                                        let data = player.g
+                                        data.charges += -1
+                                        data.points = data.points.sub(cost).max(0)
+                                        if (Math.random() > layers.g.clickables.succChance(data.clickableAmounts[41])) continue
+                                        data.clickableAmounts[41] = data.clickableAmounts[41].plus(1)
+                                }
+                        },
+                },
+                42: {
+                        title(){
+                                return "<h3 style='color: #903000'>name2</h3>"
+                        },
+                        display(){
+                                let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(this.cost()) + " Games<br>"
+                                let b = "<h3 style='color: #00CC66'>Completion</h3>: " + formatWhole(player.g.clickableAmounts[42].times(10)) + "%"
+                                let c = ""
+                                if (shiftDown) c = "<br>Chance to succeed:<br>" + formatWhole(layers.g.clickables.succChance(player.g.clickableAmounts[42]).times(100).round()) + "%"
+                                return a + b + c
+                        },
+                        unlocked(){
+                                return player.g.clickableAmounts[31].gt(6) && player.g.clickableAmounts[32].gt(6) && player.g.clickableAmounts[33].gt(6) && player.g.clickableAmounts[34].gt(6)
+                        },
+                        cost(){
+                                return player.g.clickableAmounts[42].plus(5).pow(6).div(4).floor()
+                        },
+                        canClick(){
+                                let a = player.g.points.gte(this.cost())
+                                let b = player.g.charges >= 1
+                                let c = player.g.clickableAmounts[42].lt(10)
+                                return a && b && c
+                        },
+                        onClick(){
+                                for (let i = 0; i < layers.g.clickables.getAttemptAmount(); i++){
+                                        if (!this.canClick()) return 
+                                        let cost = this.cost()
+                                        let data = player.g
+                                        data.charges += -1
+                                        data.points = data.points.sub(cost).max(0)
+                                        if (Math.random() > layers.g.clickables.succChance(data.clickableAmounts[42])) continue
+                                        data.clickableAmounts[42] = data.clickableAmounts[42].plus(1)
+                                }
+                        },
+                },
+                43: {
+                        title(){
+                                return "<h3 style='color: #903000'>name3</h3>"
+                        },
+                        display(){
+                                let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(this.cost()) + " Games<br>"
+                                let b = "<h3 style='color: #00CC66'>Completion</h3>: " + formatWhole(player.g.clickableAmounts[43].times(10)) + "%"
+                                let c = ""
+                                if (shiftDown) c = "<br>Chance to succeed:<br>" + formatWhole(layers.g.clickables.succChance(player.g.clickableAmounts[43]).times(100).round()) + "%"
+                                return a + b + c
+                        },
+                        unlocked(){
+                                return player.g.clickableAmounts[31].gt(6) && player.g.clickableAmounts[32].gt(6) && player.g.clickableAmounts[33].gt(6) && player.g.clickableAmounts[34].gt(6)
+                        },
+                        cost(){
+                                return player.g.clickableAmounts[43].plus(5).pow(6).div(4).floor()
+                        },
+                        canClick(){
+                                let a = player.g.points.gte(this.cost())
+                                let b = player.g.charges >= 1
+                                let c = player.g.clickableAmounts[43].lt(10)
+                                return a && b && c
+                        },
+                        onClick(){
+                                for (let i = 0; i < layers.g.clickables.getAttemptAmount(); i++){
+                                        if (!this.canClick()) return 
+                                        let cost = this.cost()
+                                        let data = player.g
+                                        data.charges += -1
+                                        data.points = data.points.sub(cost).max(0)
+                                        if (Math.random() > layers.g.clickables.succChance(data.clickableAmounts[43])) continue
+                                        data.clickableAmounts[43] = data.clickableAmounts[43].plus(1)
+                                }
+                        },
+                },
+                44: {
+                        title(){
+                                return "<h3 style='color: #903000'>name3</h3>"
+                        },
+                        display(){
+                                let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(this.cost()) + " Games<br>"
+                                let b = "<h3 style='color: #00CC66'>Completion</h3>: " + formatWhole(player.g.clickableAmounts[44].times(10)) + "%"
+                                let c = ""
+                                if (shiftDown) c = "<br>Chance to succeed:<br>" + formatWhole(layers.g.clickables.succChance(player.g.clickableAmounts[44]).times(100).round()) + "%"
+                                return a + b + c
+                        },
+                        unlocked(){
+                                return player.g.clickableAmounts[31].gt(6) && player.g.clickableAmounts[32].gt(6) && player.g.clickableAmounts[33].gt(6) && player.g.clickableAmounts[34].gt(6)
+                        },
+                        cost(){
+                                return player.g.clickableAmounts[44].plus(5).pow(6).div(4).floor()
+                        },
+                        canClick(){
+                                let a = player.g.points.gte(this.cost())
+                                let b = player.g.charges >= 1
+                                let c = player.g.clickableAmounts[44].lt(10)
+                                return a && b && c
+                        },
+                        onClick(){
+                                for (let i = 0; i < layers.g.clickables.getAttemptAmount(); i++){
+                                        if (!this.canClick()) return 
+                                        let cost = this.cost()
+                                        let data = player.g
+                                        data.charges += -1
+                                        data.points = data.points.sub(cost).max(0)
+                                        if (Math.random() > layers.g.clickables.succChance(data.clickableAmounts[44])) continue
+                                        data.clickableAmounts[44] = data.clickableAmounts[44].plus(1)
+                                }
                         },
                 },
         },
@@ -7529,6 +7772,7 @@ addLayer("g", {
                                                 let d = format(player.f.points) + " features."
                                                 let e = ""
                                                 if (!shiftDown) e = "<br>Press shift to see success chances."
+                                                else if (hasMilestone("g", 12)) e = "<br>You have shift down to bulk."
                                                 return a + b + c + d + e
                                         }
                                 ],

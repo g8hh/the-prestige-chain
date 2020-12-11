@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".3.18 Salvaged Wasteland",
+	num: ".3.19 Salvaged Wasteland",
 	name: "",
 }
 
@@ -125,6 +125,7 @@ PROGRESSION_MILESTONES = {
 	83:() => player.g.clickableAmounts[11].gte(2)        || hasAchievement("ach",126),
 	84:() => player.g.clickableAmounts[21].gte(4)        || hasAchievement("ach",127),
 	85:() => layers.g.clickables.chargesPerMinute() > 19 || hasAchievement("ach",131),
+	86:() => player.g.partialTally.gte(75)               || hasAchievement("ach",132),
 }
 
 /*
@@ -219,6 +220,7 @@ PROGRESSION_MILESTONES_TEXT = {
 	83: "two levels of tetris",
 	84: "Quake to 40%",
 	85: "20 charges per minute",
+	86: "75 completed devs"
 }
 
 function progressReachedNum(){
@@ -242,7 +244,7 @@ function nextMilestone(){
 
 // Display extra things at the top of the page
 var displayThings = [
-	"This may be incorrect: Last updated 11:45 PM pacific 12.10",
+	"This may be incorrect: Last updated 11:14 AM pacific 12.11",
 	'Give me suggestions for "games" names',
 	function (){
 		return "Endgame: 30% done with Portal " + (player.g.clickableAmounts[31].gte(3) ? "(done)" : "(not done)")
