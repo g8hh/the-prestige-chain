@@ -8696,7 +8696,7 @@ addLayer("g", {
                                                         c2 += "<br>• " + j[1] + format(j[0]) + " to " + i 
                                                 }
                                                 let rb = layers.g.clickables.getPrimaryRebirths()
-                                                if (rb == 0) return
+                                                if (rb == 0) return a + b + b2 + c + c2
                                                 let d = "<br><br> You have rebirthed " + formatWhole(rb) + " times so:"
                                                 let d2 = ""
                                                 let data3 = layers.g.clickables.getRebirthEffects()
