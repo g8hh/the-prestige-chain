@@ -8328,7 +8328,7 @@ addLayer("g", {
                                         b ++ 
                                         if (b > 990) console.log(b)
                                         if (!this.canClick()) break 
-                                        let chance = layers.g.clickables.succChance(data.clickableAmounts[id])
+                                        let chance = layers.g.clickables.succChance(data.clickableAmounts[id]).div(10)
                                         let cost = this.cost()
 
                                         let times = getTimesRequired(chance)
@@ -8389,7 +8389,7 @@ addLayer("g", {
                                         b ++ 
                                         if (b > 990) console.log(b)
                                         if (!this.canClick()) break 
-                                        let chance = layers.g.clickables.succChance(data.clickableAmounts[id])
+                                        let chance = layers.g.clickables.succChance(data.clickableAmounts[id]).div(10)
                                         let cost = this.cost()
 
                                         let times = getTimesRequired(chance)
@@ -8450,7 +8450,7 @@ addLayer("g", {
                                         b ++ 
                                         if (b > 990) console.log(b)
                                         if (!this.canClick()) break 
-                                        let chance = layers.g.clickables.succChance(data.clickableAmounts[id])
+                                        let chance = layers.g.clickables.succChance(data.clickableAmounts[id]).div(10)
                                         let cost = this.cost()
 
                                         let times = getTimesRequired(chance)
@@ -8511,7 +8511,7 @@ addLayer("g", {
                                         b ++ 
                                         if (b > 990) console.log(b)
                                         if (!this.canClick()) break 
-                                        let chance = layers.g.clickables.succChance(data.clickableAmounts[id])
+                                        let chance = layers.g.clickables.succChance(data.clickableAmounts[id]).div(10)
                                         let cost = this.cost()
 
                                         let times = getTimesRequired(chance)

@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".3.20.1 Salvaged Wasteland",
+	num: ".3.20.2 Salvaged Wasteland",
 	name: "",
 }
 
