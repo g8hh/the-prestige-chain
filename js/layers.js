@@ -1300,7 +1300,7 @@ addLayer("b", {
                 },
                 43: {
                         title: "Better",
-                        description: "Unlock the eigth Amoeba buyable",
+                        description: "Unlock the eighth Amoeba buyable",
                         cost: new Decimal("5e415"),
                         unlocked(){
                                 return hasUpgrade("b", 42) || hasUnlockedPast("c")
@@ -3914,15 +3914,51 @@ addLayer("f", {
         upgrades: {
                 rows: 5,
                 cols: 5,
-                /*
                 11: {
-                        title: "Email",
-                        description: "Keep <b>C</b> and <b>D</b> upgrades, autobuy <b>C</b> buyables once per second, and multiply all autobuyer bulk by the number of goals",
-                        cost: new Decimal(10),
+                        title: "For",
+                        description: "Keep <b>F</b> upgrades and make <b>G</b> gain based on best <b>F</b>",
+                        cost: new Decimal("1e10540"),
                         unlocked(){ 
-                                return player.ach.achievements.includes("61") || hasUnlockedPast("e")
-                        }, //hasUpgrade("e", 11)
+                                return player.g.rebirths[1] >= 16 || hasUnlockedPast("g")
+                        }, // hasUpgrade("f", 11)
                 },
+                12: {
+                        title: "From",
+                        description: "Remove the successful dev boost to Feature gain",
+                        cost: new Decimal("1e13524"),
+                        unlocked(){ 
+                                return hasUpgrade("f", 11) || hasUnlockedPast("g")
+                        }, // hasUpgrade("f", 12)
+                },
+                13: {
+                        title: "Free",
+                        description: "Remove the successful dev boost to Medal gain",
+                        cost: new Decimal("1e14099"),
+                        unlocked(){ 
+                                return hasUpgrade("f", 12) || hasUnlockedPast("g")
+                        }, // hasUpgrade("f", 13)
+                },
+                14: {
+                        title: "First",
+                        description: "Remove the successful dev boost to Game gain",
+                        cost: new Decimal("1e14746"),
+                        unlocked(){ 
+                                return hasUpgrade("f", 13) || hasUnlockedPast("g")
+                        }, // hasUpgrade("f", 14)
+                },
+                15: {
+                        title: "Find",
+                        description: "Multiply base <b>G</b> gain by 1.15",
+                        cost: new Decimal("1e26221"),
+                        unlocked(){ 
+                                return hasUpgrade("f", 14) || hasUnlockedPast("g")
+                        }, // hasUpgrade("f", 15)
+                },
+
+                /*
+                full
+
+
                 */
         },
         tabFormat: {
@@ -3983,7 +4019,7 @@ addLayer("f", {
                 player.f.time = 0
                 player.f.times = 0
 
-                if (!false) {
+                if (!hasUpgrade("f", 11)) {
                         //upgrades
                         let keep = []
                         player.f.upgrades = filter(player.f.upgrades, keep)
@@ -6807,7 +6843,10 @@ addLayer("g", {
         requires: new Decimal(0), // Can be a function that takes requirement increases into account
         resource: "Games", // Name of prestige currency
         baseResource: "Features", // Name of resource prestige is based on
-        baseAmount() {return player.f.bestc44.floor()}, // Get the current amount of baseResource
+        baseAmount() {
+                if (hasUpgrade("f", 11)) return player.f.best
+                return player.f.bestc44.floor()
+        }, // Get the current amount of baseResource
         type: "custom", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
         getResetGain() {
                 let pts = this.baseAmount()
@@ -6843,6 +6882,7 @@ addLayer("g", {
                 if (hasMilestone("g", 15)) x = x.times(2)
                 x = x.times(layers.g.clickables.getAllPartialEffects()["Base G gain"][0])
                 if (hasMilestone("g", 20)) x = x.times(3)
+                if (hasUpgrade("f", 15)) x = x.times(1.15)
                 return x
         },
         getGainMultPost(){
@@ -6981,7 +7021,7 @@ addLayer("g", {
 
                 let nextAt = ""
                 if (gain.lt(1e6) && (hasUnlockedPast("g") || player.g.best.neq(0))) {
-                        nextAt = "<br>Next at " + format(nextnum) + " " + this.baseResource + " in challenge 44"
+                        nextAt = "<br>Next at " + format(nextnum) + " " + this.baseResource + (hasUpgrade("f", 11) ? "" : " in challenge 44")             
                         let ps = gain.div(player.g.time || 1)
 
                         if (ps.lt(10/3600)) nextAt += "<br>" + format(ps.times(3600)) + "/h"
@@ -7286,16 +7326,20 @@ addLayer("g", {
                                 function(x){
                                         let ret = Decimal.pow(x.plus(1), x.sqrt())
 
-                                        if (ret.gt(1e100)) ret = ret.log10().pow(50)
+                                        if (ret.gt(1e100) && !hasUpgrade("f", 12)) ret = ret.log10().pow(50)
                                         return ret
                                 },
                                 function(x){
                                         if (x.lte(4)) return new Decimal(1)
                                         let exp = Math.max(.5, Math.min(1.5, x.div(30).toNumber()))
+                                        if (x.gte(129)) {
+                                                let j = x.div(100)
+                                                if (j.gt(256)) j = j.sqrt().times(16)
+                                                exp = Decimal.times(exp, j)
+                                        }
                                         let ret = x.div(2).pow(exp)
-                                        if (x.gte(129)) ret = ret.pow(x.div(100))
                                         
-                                        if (ret.gt(1e10)) ret = ret.log10().pow(10)
+                                        if (ret.gt(1e10) && !hasUpgrade("f", 14)) ret = ret.log10().pow(10)
                                         return ret
                                 },
                                 function(x){
@@ -7303,7 +7347,7 @@ addLayer("g", {
                                         let exp = x.sqrt().div(3)
                                         let ret = x.pow(exp)
                                         
-                                        if (ret.gt(1e10)) ret = ret.log10().pow(10)
+                                        if (ret.gt(1e10) && !hasUpgrade("f", 13)) ret = ret.log10().pow(10)
                                         return ret
                                 },
                                 function(x){
@@ -8045,7 +8089,7 @@ addLayer("g", {
                 },
                 41: {
                         title(){
-                                return "<h3 style='color: #903000'>name1</h3>"
+                                return "<h3 style='color: #903000'>Roblox</h3>"
                         },
                         display(){
                                 let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(this.cost()) + " Games<br>"
