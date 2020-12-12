@@ -75,6 +75,14 @@ function formatWhole(decimal) {
 	return addCommas(decimal.floor().mag.toString())
 }
 
+function formatChances(v) {
+	v = new Decimal(v)
+	if (v.gte(.1)) return format(v)
+	if (v.eq(0)) return "0.00"
+	let b = v.log10().times(-1).floor().plus(1).toNumber()
+	return format(v.times(Decimal.pow(10, b))) + "/10^" + formatWhole(b)
+}
+
 function formatTime(s) {
 	if (s<60) return format(s)+"s"
 	else if (s<3600) return formatWhole(Math.floor(s/60))+"m "+format(s%60)+"s"

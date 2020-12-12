@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".3.19.1 Salvaged Wasteland",
+	num: ".3.20 Salvaged Wasteland",
 	name: "",
 }
 
@@ -23,7 +23,8 @@ var doNotCallTheseFunctionsEveryTick = ["blowUpEverything",
 					"getTokenToMedalGain",
 					"getAllPrior",
 					"succChance",
-					"getAllPartialEffects"
+					"getAllPartialEffects",
+					"resetPrior"
 					]
 
 function getStartPoints(){
@@ -126,6 +127,11 @@ PROGRESSION_MILESTONES = {
 	84:() => player.g.clickableAmounts[21].gte(4)        || hasAchievement("ach",127),
 	85:() => layers.g.clickables.chargesPerMinute() > 19 || hasAchievement("ach",131),
 	86:() => player.g.partialTally.gte(75)               || hasAchievement("ach",132),
+	87:() => player.g.completedTally.gte(11)             || hasAchievement("ach",133),
+	88:() => player.g.completedTally.gte(13)             || hasAchievement("ach",134),
+	89:() => player.g.completedTally.gte(16)             || hasAchievement("ach",135),
+	90:() => player.g.completedTally.gte(50)             || hasAchievement("ach",136),
+	91:() => player.g.completedTally.gte(100)            || hasAchievement("ach",137),
 }
 
 /*
@@ -217,10 +223,15 @@ PROGRESSION_MILESTONES_TEXT = {
 	80: "1e58 Features",
 	81: "2 Games",
 	82: "20 Games",
-	83: "two levels of tetris",
+	83: "two levels of Tetris",
 	84: "Quake to 40%",
 	85: "20 charges per minute",
-	86: "75 completed devs"
+	86: "75 completed devs",
+	87: "11 completed games",
+	88: "13 completed games",
+	89: "16 completed games",
+	90: "50 completed games",
+	91: "100 completed games",
 }
 
 function progressReachedNum(){
@@ -244,10 +255,10 @@ function nextMilestone(){
 
 // Display extra things at the top of the page
 var displayThings = [
-	"This may be incorrect: Last updated 11:14 AM pacific 12.11",
+	"This may be incorrect: Last updated 8:03 PM pacific 12.11",
 	'Give me suggestions for "games" names',
 	function (){
-		return "Endgame: 30% done with Portal " + (player.g.clickableAmounts[31].gte(3) ? "(done)" : "(not done)")
+		return "Endgame: 16 rebirth I " + (player.g.rebirths >= 16 ? "(done)" : "(not done)")
 		/*
 		let a = "Endgame: All goals"
 		if (player.ach.achievements.length == Object.keys(PROGRESSION_MILESTONES).length) {
