@@ -3917,14 +3917,14 @@ addLayer("f", {
                 11: {
                         title: "For",
                         description: "Keep <b>F</b> upgrades and make <b>G</b> gain based on best <b>F</b>",
-                        cost: new Decimal("1e10540"),
+                        cost: new Decimal("1e10533"),
                         unlocked(){ 
                                 return player.g.rebirths[1] >= 16 || hasUnlockedPast("g")
                         }, // hasUpgrade("f", 11)
                 },
                 12: {
                         title: "From",
-                        description: "Remove the successful dev boost to Feature gain",
+                        description: "Remove the successful dev boost to Feature gain softcap",
                         cost: new Decimal("1e13524"),
                         unlocked(){ 
                                 return hasUpgrade("f", 11) || hasUnlockedPast("g")
@@ -3932,7 +3932,7 @@ addLayer("f", {
                 },
                 13: {
                         title: "Free",
-                        description: "Remove the successful dev boost to Medal gain",
+                        description: "Remove the successful dev boost to Medal gain softcap",
                         cost: new Decimal("1e14099"),
                         unlocked(){ 
                                 return hasUpgrade("f", 12) || hasUnlockedPast("g")
@@ -3940,7 +3940,7 @@ addLayer("f", {
                 },
                 14: {
                         title: "First",
-                        description: "Remove the successful dev boost to Game gain",
+                        description: "Remove the successful dev boost to Game gain softcap",
                         cost: new Decimal("1e14746"),
                         unlocked(){ 
                                 return hasUpgrade("f", 13) || hasUnlockedPast("g")
@@ -8152,7 +8152,7 @@ addLayer("g", {
                 },
                 42: {
                         title(){
-                                return "<h3 style='color: #903000'>name2</h3>"
+                                return "<h3 style='color: #903000'>Autochess</h3>"
                         },
                         display(){
                                 let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(this.cost()) + " Games<br>"
@@ -8215,7 +8215,7 @@ addLayer("g", {
                 },
                 43: {
                         title(){
-                                return "<h3 style='color: #903000'>name3</h3>"
+                                return "<h3 style='color: #903000'>Pong</h3>"
                         },
                         display(){
                                 let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(this.cost()) + " Games<br>"
@@ -8278,7 +8278,7 @@ addLayer("g", {
                 },
                 44: {
                         title(){
-                                return "<h3 style='color: #903000'>name3</h3>"
+                                return "<h3 style='color: #903000'>Dota 2</h3>"
                         },
                         display(){
                                 let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(this.cost()) + " Games<br>"
@@ -8341,7 +8341,7 @@ addLayer("g", {
                 },
                 51: {
                         title(){
-                                return "<h3 style='color: #903000'>name1</h3>"
+                                return "<h3 style='color: #903000'>Snake</h3>"
                         },
                         display(){
                                 let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(this.cost()) + " Games<br>"
