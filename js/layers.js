@@ -3804,6 +3804,7 @@ addLayer("f", {
                 x = x.plus(getGoalChallengeReward("30"))
                 if (hasMilestone("ach", 6)) x = x.plus(1.5)
                 if (hasUpgrade("goalsii", 13)) x = x.plus(0.2 * player.goalsii.upgrades.length)
+                x = x.plus(layers.g.clickables.getRebirthEffects()["F gain exponent"][0])
                 return x
         },
         getGainMultPre(){
@@ -3811,6 +3812,7 @@ addLayer("f", {
                 x = x.times(getGoalChallengeReward("13"))
                 if (hasMilestone("goalsii", 14)) x = x.times(player.goalsii.points.plus(10).log10())
                 x = x.times(player.e.best.max(10).log10().pow(getGoalChallengeReward("24")))
+                x = x.times(layers.g.clickables.getRebirthEffects()["Base F gain"][0])
                 return x
         },
         getGainMultPost(){
@@ -3954,11 +3956,50 @@ addLayer("f", {
                                 return hasUpgrade("f", 14) || hasUnlockedPast("g")
                         }, // hasUpgrade("f", 15)
                 },
+                21: {
+                        title: "Full",
+                        description: "Each upgrade in this row unlocks a rebirth reward",
+                        cost: new Decimal("1e28555"),
+                        unlocked(){ 
+                                return hasUpgrade("f", 15) || hasUnlockedPast("g")
+                        }, // hasUpgrade("f", 21)
+                },
+                22: {
+                        title: "Forum",
+                        description: "Raise charge gain ^1.1",
+                        cost: new Decimal("1e45342"),
+                        unlocked(){ 
+                                return hasUpgrade("f", 21) || hasUnlockedPast("g")
+                        }, // hasUpgrade("f", 22)
+                },
+                23: {
+                        title: "Family",
+                        description: "Raise charge gain ^1.1 and buff Base G gain from rebirths",
+                        cost: new Decimal("1e53420"),
+                        unlocked(){ 
+                                return hasUpgrade("f", 22) || hasUnlockedPast("g")
+                        }, // hasUpgrade("f", 23)
+                },
+                24: {
+                        title: "File",
+                        description: "Per upgrade squared add one to <b>G</b> gain",
+                        cost: new Decimal("1e61495"),
+                        unlocked(){ 
+                                return hasUpgrade("f", 23) || hasUnlockedPast("g")
+                        }, // hasUpgrade("f", 24)
+                },
+
+                //
 
                 /*
-                full
-
-
+                found
+                following
+                form
+                food
+                features
+                forums
+                friend
+                
                 */
         },
         tabFormat: {
@@ -5040,6 +5081,94 @@ addLayer("ach", {
                                 return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
                         },
                 },
+                141: {
+                        name: "Ninety-two",
+                        done(){
+                                return PROGRESSION_MILESTONES[92]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[92]
+                        },
+                        unlocked(){
+                                return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
+                        },
+                },
+                142: {
+                        name: "Ninety-three",
+                        done(){
+                                return PROGRESSION_MILESTONES[93]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[93]
+                        },
+                        unlocked(){
+                                return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
+                        },
+                },
+                143: {
+                        name: "Ninety-four",
+                        done(){
+                                return PROGRESSION_MILESTONES[94]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[94]
+                        },
+                        unlocked(){
+                                return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
+                        },
+                },
+                /*
+                144: {
+                        name: "Ninety-five",
+                        done(){
+                                return PROGRESSION_MILESTONES[95]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[95]
+                        },
+                        unlocked(){
+                                return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
+                        },
+                },
+                /*
+                145: {
+                        name: "Ninety-six",
+                        done(){
+                                return PROGRESSION_MILESTONES[96]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[96]
+                        },
+                        unlocked(){
+                                return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
+                        },
+                },
+                /*
+                146: {
+                        name: "Ninety-seven",
+                        done(){
+                                return PROGRESSION_MILESTONES[97]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[97]
+                        },
+                        unlocked(){
+                                return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
+                        },
+                },
+                /*
+                147: {
+                        name: "Ninety-eight",
+                        done(){
+                                return PROGRESSION_MILESTONES[98]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[98]
+                        },
+                        unlocked(){
+                                return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
+                        },
+                },
                 /*
                 */
         },
@@ -5329,6 +5458,7 @@ addLayer("goalsii", {
                 if (hasUpgrade("goalsii", 24)) x = x.times(Decimal.pow(1.1, player.goalsii.upgrades.length))
                 x = x.times(getBuyableEffect("e", 32))
                 x = x.times(layers.g.clickables.getAllPartialEffects()["Medals"][0])
+                x = x.times(layers.g.clickables.getRebirthEffects()["Medals"][0])
                 if (hasMilestone("g", 14)) {
                         x = x.times(Decimal.pow(2, player.g.milestones.length))
                 }
@@ -6875,12 +7005,14 @@ addLayer("g", {
                 let x = new Decimal(1.5)
                 if (hasMilestone("g", 10)) x = x.plus(player.g.partialTally.times(.01))
                 x = x.plus(layers.g.clickables.getAllPartialEffects()["G Gain exponent"][0])
+                if (hasUpgrade("f", 24)) x = x.plus(player.f.upgrades.length ** 2)
                 return x
         },
         getGainMultPre(){
                 let x = new Decimal(1/10)
                 if (hasMilestone("g", 15)) x = x.times(2)
                 x = x.times(layers.g.clickables.getAllPartialEffects()["Base G gain"][0])
+                x = x.times(layers.g.clickables.getRebirthEffects()["Base G gain"][0])
                 if (hasMilestone("g", 20)) x = x.times(3)
                 if (hasUpgrade("f", 15)) x = x.times(1.15)
                 return x
@@ -7309,6 +7441,8 @@ addLayer("g", {
                         if (hasMilestone("g", 21)) exp *= 1.2
                         if (hasMilestone("g", 22)) exp *= 1.1
                         if (hasMilestone("g", 23)) exp *= 1.1
+                        if (hasUpgrade("f", 22))   exp *= 1.1
+                        if (hasUpgrade("f", 23))   exp *= 1.1
                         return Math.pow(ret, exp)
                 },
                 getGlobalChanceFactor(){
@@ -7410,8 +7544,8 @@ addLayer("g", {
                         return ret
                 },
                 getRebirthEffects(){
-                        let names = ["Games", "Manual Bulk"]
-                        let symbols = ["*", "*"]
+                        let names = ["Games", "Manual Bulk", "Base G gain", "F gain exponent", "Base F gain", "Medals"]
+                        let symbols = ["*", "*", "*", "+", "*", "*"]
                         let functions = [
                                 function(x){
                                         if (x.lte(2)) return new Decimal(1)
@@ -7427,7 +7561,32 @@ addLayer("g", {
                                         let base = x.sqrt()
                                         let exp = x.sqrt()
                                         return Decimal.pow(base, exp)
-                                }
+                                },
+                                function(x){
+                                        if (!hasUpgrade("f", 21)) return new Decimal(1)
+                                        if (x.eq(0)) return new Decimal(1)
+                                        let ret = x
+                                        if (hasUpgrade("f", 23)) ret = ret.pow(1.5)
+                                        return ret
+                                },
+                                function(x){
+                                        if (!hasUpgrade("f", 22)) return new Decimal(0)
+                                        if (x.eq(0)) return new Decimal(0)
+                                        let ret = x.pow(.75).times(5)
+                                        return ret
+                                },
+                                function(x){
+                                        if (!hasUpgrade("f", 23)) return new Decimal(1)
+                                        if (x.eq(0)) return new Decimal(1)
+                                        let ret = x.pow(x)
+                                        return ret
+                                },
+                                function(x){
+                                        if (!hasUpgrade("f", 24)) return new Decimal(1)
+                                        if (x.eq(0)) return new Decimal(1)
+                                        let ret = x.pow(x.pow(1.1))
+                                        return ret
+                                },
                         ]
                         let ret = {}
                         let arg = new Decimal(layers.g.clickables.getPrimaryRebirths())
@@ -7456,6 +7615,7 @@ addLayer("g", {
                         let exp2 = 1.45
                         if (r >= 9) exp2 += .005 * Math.min(r - 8, 10)
                         if (r >= 14) exp2 += .014 * Math.min(r - 13, 5) ** 2
+                        if (r >= 22) exp2 += .01 * (r - 21)
                         let exp = r ** exp2
                         return Decimal.pow(1e18, exp)
                 },  // layers.g.clickables.getRebirthCostIncrease()
@@ -8762,7 +8922,7 @@ addLayer("g", {
                                                 Rebirthing makes attempting to dev harder and causes it to consume more charges. <br><br>
                                                 You have rebirthed ` + formatWhole(rb) + " times."
                                                 let b = "<br>Each attempts costs " + formatWhole(layers.g.clickables.getChargeComsumption()) + " charges."
-                                                return a + b
+                                                return a + b + "<br><br><br>"
                                         }
                                 ],
                         ],

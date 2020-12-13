@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".3.21.1 Salvaged Wasteland",
+	num: ".3.22 Salvaged Wasteland",
 	name: "",
 }
 
@@ -132,6 +132,9 @@ PROGRESSION_MILESTONES = {
 	89:() => player.g.completedTally.gte(16)             || hasAchievement("ach",135),
 	90:() => player.g.completedTally.gte(50)             || hasAchievement("ach",136),
 	91:() => player.g.completedTally.gte(100)            || hasAchievement("ach",137),
+	92:() => player.g.completedTally.gte(400)            || hasAchievement("ach",141),
+	93:() => player.g.completedTally.gte(440)            || hasAchievement("ach",142),
+	94:() => player.g.completedTally.gte(500)            || hasAchievement("ach",143),
 }
 
 /*
@@ -232,6 +235,9 @@ PROGRESSION_MILESTONES_TEXT = {
 	89: "16 completed games",
 	90: "50 completed games",
 	91: "100 completed games",
+	92: "400 completed games",
+	93: "440 completed games",
+	94: "500 completed games",
 }
 
 function progressReachedNum(){
@@ -255,10 +261,10 @@ function nextMilestone(){
 
 // Display extra things at the top of the page
 var displayThings = [
-	"This may be incorrect: Last updated 10:43 PM pacific 12.12",
+	"This may be incorrect: Last updated 1:49 PM pacific 12.13",
 	'Give me suggestions for "games" names',
 	function (){
-		return "Endgame: 1e28555 features " + (player.f.points.gte("1e28555") ? "(done)" : "(not done)")
+		return "Endgame: 1e78990 features " + (player.f.points.gte("1e28555") ? "(done)" : "(not done)")
 		/*
 		let a = "Endgame: All goals"
 		if (player.ach.achievements.length == Object.keys(PROGRESSION_MILESTONES).length) {

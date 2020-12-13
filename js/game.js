@@ -76,7 +76,7 @@ function shouldNotify(layer){
 	if (layers[layer].shouldNotify){
 		return layers[layer].shouldNotify()
 	}
-	else return false
+	return false
 }
 
 function canReset(layer){
@@ -88,7 +88,8 @@ function canReset(layer){
 		return false
 	} else if (layers[layer].canReset != undefined) {
 		return layers[layer].canReset()
-	} else return tmp[layer].baseAmount.gte(tmp[layer].requires)
+	}
+	return tmp[layer].baseAmount.gte(tmp[layer].requires)
 }
 
 function rowReset(row, layer) {

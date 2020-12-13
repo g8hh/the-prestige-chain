@@ -139,25 +139,27 @@ function getStartPlayer() {
 	for (layer in layers){
 		playerdata[layer] = layers[layer].startData()
 		playerdata[layer].buyables = getStartBuyables(layer)
-		if(playerdata[layer].clickables == undefined) playerdata[layer].clickables = getStartClickables(layer)
+		if (playerdata[layer].clickables == undefined) playerdata[layer].clickables = getStartClickables(layer)
 		playerdata[layer].spentOnBuyables = new Decimal(0)
 		playerdata[layer].upgrades = []
 		playerdata[layer].milestones = []
 		playerdata[layer].achievements = []
 		playerdata[layer].challenges = getStartChallenges(layer)
-		if (layers[layer].tabFormat && !Array.isArray(layers[layer].tabFormat)) {
+		if (layers[layer].tabFormat != undefined && !Array.isArray(layers[layer].tabFormat)) {
 			playerdata.subtabs[layer] = {}
 			playerdata.subtabs[layer].mainTabs = Object.keys(layers[layer].tabFormat)[0]
 		}
-		if (layers[layer].microtabs) {
+		if (layers[layer].microtabs != undefined) {
 			if (playerdata.subtabs[layer] == undefined) playerdata.subtabs[layer] = {}
-			for (item in layers[layer].microtabs)
-			playerdata.subtabs[layer][item] = Object.keys(layers[layer].microtabs[item])[0]
+			for (item in layers[layer].microtabs) {
+				playerdata.subtabs[layer][item] = Object.keys(layers[layer].microtabs[item])[0]
+			}
 		}
-		if (layers[layer].infoboxes) {
+		if (layers[layer].infoboxes != undefined) {
 			if (playerdata.infoboxes[layer] == undefined) playerdata.infoboxes[layer] = {}
-			for (item in layers[layer].infoboxes)
+			for (item in layers[layer].infoboxes) {
 				playerdata.infoboxes[layer][item] = false
+			}
 		}
 	}
 	return playerdata
@@ -167,9 +169,9 @@ function getStartPlayer() {
 function getStartBuyables(layer){
 	let data = {}
 	if (layers[layer].buyables) {
-		for (id in layers[layer].buyables)
-			if (!isNaN(id))
-				data[id] = new Decimal(0)
+		for (id in layers[layer].buyables) {
+			if (!isNaN(id)) data[id] = new Decimal(0)
+		}
 	}
 	return data
 }
@@ -177,9 +179,9 @@ function getStartBuyables(layer){
 function getStartClickables(layer){
 	let data = {}
 	if (layers[layer].clickables) {
-		for (id in layers[layer].clickables)
-			if (!isNaN(id))
-				data[id] = ""
+		for (id in layers[layer].clickables) {
+			if (!isNaN(id)) data[id] = ""
+		}
 	}
 	return data
 }
@@ -187,9 +189,9 @@ function getStartClickables(layer){
 function getStartChallenges(layer){
 	let data = {}
 	if (layers[layer].challenges) {
-		for (id in layers[layer].challenges)
-			if (!isNaN(id))
-				data[id] = 0
+		for (id in layers[layer].challenges) {
+			if (!isNaN(id)) data[id] = 0
+		}
 	}
 	return data
 }
@@ -198,16 +200,14 @@ function fixSave() {
 	defaultData = getStartPlayer()
 	fixData(defaultData, player)
 
-	for(layer in layers)
-	{
-		if (player[layer].best !== undefined) player[layer].best = new Decimal (player[layer].best)
-		if (player[layer].total !== undefined) player[layer].total = new Decimal (player[layer].total)
+	for (layer in layers) {
+		if (player[layer].best !== undefined) player[layer].best = new Decimal(player[layer].best)
+		if (player[layer].total !== undefined) player[layer].total = new Decimal(player[layer].total)
 
-		if (layers[layer].tabFormat && !Array.isArray(layers[layer].tabFormat)) {
-		
+		if (layers[layer].tabFormat != undefined && !Array.isArray(layers[layer].tabFormat)) {
 			if(!Object.keys(layers[layer].tabFormat).includes(player.subtabs[layer].mainTabs)) player.subtabs[layer].mainTabs = Object.keys(layers[layer].tabFormat)[0]
 		}
-		if (layers[layer].microtabs) {
+		if (layers[layer].microtabs != undefined) {
 			for (item in layers[layer].microtabs)
 				if(!Object.keys(layers[layer].microtabs[item]).includes(player.subtabs[layer][item])) player.subtabs[layer][item] = Object.keys(layers[layer].microtabs[item])[0]
 		}
@@ -223,24 +223,20 @@ function fixData(defaultData, newData) {
 		else if (Array.isArray(defaultData[item])) {
 			if (newData[item] === undefined)
 				newData[item] = defaultData[item]
-			else
-				fixData(defaultData[item], newData[item])
+			else fixData(defaultData[item], newData[item])
 		}
 		else if (defaultData[item] instanceof Decimal) { // Convert to Decimal
 			if (newData[item] === undefined)
 				newData[item] = defaultData[item]
-			else
-				newData[item] = new Decimal(newData[item])
+			else newData[item] = new Decimal(newData[item])
 		}
 		else if ((!!defaultData[item]) && (typeof defaultData[item] === "object")) {
-			if (newData[item] === undefined || (typeof defaultData[item] !== "object"))
+			if (newData[item] === undefined || (typeof defaultData[item] !== "object")) {
 				newData[item] = defaultData[item]
-			else
-				fixData(defaultData[item], newData[item])
+			} else fixData(defaultData[item], newData[item])
 		}
 		else {
-			if (newData[item] === undefined)
-				newData[item] = defaultData[item]
+			if (newData[item] === undefined) newData[item] = defaultData[item]
 		}
 	}	
 }
@@ -485,21 +481,18 @@ function achievementEffect(layer, id){
 }
 
 function canAffordPurchase(layer, thing, cost) {
-	if (thing.currencyInternalName){
+	if (thing.currencyInternalName != undefined){
 		let name = thing.currencyInternalName
-		if (thing.currencyLocation){
+		if (thing.currencyLocation != undefined){
 			return !(thing.currencyLocation[name].lt(cost)) 
-		}
-		else if (thing.currencyLayer){
+		} else if (thing.currencyLayer != undefined){
 			let lr = thing.currencyLayer
 			return !(player[lr][name].lt(cost)) 
-		}
-		else {
+		} else {
 			return !(player[name].lt(cost))
 		}
-	}
-	else {
-		return !(player[layer].points.lt(cost))
+	} else {
+		return player[layer].points.gte(cost)
 	}
 }
 
@@ -515,29 +508,25 @@ function buyUpg(layer, id) {
 	if (player[layer].upgrades.includes(id)) return
 	let cost = tmp[layer].upgrades[id].cost
 
-	if (upg.currencyInternalName){
+	if (upg.currencyInternalName != undefined){
 		let name = upg.currencyInternalName
-		if (upg.currencyLocation){
+		if (upg.currencyLocation != undefined){
 			if (upg.currencyLocation[name].lt(cost)) return
 			upg.currencyLocation[name] = upg.currencyLocation[name].sub(cost)
-		}
-		else if (upg.currencyLayer){
+		} else if (upg.currencyLayer != undefined){
 			let lr = upg.currencyLayer
 			if (player[lr][name].lt(cost)) return
 			player[lr][name] = player[lr][name].sub(cost)
-		}
-		else {
+		} else {
 			if (player[name].lt(cost)) return
 			player[name] = player[name].sub(cost)
 		}
-	}
-	else {
+	} else {
 		if (player[layer].points.lt(cost)) return
 		player[layer].points = player[layer].points.sub(cost)	
 	}
 	player[layer].upgrades.push(id);
-	if (upg.onPurchase != undefined)
-		upg.onPurchase()
+	if (upg.onPurchase != undefined) upg.onPurchase()
 }
 
 /*
@@ -583,10 +572,11 @@ function inChallenge(layer, id){
 	let challenge = player[layer].activeChallenge
 	if (challenge == null) return
 	id = toNumber(id)
-	if (challenge==id) return true
+	if (challenge == id) return true
 
-	if (layers[layer].challenges[challenge].countsAs)
-		return tmp[layer].challenges[challenge].countsAs.includes(id)
+	if (!layers[layer].challenges[challenge].countsAs) return
+	
+	return tmp[layer].challenges[challenge].countsAs.includes(id)
 }
 
 // ************ Misc ************
@@ -696,17 +686,17 @@ function focused(x) {
 	onFocused = x
 }
 
-function prestigeButtonText(layer)
-{
-	if(tmp[layer].type == "normal")
+function prestigeButtonText(layer) {
+	if (tmp[layer].type == "normal") {
 		return `${ player[layer].points.lt(1e3) ? (tmp[layer].resetDescription !== undefined ? tmp[layer].resetDescription : "Reset for ") : ""}+<b>${formatWhole(tmp[layer].resetGain)}</b> ${tmp[layer].resource} ${tmp[layer].resetGain.lt(100) && player[layer].points.lt(1e3) ? `<br><br>Next at ${ (tmp[layer].roundUpCost ? formatWhole(tmp[layer].nextAt) : format(tmp[layer].nextAt))} ${ tmp[layer].baseResource }` : ""}`
-	else if(tmp[layer].type== "static")
+	} else if (tmp[layer].type== "static") {
 		return `${tmp[layer].resetDescription !== undefined ? tmp[layer].resetDescription : "Reset for "}+<b>${formatWhole(tmp[layer].resetGain)}</b> ${tmp[layer].resource}<br><br>${player[layer].points.lt(30) ? (tmp[layer].baseAmount.gte(tmp[layer].nextAt)&&(tmp[layer].canBuyMax !== undefined) && tmp[layer].canBuyMax?"Next:":"Req:") : ""} ${formatWhole(tmp[layer].baseAmount)} / ${(tmp[layer].roundUpCost ? formatWhole(tmp[layer].nextAtDisp) : format(tmp[layer].nextAtDisp))} ${ tmp[layer].baseResource }		
 		`
-	else if(tmp[layer].type == "none")
+	} else if (tmp[layer].type == "none") {
 		return ""
-	else
+	} else {
 		return layers[layer].prestigeButtonText()
+	}
 }
 
 
