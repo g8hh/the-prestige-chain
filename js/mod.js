@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".3.25.1 Salvaged Wasteland",
+	num: ".3.25.2 Salvaged Wasteland",
 	name: "",
 }
 
@@ -263,7 +263,7 @@ function nextMilestone(){
 
 // Display extra things at the top of the page
 var displayThings = [
-	"This may be incorrect: Last updated 1:11 PM pacific 12.14",
+	"This may be incorrect: Last updated 1:22 PM pacific 12.14",
 	'Give me suggestions for "games" names',
 	function (){
 		return "Endgame: 1e29511 games"

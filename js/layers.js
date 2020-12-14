@@ -8878,7 +8878,7 @@ addLayer("g", {
                                 let gdata = player.g
                                 rb = layers.g.clickables.getPrimaryRebirths()
                                 let a = gdata.partialTally.gte(Decimal.times(160, (rb + 1) * (rb + 2) / 2))
-                                let b = gdata.charges.get(layers.g.clickables.getChargeComsumption())
+                                let b = gdata.charges.gte(layers.g.clickables.getChargeComsumption())
                                 return a && b
                         },
                         onClick(force = false){
