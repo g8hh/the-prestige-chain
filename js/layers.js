@@ -3805,6 +3805,7 @@ addLayer("f", {
                 if (hasMilestone("ach", 6)) x = x.plus(1.5)
                 if (hasUpgrade("goalsii", 13)) x = x.plus(0.2 * player.goalsii.upgrades.length)
                 x = x.plus(layers.g.clickables.getRebirthEffects()["F gain exponent"][0])
+                if (hasUpgrade("f", 25)) x = x.plus(player.f.upgrades.length ** 2)
                 return x
         },
         getGainMultPre(){
@@ -3959,7 +3960,7 @@ addLayer("f", {
                 21: {
                         title: "Full",
                         description: "Each upgrade in this row unlocks a rebirth reward",
-                        cost: new Decimal("1e28555"),
+                        cost: new Decimal("1e28545"),
                         unlocked(){ 
                                 return hasUpgrade("f", 15) || hasUnlockedPast("g")
                         }, // hasUpgrade("f", 21)
@@ -3982,23 +3983,110 @@ addLayer("f", {
                 },
                 24: {
                         title: "File",
-                        description: "Per upgrade squared add one to <b>G</b> gain",
+                        description: "Per upgrade squared add one to <b>G</b> gain exponent",
                         cost: new Decimal("1e61495"),
                         unlocked(){ 
                                 return hasUpgrade("f", 23) || hasUnlockedPast("g")
                         }, // hasUpgrade("f", 24)
                 },
+                25: {
+                        title: "Found",
+                        description: "Per upgrade squared add one to <b>G</b> gain exponent",
+                        cost: new Decimal("1e78988"),
+                        unlocked(){ 
+                                return hasUpgrade("f", 24) || hasUnlockedPast("g")
+                        }, // hasUpgrade("f", 25)
+                },
+                31: {
+                        title: "Following",
+                        description: "Per upgrade multiply base <b>G</b> gain by 1.01",
+                        cost: new Decimal("1e99330"),
+                        unlocked(){ 
+                                return hasUpgrade("f", 25) || hasUnlockedPast("g")
+                        }, // hasUpgrade("f", 31)
+                },
+                32: {
+                        title: "Form",
+                        description: "Remove the G gain exponent softcap",
+                        cost: new Decimal("1e109555"),
+                        unlocked(){ 
+                                return hasUpgrade("f", 31) || hasUnlockedPast("g")
+                        }, // hasUpgrade("f", 32)
+                },
+                33: {
+                        title: "Food",
+                        description: "Once per second attempt to Rebirth I",
+                        cost: new Decimal("1e130130"),
+                        unlocked(){ 
+                                return hasUpgrade("f", 32) || hasUnlockedPast("g")
+                        }, // hasUpgrade("f", 33)
+                },
+                34: {
+                        title: "Features",
+                        description: "You can also autobuy the first four games",
+                        cost: new Decimal("1e136640"),
+                        unlocked(){ 
+                                return hasUpgrade("f", 33) || hasUnlockedPast("g")
+                        }, // hasUpgrade("f", 34)
+                },
+                35: {
+                        title: "Forums",
+                        description: "Goals multiply base <b>G</b> gain",
+                        cost: new Decimal("1e149215"),
+                        unlocked(){ 
+                                return hasUpgrade("f", 34) || hasUnlockedPast("g")
+                        }, // hasUpgrade("f", 35)
+                },
+                41: {
+                        title: "Friend",
+                        description: "Raise charge gain ^1.1",
+                        cost: new Decimal("1e190803"),
+                        unlocked(){ 
+                                return hasUpgrade("f", 35) || hasUnlockedPast("g")
+                        }, // hasUpgrade("f", 41)
+                },
+                42: {
+                        title: "Feedback",
+                        description: "Each upgrade adds 1 to the Medal gain exponent",
+                        cost: new Decimal("1e206577"),
+                        unlocked(){ 
+                                return hasUpgrade("f", 41) || hasUnlockedPast("g")
+                        }, // hasUpgrade("f", 42)
+                },
+                43: {
+                        title: "Financial",
+                        description: "Medals challenges no longer do anything",
+                        cost: new Decimal("1e216218"),
+                        unlocked(){ 
+                                return hasUpgrade("f", 42) || hasUnlockedPast("g")
+                        }, // hasUpgrade("f", 43)
+                },
+                44: {
+                        title: "Field",
+                        description: "Per upgrade squared multiply base <b>G</b> gain by 1.001",
+                        cost: new Decimal("1e226195"),
+                        unlocked(){ 
+                                return hasUpgrade("f", 43) || hasUnlockedPast("g")
+                        }, // hasUpgrade("f", 44)
+                },
+                45: {
+                        title: "Few",
+                        description: "log(Games) boosts based medal gain",
+                        cost: new Decimal("1e245725"),
+                        unlocked(){ 
+                                return hasUpgrade("f", 44) || hasUnlockedPast("g")
+                        }, // hasUpgrade("f", 45)
+                },
 
-                //
+                // 
 
                 /*
-                found
-                following
-                form
-                food
-                features
-                forums
-                friend
+                four
+                february
+                files
+                fax
+                future
+                film
                 
                 */
         },
@@ -5117,7 +5205,6 @@ addLayer("ach", {
                                 return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
                         },
                 },
-                /*
                 144: {
                         name: "Ninety-five",
                         done(){
@@ -5130,7 +5217,6 @@ addLayer("ach", {
                                 return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
                         },
                 },
-                /*
                 145: {
                         name: "Ninety-six",
                         done(){
@@ -5143,7 +5229,6 @@ addLayer("ach", {
                                 return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
                         },
                 },
-                /*
                 146: {
                         name: "Ninety-seven",
                         done(){
@@ -5156,7 +5241,6 @@ addLayer("ach", {
                                 return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
                         },
                 },
-                /*
                 147: {
                         name: "Ninety-eight",
                         done(){
@@ -5443,10 +5527,12 @@ addLayer("goalsii", {
         getGainExp(){
                 let x = new Decimal(1)
                 if (hasMilestone("goalsii", 13)) x = x.plus(1)
+                if (hasUpgrade("f", 42)) x = x.plus(player.f.upgrades.length)
                 return x
         },
         getGainMultPre(){
                 let x = new Decimal(1)
+                if (hasUpgrade("f", 45)) x = x.times(player.g.points.max(10).log10())
                 return x
         },
         getGainMultPost(){
@@ -7011,10 +7097,13 @@ addLayer("g", {
         getGainMultPre(){
                 let x = new Decimal(1/10)
                 if (hasMilestone("g", 15)) x = x.times(2)
-                x = x.times(layers.g.clickables.getAllPartialEffects()["Base G gain"][0])
-                x = x.times(layers.g.clickables.getRebirthEffects()["Base G gain"][0])
+                x = x.times(layers.g.clickables.getAllPartialEffects()["Base G Gain"][0])
+                x = x.times(layers.g.clickables.getRebirthEffects()["Base G Gain"][0])
                 if (hasMilestone("g", 20)) x = x.times(3)
                 if (hasUpgrade("f", 15)) x = x.times(1.15)
+                if (hasUpgrade("f", 31)) x = x.times(Decimal.pow(1.01, player.f.upgrades.length))
+                if (hasUpgrade("f", 44)) x = x.times(Decimal.pow(1.001, player.f.upgrades.length ** 2))
+                if (hasUpgrade("f", 35)) x = x.times(player.ach.points.max(1))
                 return x
         },
         getGainMultPost(){
@@ -7124,14 +7213,20 @@ addLayer("g", {
                                          31, 32, 33, 34,
                                          41, 42, 43, 44,
                                          51, 52, 53, 54,]
+
+                                if (hasUpgrade("f", 34)) l.push(11,12,13,14)
+
                                 for (j in l){
                                         i = layers.g.clickables[l[j]]
                                         i.onClick(true)
                                 }
+                                if (hasUpgrade("f", 33)) layers.g.clickables[15].onClick()
                         }
                 } else {
                         data.autotime = 0
                 }
+
+                
 
                 data.time += diff
         },
@@ -7443,6 +7538,7 @@ addLayer("g", {
                         if (hasMilestone("g", 23)) exp *= 1.1
                         if (hasUpgrade("f", 22))   exp *= 1.1
                         if (hasUpgrade("f", 23))   exp *= 1.1
+                        if (hasUpgrade("f", 41))   exp *= 1.1
                         return Math.pow(ret, exp)
                 },
                 getGlobalChanceFactor(){
@@ -7454,7 +7550,7 @@ addLayer("g", {
                         return Decimal.minus(1, x.div(div)).pow(2).times(change).times(this.getGlobalChanceFactor())
                 },
                 getAllPartialEffects(){
-                        let names = ["Features", "Games", "Medals", "Max Charges", "G Gain exponent", "Base G gain"]
+                        let names = ["Features", "Games", "Medals", "Max Charges", "G Gain exponent", "Base G Gain"]
                         let symbols = ["*", "*", "*", "+", "+", "*"]
                         let functions = [
                                 function(x){
@@ -7497,7 +7593,7 @@ addLayer("g", {
                                         if (x.lte(110)) return new Decimal(0)
                                         let ret = x.minus(102).sqrt().div(3)
                                         
-                                        if (ret.gt(10)) ret = ret.log10().times(10)
+                                        if (ret.gt(10) && !hasUpgrade("f", 32)) ret = ret.log10().times(10)
                                         return ret
                                 },
                                 function(x){
@@ -7537,6 +7633,8 @@ addLayer("g", {
                         let ret = {}
                         let arg = new Decimal(player.g.completedTally)
                         if (arg == undefined) arg = new Decimal(0)
+
+                        arg = arg.plus(layers.g.clickables.getRebirthEffects()["Effective Completed Games"][0])
                         for (i in names){
                                 let v = functions[i](arg)
                                 ret[names[i]] = [v, symbols[i], v.neq(functions[i](new Decimal(0)))]
@@ -7544,8 +7642,8 @@ addLayer("g", {
                         return ret
                 },
                 getRebirthEffects(){
-                        let names = ["Games", "Manual Bulk", "Base G gain", "F gain exponent", "Base F gain", "Medals"]
-                        let symbols = ["*", "*", "*", "+", "*", "*"]
+                        let names = ["Games", "Manual Bulk", "Base G Gain", "F gain exponent", "Base F gain", "Medals", "Effective Completed Games"]
+                        let symbols = ["*", "*", "*", "+", "*", "*", "+"]
                         let functions = [
                                 function(x){
                                         if (x.lte(2)) return new Decimal(1)
@@ -7585,6 +7683,12 @@ addLayer("g", {
                                         if (!hasUpgrade("f", 24)) return new Decimal(1)
                                         if (x.eq(0)) return new Decimal(1)
                                         let ret = x.pow(x.pow(1.1))
+                                        return ret
+                                },
+                                function(x){
+                                        if (!hasUpgrade("f", 25)) return new Decimal(0)
+                                        if (x.eq(0)) return new Decimal(0)
+                                        let ret = x.pow(1.5)
                                         return ret
                                 },
                         ]

@@ -199,6 +199,7 @@ function getChallengeDepth(chall){
 function updateChallengeDepth(chall){
         chall = Number(chall)
         if (chall > 4) return 0
+        if (hasUpgrade("f", 43)) return 0
         let c = player.goalsii.currentChallenge
         let a = 0
         if (c.slice(0, 1) == chall) a += 2
