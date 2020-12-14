@@ -3991,7 +3991,7 @@ addLayer("f", {
                 },
                 25: {
                         title: "Found",
-                        description: "Per upgrade squared add one to <b>G</b> gain exponent",
+                        description: "Per upgrade squared add one to <b>F</b> gain exponent",
                         cost: new Decimal("1e78988"),
                         unlocked(){ 
                                 return hasUpgrade("f", 24) || hasUnlockedPast("g")
@@ -4071,7 +4071,7 @@ addLayer("f", {
                 },
                 45: {
                         title: "Few",
-                        description: "log(Games) boosts based medal gain",
+                        description: "log(Games) boosts base medal gain",
                         cost: new Decimal("1e245725"),
                         unlocked(){ 
                                 return hasUpgrade("f", 44) || hasUnlockedPast("g")
@@ -7038,8 +7038,8 @@ addLayer("g", {
                         times: 0,
                         autotimes: 0,
                         clickableAmounts: b,
-                        charges: 3,
-                        chargesMax: 10,
+                        charges: new Decimal(3),
+                        chargesMax: new Decimal(10),
                         chargesTime: 0,
                         partialTally: 0,
                         completedTally: 0,
@@ -7104,6 +7104,7 @@ addLayer("g", {
                 if (hasUpgrade("f", 31)) x = x.times(Decimal.pow(1.01, player.f.upgrades.length))
                 if (hasUpgrade("f", 44)) x = x.times(Decimal.pow(1.001, player.f.upgrades.length ** 2))
                 if (hasUpgrade("f", 35)) x = x.times(player.ach.points.max(1))
+                if (hasUpgrade("g", 13)) x = x.times(Decimal.pow(2, player.g.upgrades.length))
                 return x
         },
         getGainMultPost(){
@@ -7143,15 +7144,16 @@ addLayer("g", {
                 return a + format(eff) + "."
         },
         getMaxCharges(){
-                let ret = 10
-                if (hasMilestone("g", 11)) ret += 90
-                ret = ret + layers.g.clickables.getAllPartialEffects()["Max Charges"][0].toNumber()
-                if (hasMilestone("g", 18)) ret *= 3
-                if (hasMilestone("g", 21)) ret *= 6
+                let ret = new Decimal(10)
+                if (hasMilestone("g", 11)) ret = ret.plus(90)
+                ret = ret.plus(layers.g.clickables.getAllPartialEffects()["Max Charges"][0])
+                if (hasMilestone("g", 18)) ret = ret.times(3)
+                if (hasMilestone("g", 21)) ret = ret.times(6)
                 if (hasMilestone("g", 23)){
-                        ret *= Math.pow(2, layers.g.clickables.getPrimaryRebirths())
+                        ret = ret.times(Decimal.pow(2, layers.g.clickables.getPrimaryRebirths()))
                 }
-                return Math.floor(ret)
+                if (hasUpgrade("g", 12)) ret = Decimal.pow(ret, 1.3)
+                return ret.floor()
         },
         update(diff){
                 let data = player.g
@@ -7175,13 +7177,23 @@ addLayer("g", {
                         data.abtime = 0
                 }
                 let cpm = layers.g.clickables.chargesPerMinute()
-                if (cpm > 0 && data.charges < data.chargesMax){
+                console.log("asdasdasd")
+                console.log(cpm > 0)
+                if (cpm > 0 && data.charges.lt(data.chargesMax)) {
                         data.chargesTime += diff
-                        if (data.chargesTime > 60/cpm) {
-                                let x = Math.floor(data.chargesTime * cpm / 60)
-                                data.chargesTime += -60 / cpm * x
-                                data.charges += x
-                                if (data.charges > data.chargesMax) data.charges = data.chargesMax
+                        let a = data.chargesTime > Decimal.div(60, cpm)
+                        let b = cpm.gt(1e10)
+                        console.log("asds")
+                        if (a || b)  {
+                                console.log("hhh")
+                                let x = cpm.times(data.chargesTime/60).floor()
+                                if (!b) {
+                                        data.chargesTime += Decimal.div(x, cpm).times(-60).toNumber()
+                                } else {
+                                        data.chargesTime = 0
+                                }
+                                data.charges = data.charges.plus(x)
+                                if (data.charges.gt(data.chargesMax)) data.charges = data.chargesMax
                         }
                 } else {
                         data.chargesTime = 0
@@ -7262,25 +7274,6 @@ addLayer("g", {
         },
         canReset(){
                 return this.getResetGain().gt(0) && player.g.time >= 2 && !hasMilestone("g", 9)
-        },
-        upgrades: {
-                rows: 5,
-                cols: 5,
-                /*
-                11: {
-                        title: "Email",
-                        description: "Keep <b>C</b> and <b>D</b> upgrades, autobuy <b>C</b> buyables once per second, and multiply all autobuyer bulk by the number of goals",
-                        cost: new Decimal(10),
-                        unlocked(){ 
-                                return player.ach.achievements.includes("61") || hasUnlockedPast("e")
-                        }, //hasUpgrade("e", 11)
-                },
-                */
-                /*
-                girl
-                golf
-                google
-                */
         },
         milestones: {
                 1: {
@@ -7523,7 +7516,7 @@ addLayer("g", {
                         let data = player.g.clickableAmounts
                         let a = data[11].plus(data[12])
                         let b = data[13].plus(data[14])
-                        let ret = a.plus(b).toNumber()
+                        let ret = a.plus(b)
                         let exp = 1
                         if (hasMilestone("g", 11)) exp *= 1.2
                         if (hasMilestone("g", 12)) exp *= 1.2
@@ -7539,7 +7532,7 @@ addLayer("g", {
                         if (hasUpgrade("f", 22))   exp *= 1.1
                         if (hasUpgrade("f", 23))   exp *= 1.1
                         if (hasUpgrade("f", 41))   exp *= 1.1
-                        return Math.pow(ret, exp)
+                        return Decimal.pow(ret, exp)
                 },
                 getGlobalChanceFactor(){
                         let ret = 1
@@ -7695,6 +7688,7 @@ addLayer("g", {
                         let ret = {}
                         let arg = new Decimal(layers.g.clickables.getPrimaryRebirths())
                         if (arg == undefined) arg = new Decimal(0)
+                        if (hasUpgrade("g", 11)) arg = arg.plus(player.g.upgrades.length)
                         for (i in names){
                                 let v = functions[i](arg)
                                 ret[names[i]] = [v, symbols[i], v.neq(functions[i](new Decimal(0)))]
@@ -7702,12 +7696,12 @@ addLayer("g", {
                         return ret
                 },
                 getAttemptAmount(force = false){
-                        let ret = 1
+                        let ret = new Decimal(1)
                         if (!shiftDown && !force) return ret
-                        if (hasMilestone("g", 12)) ret *= 10
-                        if (hasMilestone("g", 17)) ret *= 10
-                        if (hasMilestone("g", 20)) ret *= 4
-                        ret = ret * layers.g.clickables.getRebirthEffects()["Manual Bulk"][0].toNumber()
+                        if (hasMilestone("g", 12)) ret = ret.times(10)
+                        if (hasMilestone("g", 17)) ret = ret.times(10)
+                        if (hasMilestone("g", 20)) ret = ret.times(4)
+                        ret = ret.times(layers.g.clickables.getRebirthEffects()["Manual Bulk"][0])
                         return ret 
                 },
                 getPrimaryRebirths(){
@@ -7720,7 +7714,7 @@ addLayer("g", {
                         if (r >= 9) exp2 += .005 * Math.min(r - 8, 10)
                         if (r >= 14) exp2 += .014 * Math.min(r - 13, 5) ** 2
                         if (r >= 22) exp2 += .01 * (r - 21)
-                        let exp = r ** exp2
+                        let exp = Decimal.pow(r, exp2)
                         return Decimal.pow(1e18, exp)
                 },  // layers.g.clickables.getRebirthCostIncrease()
                 getCompletionsReq(){
@@ -7729,9 +7723,9 @@ addLayer("g", {
                 }, // layers.g.clickables.getCompletionsReq()
                 getChargeComsumption(){
                         let rb = this.getPrimaryRebirths()
-                        let ret = Math.pow(10, Math.pow(rb, .8))
-                        if (hasMilestone("g", 23)) ret *= .1
-                        return Math.floor(ret)
+                        let ret = Decimal.pow(10, Decimal.pow(rb, .8))
+                        if (hasMilestone("g", 23)) ret = ret.div(10)
+                        return ret.floor()
                 }, // layers.g.clickables.getChargeComsumption()
                 11: {
                         title(){
@@ -7753,10 +7747,10 @@ addLayer("g", {
                                 return player.g.points.gte(this.cost()) && (player.g.charges >= 1 || hasMilestone("g", 22))
                         },
                         onClick(force = false){
-                                for (let i = 0; i < layers.g.clickables.getAttemptAmount(force); i++){
+                                for (let i = 0; i < layers.g.clickables.getAttemptAmount(force).toNumber(); i++){
                                         if (!this.canClick()) return 
                                         let cost = this.cost()
-                                        if (!hasMilestone("g", 22)) player.g.charges += -1
+                                        if (!hasMilestone("g", 22)) player.g.charges = player.g.charges.minus(1)
                                         player.g.clickableAmounts[11] = player.g.clickableAmounts[11].plus(1)
                                         player.g.points = player.g.points.minus(cost).max(0)
                                 }
@@ -7782,10 +7776,10 @@ addLayer("g", {
                                 return player.goalsii.points.gte(this.cost()) && (player.g.charges >= 1 || hasMilestone("g", 22))
                         },
                         onClick(force = false){
-                                for (let i = 0; i < layers.g.clickables.getAttemptAmount(force); i++){
+                                for (let i = 0; i < layers.g.clickables.getAttemptAmount(force).toNumber(); i++){
                                         if (!this.canClick()) return 
                                         let cost = this.cost()
-                                        if (!hasMilestone("g", 22)) player.g.charges += -1
+                                        if (!hasMilestone("g", 22)) player.g.charges = player.g.charges.minus(1)
                                         player.g.clickableAmounts[12] = player.g.clickableAmounts[12].plus(1)
                                         player.goalsii.points = player.goalsii.points.minus(cost).max(0)
                                 }
@@ -7811,10 +7805,10 @@ addLayer("g", {
                                 return player.ach.points.gte(this.cost()) && (player.g.charges >= 1 || hasMilestone("g", 22))
                         },
                         onClick(force = false){
-                                for (let i = 0; i < layers.g.clickables.getAttemptAmount(force); i++){
+                                for (let i = 0; i < layers.g.clickables.getAttemptAmount(force).toNumber(); i++){
                                         if (!this.canClick()) return 
                                         let cost = this.cost()
-                                        if (!hasMilestone("g", 22)) player.g.charges += -1
+                                        if (!hasMilestone("g", 22)) player.g.charges = player.g.charges.minus(1)
                                         player.g.clickableAmounts[13] = player.g.clickableAmounts[13].plus(1)
                                 }
                         },
@@ -7839,10 +7833,10 @@ addLayer("g", {
                                 return player.f.points.gte(this.cost()) && (player.g.charges >= 1 || hasMilestone("g", 22))
                         },
                         onClick(force = false){
-                                for (let i = 0; i < layers.g.clickables.getAttemptAmount(force); i++){
+                                for (let i = 0; i < layers.g.clickables.getAttemptAmount(force).toNumber(); i++){
                                         if (!this.canClick()) return 
                                         let cost = this.cost()
-                                        if (!hasMilestone("g", 22)) player.g.charges += -1
+                                        if (!hasMilestone("g", 22)) player.g.charges = player.g.charges.minus(1)
                                         player.g.clickableAmounts[14] = player.g.clickableAmounts[14].plus(1)
                                         player.f.points = player.f.points.sub(cost).max(0)
                                 }
@@ -7884,23 +7878,24 @@ addLayer("g", {
                                         if (b > 990) console.log(b)
                                         if (!this.canClick()) break 
                                         let chance = layers.g.clickables.succChance(data.clickableAmounts[id])
+                                        let cc = layers.g.clickables.getChargeComsumption()
                                         let cost = this.cost()
 
                                         let times = getTimesRequired(chance)
                                         // the random chance factor
-                                        let maxCharges = Math.floor(data.charges/layers.g.clickables.getChargeComsumption())
+                                        let maxCharges = data.charges.div(cc).floor()
                                         // max num at current charges
-                                        let maxGames = data.points.div(cost).floor().toNumber()
+                                        let maxGames = data.points.div(cost).floor()
                                         //max num at current games
 
-                                        let target = Math.min(times, maxCharges, maxGames, remaining)
+                                        let target = Decimal.min(times, maxCharges).min(maxGames).min(remaining)
                                         //max num overall
                                         
-                                        remaining += -1 * target //how many bulks left
+                                        remaining = remaining.minus(target) //how many bulks left
                                         if (!hasMilestone("g", 18)) {
                                                 data.points = data.points.sub(cost.times(target)).max(0)
                                         } // remove games
-                                        data.charges += -1 * layers.g.clickables.getChargeComsumption() * target
+                                        data.charges = data.charges.minus(cc.times(target))
                                         //remove charges
 
                                         if (target != times) break
@@ -7946,23 +7941,24 @@ addLayer("g", {
                                         if (b > 990) console.log(b)
                                         if (!this.canClick()) break 
                                         let chance = layers.g.clickables.succChance(data.clickableAmounts[id])
+                                        let cc = layers.g.clickables.getChargeComsumption()
                                         let cost = this.cost()
 
                                         let times = getTimesRequired(chance)
                                         // the random chance factor
-                                        let maxCharges = Math.floor(data.charges/layers.g.clickables.getChargeComsumption())
+                                        let maxCharges = data.charges.div(cc).floor()
                                         // max num at current charges
-                                        let maxGames = data.points.div(cost).floor().toNumber()
+                                        let maxGames = data.points.div(cost).floor()
                                         //max num at current games
 
-                                        let target = Math.min(times, maxCharges, maxGames, remaining)
+                                        let target = Decimal.min(times, maxCharges).min(maxGames).min(remaining)
                                         //max num overall
                                         
-                                        remaining += -1 * target //how many bulks left
+                                        remaining = remaining.minus(target) //how many bulks left
                                         if (!hasMilestone("g", 18)) {
                                                 data.points = data.points.sub(cost.times(target)).max(0)
                                         } // remove games
-                                        data.charges += -1 * layers.g.clickables.getChargeComsumption() * target
+                                        data.charges = data.charges.minus(cc.times(target))
                                         //remove charges
 
                                         if (target != times) break
@@ -8009,23 +8005,24 @@ addLayer("g", {
                                         if (b > 990) console.log(b)
                                         if (!this.canClick()) break 
                                         let chance = layers.g.clickables.succChance(data.clickableAmounts[id])
+                                        let cc = layers.g.clickables.getChargeComsumption()
                                         let cost = this.cost()
 
                                         let times = getTimesRequired(chance)
                                         // the random chance factor
-                                        let maxCharges = Math.floor(data.charges/layers.g.clickables.getChargeComsumption())
+                                        let maxCharges = data.charges.div(cc).floor()
                                         // max num at current charges
-                                        let maxGames = data.points.div(cost).floor().toNumber()
+                                        let maxGames = data.points.div(cost).floor()
                                         //max num at current games
 
-                                        let target = Math.min(times, maxCharges, maxGames, remaining)
+                                        let target = Decimal.min(times, maxCharges).min(maxGames).min(remaining)
                                         //max num overall
                                         
-                                        remaining += -1 * target //how many bulks left
+                                        remaining = remaining.minus(target) //how many bulks left
                                         if (!hasMilestone("g", 18)) {
                                                 data.points = data.points.sub(cost.times(target)).max(0)
                                         } // remove games
-                                        data.charges += -1 * layers.g.clickables.getChargeComsumption() * target
+                                        data.charges = data.charges.minus(cc.times(target))
                                         //remove charges
 
                                         if (target != times) break
@@ -8072,23 +8069,24 @@ addLayer("g", {
                                         if (b > 990) console.log(b)
                                         if (!this.canClick()) break 
                                         let chance = layers.g.clickables.succChance(data.clickableAmounts[id])
+                                        let cc = layers.g.clickables.getChargeComsumption()
                                         let cost = this.cost()
 
                                         let times = getTimesRequired(chance)
                                         // the random chance factor
-                                        let maxCharges = Math.floor(data.charges/layers.g.clickables.getChargeComsumption())
+                                        let maxCharges = data.charges.div(cc).floor()
                                         // max num at current charges
-                                        let maxGames = data.points.div(cost).floor().toNumber()
+                                        let maxGames = data.points.div(cost).floor()
                                         //max num at current games
 
-                                        let target = Math.min(times, maxCharges, maxGames, remaining)
+                                        let target = Decimal.min(times, maxCharges).min(maxGames).min(remaining)
                                         //max num overall
                                         
-                                        remaining += -1 * target //how many bulks left
+                                        remaining = remaining.minus(target) //how many bulks left
                                         if (!hasMilestone("g", 18)) {
                                                 data.points = data.points.sub(cost.times(target)).max(0)
                                         } // remove games
-                                        data.charges += -1 * layers.g.clickables.getChargeComsumption() * target
+                                        data.charges = data.charges.minus(cc.times(target))
                                         //remove charges
 
                                         if (target != times) break
@@ -8135,23 +8133,24 @@ addLayer("g", {
                                         if (b > 990) console.log(b)
                                         if (!this.canClick()) break 
                                         let chance = layers.g.clickables.succChance(data.clickableAmounts[id])
+                                        let cc = layers.g.clickables.getChargeComsumption()
                                         let cost = this.cost()
 
                                         let times = getTimesRequired(chance)
                                         // the random chance factor
-                                        let maxCharges = Math.floor(data.charges/layers.g.clickables.getChargeComsumption())
+                                        let maxCharges = data.charges.div(cc).floor()
                                         // max num at current charges
-                                        let maxGames = data.points.div(cost).floor().toNumber()
+                                        let maxGames = data.points.div(cost).floor()
                                         //max num at current games
 
-                                        let target = Math.min(times, maxCharges, maxGames, remaining)
+                                        let target = Decimal.min(times, maxCharges).min(maxGames).min(remaining)
                                         //max num overall
                                         
-                                        remaining += -1 * target //how many bulks left
+                                        remaining = remaining.minus(target) //how many bulks left
                                         if (!hasMilestone("g", 18)) {
                                                 data.points = data.points.sub(cost.times(target)).max(0)
                                         } // remove games
-                                        data.charges += -1 * layers.g.clickables.getChargeComsumption() * target
+                                        data.charges = data.charges.minus(cc.times(target))
                                         //remove charges
 
                                         if (target != times) break
@@ -8198,23 +8197,24 @@ addLayer("g", {
                                         if (b > 990) console.log(b)
                                         if (!this.canClick()) break 
                                         let chance = layers.g.clickables.succChance(data.clickableAmounts[id])
+                                        let cc = layers.g.clickables.getChargeComsumption()
                                         let cost = this.cost()
 
                                         let times = getTimesRequired(chance)
                                         // the random chance factor
-                                        let maxCharges = Math.floor(data.charges/layers.g.clickables.getChargeComsumption())
+                                        let maxCharges = data.charges.div(cc).floor()
                                         // max num at current charges
-                                        let maxGames = data.points.div(cost).floor().toNumber()
+                                        let maxGames = data.points.div(cost).floor()
                                         //max num at current games
 
-                                        let target = Math.min(times, maxCharges, maxGames, remaining)
+                                        let target = Decimal.min(times, maxCharges).min(maxGames).min(remaining)
                                         //max num overall
                                         
-                                        remaining += -1 * target //how many bulks left
+                                        remaining = remaining.minus(target) //how many bulks left
                                         if (!hasMilestone("g", 18)) {
                                                 data.points = data.points.sub(cost.times(target)).max(0)
                                         } // remove games
-                                        data.charges += -1 * layers.g.clickables.getChargeComsumption() * target
+                                        data.charges = data.charges.minus(cc.times(target))
                                         //remove charges
 
                                         if (target != times) break
@@ -8261,23 +8261,24 @@ addLayer("g", {
                                         if (b > 990) console.log(b)
                                         if (!this.canClick()) break 
                                         let chance = layers.g.clickables.succChance(data.clickableAmounts[id])
+                                        let cc = layers.g.clickables.getChargeComsumption()
                                         let cost = this.cost()
 
                                         let times = getTimesRequired(chance)
                                         // the random chance factor
-                                        let maxCharges = Math.floor(data.charges/layers.g.clickables.getChargeComsumption())
+                                        let maxCharges = data.charges.div(cc).floor()
                                         // max num at current charges
-                                        let maxGames = data.points.div(cost).floor().toNumber()
+                                        let maxGames = data.points.div(cost).floor()
                                         //max num at current games
 
-                                        let target = Math.min(times, maxCharges, maxGames, remaining)
+                                        let target = Decimal.min(times, maxCharges).min(maxGames).min(remaining)
                                         //max num overall
                                         
-                                        remaining += -1 * target //how many bulks left
+                                        remaining = remaining.minus(target) //how many bulks left
                                         if (!hasMilestone("g", 18)) {
                                                 data.points = data.points.sub(cost.times(target)).max(0)
                                         } // remove games
-                                        data.charges += -1 * layers.g.clickables.getChargeComsumption() * target
+                                        data.charges = data.charges.minus(cc.times(target))
                                         //remove charges
 
                                         if (target != times) break
@@ -8324,23 +8325,24 @@ addLayer("g", {
                                         if (b > 990) console.log(b)
                                         if (!this.canClick()) break 
                                         let chance = layers.g.clickables.succChance(data.clickableAmounts[id])
+                                        let cc = layers.g.clickables.getChargeComsumption()
                                         let cost = this.cost()
 
                                         let times = getTimesRequired(chance)
                                         // the random chance factor
-                                        let maxCharges = Math.floor(data.charges/layers.g.clickables.getChargeComsumption())
+                                        let maxCharges = data.charges.div(cc).floor()
                                         // max num at current charges
-                                        let maxGames = data.points.div(cost).floor().toNumber()
+                                        let maxGames = data.points.div(cost).floor()
                                         //max num at current games
 
-                                        let target = Math.min(times, maxCharges, maxGames, remaining)
+                                        let target = Decimal.min(times, maxCharges).min(maxGames).min(remaining)
                                         //max num overall
                                         
-                                        remaining += -1 * target //how many bulks left
+                                        remaining = remaining.minus(target) //how many bulks left
                                         if (!hasMilestone("g", 18)) {
                                                 data.points = data.points.sub(cost.times(target)).max(0)
                                         } // remove games
-                                        data.charges += -1 * layers.g.clickables.getChargeComsumption() * target
+                                        data.charges = data.charges.minus(cc.times(target))
                                         //remove charges
 
                                         if (target != times) break
@@ -8387,23 +8389,24 @@ addLayer("g", {
                                         if (b > 990) console.log(b)
                                         if (!this.canClick()) break 
                                         let chance = layers.g.clickables.succChance(data.clickableAmounts[id])
+                                        let cc = layers.g.clickables.getChargeComsumption()
                                         let cost = this.cost()
 
                                         let times = getTimesRequired(chance)
                                         // the random chance factor
-                                        let maxCharges = Math.floor(data.charges/layers.g.clickables.getChargeComsumption())
+                                        let maxCharges = data.charges.div(cc).floor()
                                         // max num at current charges
-                                        let maxGames = data.points.div(cost).floor().toNumber()
+                                        let maxGames = data.points.div(cost).floor()
                                         //max num at current games
 
-                                        let target = Math.min(times, maxCharges, maxGames, remaining)
+                                        let target = Decimal.min(times, maxCharges).min(maxGames).min(remaining)
                                         //max num overall
                                         
-                                        remaining += -1 * target //how many bulks left
+                                        remaining = remaining.minus(target) //how many bulks left
                                         if (!hasMilestone("g", 18)) {
                                                 data.points = data.points.sub(cost.times(target)).max(0)
                                         } // remove games
-                                        data.charges += -1 * layers.g.clickables.getChargeComsumption() * target
+                                        data.charges = data.charges.minus(cc.times(target))
                                         //remove charges
 
                                         if (target != times) break
@@ -8450,23 +8453,24 @@ addLayer("g", {
                                         if (b > 990) console.log(b)
                                         if (!this.canClick()) break 
                                         let chance = layers.g.clickables.succChance(data.clickableAmounts[id])
+                                        let cc = layers.g.clickables.getChargeComsumption()
                                         let cost = this.cost()
 
                                         let times = getTimesRequired(chance)
                                         // the random chance factor
-                                        let maxCharges = Math.floor(data.charges/layers.g.clickables.getChargeComsumption())
+                                        let maxCharges = data.charges.div(cc).floor()
                                         // max num at current charges
-                                        let maxGames = data.points.div(cost).floor().toNumber()
+                                        let maxGames = data.points.div(cost).floor()
                                         //max num at current games
 
-                                        let target = Math.min(times, maxCharges, maxGames, remaining)
+                                        let target = Decimal.min(times, maxCharges).min(maxGames).min(remaining)
                                         //max num overall
                                         
-                                        remaining += -1 * target //how many bulks left
+                                        remaining = remaining.minus(target) //how many bulks left
                                         if (!hasMilestone("g", 18)) {
                                                 data.points = data.points.sub(cost.times(target)).max(0)
                                         } // remove games
-                                        data.charges += -1 * layers.g.clickables.getChargeComsumption() * target
+                                        data.charges = data.charges.minus(cc.times(target))
                                         //remove charges
 
                                         if (target != times) break
@@ -8513,23 +8517,24 @@ addLayer("g", {
                                         if (b > 990) console.log(b)
                                         if (!this.canClick()) break 
                                         let chance = layers.g.clickables.succChance(data.clickableAmounts[id])
+                                        let cc = layers.g.clickables.getChargeComsumption()
                                         let cost = this.cost()
 
                                         let times = getTimesRequired(chance)
                                         // the random chance factor
-                                        let maxCharges = Math.floor(data.charges/layers.g.clickables.getChargeComsumption())
+                                        let maxCharges = data.charges.div(cc).floor()
                                         // max num at current charges
-                                        let maxGames = data.points.div(cost).floor().toNumber()
+                                        let maxGames = data.points.div(cost).floor()
                                         //max num at current games
 
-                                        let target = Math.min(times, maxCharges, maxGames, remaining)
+                                        let target = Decimal.min(times, maxCharges).min(maxGames).min(remaining)
                                         //max num overall
                                         
-                                        remaining += -1 * target //how many bulks left
+                                        remaining = remaining.minus(target) //how many bulks left
                                         if (!hasMilestone("g", 18)) {
                                                 data.points = data.points.sub(cost.times(target)).max(0)
                                         } // remove games
-                                        data.charges += -1 * layers.g.clickables.getChargeComsumption() * target
+                                        data.charges = data.charges.minus(cc.times(target))
                                         //remove charges
 
                                         if (target != times) break
@@ -8576,23 +8581,24 @@ addLayer("g", {
                                         if (b > 990) console.log(b)
                                         if (!this.canClick()) break 
                                         let chance = layers.g.clickables.succChance(data.clickableAmounts[id])
+                                        let cc = layers.g.clickables.getChargeComsumption()
                                         let cost = this.cost()
 
                                         let times = getTimesRequired(chance)
                                         // the random chance factor
-                                        let maxCharges = Math.floor(data.charges/layers.g.clickables.getChargeComsumption())
+                                        let maxCharges = data.charges.div(cc).floor()
                                         // max num at current charges
-                                        let maxGames = data.points.div(cost).floor().toNumber()
+                                        let maxGames = data.points.div(cost).floor()
                                         //max num at current games
 
-                                        let target = Math.min(times, maxCharges, maxGames, remaining)
+                                        let target = Decimal.min(times, maxCharges).min(maxGames).min(remaining)
                                         //max num overall
                                         
-                                        remaining += -1 * target //how many bulks left
+                                        remaining = remaining.minus(target) //how many bulks left
                                         if (!hasMilestone("g", 18)) {
                                                 data.points = data.points.sub(cost.times(target)).max(0)
                                         } // remove games
-                                        data.charges += -1 * layers.g.clickables.getChargeComsumption() * target
+                                        data.charges = data.charges.minus(cc.times(target))
                                         //remove charges
 
                                         if (target != times) break
@@ -8636,24 +8642,25 @@ addLayer("g", {
                                         b ++ 
                                         if (b > 990) console.log(b)
                                         if (!this.canClick()) break 
-                                        let chance = layers.g.clickables.succChance(data.clickableAmounts[id]).div(10)
+                                        let chance = layers.g.clickables.succChance(data.clickableAmounts[id])
+                                        let cc = layers.g.clickables.getChargeComsumption()
                                         let cost = this.cost()
 
                                         let times = getTimesRequired(chance)
                                         // the random chance factor
-                                        let maxCharges = Math.floor(data.charges/layers.g.clickables.getChargeComsumption())
+                                        let maxCharges = data.charges.div(cc).floor()
                                         // max num at current charges
-                                        let maxGames = data.points.div(cost).floor().toNumber()
+                                        let maxGames = data.points.div(cost).floor()
                                         //max num at current games
 
-                                        let target = Math.min(times, maxCharges, maxGames, remaining)
+                                        let target = Decimal.min(times, maxCharges).min(maxGames).min(remaining)
                                         //max num overall
                                         
-                                        remaining += -1 * target //how many bulks left
+                                        remaining = remaining.minus(target) //how many bulks left
                                         if (!hasMilestone("g", 18)) {
                                                 data.points = data.points.sub(cost.times(target)).max(0)
                                         } // remove games
-                                        data.charges += -1 * layers.g.clickables.getChargeComsumption() * target
+                                        data.charges = data.charges.minus(cc.times(target))
                                         //remove charges
 
                                         if (target != times) break
@@ -8697,24 +8704,25 @@ addLayer("g", {
                                         b ++ 
                                         if (b > 990) console.log(b)
                                         if (!this.canClick()) break 
-                                        let chance = layers.g.clickables.succChance(data.clickableAmounts[id]).div(10)
+                                        let chance = layers.g.clickables.succChance(data.clickableAmounts[id])
+                                        let cc = layers.g.clickables.getChargeComsumption()
                                         let cost = this.cost()
 
                                         let times = getTimesRequired(chance)
                                         // the random chance factor
-                                        let maxCharges = Math.floor(data.charges/layers.g.clickables.getChargeComsumption())
+                                        let maxCharges = data.charges.div(cc).floor()
                                         // max num at current charges
-                                        let maxGames = data.points.div(cost).floor().toNumber()
+                                        let maxGames = data.points.div(cost).floor()
                                         //max num at current games
 
-                                        let target = Math.min(times, maxCharges, maxGames, remaining)
+                                        let target = Decimal.min(times, maxCharges).min(maxGames).min(remaining)
                                         //max num overall
                                         
-                                        remaining += -1 * target //how many bulks left
+                                        remaining = remaining.minus(target) //how many bulks left
                                         if (!hasMilestone("g", 18)) {
                                                 data.points = data.points.sub(cost.times(target)).max(0)
                                         } // remove games
-                                        data.charges += -1 * layers.g.clickables.getChargeComsumption() * target
+                                        data.charges = data.charges.minus(cc.times(target))
                                         //remove charges
 
                                         if (target != times) break
@@ -8758,24 +8766,25 @@ addLayer("g", {
                                         b ++ 
                                         if (b > 990) console.log(b)
                                         if (!this.canClick()) break 
-                                        let chance = layers.g.clickables.succChance(data.clickableAmounts[id]).div(10)
+                                        let chance = layers.g.clickables.succChance(data.clickableAmounts[id])
+                                        let cc = layers.g.clickables.getChargeComsumption()
                                         let cost = this.cost()
 
                                         let times = getTimesRequired(chance)
                                         // the random chance factor
-                                        let maxCharges = Math.floor(data.charges/layers.g.clickables.getChargeComsumption())
+                                        let maxCharges = data.charges.div(cc).floor()
                                         // max num at current charges
-                                        let maxGames = data.points.div(cost).floor().toNumber()
+                                        let maxGames = data.points.div(cost).floor()
                                         //max num at current games
 
-                                        let target = Math.min(times, maxCharges, maxGames, remaining)
+                                        let target = Decimal.min(times, maxCharges).min(maxGames).min(remaining)
                                         //max num overall
                                         
-                                        remaining += -1 * target //how many bulks left
+                                        remaining = remaining.minus(target) //how many bulks left
                                         if (!hasMilestone("g", 18)) {
                                                 data.points = data.points.sub(cost.times(target)).max(0)
                                         } // remove games
-                                        data.charges += -1 * layers.g.clickables.getChargeComsumption() * target
+                                        data.charges = data.charges.minus(cc.times(target))
                                         //remove charges
 
                                         if (target != times) break
@@ -8819,24 +8828,25 @@ addLayer("g", {
                                         b ++ 
                                         if (b > 990) console.log(b)
                                         if (!this.canClick()) break 
-                                        let chance = layers.g.clickables.succChance(data.clickableAmounts[id]).div(10)
+                                        let chance = layers.g.clickables.succChance(data.clickableAmounts[id])
+                                        let cc = layers.g.clickables.getChargeComsumption()
                                         let cost = this.cost()
 
                                         let times = getTimesRequired(chance)
                                         // the random chance factor
-                                        let maxCharges = Math.floor(data.charges/layers.g.clickables.getChargeComsumption())
+                                        let maxCharges = data.charges.div(cc).floor()
                                         // max num at current charges
-                                        let maxGames = data.points.div(cost).floor().toNumber()
+                                        let maxGames = data.points.div(cost).floor()
                                         //max num at current games
 
-                                        let target = Math.min(times, maxCharges, maxGames, remaining)
+                                        let target = Decimal.min(times, maxCharges).min(maxGames).min(remaining)
                                         //max num overall
                                         
-                                        remaining += -1 * target //how many bulks left
+                                        remaining = remaining.minus(target) //how many bulks left
                                         if (!hasMilestone("g", 18)) {
                                                 data.points = data.points.sub(cost.times(target)).max(0)
                                         } // remove games
-                                        data.charges += -1 * layers.g.clickables.getChargeComsumption() * target
+                                        data.charges = data.charges.minus(cc.times(target))
                                         //remove charges
 
                                         if (target != times) break
@@ -8867,11 +8877,11 @@ addLayer("g", {
                                 return a && b
                         },
                         onClick(force = false){
-                                for (let i = 0; i < layers.g.clickables.getAttemptAmount(force); i++){
+                                for (let i = 0; i < layers.g.clickables.getAttemptAmount(force).toNumber(); i++){
                                         if (!this.canClick()) return 
                                         rb = layers.g.clickables.getPrimaryRebirths()
                                         let data = player.g
-                                        data.charges += -1*layers.g.clickables.getChargeComsumption()
+                                        data.charges = data.charges.minus(layers.g.clickables.getChargeComsumption())
                                         data.rebirths[1] += 1
                                         this.resetPrior()
                                 }
@@ -8892,9 +8902,50 @@ addLayer("g", {
                                         i = l[j]
                                         data1[i] = new Decimal(0)
                                 }
-                                data.charges = 0
+                                data.charges = new Decimal(0)
                         },
                 },
+        },
+        upgrades: {
+                rows: 5,
+                cols: 5,
+                11: {
+                        title: "Girl",
+                        description: "Each upgrade adds 1 to effective rebiths",
+                        cost: new Decimal("1e26697"),
+                        unlocked(){
+                                return hasUpgrade("f", 45) || hasUnlockedPast("g")
+                        },
+                }, // hasUpgrade("g", 11)
+                12: {
+                        title: "Golf",
+                        description: "Max charges ^1.3",
+                        cost: new Decimal("1e26697"),
+                        unlocked(){
+                                return hasUpgrade("g", 11) || hasUnlockedPast("g")
+                        },
+                }, // hasUpgrade("g", 12)
+                13: {
+                        title: "Google",
+                        description: "Per upgrade double base <b>G</b> gain",
+                        cost: new Decimal("1e26697"),
+                        unlocked(){
+                                return hasUpgrade("g", 12) || hasUnlockedPast("g")
+                        },
+                }, // hasUpgrade("g", 13)
+
+                //29511
+
+                /*  
+                 
+                growth
+                gas
+                glass
+                ground
+                guides
+                grand
+
+                */
         },
         tabFormat: {
                 "Upgrades": {
