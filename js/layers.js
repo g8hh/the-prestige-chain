@@ -7933,7 +7933,6 @@ addLayer("g", {
                                 let a = player.g.points.gte(this.cost())
                                 let b = player.g.charges.gte(layers.g.clickables.getChargeComsumption())
                                 let c = player.g.clickableAmounts[22].lt(layers.g.clickables.getCompletionsReq())
-                                console.log(a,b,c)
                                 return a && b && c
                         },
                         onClick(force = false){
@@ -8879,14 +8878,13 @@ addLayer("g", {
                                 let gdata = player.g
                                 rb = layers.g.clickables.getPrimaryRebirths()
                                 let a = gdata.partialTally.gte(Decimal.times(160, (rb + 1) * (rb + 2) / 2))
-                                let b = gdata.charges >= layers.g.clickables.getChargeComsumption()
+                                let b = gdata.charges.get(layers.g.clickables.getChargeComsumption())
                                 return a && b
                         },
                         onClick(force = false){
+                                let data = player.g
                                 for (let i = 0; i < layers.g.clickables.getAttemptAmount(force).toNumber(); i++){
                                         if (!this.canClick()) return 
-                                        rb = layers.g.clickables.getPrimaryRebirths()
-                                        let data = player.g
                                         data.charges = data.charges.minus(layers.g.clickables.getChargeComsumption())
                                         data.rebirths[1] += 1
                                         this.resetPrior()
