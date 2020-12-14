@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".3.24 Salvaged Wasteland",
+	num: ".3.25 Salvaged Wasteland",
 	name: "",
 }
 
@@ -125,7 +125,7 @@ PROGRESSION_MILESTONES = {
 	82:() => player.g.best.gte(20)                       || hasAchievement("ach",125),
 	83:() => player.g.clickableAmounts[11].gte(2)        || hasAchievement("ach",126),
 	84:() => player.g.clickableAmounts[21].gte(4)        || hasAchievement("ach",127),
-	85:() => layers.g.clickables.chargesPerMinute() > 19 || hasAchievement("ach",131),
+	85:() => layers.g.clickables.getChargesPerMinute()>19|| hasAchievement("ach",131),
 	86:() => player.g.partialTally.gte(75)               || hasAchievement("ach",132),
 	87:() => player.g.completedTally.gte(11)             || hasAchievement("ach",133),
 	88:() => player.g.completedTally.gte(13)             || hasAchievement("ach",134),
@@ -140,12 +140,6 @@ PROGRESSION_MILESTONES = {
 	97:() => player.g.completedTally.gte(650)            || hasAchievement("ach",146),
 	98:() => player.g.completedTally.gte(700)            || hasAchievement("ach",147),
 }
-
-/*
-A: 5
-B: 5
-C: 11 (currently)
-*/
 
 PROGRESSION_MILESTONES_TEXT = {
 	1: "1 Amoeba upgrade",
@@ -269,7 +263,7 @@ function nextMilestone(){
 
 // Display extra things at the top of the page
 var displayThings = [
-	"This may be incorrect: Last updated 11:49 PM pacific 12.13",
+	"This may be incorrect: Last updated 12:35 PM pacific 12.14",
 	'Give me suggestions for "games" names',
 	function (){
 		return "Endgame: 1e29511 games"

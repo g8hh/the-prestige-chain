@@ -7176,16 +7176,12 @@ addLayer("g", {
                 } else {
                         data.abtime = 0
                 }
-                let cpm = layers.g.clickables.chargesPerMinute()
-                console.log("asdasdasd")
-                console.log(cpm > 0)
+                let cpm = layers.g.clickables.getChargesPerMinute()
                 if (cpm > 0 && data.charges.lt(data.chargesMax)) {
                         data.chargesTime += diff
                         let a = data.chargesTime > Decimal.div(60, cpm)
                         let b = cpm.gt(1e10)
-                        console.log("asds")
                         if (a || b)  {
-                                console.log("hhh")
                                 let x = cpm.times(data.chargesTime/60).floor()
                                 if (!b) {
                                         data.chargesTime += Decimal.div(x, cpm).times(-60).toNumber()
@@ -7512,11 +7508,7 @@ addLayer("g", {
         clickables: {
                 rows: 5,
                 cols: 5,
-                chargesPerMinute(){
-                        let data = player.g.clickableAmounts
-                        let a = data[11].plus(data[12])
-                        let b = data[13].plus(data[14])
-                        let ret = a.plus(b)
+                getChargesPerMinuteExp(){
                         let exp = 1
                         if (hasMilestone("g", 11)) exp *= 1.2
                         if (hasMilestone("g", 12)) exp *= 1.2
@@ -7532,6 +7524,14 @@ addLayer("g", {
                         if (hasUpgrade("f", 22))   exp *= 1.1
                         if (hasUpgrade("f", 23))   exp *= 1.1
                         if (hasUpgrade("f", 41))   exp *= 1.1
+                        return exp
+                },
+                getChargesPerMinute(){
+                        let data = player.g.clickableAmounts
+                        let a = data[11].plus(data[12])
+                        let b = data[13].plus(data[14])
+                        let ret = a.plus(b)
+                        let exp = this.getChargesPerMinuteExp()
                         return Decimal.pow(ret, exp)
                 },
                 getGlobalChanceFactor(){
@@ -7708,12 +7708,17 @@ addLayer("g", {
                         let data = player.g.rebirths
                         return data[1] + 10 * data[2] + 100 * data[3] + 1e3 * data[4] + 1e4 * data[5] 
                 },// layers.g.clickables.getPrimaryRebirths()
-                getRebirthCostIncrease(){
-                        let r = this.getPrimaryRebirths()
+                getRebirthExp2(a){
+                        let r = a || this.getPrimaryRebirths()
                         let exp2 = 1.45
                         if (r >= 9) exp2 += .005 * Math.min(r - 8, 10)
                         if (r >= 14) exp2 += .014 * Math.min(r - 13, 5) ** 2
                         if (r >= 22) exp2 += .01 * (r - 21)
+                        return exp2
+                },
+                getRebirthCostIncrease(){
+                        let r = this.getPrimaryRebirths()
+                        let exp2 = this.getRebirthExp2(r)
                         let exp = Decimal.pow(r, exp2)
                         return Decimal.pow(1e18, exp)
                 },  // layers.g.clickables.getRebirthCostIncrease()
@@ -7744,7 +7749,7 @@ addLayer("g", {
                                 return Decimal.pow(2, player.g.clickableAmounts[11]).times(10)
                         },
                         canClick(){
-                                return player.g.points.gte(this.cost()) && (player.g.charges >= 1 || hasMilestone("g", 22))
+                                return player.g.points.gte(this.cost()) && (player.g.charges.gte(1) || hasMilestone("g", 22))
                         },
                         onClick(force = false){
                                 for (let i = 0; i < layers.g.clickables.getAttemptAmount(force).toNumber(); i++){
@@ -7773,7 +7778,7 @@ addLayer("g", {
                                 return Decimal.pow(10, player.g.clickableAmounts[12].pow(2)).times(1e8)
                         },
                         canClick(){
-                                return player.goalsii.points.gte(this.cost()) && (player.g.charges >= 1 || hasMilestone("g", 22))
+                                return player.goalsii.points.gte(this.cost()) && (player.g.charges.gte(1) || hasMilestone("g", 22))
                         },
                         onClick(force = false){
                                 for (let i = 0; i < layers.g.clickables.getAttemptAmount(force).toNumber(); i++){
@@ -7802,7 +7807,7 @@ addLayer("g", {
                                 return 82 + player.g.clickableAmounts[13].sqrt().times(3).floor().toNumber()
                         },
                         canClick(){
-                                return player.ach.points.gte(this.cost()) && (player.g.charges >= 1 || hasMilestone("g", 22))
+                                return player.ach.points.gte(this.cost()) && (player.g.charges.gte(1) || hasMilestone("g", 22))
                         },
                         onClick(force = false){
                                 for (let i = 0; i < layers.g.clickables.getAttemptAmount(force).toNumber(); i++){
@@ -7830,7 +7835,7 @@ addLayer("g", {
                                 return Decimal.pow(1e10, player.g.clickableAmounts[14].pow(1.5)).times("1e1900")
                         },
                         canClick(){
-                                return player.f.points.gte(this.cost()) && (player.g.charges >= 1 || hasMilestone("g", 22))
+                                return player.f.points.gte(this.cost()) && (player.g.charges.gte(1) || hasMilestone("g", 22))
                         },
                         onClick(force = false){
                                 for (let i = 0; i < layers.g.clickables.getAttemptAmount(force).toNumber(); i++){
@@ -7863,7 +7868,7 @@ addLayer("g", {
                         },
                         canClick(){
                                 let a = player.g.points.gte(this.cost())
-                                let b = player.g.charges >= layers.g.clickables.getChargeComsumption()
+                                let b = player.g.charges.gte(layers.g.clickables.getChargeComsumption())
                                 let c = player.g.clickableAmounts[21].lt(layers.g.clickables.getCompletionsReq())
                                 return a && b && c
                         },
@@ -7926,8 +7931,9 @@ addLayer("g", {
                         },
                         canClick(){
                                 let a = player.g.points.gte(this.cost())
-                                let b = player.g.charges >= layers.g.clickables.getChargeComsumption()
+                                let b = player.g.charges.gte(layers.g.clickables.getChargeComsumption())
                                 let c = player.g.clickableAmounts[22].lt(layers.g.clickables.getCompletionsReq())
+                                console.log(a,b,c)
                                 return a && b && c
                         },
                         onClick(force = false){
@@ -7990,7 +7996,7 @@ addLayer("g", {
                         },
                         canClick(){
                                 let a = player.g.points.gte(this.cost())
-                                let b = player.g.charges >= layers.g.clickables.getChargeComsumption()
+                                let b = player.g.charges.gte(layers.g.clickables.getChargeComsumption())
                                 let c = player.g.clickableAmounts[23].lt(layers.g.clickables.getCompletionsReq())
                                 return a && b && c
                         },
@@ -8054,7 +8060,7 @@ addLayer("g", {
                         },
                         canClick(){
                                 let a = player.g.points.gte(this.cost())
-                                let b = player.g.charges >= layers.g.clickables.getChargeComsumption()
+                                let b = player.g.charges.gte(layers.g.clickables.getChargeComsumption())
                                 let c = player.g.clickableAmounts[24].lt(layers.g.clickables.getCompletionsReq())
                                 return a && b && c
                         },
@@ -8118,7 +8124,7 @@ addLayer("g", {
                         },
                         canClick(){
                                 let a = player.g.points.gte(this.cost())
-                                let b = player.g.charges >= layers.g.clickables.getChargeComsumption()
+                                let b = player.g.charges.gte(layers.g.clickables.getChargeComsumption())
                                 let c = player.g.clickableAmounts[31].lt(layers.g.clickables.getCompletionsReq())
                                 return a && b && c
                         },
@@ -8182,7 +8188,7 @@ addLayer("g", {
                         },
                         canClick(){
                                 let a = player.g.points.gte(this.cost())
-                                let b = player.g.charges >= layers.g.clickables.getChargeComsumption()
+                                let b = player.g.charges.gte(layers.g.clickables.getChargeComsumption())
                                 let c = player.g.clickableAmounts[32].lt(layers.g.clickables.getCompletionsReq())
                                 return a && b && c
                         },
@@ -8246,7 +8252,7 @@ addLayer("g", {
                         },
                         canClick(){
                                 let a = player.g.points.gte(this.cost())
-                                let b = player.g.charges >= layers.g.clickables.getChargeComsumption()
+                                let b = player.g.charges.gte(layers.g.clickables.getChargeComsumption())
                                 let c = player.g.clickableAmounts[33].lt(layers.g.clickables.getCompletionsReq())
                                 return a && b && c
                         },
@@ -8310,7 +8316,7 @@ addLayer("g", {
                         },
                         canClick(){
                                 let a = player.g.points.gte(this.cost())
-                                let b = player.g.charges >= layers.g.clickables.getChargeComsumption()
+                                let b = player.g.charges.gte(layers.g.clickables.getChargeComsumption())
                                 let c = player.g.clickableAmounts[34].lt(layers.g.clickables.getCompletionsReq())
                                 return a && b && c
                         },
@@ -8374,7 +8380,7 @@ addLayer("g", {
                         },
                         canClick(){
                                 let a = player.g.points.gte(this.cost())
-                                let b = player.g.charges >= layers.g.clickables.getChargeComsumption()
+                                let b = player.g.charges.gte(layers.g.clickables.getChargeComsumption())
                                 let c = player.g.clickableAmounts[41].lt(layers.g.clickables.getCompletionsReq())
                                 return a && b && c
                         },
@@ -8438,7 +8444,7 @@ addLayer("g", {
                         },
                         canClick(){
                                 let a = player.g.points.gte(this.cost())
-                                let b = player.g.charges >= layers.g.clickables.getChargeComsumption()
+                                let b = player.g.charges.gte(layers.g.clickables.getChargeComsumption())
                                 let c = player.g.clickableAmounts[42].lt(layers.g.clickables.getCompletionsReq())
                                 return a && b && c
                         },
@@ -8502,7 +8508,7 @@ addLayer("g", {
                         },
                         canClick(){
                                 let a = player.g.points.gte(this.cost())
-                                let b = player.g.charges >= layers.g.clickables.getChargeComsumption()
+                                let b = player.g.charges.gte(layers.g.clickables.getChargeComsumption())
                                 let c = player.g.clickableAmounts[43].lt(layers.g.clickables.getCompletionsReq())
                                 return a && b && c
                         },
@@ -8566,7 +8572,7 @@ addLayer("g", {
                         },
                         canClick(){
                                 let a = player.g.points.gte(this.cost())
-                                let b = player.g.charges >= layers.g.clickables.getChargeComsumption()
+                                let b = player.g.charges.gte(layers.g.clickables.getChargeComsumption())
                                 let c = player.g.clickableAmounts[44].lt(layers.g.clickables.getCompletionsReq())
                                 return a && b && c
                         },
@@ -8628,7 +8634,7 @@ addLayer("g", {
                         },
                         canClick(){
                                 let a = player.g.points.gte(this.cost())
-                                let b = player.g.charges >= layers.g.clickables.getChargeComsumption()
+                                let b = player.g.charges.gte(layers.g.clickables.getChargeComsumption())
                                 let c = player.g.clickableAmounts[51].lt(layers.g.clickables.getCompletionsReq())
                                 return a && b && c
                         },
@@ -8690,7 +8696,7 @@ addLayer("g", {
                         },
                         canClick(){
                                 let a = player.g.points.gte(this.cost())
-                                let b = player.g.charges >= layers.g.clickables.getChargeComsumption()
+                                let b = player.g.charges.gte(layers.g.clickables.getChargeComsumption())
                                 let c = player.g.clickableAmounts[52].lt(layers.g.clickables.getCompletionsReq())
                                 return a && b && c
                         },
@@ -8752,7 +8758,7 @@ addLayer("g", {
                         },
                         canClick(){
                                 let a = player.g.points.gte(this.cost())
-                                let b = player.g.charges >= layers.g.clickables.getChargeComsumption()
+                                let b = player.g.charges.gte(layers.g.clickables.getChargeComsumption())
                                 let c = player.g.clickableAmounts[53].lt(layers.g.clickables.getCompletionsReq())
                                 return a && b && c
                         },
@@ -8814,7 +8820,7 @@ addLayer("g", {
                         },
                         canClick(){
                                 let a = player.g.points.gte(this.cost())
-                                let b = player.g.charges >= layers.g.clickables.getChargeComsumption()
+                                let b = player.g.charges.gte(layers.g.clickables.getChargeComsumption())
                                 let c = player.g.clickableAmounts[54].lt(layers.g.clickables.getCompletionsReq())
                                 return a && b && c
                         },
@@ -8933,12 +8939,20 @@ addLayer("g", {
                                 return hasUpgrade("g", 12) || hasUnlockedPast("g")
                         },
                 }, // hasUpgrade("g", 13)
+                14: {
+                        title: "Growth",
+                        description: "Keep all Medal upgrades, milestones, and tokens [not coded yet"/*, also dsnt actly do anything til G upgs r kept which isnt now but meh*/+"]",
+                        cost: new Decimal("1e29511"),
+                        unlocked(){
+                                return hasUpgrade("g", 13) || hasUnlockedPast("g")
+                        },
+                }, // hasUpgrade("g", 14)
 
-                //29511
+                //
 
                 /*  
                  
-                growth
+                
                 gas
                 glass
                 ground
@@ -9005,7 +9019,7 @@ addLayer("g", {
                                 ],
                                 ["display-text",
                                         function() {
-                                                let cpm = layers.g.clickables.chargesPerMinute()
+                                                let cpm = layers.g.clickables.getChargesPerMinute()
                                                 let a = "You have " + formatWhole(player.g.charges) + "/" + formatWhole(player.g.chargesMax)
                                                 let b = ""
                                                 if (cpm < 1e5) b = " charges and are gaining " + format(cpm) + " per minute"
