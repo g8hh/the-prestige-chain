@@ -221,6 +221,9 @@ function doReset(layer, force=false) {
 
 	rowReset("side", layer)
 	for (let x = row; x >= 0; x--) {
+		if (x == 5 && !["a", "b", "c", "d", "e", "f", "g", "goalsii", "ach"].includes(layer)) {
+			rowReset("side", layer)
+		}
 		rowReset(x, layer)
 		if (layer == "goalsii") resetChallengeCompsRow(x)
 	}
