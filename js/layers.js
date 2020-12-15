@@ -3597,7 +3597,7 @@ addLayer("e", {
                 },
                 43: {
                         title: "Europe",
-                        description: "Raise the successfully deved boosted to Max Charges to the 2",
+                        description: "Square the successfully deved boosted to Max Charges",
                         cost: new Decimal("1e47094"),
                         currencyLayer: "g",
                         currencyInternalName: "points",
@@ -3639,12 +3639,53 @@ addLayer("e", {
                                 return hasUpgrade("g", 23) || hasUnlockedPast("g")
                         }, // hasUpgrade("e", 51)
                 },
-                //53691
+                52: {
+                        title: "Error",
+                        description: "Raise charge gain ^1.1",
+                        cost: new Decimal("1e53691"),
+                        currencyLayer: "g",
+                        currencyInternalName: "points",
+                        currencyDisplayName: "Games",
+                        unlocked(){
+                                return hasUpgrade("e", 51) || hasUnlockedPast("g")
+                        }, // hasUpgrade("e", 52)
+                },
+                53: {
+                        title: "Engineering",
+                        description: "Raise charge gain ^1.1",
+                        cost: new Decimal("1e54074"),
+                        currencyLayer: "g",
+                        currencyInternalName: "points",
+                        currencyDisplayName: "Games",
+                        unlocked(){
+                                return hasUpgrade("e", 52) || hasUnlockedPast("g")
+                        }, // hasUpgrade("e", 53)
+                },
+                54: {
+                        title: "Enough",
+                        description: "ln(Charges) multiplies base <b>G</b> gain",
+                        cost: new Decimal("1e54456"),
+                        currencyLayer: "g",
+                        currencyInternalName: "points",
+                        currencyDisplayName: "Games",
+                        unlocked(){
+                                return hasUpgrade("e", 53) || hasUnlockedPast("g")
+                        }, // hasUpgrade("e", 54)
+                },
+                55: {
+                        title: "Effects",
+                        description: "Each <b>G</b> upgrade multiplies base medal gain by 12 and adds 34 to the exponent",
+                        cost: new Decimal("1e54456"),
+                        currencyLayer: "g",
+                        currencyInternalName: "points",
+                        currencyDisplayName: "Games",
+                        unlocked(){
+                                return hasUpgrade("e", 54) || hasUnlockedPast("g")
+                        }, // hasUpgrade("e", 55)
+                },
+
                 /*
-                error
-                engineering
-                enough
-                effects
+                
                 environmental
                 entry
                 european
@@ -5758,11 +5799,13 @@ addLayer("goalsii", {
                 let x = new Decimal(1)
                 if (hasMilestone("goalsii", 13)) x = x.plus(1)
                 if (hasUpgrade("f", 42)) x = x.plus(player.f.upgrades.length)
+                if (hasUpgrade("e", 55)) x = x.plus(player.g.upgrades.length * 34)
                 return x
         },
         getGainMultPre(){
                 let x = new Decimal(1)
                 if (hasUpgrade("f", 45)) x = x.times(player.g.points.max(10).log10())
+                if (hasUpgrade("e", 55)) x = x.times(player.g.upgrades.length * 12)
                 return x
         },
         getGainMultPost(){
@@ -7319,6 +7362,7 @@ addLayer("g", {
                 if (hasMilestone("g", 10)) x = x.plus(player.g.partialTally.times(.01))
                 x = x.plus(layers.g.clickables.getAllPartialEffects()["G Gain exponent"][0])
                 if (hasUpgrade("f", 24)) x = x.plus(player.f.upgrades.length ** 2)
+                if (hasUpgrade("g", 25)) x = x.plus(6 * player.g.upgrades.length)
                 return x
         },
         getGainMultPre(){
@@ -7341,6 +7385,8 @@ addLayer("g", {
                         x = x.times(Decimal.pow(1.1, a))
                 }
                 x = x.times(getBuyableEffect("e", 33))
+                if (hasUpgrade("e", 54)) x = x.times(player.g.charges.max(3).ln())
+                if (hasUpgrade("g", 25)) x = x.times(Decimal.pow(5, player.g.upgrades.length))
                 return x
         },
         getGainMultPost(){
@@ -7767,6 +7813,8 @@ addLayer("g", {
                         if (hasUpgrade("e", 41))   exp *= 1.1
                         if (hasUpgrade("e", 44))   exp *= 1.1
                         if (hasUpgrade("e", 45))   exp *= 1.1
+                        if (hasUpgrade("e", 52))   exp *= 1.1
+                        if (hasUpgrade("e", 53))   exp *= 1.1
                         return exp
                 },
                 getChargesPerMinute(){
@@ -7833,6 +7881,7 @@ addLayer("g", {
                                         if (ret.gt(75e3)) ret = ret.div(5e4).pow(2).times(5e4)
 
                                         if (hasUpgrade("e", 43)) ret = ret.pow(2)
+                                        if (hasUpgrade("g", 24)) ret = ret.pow(2)
 
                                         return ret.floor()
                                 },
@@ -8022,13 +8071,17 @@ addLayer("g", {
                                 return player.g.points.gte(this.cost()) && (player.g.charges.gte(1) || hasMilestone("g", 22))
                         },
                         onClick(force = false){
-                                for (let i = 0; i < layers.g.clickables.getAttemptAmount(force).toNumber(); i++){
-                                        if (!this.canClick()) return 
-                                        let cost = this.cost()
-                                        if (!hasMilestone("g", 22)) player.g.charges = player.g.charges.minus(1)
-                                        player.g.clickableAmounts[11] = player.g.clickableAmounts[11].plus(1)
-                                        player.g.points = player.g.points.minus(cost).max(0)
-                                }
+                                let data = player.g
+                                
+                                let maxGames = data.points.gte(10) ? data.points.div(10).log(2).plus(1).floor() : data.clickableAmounts[11]
+                                let maxCharges = data.charges
+                                let attempts = layers.g.clickables.getAttemptAmount(force)
+                                
+                                let target = maxGames.sub(data.clickableAmounts[11]).max(0).min(maxCharges).min(attempts)
+
+                                player.g.clickableAmounts[11] = player.g.clickableAmounts[11].plus(target)
+                                if (target.gt(0)) player.g.points = player.g.points.minus(this.cost().div(2)).max(0)
+                                if (!hasMilestone("g", 22)) player.g.charges = player.g.charges.minus(target).max(0)
                         },
                 },
                 12: {
@@ -9247,9 +9300,30 @@ addLayer("g", {
                                 return hasUpgrade("e", 45) || hasUnlockedPast("g")
                         },
                 }, // hasUpgrade("g", 23)
+                24: {
+                        title: "Grand",
+                        description: "Square the successfully deved boosted to Max Charges",
+                        cost: new Decimal("1e64436"),
+                        unlocked(){
+                                return hasUpgrade("e", 55) || hasUnlockedPast("g")
+                        },
+                }, // hasUpgrade("g", 24)
+                25: {
+                        title: "Greater",
+                        description: "Per <b>G</b> upgrade multiply base <b>G</b> gain by 5 and add 6 to the <b>G</b> gain exponent",
+                        cost: new Decimal("1e65250"),
+                        unlocked(){
+                                return hasUpgrade("g", 24) || hasUnlockedPast("g")
+                        },
+                }, // hasUpgrade("g", 25)
+                
 
                 /*  
-                grand
+                
+                guest
+                graphics
+                grade
+                german
 
                 */
         },
