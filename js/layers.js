@@ -2670,10 +2670,7 @@ addLayer("d", {
                                 if (tmp.d.buyables[23].unlocked) layers.d.buyables[23].buyMax(amt)
                                 if (tmp.d.buyables[31].unlocked) layers.d.buyables[31].buyMax(amt)
                                 if (tmp.d.buyables[32].unlocked) layers.d.buyables[32].buyMax(amt)
-                                /*
                                 if (tmp.d.buyables[33].unlocked) layers.d.buyables[33].buyMax(amt)
-                                /*
-                                */
                         }
                 } else {
                         data.abtime = 0
@@ -2874,12 +2871,66 @@ addLayer("d", {
                                 return hasUpgrade("e", 15) || hasUnlockedPast("e")
                         }, //hasUpgrade("d", 45)
                 },
+                51: {
+                        title: "Done",
+                        description: "Unlock a <b>D</b> buyable",
+                        cost: new Decimal("1e305977"),
+                        currencyLayer: "f",
+                        currencyInternalName: "points",
+                        currencyDisplayName: "Features",
+                        unlocked(){ 
+                                return hasUpgrade("g", 15) || hasUnlockedPast("g")
+                        }, //hasUpgrade("d", 51)
+                },
+                52: {
+                        title: "District",
+                        description: "Each upgrade multiplies base <b>G</b> gain by 1.01",
+                        cost: new Decimal("1e306001"),
+                        currencyLayer: "f",
+                        currencyInternalName: "points",
+                        currencyDisplayName: "Features",
+                        unlocked(){ 
+                                return hasUpgrade("d", 51) || hasUnlockedPast("g")
+                        }, // hasUpgrade("d", 52)
+                },
+                53: {
+                        title: "Downloads",
+                        description: "Raise charge gain ^1.1",
+                        cost: new Decimal("1e307059"),
+                        currencyLayer: "f",
+                        currencyInternalName: "points",
+                        currencyDisplayName: "Features",
+                        unlocked(){ 
+                                return hasUpgrade("d", 52) || hasUnlockedPast("g")
+                        }, // hasUpgrade("d", 53)
+                },
+                54: {
+                        title: "Document",
+                        description: "Increase the <b>G</b> effect exponent by +.1",
+                        cost: new Decimal("1e307113"),
+                        currencyLayer: "f",
+                        currencyInternalName: "points",
+                        currencyDisplayName: "Features",
+                        unlocked(){ 
+                                return hasUpgrade("d", 53) || hasUnlockedPast("g")
+                        }, // hasUpgrade("d", 54)
+                },
+                55: {
+                        title: "Deals",
+                        description: "Raise charge gain ^1.1",
+                        cost: new Decimal("1e310424"),
+                        currencyLayer: "f",
+                        currencyInternalName: "points",
+                        currencyDisplayName: "Features",
+                        unlocked(){ 
+                                return hasUpgrade("d", 54) || hasUnlockedPast("g")
+                        }, // hasUpgrade("d", 55)
+                },
 
                 /*
-                done
-                direct
-                district
-                downloads
+                domain
+                designed
+                death
                 */
         },
         buyables: {
@@ -3101,6 +3152,33 @@ addLayer("d", {
                                 return hasMilestone("g", 4) || hasUnlockedPast("g")
                         },
                 },
+                33: {
+                        title: "Omnipotent IV",
+                        display(){
+                                return getBuyableDisplay("d", 33)
+                        },
+                        effect(){
+                                return CURRENT_BUYABLE_EFFECTS["d33"]
+                        },
+                        canAfford(){
+                                return canAffordBuyable("d", 33)
+                        },
+                        total(){
+                                return getBuyableAmount("d", 33).plus(this.extra())
+                        },
+                        extra(){
+                                return calcBuyableExtra("d", 33)
+                        },
+                        buy(){
+                                buyManualBuyable("d", 33)
+                        },
+                        buyMax(maximum){
+                                buyMaximumBuyable("d", 33, maximum)
+                        },
+                        unlocked(){ 
+                                return hasUpgrade("d", 51) || hasUnlockedPast("g")
+                        },
+                },
         },
         tabFormat: {
                 "Upgrades": {
@@ -3319,10 +3397,7 @@ addLayer("e", {
                                 if (tmp.e.buyables[23].unlocked) layers.e.buyables[23].buyMax(amt)
                                 if (tmp.e.buyables[31].unlocked) layers.e.buyables[31].buyMax(amt)
                                 if (tmp.e.buyables[32].unlocked) layers.e.buyables[32].buyMax(amt)
-                                /*
                                 if (tmp.e.buyables[33].unlocked) layers.e.buyables[33].buyMax(amt)
-                                /*
-                                */
                         }
                 } else {
                         data.abtime = 0
@@ -3443,9 +3518,137 @@ addLayer("e", {
                                 return hasUpgrade("e", 24) || hasUnlockedPast("e")
                         }, //hasUpgrade("e", 25)
                 },
-
+                31: {
+                        title: "Edition",
+                        description: "Each upgrade multiplies base <b>G</b> gain by 1.1",
+                        cost: new Decimal("1e32684"),
+                        currencyLayer: "g",
+                        currencyInternalName: "points",
+                        currencyDisplayName: "Games",
+                        unlocked(){
+                                return hasUpgrade("g", 21) || hasUnlockedPast("g")
+                        }, // hasUpgrade("e", 31)
+                },
+                32: {
+                        title: "Electronics",
+                        description: "Unlock a fully completed effect",
+                        cost: new Decimal("1e34851"),
+                        currencyLayer: "g",
+                        currencyInternalName: "points",
+                        currencyDisplayName: "Games",
+                        unlocked(){
+                                return hasUpgrade("e", 31) || hasUnlockedPast("g")
+                        }, // hasUpgrade("e", 32)
+                },
+                33: {
+                        title: "Environment",
+                        description: "Square <b>Edition</b>",
+                        cost: new Decimal("1e38276"),
+                        currencyLayer: "g",
+                        currencyInternalName: "points",
+                        currencyDisplayName: "Games",
+                        unlocked(){
+                                return hasUpgrade("e", 32) || hasUnlockedPast("g")
+                        }, // hasUpgrade("e", 33)
+                },
+                34: {
+                        title: "Ever",
+                        description: "Square <b>Edition</b>",
+                        cost: new Decimal("1e39436"),
+                        currencyLayer: "g",
+                        currencyInternalName: "points",
+                        currencyDisplayName: "Games",
+                        unlocked(){
+                                return hasUpgrade("e", 33) || hasUnlockedPast("g")
+                        }, // hasUpgrade("e", 34)
+                },
+                35: {
+                        title: "Early",
+                        description: "Gain one free Rebirth level",
+                        cost: new Decimal("1e45201"),
+                        currencyLayer: "g",
+                        currencyInternalName: "points",
+                        currencyDisplayName: "Games",
+                        unlocked(){
+                                return hasUpgrade("e", 34) || hasUnlockedPast("g")
+                        }, // hasUpgrade("e", 35)
+                },
+                41: {
+                        title: "Either",
+                        description: "Raise Charge gain ^1.1",
+                        cost: new Decimal("1e46297"),
+                        currencyLayer: "g",
+                        currencyInternalName: "points",
+                        currencyDisplayName: "Games",
+                        unlocked(){
+                                return hasUpgrade("g", 22) || hasUnlockedPast("g")
+                        }, // hasUpgrade("e", 41)
+                },
+                42: {
+                        title: "Else",
+                        description: "Raise the successfully deved boosted to Features to the 20",
+                        cost: new Decimal("1e46653"),
+                        currencyLayer: "g",
+                        currencyInternalName: "points",
+                        currencyDisplayName: "Games",
+                        unlocked(){
+                                return hasUpgrade("e", 41) || hasUnlockedPast("g")
+                        }, // hasUpgrade("e", 42)
+                },
+                43: {
+                        title: "Europe",
+                        description: "Raise the successfully deved boosted to Max Charges to the 2",
+                        cost: new Decimal("1e47094"),
+                        currencyLayer: "g",
+                        currencyInternalName: "points",
+                        currencyDisplayName: "Games",
+                        unlocked(){
+                                return hasUpgrade("e", 42) || hasUnlockedPast("g")
+                        }, // hasUpgrade("e", 43)
+                },
+                44: {
+                        title: "Edit",
+                        description: "Raise charge gain ^1.1",
+                        cost: new Decimal("1e49220"),
+                        currencyLayer: "g",
+                        currencyInternalName: "points",
+                        currencyDisplayName: "Games",
+                        unlocked(){
+                                return hasUpgrade("e", 43) || hasUnlockedPast("g")
+                        }, // hasUpgrade("e", 44)
+                },
+                45: {
+                        title: "Economic",
+                        description: "Raise charge gain ^1.1",
+                        cost: new Decimal("1e49590"),
+                        currencyLayer: "g",
+                        currencyInternalName: "points",
+                        currencyDisplayName: "Games",
+                        unlocked(){
+                                return hasUpgrade("e", 44) || hasUnlockedPast("g")
+                        }, // hasUpgrade("e", 45)
+                },
+                51: {
+                        title: "Everything",
+                        description: "Unlock an <b>E</b> buyable",
+                        cost: new Decimal("1e50660"),
+                        currencyLayer: "g",
+                        currencyInternalName: "points",
+                        currencyDisplayName: "Games",
+                        unlocked(){
+                                return hasUpgrade("g", 23) || hasUnlockedPast("g")
+                        }, // hasUpgrade("e", 51)
+                },
+                //53691
                 /*
-                entertainment [used]
+                error
+                engineering
+                enough
+                effects
+                environmental
+                entry
+                european
+                employment
                 */
         },
         buyables: {
@@ -3666,7 +3869,34 @@ addLayer("e", {
                         unlocked(){ 
                                 return hasUpgrade("goalsii", 25) || hasUnlockedPast("g")
                         },
-                }
+                },
+                33: {
+                        title: "Omnipotent V",
+                        display(){
+                                return getBuyableDisplay("e", 33)
+                        },
+                        effect(){
+                                return CURRENT_BUYABLE_EFFECTS["e33"]
+                        },
+                        canAfford(){
+                                return canAffordBuyable("e", 33)
+                        },
+                        total(){
+                                return getBuyableAmount("e", 33).plus(this.extra())
+                        },
+                        extra(){
+                                return calcBuyableExtra("e", 33)
+                        },
+                        buy(){
+                                buyManualBuyable("e", 33)
+                        },
+                        buyMax(maximum){
+                                buyMaximumBuyable("e", 33, maximum)
+                        },
+                        unlocked(){ 
+                                return hasUpgrade("e", 51) || hasUnlockedPast("g")
+                        },
+                },
         },
         tabFormat: {
                 "Upgrades": {
@@ -6910,7 +7140,7 @@ addLayer("goalsii", {
                                 51, 52, 53, 54, 55,
                         ][i])
                 }
-                data.upgrades = filter(data.upgrades, keep2)
+                if (!hasUpgrade("g", 14)) data.upgrades = filter(data.upgrades, keep2)
                 let keep1 = []
                 if (hasMilestone("g", 2)) {
                         let qw = Math.min(25, player.g.times * 3)
@@ -6923,7 +7153,7 @@ addLayer("goalsii", {
                                 keep1.push(all[i])
                         }
                 }
-                data.milestones = filter(data.milestones, keep1)
+                if (!hasUpgrade("g", 14)) data.milestones = filter(data.milestones, keep1)
                 let remove1 = [
                         "11", "12", "13", "14", "15", "16", "17", 
                         "21", "22", "23", "24", "25", "26", "27", 
@@ -6955,6 +7185,7 @@ addLayer("goalsii", {
                 }
 
                 if (hasMilestone("g", 8)) return
+                if (hasUpgrade("g", 14)) return
 
                 let a = {}
                 let b = {}
@@ -6981,10 +7212,6 @@ addLayer("goalsii", {
                                 total: c,
                                 copy: e,
                         }
-
-                
-
-
         },
         getTokenToMedalGain(gain){
                 if (getChallengeDepth(3) > 0 && player.f.best.lt(1e19)) return new Decimal(0)
@@ -7099,12 +7326,21 @@ addLayer("g", {
                 if (hasMilestone("g", 15)) x = x.times(2)
                 x = x.times(layers.g.clickables.getAllPartialEffects()["Base G Gain"][0])
                 x = x.times(layers.g.clickables.getRebirthEffects()["Base G Gain"][0])
+                x = x.times(layers.g.clickables.getAllCompletedEffects()["Base G Gain"][0])
                 if (hasMilestone("g", 20)) x = x.times(3)
                 if (hasUpgrade("f", 15)) x = x.times(1.15)
                 if (hasUpgrade("f", 31)) x = x.times(Decimal.pow(1.01, player.f.upgrades.length))
                 if (hasUpgrade("f", 44)) x = x.times(Decimal.pow(1.001, player.f.upgrades.length ** 2))
                 if (hasUpgrade("f", 35)) x = x.times(player.ach.points.max(1))
                 if (hasUpgrade("g", 13)) x = x.times(Decimal.pow(2, player.g.upgrades.length))
+                if (hasUpgrade("d", 52)) x = x.times(Decimal.pow(1.01, player.d.upgrades.length))
+                if (hasUpgrade("e", 31)) {
+                        let a = player.e.upgrades.length
+                        if (hasUpgrade("e", 33)) a *= 2
+                        if (hasUpgrade("e", 34)) a *= 2
+                        x = x.times(Decimal.pow(1.1, a))
+                }
+                x = x.times(getBuyableEffect("e", 33))
                 return x
         },
         getGainMultPost(){
@@ -7129,9 +7365,11 @@ addLayer("g", {
 
                 let amt = player.g.best
 
-                let ret = amt.times(4).plus(1).pow(3)
+                let exp = 3
+                if (hasMilestone("g", 14)) exp *= 2
+                if (hasUpgrade("d", 54)) exp += .1
 
-                if (hasMilestone("g", 14)) ret = ret.pow(2)
+                let ret = amt.times(4).plus(1).pow(exp)
 
                 //ret = softcap(ret, "g_eff")
 
@@ -7524,6 +7762,11 @@ addLayer("g", {
                         if (hasUpgrade("f", 22))   exp *= 1.1
                         if (hasUpgrade("f", 23))   exp *= 1.1
                         if (hasUpgrade("f", 41))   exp *= 1.1
+                        if (hasUpgrade("d", 53))   exp *= 1.1
+                        if (hasUpgrade("d", 55))   exp *= 1.1
+                        if (hasUpgrade("e", 41))   exp *= 1.1
+                        if (hasUpgrade("e", 44))   exp *= 1.1
+                        if (hasUpgrade("e", 45))   exp *= 1.1
                         return exp
                 },
                 getChargesPerMinute(){
@@ -7542,6 +7785,12 @@ addLayer("g", {
                         let div = layers.g.clickables.getCompletionsReq()
                         return Decimal.minus(1, x.div(div)).pow(2).times(change).times(this.getGlobalChanceFactor())
                 },
+                getEffectivePartialDevs(){
+                        let arg = new Decimal(player.g.partialTally)
+                        if (arg == undefined) arg = new Decimal(0)
+                        arg = arg.plus(getBuyableEffect("d", 33))
+                        return arg
+                },
                 getAllPartialEffects(){
                         let names = ["Features", "Games", "Medals", "Max Charges", "G Gain exponent", "Base G Gain"]
                         let symbols = ["*", "*", "*", "+", "+", "*"]
@@ -7550,6 +7799,9 @@ addLayer("g", {
                                         let ret = Decimal.pow(x.plus(1), x.sqrt())
 
                                         if (ret.gt(1e100) && !hasUpgrade("f", 12)) ret = ret.log10().pow(50)
+
+                                        if (hasUpgrade("e", 42)) ret = ret.pow(20)
+                                        
                                         return ret
                                 },
                                 function(x){
@@ -7580,6 +7832,8 @@ addLayer("g", {
                                         if (ret.gt(15e2)) ret = ret.div(5e2).pow(2).times(5e2)
                                         if (ret.gt(75e3)) ret = ret.div(5e4).pow(2).times(5e4)
 
+                                        if (hasUpgrade("e", 43)) ret = ret.pow(2)
+
                                         return ret.floor()
                                 },
                                 function(x){
@@ -7599,17 +7853,22 @@ addLayer("g", {
                                 }
                         ]
                         let ret = {}
-                        let arg = new Decimal(player.g.partialTally)
-                        if (arg == undefined) arg = new Decimal(0)
+                        let arg = this.getEffectivePartialDevs()
                         for (i in names){
                                 let v = functions[i](arg)
                                 ret[names[i]] = [v, symbols[i], v.neq(functions[i](new Decimal(0)))]
                         }
                         return ret
                 },
+                getEffectiveCompletedDevs(){
+                        let arg = new Decimal(player.g.completedTally)
+                        if (arg == undefined) arg = new Decimal(0)
+                        arg = arg.plus(layers.g.clickables.getRebirthEffects()["Effective Completed Games"][0])
+                        return arg
+                },
                 getAllCompletedEffects(){
-                        let names = ["Features", "Games"]
-                        let symbols = ["*", "*"]
+                        let names = ["Features", "Games", "Base G Gain"]
+                        let symbols = ["*", "*", "*"]
                         let functions = [
                                 function(x){
                                         return Decimal.pow(x.plus(4), x.sqrt().times(4))
@@ -7622,17 +7881,30 @@ addLayer("g", {
                                         let ret = x.div(6).pow(exp)
                                         return ret
                                 },
+                                function(x){
+                                        if (!hasUpgrade("e", 32)) return new Decimal(1)
+                                        if (x.lt(100)) return new Decimal(1)
+                                        let base = x.div(100)
+                                        let exp = x.pow(.2).div(4)
+                                        let ret = Decimal.pow(base, exp)
+                                        return ret
+                                },
                         ]
                         let ret = {}
-                        let arg = new Decimal(player.g.completedTally)
-                        if (arg == undefined) arg = new Decimal(0)
-
-                        arg = arg.plus(layers.g.clickables.getRebirthEffects()["Effective Completed Games"][0])
+                        let arg = this.getEffectiveCompletedDevs()
+                        
                         for (i in names){
                                 let v = functions[i](arg)
                                 ret[names[i]] = [v, symbols[i], v.neq(functions[i](new Decimal(0)))]
                         }
                         return ret
+                },
+                getEffectiveRebirths(){
+                        let arg = new Decimal(layers.g.clickables.getPrimaryRebirths())
+                        if (arg == undefined) arg = new Decimal(0)
+                        if (hasUpgrade("g", 11)) arg = arg.plus(player.g.upgrades.length)
+                        if (hasUpgrade("e", 35)) arg = arg.plus(1)
+                        return arg
                 },
                 getRebirthEffects(){
                         let names = ["Games", "Manual Bulk", "Base G Gain", "F gain exponent", "Base F gain", "Medals", "Effective Completed Games"]
@@ -7686,9 +7958,7 @@ addLayer("g", {
                                 },
                         ]
                         let ret = {}
-                        let arg = new Decimal(layers.g.clickables.getPrimaryRebirths())
-                        if (arg == undefined) arg = new Decimal(0)
-                        if (hasUpgrade("g", 11)) arg = arg.plus(player.g.upgrades.length)
+                        let arg = this.getEffectiveRebirths()
                         for (i in names){
                                 let v = functions[i](arg)
                                 ret[names[i]] = [v, symbols[i], v.neq(functions[i](new Decimal(0)))]
@@ -8939,22 +9209,46 @@ addLayer("g", {
                 }, // hasUpgrade("g", 13)
                 14: {
                         title: "Growth",
-                        description: "Keep all Medal upgrades, milestones, and tokens [not coded yet"/*, also dsnt actly do anything til G upgs r kept which isnt now but meh*/+"]",
+                        description: "Keep all Medal upgrades, milestones, and tokens",
                         cost: new Decimal("1e29511"),
                         unlocked(){
                                 return hasUpgrade("g", 13) || hasUnlockedPast("g")
                         },
                 }, // hasUpgrade("g", 14)
-
-                //
+                15: {
+                        title: "Gas",
+                        description: "Unlock a row of <b>D</b> upgrades",
+                        cost: new Decimal("2e30086"),
+                        unlocked(){
+                                return hasUpgrade("g", 14) || hasUnlockedPast("g")
+                        },
+                }, // hasUpgrade("g", 15)
+                21: {
+                        title: "Glass",
+                        description: "Unlock a row of <b>E</b> upgrades",
+                        cost: new Decimal("1e32090"),
+                        unlocked(){
+                                return hasUpgrade("d", 55) || hasUnlockedPast("g")
+                        },
+                }, // hasUpgrade("g", 21)
+                22: {
+                        title: "Ground",
+                        description: "Unlock another row of <b>E</b> upgrades",
+                        cost: new Decimal("1e45604"),
+                        unlocked(){
+                                return hasUpgrade("e", 35) || hasUnlockedPast("g")
+                        },
+                }, // hasUpgrade("g", 22)
+                23: {
+                        title: "Guides",
+                        description: "Unlock another row of <b>E</b> upgrades",
+                        cost: new Decimal("1e49960"),
+                        unlocked(){
+                                return hasUpgrade("e", 45) || hasUnlockedPast("g")
+                        },
+                }, // hasUpgrade("g", 23)
 
                 /*  
-                 
-                
-                gas
-                glass
-                ground
-                guides
                 grand
 
                 */
@@ -9050,7 +9344,9 @@ addLayer("g", {
                                                 and larger buffs for completing games. <br><br>
                                                 <h2 style = 'color: #CC0033'>Rewards</h2><h2>:</h2><br>
                                                 You have fully completed ` 
-                                                let b = formatWhole(player.g.completedTally) + " games so:"
+                                                let ecd = layers.g.clickables.getEffectiveCompletedDevs()
+                                                let ecdportion = ecd.eq(player.g.completedTally) ? "" : "+" + format(ecd.minus(player.g.completedTally))
+                                                let b = formatWhole(player.g.completedTally) + ecdportion + " games so:"
                                                 let b2 = ""
                                                 let data2 = layers.g.clickables.getAllCompletedEffects()
                                                 for (i in data2){
@@ -9058,7 +9354,10 @@ addLayer("g", {
                                                         if (!j[2]) continue
                                                         b2 += "<br>• " + j[1] + format(j[0]) + " to " + i 
                                                 }
-                                                let c = "<br><br> You have successfully deved " + formatWhole(player.g.partialTally) + " games so:"
+
+                                                let pcd = layers.g.clickables.getEffectivePartialDevs()
+                                                let pcdportion = pcd.eq(player.g.partialTally) ? "" : "+" + format(pcd.minus(player.g.partialTally))
+                                                let c = "<br><br> You have successfully deved " + formatWhole(player.g.partialTally) + pcdportion + " games so:"
                                                 let c2 = ""
                                                 let data1 = layers.g.clickables.getAllPartialEffects()
                                                 for (i in data1){
@@ -9066,9 +9365,13 @@ addLayer("g", {
                                                         if (!j[2]) continue
                                                         c2 += "<br>• " + j[1] + format(j[0]) + " to " + i 
                                                 }
+
                                                 let rb = layers.g.clickables.getPrimaryRebirths()
                                                 if (rb == 0) return a + b + b2 + c + c2
-                                                let d = "<br><br> You have rebirthed " + formatWhole(rb) + " times so:"
+
+                                                let erb = layers.g.clickables.getEffectiveRebirths()
+                                                let erbportion = erb.eq(rb) ? "" : "+" + format(erb.minus(rb))
+                                                let d = "<br><br> You have rebirthed " + formatWhole(rb) + erbportion + " times so:"
                                                 let d2 = ""
                                                 let data3 = layers.g.clickables.getRebirthEffects()
                                                 for (i in data3){

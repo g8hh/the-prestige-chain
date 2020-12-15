@@ -1226,6 +1226,20 @@ var MAIN_BUYABLE_DATA = {
                         return [b0, b1, b2]
                 },
         },
+        d33: {
+                name: "Omnipotent IV",
+                func: "lin_sqrt",
+                effects: "Free successfully deved games",
+                base: {
+                        initial: new Decimal(.1),
+                },
+                bases(){
+                        let b0 = new Decimal("1")
+                        let b1 = new Decimal("1")
+                        let b2 = new Decimal("1e1e40")
+                        return [b0, b1, b2]
+                },
+        },
         e11: {
                 name: "Experience",
                 func: "exp",
@@ -1410,6 +1424,26 @@ var MAIN_BUYABLE_DATA = {
                         let b0 = new Decimal("1e39000")
                         let b1 = new Decimal("1e1234")
                         let b2 = new Decimal("1e50")
+                        return [b0, b1, b2]
+                },
+        },
+        e33: {
+                name: "Omnipotent V",
+                func(a,x){
+                        let ret = Decimal.plus(x, 1).log10().times(a)
+                        return ret.plus(1)
+                },
+                identity: new Decimal(1),
+                effectSymbol: "*",
+                eFormula: "log10(10+x)*base",
+                effects: "Base <b>G</b> gain",
+                base: {
+                        initial: new Decimal(1),
+                },
+                bases(){
+                        let b0 = new Decimal("1")
+                        let b1 = new Decimal("1")
+                        let b2 = new Decimal("1e1e40")
                         return [b0, b1, b2]
                 },
         },

@@ -275,6 +275,14 @@ var softcap_data = {
 		},
 		*/
 	},
+	d_buy33:{
+		1: {
+			func: "log",
+			start: new Decimal(1),
+			mult: .1,
+			add: 1,
+		},
+	},
 	e_eff:{
 		1: {
 			func: "pow",
