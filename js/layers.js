@@ -7580,7 +7580,7 @@ addLayer("g", {
                                 return player.g.points.gte(2)
                         },
                         unlocked(){
-                                return hasMilestone("g", 1)
+                                return hasMilestone("g", 1) || hasUnlockedPast("g")
                         },
                 }, // hasMilestone("g", 2)
                 3: {
@@ -7590,7 +7590,7 @@ addLayer("g", {
                                 return player.g.points.gte(3)
                         },
                         unlocked(){
-                                return hasMilestone("g", 2)
+                                return hasMilestone("g", 2) || hasUnlockedPast("g")
                         },
                 }, // hasMilestone("g", 3)
                 4: {
@@ -7600,7 +7600,7 @@ addLayer("g", {
                                 return player.g.points.gte(4)
                         },
                         unlocked(){
-                                return hasMilestone("g", 3)
+                                return hasMilestone("g", 3) || hasUnlockedPast("g")
                         },
                 }, // hasMilestone("g", 4)
                 5: {
@@ -7610,7 +7610,7 @@ addLayer("g", {
                                 return player.g.points.gte(5)
                         },
                         unlocked(){
-                                return hasMilestone("g", 4)
+                                return hasMilestone("g", 4) || hasUnlockedPast("g")
                         },
                 }, // hasMilestone("g", 5)
                 6: {
@@ -7620,7 +7620,7 @@ addLayer("g", {
                                 return player.g.points.gte(6)
                         },
                         unlocked(){
-                                return hasMilestone("g", 5)
+                                return hasMilestone("g", 5) || hasUnlockedPast("g")
                         },
                 }, // hasMilestone("g", 6)
                 7: {
@@ -7630,7 +7630,7 @@ addLayer("g", {
                                 return player.g.points.gte(10)
                         },
                         unlocked(){
-                                return hasMilestone("g", 6)
+                                return hasMilestone("g", 6) || hasUnlockedPast("g")
                         },
                 }, // hasMilestone("g", 7)
                 8: {
@@ -7640,7 +7640,7 @@ addLayer("g", {
                                 return player.g.points.gte(13)
                         },
                         unlocked(){
-                                return hasMilestone("g", 7)
+                                return hasMilestone("g", 7) || hasUnlockedPast("g")
                         },
                 }, // hasMilestone("g", 8)
                 9: {
@@ -7650,7 +7650,7 @@ addLayer("g", {
                                 return player.g.clickableAmounts[31].gte(4)
                         },
                         unlocked(){
-                                return hasMilestone("g", 8)
+                                return hasMilestone("g", 8) || hasUnlockedPast("g")
                         },
                 }, // hasMilestone("g", 9)
                 10: {
@@ -7660,7 +7660,7 @@ addLayer("g", {
                                 return player.g.partialTally.gte(72)
                         },
                         unlocked(){
-                                return hasMilestone("g", 9)
+                                return hasMilestone("g", 9) || hasUnlockedPast("g")
                         },
                 }, // hasMilestone("g", 10)
                 11: {
@@ -7670,7 +7670,7 @@ addLayer("g", {
                                 return player.g.partialTally.gte(77)
                         },
                         unlocked(){
-                                return hasMilestone("g", 10)
+                                return hasMilestone("g", 10) || hasUnlockedPast("g")
                         },
                 }, // hasMilestone("g", 11)
                 12: {
@@ -7680,7 +7680,7 @@ addLayer("g", {
                                 return player.g.completedTally.gte(2)
                         },
                         unlocked(){
-                                return hasMilestone("g", 11)
+                                return hasMilestone("g", 11) || hasUnlockedPast("g")
                         },
                 }, // hasMilestone("g", 12)
                 13: {
@@ -7690,7 +7690,7 @@ addLayer("g", {
                                 return player.g.completedTally.gte(8)
                         },
                         unlocked(){
-                                return hasMilestone("g", 12)
+                                return hasMilestone("g", 12) || hasUnlockedPast("g")
                         },
                 }, // hasMilestone("g", 13)
                 14: {
@@ -7700,7 +7700,7 @@ addLayer("g", {
                                 return player.g.partialTally.gte(136)
                         },
                         unlocked(){
-                                return hasMilestone("g", 13)
+                                return hasMilestone("g", 13) || hasUnlockedPast("g")
                         },
                 }, // hasMilestone("g", 14)
                 15: {
@@ -7710,7 +7710,7 @@ addLayer("g", {
                                 return player.g.partialTally.gte(138)
                         },
                         unlocked(){
-                                return hasMilestone("g", 14)
+                                return hasMilestone("g", 14) || hasUnlockedPast("g")
                         },
                 }, // hasMilestone("g", 15)
                 16: {
@@ -7720,7 +7720,7 @@ addLayer("g", {
                                 return player.g.partialTally.gte(300)
                         },
                         unlocked(){
-                                return hasMilestone("g", 15)
+                                return hasMilestone("g", 15) || hasUnlockedPast("g")
                         },
                 }, // hasMilestone("g", 16)
                 17: {
@@ -7730,7 +7730,7 @@ addLayer("g", {
                                 return player.g.partialTally.gte(400)
                         },
                         unlocked(){
-                                return hasMilestone("g", 16)
+                                return hasMilestone("g", 16) || hasUnlockedPast("g")
                         },
                 }, // hasMilestone("g", 17)
                 18: {
@@ -7740,7 +7740,7 @@ addLayer("g", {
                                 return player.g.partialTally.gte(470)
                         },
                         unlocked(){
-                                return hasMilestone("g", 17)
+                                return hasMilestone("g", 17) || hasUnlockedPast("g")
                         },
                 }, // hasMilestone("g", 18)
                 19: {
@@ -7750,7 +7750,7 @@ addLayer("g", {
                                 return player.g.partialTally.gte(950)
                         },
                         unlocked(){
-                                return hasMilestone("g", 18)
+                                return hasMilestone("g", 18) || hasUnlockedPast("g")
                         },
                         toggles: [["g", "autodev"]]
                 }, // hasMilestone("g", 19)
@@ -7761,7 +7761,7 @@ addLayer("g", {
                                 return player.g.partialTally.gte(1590)
                         },
                         unlocked(){
-                                return hasMilestone("g", 19)
+                                return hasMilestone("g", 19) || hasUnlockedPast("g")
                         },
                 }, // hasMilestone("g", 20)
                 21: {
@@ -7771,7 +7771,7 @@ addLayer("g", {
                                 return player.g.partialTally.gte(4470)
                         },
                         unlocked(){
-                                return hasMilestone("g", 20)
+                                return hasMilestone("g", 20) || hasUnlockedPast("g")
                         },
                 }, // hasMilestone("g", 21)
                 22: {
@@ -7781,7 +7781,7 @@ addLayer("g", {
                                 return player.g.rebirths[1] >= 7
                         },
                         unlocked(){
-                                return hasMilestone("g", 21)
+                                return hasMilestone("g", 21) || hasUnlockedPast("g")
                         },
                 }, // hasMilestone("g", 22)
                 23: {
@@ -7791,7 +7791,7 @@ addLayer("g", {
                                 return player.g.rebirths[1] >= 8
                         },
                         unlocked(){
-                                return hasMilestone("g", 22)
+                                return hasMilestone("g", 22) || hasUnlockedPast("g")
                         },
                 }, // hasMilestone("g", 23)
                 
@@ -7830,6 +7830,8 @@ addLayer("g", {
                         let a = data[11].plus(data[12])
                         let b = data[13].plus(data[14])
                         let base = a.plus(b)
+                        if (hasMilestone("h", 1)) base = base.plus(1)
+                        if (hasMilestone("h", 5)) base = base.plus(player.h.milestones.length)
                         if (hasMilestone("h", 3)) base = base.times(1.2)
                         
                         let exp = this.getChargesPerMinuteExp()
@@ -7971,6 +7973,7 @@ addLayer("g", {
                         if (arg == undefined) arg = new Decimal(0)
                         if (hasUpgrade("g", 11)) arg = arg.plus(player.g.upgrades.length)
                         if (hasUpgrade("e", 35)) arg = arg.plus(1)
+                        if (hasMilestone("h", 5)) arg = arg.plus(player.h.milestones.length / 2)
                         return arg
                 },
                 getRebirthEffects(){
@@ -8574,7 +8577,7 @@ addLayer("g", {
                 },
                 33: {
                         title(){
-                                return "<h3 style='color: #903000'>Diablo III</h3>"
+                                return "<h3 style='color: #903000'>Diablo</h3>"
                         },
                         display(){
                                 let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(this.cost()) + " Games<br>"
@@ -9461,9 +9464,9 @@ addLayer("g", {
                                                 }
 
                                                 let rb = layers.g.clickables.getPrimaryRebirths()
-                                                if (rb == 0) return a + b + b2 + c + c2
-
                                                 let erb = layers.g.clickables.getEffectiveRebirths()
+                                                if (erb.eq(0)) return a + b + b2 + c + c2
+                                                
                                                 let erbportion = erb.eq(rb) ? "" : "+" + format(erb.minus(rb))
                                                 let d = "<br><br> You have rebirthed " + formatWhole(rb) + erbportion + " times so:"
                                                 let d2 = ""
@@ -9511,6 +9514,11 @@ addLayer("g", {
                 if (!false) {
                         //upgrades
                         let keep2 = []
+                        let j = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "14", "15", "13", "16", "17", "18", "19", "20", "21", "22", "23"]
+                        for (i = 0; i < player.h.times; i ++){
+                                if (i > 22) break
+                                if (hasMilestone("h", 4)) keep2.push(j[i])
+                        }
                         player.g.milestones = filter(player.g.milestones, keep2)
                 }
 
@@ -9688,7 +9696,7 @@ addLayer("h", {
         milestones: {
                 1: {
                         requirementDescription: "<b>Have</b><br>Requires: 1 tbd", 
-                        effectDescription: "Double the chance to succeed, raise charges gain ^1.1, and keep <b>Growth</b>",
+                        effectDescription: "Double the chance to succeed, raise charges gain ^1.1, keep <b>Growth</b>, and gain 1 charge per minute",
                         done(){
                                 return player.h.points.gte(1)
                         },
@@ -9703,7 +9711,7 @@ addLayer("h", {
                                 return player.h.points.gte(2)
                         },
                         unlocked(){
-                                return hasMilestone("h", 1)
+                                return hasMilestone("h", 1) || hasUnlockedPast("h")
                         }, // hasMilestone("h", 2)
                 },
                 3: {
@@ -9713,14 +9721,34 @@ addLayer("h", {
                                 return player.h.points.gte(3)
                         },
                         unlocked(){
-                                return hasMilestone("h", 2)
+                                return hasMilestone("h", 2) || hasUnlockedPast("h")
                         }, // hasMilestone("h", 3)
                 },
+                4: {
+                        requirementDescription: "<b>He</b><br>Requires: 4 tbd", 
+                        effectDescription: "Keep one <b>G</b> milestone per <b>H</b> reset",
+                        done(){
+                                return player.h.points.gte(4)
+                        },
+                        unlocked(){
+                                return hasMilestone("h", 3) || hasUnlockedPast("h")
+                        }, // hasMilestone("h", 4)
+                },
+                5: {
+                        requirementDescription: "<b>His</b><br>Requires: 6 tbd", 
+                        effectDescription: "Each milestone adds 1 to base charge gain and half an effective Rebirth level",
+                        done(){
+                                return player.h.points.gte(6)
+                        },
+                        unlocked(){
+                                return hasMilestone("h", 4) || hasUnlockedPast("h")
+                        }, // hasMilestone("h", 5)
+                },
                 /*
-                
-                
-                he
-
+                here
+                help
+                how
+                had
                 */
         },
         tabFormat: {

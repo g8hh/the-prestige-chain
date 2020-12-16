@@ -628,8 +628,11 @@ function toNumber(x) {
 
 function updateMilestones(layer){
 	for (id in layers[layer].milestones){
-		if (!(player[layer].milestones.includes(id)) && layers[layer].milestones[id].done())
-			player[layer].milestones.push(id)
+		if (!(player[layer].milestones.includes(id)) && layers[layer].milestones[id].done()) {
+			if (layers[layer].milestones[id].unlocked == undefined || layers[layer].milestones[id].unlocked()) {
+				player[layer].milestones.push(id)
+			}
+		}
 	}
 }
 
