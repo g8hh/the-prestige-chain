@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".4.1 To Be Determined",
+	num: ".4.2 To Be Determined",
 	name: "",
 }
 
@@ -266,7 +266,7 @@ var displayThings = [
 	"This may be incorrect: Last updated 5:10 PM pacific 12.15",
 	'Give me suggestions for "games" names',
 	function (){
-		return "Endgame: 10 tbd"
+		return "Endgame: 25 Hearts"
 		//+ (player.g.points.gte("1e26697") ? "(done)" : "(not done)")
 		/*
 		let a = "Endgame: All goals"

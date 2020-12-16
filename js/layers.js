@@ -4424,7 +4424,7 @@ addLayer("f", {
                 player.f.time = 0
                 player.f.times = 0
 
-                if (!false) {
+                if (!hasMilestone("h", 7)) {
                         //upgrades
                         let keep = []
                         if (hasUpgrade("f", 11)) keep.push(11)
@@ -7832,6 +7832,7 @@ addLayer("g", {
                         let base = a.plus(b)
                         if (hasMilestone("h", 1)) base = base.plus(1)
                         if (hasMilestone("h", 5)) base = base.plus(player.h.milestones.length)
+                        if (hasMilestone("h", 6)) base = base.plus(player.h.milestones.length ** 2)
                         if (hasMilestone("h", 3)) base = base.times(1.2)
                         
                         let exp = this.getChargesPerMinuteExp()
@@ -7845,6 +7846,7 @@ addLayer("g", {
                 getGlobalChanceFactor(){
                         let ret = 1
                         if (hasMilestone("h", 1)) ret *= 2
+                        if (hasMilestone("h", 7)) ret *= 5
                         return ret
                 },
                 succChance(x, change = 1, maxone = true){
@@ -7933,6 +7935,7 @@ addLayer("g", {
                         let arg = new Decimal(player.g.completedTally)
                         if (arg == undefined) arg = new Decimal(0)
                         arg = arg.plus(layers.g.clickables.getRebirthEffects()["Effective Completed Games"][0])
+                        if (hasMilestone("h", 6)) arg = arg.plus(player.h.milestones.length ** 2)
                         return arg
                 },
                 getAllCompletedEffects(){
@@ -9504,7 +9507,7 @@ addLayer("g", {
                 player.g.time = 0
                 player.g.times = 0
 
-                if (!false) {
+                if (!hasMilestone("h", 8)) {
                         //upgrades
                         let keep = []
                         if (hasMilestone("h", 1)) keep.push(14)
@@ -9545,13 +9548,14 @@ addLayer("g", {
                 for (let j = 0; j < resetRebirths.length; j++){
                         player.g.rebirths[resetRebirths[j]] = 0
                 }
+                if (hasMilestone("h", 8)) player.g.rebirths[1] = 40
         },
 })
 
 
 
 addLayer("h", {
-        name: "tbd", // This is optional, only used in a few places, If absent it just uses the layer id.
+        name: "Hearts", // This is optional, only used in a few places, If absent it just uses the layer id.
         symbol: "H", // This appears on the layer's node. Default is the id with the first letter capitalized
         position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
         startData() { 
@@ -9569,7 +9573,7 @@ addLayer("h", {
         color: "#66FF33",
         branches: ["g"],
         requires: new Decimal(0), // Can be a function that takes requirement increases into account
-        resource: "tbd", // Name of prestige currency
+        resource: "Heart", // Name of prestige currency
         baseResource: "Games", // Name of resource prestige is based on
         baseAmount() {
                 return player.g.best
@@ -9663,7 +9667,7 @@ addLayer("h", {
         },
         row: 7, // Row the layer is in on the tree (0 is the first row)
         hotkeys: [
-            {key: "h", description: "H: Reset for tbd", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+            {key: "h", description: "H: Reset for Hearts", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
         ],
         layerShown(){return player.g.best.max(10).log10().gte(103345) || player.h.best.gt(0) || hasUnlockedPast("h")},
         prestigeButtonText(){
@@ -9695,7 +9699,7 @@ addLayer("h", {
         },
         milestones: {
                 1: {
-                        requirementDescription: "<b>Have</b><br>Requires: 1 tbd", 
+                        requirementDescription: "<b>Have</b><br>Requires: 1 Hearts", 
                         effectDescription: "Double the chance to succeed, raise charges gain ^1.1, keep <b>Growth</b>, and gain 1 charge per minute",
                         done(){
                                 return player.h.points.gte(1)
@@ -9705,7 +9709,7 @@ addLayer("h", {
                         }, // hasMilestone("h", 1)
                 },
                 2: {
-                        requirementDescription: "<b>Home</b><br>Requires: 2 tbd", 
+                        requirementDescription: "<b>Home</b><br>Requires: 2 Hearts", 
                         effectDescription: "Double charge gain and holding shift allows 10x more game attempts",
                         done(){
                                 return player.h.points.gte(2)
@@ -9715,7 +9719,7 @@ addLayer("h", {
                         }, // hasMilestone("h", 2)
                 },
                 3: {
-                        requirementDescription: "<b>Has</b><br>Requires: 3 tbd", 
+                        requirementDescription: "<b>Has</b><br>Requires: 3 Hearts", 
                         effectDescription: "Each milestone raises max charges ^1.1 and multiply base charge gain by 1.2",
                         done(){
                                 return player.h.points.gte(3)
@@ -9725,7 +9729,7 @@ addLayer("h", {
                         }, // hasMilestone("h", 3)
                 },
                 4: {
-                        requirementDescription: "<b>He</b><br>Requires: 4 tbd", 
+                        requirementDescription: "<b>He</b><br>Requires: 4 Hearts", 
                         effectDescription: "Keep one <b>G</b> milestone per <b>H</b> reset",
                         done(){
                                 return player.h.points.gte(4)
@@ -9735,7 +9739,7 @@ addLayer("h", {
                         }, // hasMilestone("h", 4)
                 },
                 5: {
-                        requirementDescription: "<b>His</b><br>Requires: 6 tbd", 
+                        requirementDescription: "<b>His</b><br>Requires: 6 Hearts", 
                         effectDescription: "Each milestone adds 1 to base charge gain and half an effective Rebirth level",
                         done(){
                                 return player.h.points.gte(6)
@@ -9744,10 +9748,37 @@ addLayer("h", {
                                 return hasMilestone("h", 4) || hasUnlockedPast("h")
                         }, // hasMilestone("h", 5)
                 },
+                6: {
+                        requirementDescription: "<b>Here</b><br>Requires: 9 Hearts", 
+                        effectDescription: "Per milestone squared get an effective fully deved level and add 1 to base charge gain",
+                        done(){
+                                return player.h.points.gte(9)
+                        },
+                        unlocked(){
+                                return hasMilestone("h", 5) || hasUnlockedPast("h")
+                        }, // hasMilestone("h", 6)
+                },
+                7: {
+                        requirementDescription: "<b>Help</b><br>Requires: 13 Hearts", 
+                        effectDescription: "Keep <b>F</b> upgrades and 5x the chance to succeed",
+                        done(){
+                                return player.h.points.gte(13)
+                        },
+                        unlocked(){
+                                return hasMilestone("h", 6) || hasUnlockedPast("h")
+                        }, // hasMilestone("h", 7)
+                },
+                8: {
+                        requirementDescription: "<b>How</b><br>Requires: 19 Hearts", 
+                        effectDescription: "Start with 40 Rebirths and keep <b>G</b> upgrades",
+                        done(){
+                                return player.h.points.gte(19)
+                        },
+                        unlocked(){
+                                return hasMilestone("h", 7) || hasUnlockedPast("h")
+                        }, // hasMilestone("h", 8)
+                },
                 /*
-                here
-                help
-                how
                 had
                 */
         },
@@ -9756,11 +9787,11 @@ addLayer("h", {
                         content: ["main-display",
                                 ["prestige-button", "", function (){ return false ? {'display': 'none'} : {}}],
                                 ["display-text",
-                                        function() {return shiftDown ? "Your best tbd is " + format(player.h.best) : ""}],
+                                        function() {return shiftDown ? "Your best Hearts is " + format(player.h.best) : ""}],
                                 ["display-text",
                                         function() {
                                                 if (hasUnlockedPast("h")) return ""
-                                                return "You have done " + formatWhole(player.h.times) + " tbd resets"
+                                                return "You have done " + formatWhole(player.h.times) + " Hearts resets"
                                         }
                                 ],
                                 ["display-text",
