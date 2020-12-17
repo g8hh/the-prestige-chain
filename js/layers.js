@@ -194,7 +194,7 @@ function getABSpeed(layer){
                 if (hasUpgrade("e", 21)) diffmult *= 3
         }
 
-        return diffmult
+        return diffmult/(player.devSpeed || 1)
 }
 
 function getPrestigeGainChangeExp(layer){
@@ -4146,8 +4146,9 @@ addLayer("f", {
                 if (ret.gt(10)) ret = ret.pow(2).div(10)
                 if (ret.gt(1000)) ret = ret.pow(2).div(1000)
 
-
                 ret = softcap(ret, "f_eff")
+
+                if (inChallenge("f", 21)) ret = doDilation(ret, .9)
 
                 return ret
         },
@@ -4184,7 +4185,6 @@ addLayer("f", {
                                 if (tmp.f.buyables[11].unlocked) layers.f.buyables[11].buyMax(amt)
                                 if (tmp.f.buyables[12].unlocked) layers.f.buyables[12].buyMax(amt)
                                 if (tmp.f.buyables[13].unlocked) layers.f.buyables[13].buyMax(amt)
-                                /*
                                 if (tmp.f.buyables[21].unlocked) layers.f.buyables[21].buyMax(amt)
                                 /*
                                 if (tmp.f.buyables[22].unlocked) layers.f.buyables[22].buyMax(amt)
@@ -4408,7 +4408,7 @@ addLayer("f", {
                 },
                 52: {
                         title: "Format",
-                        description: "<b>Future</b> gives free <b>Four</b> levels and unlock a <b>F</b> buyable [buyable not coded]",
+                        description: "<b>Future</b> gives free <b>Four</b> levels and unlock an <b>F</b> buyable",
                         cost: new Decimal("1e2134765"),
                         unlocked(){ 
                                 return hasUpgrade("g", 34) || hasUnlockedPast("h")
@@ -4416,8 +4416,6 @@ addLayer("f", {
                 },
 
                 /*
-                friends
-                further
                 fun
                 five
                 france
@@ -4510,6 +4508,33 @@ addLayer("f", {
                                 return hasUpgrade("h", 21) || hasUnlockedPast("h")
                         },
                 },
+                21: {
+                        title: "Friends",
+                        display(){
+                                return getBuyableDisplay("f", 21)
+                        },
+                        effect(){
+                                return CURRENT_BUYABLE_EFFECTS["f21"]
+                        },
+                        canAfford(){
+                                return canAffordBuyable("f", 21)
+                        },
+                        total(){
+                                return getBuyableAmount("f", 21).plus(this.extra())
+                        },
+                        extra(){
+                                return calcBuyableExtra("f", 21)
+                        },
+                        buy(){
+                                buyManualBuyable("f", 21)
+                        },
+                        buyMax(maximum){
+                                buyMaximumBuyable("f", 21, maximum)
+                        },
+                        unlocked(){ 
+                                return hasUpgrade("f", 52) || hasUnlockedPast("h")
+                        },
+                },
         },
         challenges: {
                 rows: 2,
@@ -4556,6 +4581,28 @@ addLayer("f", {
                         currencyInternalName: "points",
                         completionLimit: 20,
                         countsAs: [11],
+                },
+                21: {
+                        name: "Further",
+                        challengeDescription: "<b>Film</b> and dilate <b>F</b> effect ^.9",
+                        rewardDescription: "Raise the <b>G</b> effect to a power",
+                        rewardEffect(){
+                                let c = challengeCompletions("f", 21)
+                                let ret = Math.pow(c + 1, .25)
+                                return ret
+                        },
+                        goal(){
+                                let init = new Decimal("1e18560e3")
+                                let factor = getChallengeFactor(challengeCompletions("f", 21))
+                                if (factor.eq(1)) factor = new Decimal(0)
+                                return init.times(Decimal.pow("1e1602e3", factor))
+                        },
+                        unlocked(){
+                                return hasUpgrade("g", 35) || hasUnlockedPast("h")
+                        },
+                        currencyInternalName: "points",
+                        completionLimit: 20,
+                        countsAs: [11, 12],
                 },
         },
         tabFormat: {
@@ -5805,7 +5852,6 @@ addLayer("ach", {
                                 return hasUnlockedPast("g")
                         },
                 },
-                /*
                 161: {
                         name: "One Hundred and Six",
                         done(){
@@ -5818,7 +5864,6 @@ addLayer("ach", {
                                 return hasUnlockedPast("g")
                         },
                 },
-                /*
                 162: {
                         name: "One Hundred and Seven",
                         done(){
@@ -7487,7 +7532,7 @@ addLayer("goalsii", {
                 },
                 34: {
                         title: "Noether",
-                        description: "Unlock a <b>F</b> buyable, double <b>Gold</b> speed, and gain 10x medals",
+                        description: "Unlock an <b>F</b> buyable, double <b>Gold</b> speed, and gain 10x medals",
                         cost: new Decimal("1e4128"),
                         currencyDisplayName: "<br><b style='color: #6600FF'>00</b> Tokens",
                         currencyLocation(){
@@ -7894,13 +7939,15 @@ addLayer("g", {
 
                 let amt = player.g.best
 
-                let exp = 3
-                if (hasMilestone("g", 14)) exp *= 2
-                if (hasUpgrade("d", 54)) exp += .1
+                let exp = new Decimal(3)
+                if (hasMilestone("g", 14)) exp = exp.times(2)
+                if (hasUpgrade("d", 54)) exp = exp.plus(.1)
+                exp = exp.times(tmp.f.challenges[21].rewardEffect)
 
                 let ret = amt.times(4).plus(1).pow(exp)
 
                 //ret = softcap(ret, "g_eff")
+
 
                 return ret
         },
@@ -8464,6 +8511,7 @@ addLayer("g", {
                         if (hasUpgrade("e", 35)) arg = arg.plus(1)
                         if (hasMilestone("h", 5)) arg = arg.plus(player.h.milestones.length / 2)
                         if (hasUpgrade("g", 34)) arg = arg.plus(player.f.challenges[12])
+                        arg = arg.plus(CURRENT_BUYABLE_EFFECTS["f21"])
                         return arg
                 },
                 getRebirthEffects(){
@@ -9618,7 +9666,7 @@ addLayer("g", {
                 },
                 52: {
                         title(){
-                                return "<h3 style='color: #903000'>Harthstone</h3>"
+                                return "<h3 style='color: #903000'>Hearthstone</h3>"
                         },
                         display(){
                                 let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(this.cost()) + " Games<br>"
@@ -10012,7 +10060,7 @@ addLayer("g", {
                         description: "<b>Future</b> gives free <b>February</b> levels and each file completion gives a free <b>Future</b> level",
                         cost: new Decimal("1e123123"),
                         unlocked(){
-                                return hasUpgrade("h", 22) || hasUnlockedPast("g")
+                                return hasUpgrade("h", 22) || hasUnlockedPast("h")
                         },
                 }, // hasUpgrade("g", 31)
                 32: {
@@ -10020,7 +10068,7 @@ addLayer("g", {
                         description: "Unlock <b>Rebirth II</b>",
                         cost: new Decimal("1e131820"),
                         unlocked(){
-                                return hasUpgrade("g", 31) || hasUnlockedPast("g")
+                                return hasUpgrade("g", 31) || hasUnlockedPast("h")
                         },
                 }, // hasUpgrade("g", 32)
                 33: {
@@ -10028,7 +10076,7 @@ addLayer("g", {
                         description: "Unlock a second <b>F</b> challenge and each <b>F</b> challenge completion multiplies base <b>G</b> gain by 2",
                         cost: new Decimal("1e142444"),
                         unlocked(){
-                                return hasUpgrade("g", 32) || hasUnlockedPast("g")
+                                return hasUpgrade("g", 32) || hasUnlockedPast("h")
                         },
                 }, // hasUpgrade("g", 33)
                 34: {
@@ -10036,13 +10084,28 @@ addLayer("g", {
                         description: "Each <b>Film</b> gives an effective rebirth",
                         cost: new Decimal("1e165350"),
                         unlocked(){
-                                return hasUpgrade("g", 33) || hasUnlockedPast("g")
+                                return hasUpgrade("g", 33) || hasUnlockedPast("h")
                         },
                 }, // hasUpgrade("g", 34)
+                35: {
+                        title: "Goods",
+                        description: "Upgrades multiply <b>Future</b> base and add .1 to <b>February</b> base and unlock a new <b>F</b> challenge",
+                        cost: new Decimal("1e172721"),
+                        unlocked(){
+                                return hasUpgrade("g", 34) || hasUnlockedPast("h")
+                        },
+                }, // hasUpgrade("g", 35)
                 
 
                 /*  
-                german [used]
+                gets
+                georgia
+                grant
+                Goes
+                galleries
+                gives
+                Guy
+                guidelines
 
                 */
         },
@@ -10532,7 +10595,7 @@ addLayer("h", {
                 }, // hasUpgrade("h", 14)
                 15: {
                         title: "Hotel",
-                        description: "Unlock a <b>F</b> buyable and a <b>F</b> challenge and <b>H</b> effect is ^1001 to points",
+                        description: "Unlock an <b>F</b> buyable and an <b>F</b> challenge and <b>H</b> effect is ^1001 to points",
                         cost: new Decimal(300),
                         unlocked(){
                                 return hasUpgrade("h", 14) || hasUnlockedPast("h")
@@ -10540,7 +10603,7 @@ addLayer("h", {
                 }, // hasUpgrade("h", 15)
                 21: {
                         title: "House",
-                        description: "Raise the <b>H</b> effect to the number of upgrades and unlock a <b>F</b> buyable",
+                        description: "Raise the <b>H</b> effect to the number of upgrades and unlock an <b>F</b> buyable",
                         cost: new Decimal(300),
                         unlocked(){
                                 return hasAchievement("ach", "153") || hasUnlockedPast("h")

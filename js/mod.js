@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".4.4 Less Than Six",
+	num: ".4.5 Less Than Nine",
 	name: "",
 }
 
@@ -146,6 +146,8 @@ PROGRESSION_MILESTONES = {
 	103:()=> totalChallengeComps("f") >= 6               || hasAchievement("ach",155),
 	104:()=> totalChallengeComps("f") >= 10              || hasAchievement("ach",156),
 	105:()=> totalChallengeComps("f") >= 15              || hasAchievement("ach",157),
+	106:()=> totalChallengeComps("f") >= 21              || hasAchievement("ach",161),
+	107:()=> totalChallengeComps("f") >= 28              || hasAchievement("ach",162),
 }
 
 PROGRESSION_MILESTONES_TEXT = {
@@ -254,6 +256,8 @@ PROGRESSION_MILESTONES_TEXT = {
 	103:"6 Feature challenge completions",
 	104:"10 Feature challenge completions",
 	105:"15 Feature challenge completions",
+	106:"21 Feature challenge completions",
+	107:"28 Feature challenge completions",
 }
 
 function progressReachedNum(){
@@ -277,9 +281,9 @@ function nextMilestone(){
 
 // Display extra things at the top of the page
 var displayThings = [
-	"This may be incorrect: Last updated 9:10 AM pacific 12.17",
+	"This may be incorrect: Last updated 3:02 PM pacific 12.17",
 	function (){
-		return "Endgame: 104 Goals"
+		return "Endgame: 105 Goals"
 	},
 ]
 

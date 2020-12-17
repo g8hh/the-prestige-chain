@@ -1415,7 +1415,7 @@ var MAIN_BUYABLE_DATA = {
                 },
                 identity: new Decimal(1),
                 effectSymbol: "*",
-                eFormula: "log10(10+x)*base",
+                eFormula: "log10(10+x)*[base]",
                 effects: "Medal gain",
                 base: {
                         initial: new Decimal(1),
@@ -1435,7 +1435,7 @@ var MAIN_BUYABLE_DATA = {
                 },
                 identity: new Decimal(1),
                 effectSymbol: "*",
-                eFormula: "log10(10+x)*base",
+                eFormula: "log10(10+x)*[base]",
                 effects: "Base <b>G</b> gain",
                 base: {
                         initial: new Decimal(1),
@@ -1482,6 +1482,15 @@ var MAIN_BUYABLE_DATA = {
                 effects: "F gain exponent",
                 base: {
                         initial: new Decimal(1),
+                        1: {
+                                active: function(){
+                                        return hasUpgrade("g", 35)
+                                },
+                                amount: function(){
+                                        return Math.max(1, player.g.upgrades.length) / 10
+                                },
+                                type: "plus"
+                        },
                 },
                 bases(){
                         let b0 = new Decimal("1e1e6")
@@ -1501,11 +1510,40 @@ var MAIN_BUYABLE_DATA = {
                 effects: "effective devs",
                 base: {
                         initial: new Decimal(1010),
+                        1: {
+                                active: function(){
+                                        return hasUpgrade("g", 35)
+                                },
+                                amount: function(){
+                                        return Math.max(1, player.g.upgrades.length)
+                                },
+                                type: "times"
+                        },
                 },
                 bases(){
                         let b0 = new Decimal("1e1225e3")
                         let b1 = new Decimal("1.23e456")
                         let b2 = new Decimal("1e50")
+                        return [b0, b1, b2]
+                },
+        },
+        f21: {
+                name: "Friends",
+                effects: "effective rebirths",
+                func(a,x){
+                        let ret = Decimal.pow(x, .8).times(a)
+                        return ret
+                },
+                identity: new Decimal(0),
+                effectSymbol: "+",
+                eFormula: "x^.8*[base]",
+                base: {
+                        initial: new Decimal(.5),
+                },
+                bases(){
+                        let b0 = new Decimal("1e3525e3")
+                        let b1 = new Decimal("1.23e4567")
+                        let b2 = new Decimal("1e100")
                         return [b0, b1, b2]
                 },
         },
@@ -2214,6 +2252,7 @@ function getBuyableDisplay(layer, id){
         if (MAIN_BUYABLE_DATA[layer + id]["eFormula"] != undefined) {
                 eformula = MAIN_BUYABLE_DATA[layer + id]["eFormula"]
                 if (typeof eformula == "function") eformula = eformula()
+                eformula = replaceString(eformula, "[base]", format(getBuyableBase(layer, id), 4))
         } else {
                 eformula = format(getBuyableBase(layer, id), 4) + getBuyableEffectString(layer, id)
         }
@@ -2264,6 +2303,14 @@ function formatBuyableCostBase(x){
         return format(x)
 }
 
+
+function replaceString(s,find,replace){
+        let d = 1 + s.length - find.length
+        for (i = 0; i < d; i++){
+                if (s.slice(i, i + find.length) == find) return s.slice(0, i) + replace + s.slice(i + find.length, s.length)
+        }
+        return s 
+}
 
 
 
