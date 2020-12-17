@@ -10274,8 +10274,8 @@ addLayer("g", {
         getStartingRebirth(i){
                 let ret = 0
                 if (i == 1){
-                        ret = 40
-                        ret = 50
+                        if (hasMilestone("h", 8)) ret = 40
+                        if (hasUpgrade("h", 12)) ret = 50
                 }
                 
                 return ret

@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".4.5 Less Than Nine",
+	num: ".4.5.1 Less Than Nine",
 	name: "",
 }
 
@@ -281,7 +281,7 @@ function nextMilestone(){
 
 // Display extra things at the top of the page
 var displayThings = [
-	"This may be incorrect: Last updated 3:02 PM pacific 12.17",
+	"This may be incorrect: Last updated 3:31 PM pacific 12.17",
 	function (){
 		return "Endgame: 105 Goals"
 	},
