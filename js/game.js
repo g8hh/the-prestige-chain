@@ -215,9 +215,7 @@ function doReset(layer, force=false) {
 	prevOnReset = {...player} //Deep Copy
 	player.points = (row == 0 ? new Decimal(0) : getStartPoints())
 
-	if (layer == "goalsii") {
-		row = 5
-	}
+	if (layer == "goalsii") row = 5
 
 	rowReset("side", layer)
 	for (let x = row; x >= 0; x--) {
@@ -384,7 +382,7 @@ function gameLoop(diff) {
 		diff = 0
 		player.tab = "gameEnded"
 	}
-	if (player.devSpeed) diff *= player.devSpeed
+	if (player.devSpeed != undefined) diff *= player.devSpeed
 
 	let limit = maxTickLength()
 	if (diff > limit) diff = limit
@@ -459,6 +457,14 @@ function doPreTempStuff(){
 function doPreTickStuff(){
 }
 
+function fixSaveNaN(){
+	player.hasNaN = false
+	player.autosave = true
+	fixSave()
+	save()
+	window.location.reload()
+}
+
 var ticking = false
 var devstop = false
 
@@ -479,7 +485,6 @@ var interval = setInterval(function() {
 		}
 		if (!player.offlineProd || player.offTime.remain <= 0) delete player.offTime
 	}
-	if (player.devSpeed != undefined) diff *= player.devSpeed
 	player.time = now
 	if (needCanvasUpdate) resizeCanvas();
 	doPreTickStuff()

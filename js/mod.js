@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".4.3 Less Than Three",
+	num: ".4.4 Less Than Six",
 	name: "",
 }
 
@@ -142,6 +142,10 @@ PROGRESSION_MILESTONES = {
 	99:() => player.h.points.gte(3)                      || hasAchievement("ach",151),
 	100:()=> player.h.points.gte(30)                     || hasAchievement("ach",152),
 	101:()=> challengeCompletions("f", 11) >= 1          || hasAchievement("ach",153),
+	102:()=> totalChallengeComps("f") >= 3               || hasAchievement("ach",154),
+	103:()=> totalChallengeComps("f") >= 6               || hasAchievement("ach",155),
+	104:()=> totalChallengeComps("f") >= 10              || hasAchievement("ach",156),
+	105:()=> totalChallengeComps("f") >= 15              || hasAchievement("ach",157),
 }
 
 PROGRESSION_MILESTONES_TEXT = {
@@ -246,6 +250,10 @@ PROGRESSION_MILESTONES_TEXT = {
 	99: "3 Hearts",
 	100:"30 Hearts",
 	101:"One Files completion",
+	102:"3 Feature challenge completions",
+	103:"6 Feature challenge completions",
+	104:"10 Feature challenge completions",
+	105:"15 Feature challenge completions",
 }
 
 function progressReachedNum(){
@@ -269,10 +277,9 @@ function nextMilestone(){
 
 // Display extra things at the top of the page
 var displayThings = [
-	"This may be incorrect: Last updated 10:13 PM pacific 12.16",
-	'Give me suggestions for "games" names',
+	"This may be incorrect: Last updated 9:10 AM pacific 12.17",
 	function (){
-		return "Endgame: One file comp"
+		return "Endgame: 104 Goals"
 	},
 ]
 

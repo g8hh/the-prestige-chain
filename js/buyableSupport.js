@@ -1465,6 +1465,16 @@ var MAIN_BUYABLE_DATA = {
                         let b2 = new Decimal("1e10")
                         return [b0, b1, b2]
                 },
+                f12: {
+                        active: function(){
+                                return hasUpgrade("f", 51)
+                        },
+                },
+                f13: {
+                        active: function(){
+                                return hasUpgrade("f", 52)
+                        },
+                },
         },
         f12: {
                 name: "February",
@@ -1477,6 +1487,25 @@ var MAIN_BUYABLE_DATA = {
                         let b0 = new Decimal("1e1e6")
                         let b1 = new Decimal("1e270")
                         let b2 = new Decimal("1e20")
+                        return [b0, b1, b2]
+                },
+                f13: {
+                        active: function(){
+                                return hasUpgrade("g", 31)
+                        },
+                },
+        },
+        f13: {
+                name: "Future",
+                func: "lin_sqrt",
+                effects: "effective devs",
+                base: {
+                        initial: new Decimal(1010),
+                },
+                bases(){
+                        let b0 = new Decimal("1e1225e3")
+                        let b1 = new Decimal("1.23e456")
+                        let b2 = new Decimal("1e50")
                         return [b0, b1, b2]
                 },
         },
@@ -1713,7 +1742,7 @@ var EXTRA_FREE_BUYABLE_DATA = {
                         },
                 },
         },
-        f11: {
+        f12: {
                 1: {
                         active: function(){
                                 return true
@@ -1722,7 +1751,17 @@ var EXTRA_FREE_BUYABLE_DATA = {
                                 return tmp.f.challenges[11].rewardEffect
                         }
                 }
-        }
+        },
+        f13: {
+                1: {
+                        active: function(){
+                                return hasUpgrade("g", 31)
+                        },
+                        amount: function(){
+                                return new Decimal(player.f.challenges[11])
+                        },
+                },
+        },
 }
 
 
