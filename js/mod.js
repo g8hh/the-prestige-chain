@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".4.2 To Be Determined",
+	num: ".4.3 Less Than Three",
 	name: "",
 }
 
@@ -139,6 +139,9 @@ PROGRESSION_MILESTONES = {
 	96:() => player.g.completedTally.gte(600)            || hasAchievement("ach",145),
 	97:() => player.g.completedTally.gte(650)            || hasAchievement("ach",146),
 	98:() => player.g.completedTally.gte(700)            || hasAchievement("ach",147),
+	99:() => player.h.points.gte(3)                      || hasAchievement("ach",151),
+	100:()=> player.h.points.gte(30)                     || hasAchievement("ach",152),
+	101:()=> challengeCompletions("f", 11) >= 1          || hasAchievement("ach",153),
 }
 
 PROGRESSION_MILESTONES_TEXT = {
@@ -240,6 +243,9 @@ PROGRESSION_MILESTONES_TEXT = {
 	96: "600 completed games",
 	97: "650 completed games",
 	98: "700 completed games",
+	99: "3 Hearts",
+	100:"30 Hearts",
+	101:"One Files completion",
 }
 
 function progressReachedNum(){
@@ -263,18 +269,10 @@ function nextMilestone(){
 
 // Display extra things at the top of the page
 var displayThings = [
-	"This may be incorrect: Last updated 5:10 PM pacific 12.15",
+	"This may be incorrect: Last updated 10:13 PM pacific 12.16",
 	'Give me suggestions for "games" names',
 	function (){
-		return "Endgame: 25 Hearts"
-		//+ (player.g.points.gte("1e26697") ? "(done)" : "(not done)")
-		/*
-		let a = "Endgame: All goals"
-		if (player.ach.achievements.length == Object.keys(PROGRESSION_MILESTONES).length) {
-			a += " (done!)"
-		} else a += " (not done)"
-		return a + " & 1 00 token"
-		*/
+		return "Endgame: One file comp"
 	},
 ]
 

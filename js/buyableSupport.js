@@ -1446,6 +1446,39 @@ var MAIN_BUYABLE_DATA = {
                         let b2 = new Decimal("1e1e40")
                         return [b0, b1, b2]
                 },
+                f11: {
+                        active: function(){
+                                return hasUpgrade("goalsii", 35)
+                        },
+                },
+        },
+        f11: {
+                name: "Four",
+                func: "exp",
+                effects: "F gain",
+                base: {
+                        initial: new Decimal(1e10),
+                },
+                bases(){
+                        let b0 = new Decimal("1e970e3")
+                        let b1 = new Decimal("1e1e3")
+                        let b2 = new Decimal("1e10")
+                        return [b0, b1, b2]
+                },
+        },
+        f12: {
+                name: "February",
+                func: "lin",
+                effects: "F gain exponent",
+                base: {
+                        initial: new Decimal(1),
+                },
+                bases(){
+                        let b0 = new Decimal("1e1e6")
+                        let b1 = new Decimal("1e270")
+                        let b2 = new Decimal("1e20")
+                        return [b0, b1, b2]
+                },
         },
 }
 
@@ -1680,6 +1713,16 @@ var EXTRA_FREE_BUYABLE_DATA = {
                         },
                 },
         },
+        f11: {
+                1: {
+                        active: function(){
+                                return true
+                        },
+                        amount: function(){
+                                return tmp.f.challenges[11].rewardEffect
+                        }
+                }
+        }
 }
 
 

@@ -261,6 +261,8 @@ function startChallenge(layer, x) {
 	}	
 	doReset(layer, true)
 	if (enter) player[layer].activeChallenge = x
+	updateTemp()
+	updateTemp()
 
 	updateChallengeTemp(layer)
 }
