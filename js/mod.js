@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".4.6 Less Than Twelve",
+	num: ".4.7 Less Than Fifteen",
 	name: "",
 }
 
@@ -281,9 +281,9 @@ function nextMilestone(){
 
 // Display extra things at the top of the page
 var displayThings = [
-	"This may be incorrect: Last updated 8:45 PM pacific 12.17",
+	"This may be incorrect: Last updated 11:30 PM pacific 12.17",
 	function (){
-		return "Endgame: 1e17 Games"
+		return "Endgame: 5 Ideas"
 	},
 ]
 

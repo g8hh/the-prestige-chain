@@ -219,7 +219,7 @@ function doReset(layer, force=false) {
 
 	rowReset("side", layer)
 	for (let x = row; x >= 0; x--) {
-		if (x == 5 && !["a", "b", "c", "d", "e", "f", "g", "goalsii", "ach"].includes(layer)) {
+		if (x == 5 && layer == "h") {
 			rowReset("side", layer)
 		}
 		rowReset(x, layer)

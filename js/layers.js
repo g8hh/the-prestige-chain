@@ -78,6 +78,7 @@ function getChallengeFactor(comps){
 }
 
 function isBuyableActive(layer, thang){
+        if (layer == "i") return true
         if (layer == "h") return true
         if (layer == "g") return true
         if (layer == "f") return true
@@ -96,6 +97,7 @@ function isBuyableActive(layer, thang){
 }
 
 function isPrestigeEffectActive(layer){
+        if (layer == "i") return true
         if (layer == "h") return true
         if (layer == "g") return true
         if (layer == "f") return true
@@ -3259,7 +3261,7 @@ addLayer("d", {
                                 "challenges",
                         ],
                         unlocked(){
-                                return false || hasUnlockedPast("h")
+                                return false || hasUnlockedPast("i")
                         },
                 },
         },
@@ -10163,7 +10165,7 @@ addLayer("g", {
                 }, // hasUpgrade("g", 44)
                 45: {
                         title: "Galleries",
-                        description: "Start with (9 * Rebirth II) Rebirth I upon repon",
+                        description: "Start with (9 * Rebirth II) Rebirth I upon reset",
                         cost: new Decimal("1e781400"),
                         unlocked(){
                                 return hasUpgrade("g", 44) || hasUnlockedPast("h")
@@ -10436,13 +10438,12 @@ addLayer("h", {
 
                 let a = pts.div(div)
                 if (a.lt(1)) return new Decimal(0)
-                if (pts.lt(1e19)) return new Decimal(0)
 
                 let ret = a.log10().times(pre).pow(exp).times(pst)
 
-                if (!hasUnlockedPast("g") && player.g.best.eq(0)) ret = ret.min(1)
+                if (!hasUnlockedPast("h") && player.h.best.eq(0)) ret = ret.min(1)
 
-                ret = doPrestigeGainChange(ret, "g")
+                ret = doPrestigeGainChange(ret, "h")
 
                 return ret.floor()
         },
@@ -10752,7 +10753,7 @@ addLayer("h", {
                                 "blank", 
                                 "buyables"],
                         unlocked(){
-                                return false || hasUnlockedPast("h")
+                                return false
                         },
                 },
                 "Milestones": {
@@ -10777,6 +10778,11 @@ addLayer("h", {
                         let keep = []
                         data.upgrades = filter(data.upgrades, keep)
                 }
+                if (!false) {
+                        //upgrades
+                        let keep2 = []
+                        data.milestones = filter(data.milestones, keep2)
+                }
 
                 //resources
                 data.points = new Decimal(0)
@@ -10793,7 +10799,224 @@ addLayer("h", {
 })
 
 
+addLayer("i", {
+        name: "Ideas", // This is optional, only used in a few places, If absent it just uses the layer id.
+        symbol: "I", // This appears on the layer's node. Default is the id with the first letter capitalized
+        position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+        startData() { 
+                return {
+                        unlocked: true,
+                        points: new Decimal(0),
+                        best: new Decimal(0),
+                        total: new Decimal(0),
+                        abtime: 0,
+                        time: 0,
+                        times: 0,
+                        autotimes: 0,
+                }
+        },
+        color: "#FFFF33",
+        branches: ["h"],
+        requires: new Decimal(0), // Can be a function that takes requirement increases into account
+        resource: "Ideas", // Name of prestige currency
+        baseResource: "Hearts", // Name of resource prestige is based on
+        baseAmount() {
+                return player.h.best
+        }, // Get the current amount of baseResource
+        type: "custom", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+        getResetGain() {
+                let pts = this.baseAmount()
+                let pre = this.getGainMultPre()
+                let exp = this.getGainExp()
+                let pst = this.getGainMultPost()
+                let div = this.getBaseDiv()
 
+                let a = pts.div(div)
+                if (a.lt(1)) return new Decimal(0)
+
+                let ret = a.log10().times(pre).pow(exp).times(pst)
+
+                if (!hasUnlockedPast("i") && player.i.best.eq(0)) ret = ret.min(1)
+
+                ret = doPrestigeGainChange(ret, "i")
+
+                return ret.floor()
+        },
+        getBaseDiv(){
+                let x = new Decimal("1e10")
+                return x
+        },
+        getGainExp(){
+                let x = new Decimal(3)
+                return x
+        },
+        getGainMultPre(){
+                let x = Decimal.pow(7, -1)
+                return x
+        },
+        getGainMultPost(){
+                let x = new Decimal(1)
+
+                let yet = false
+                for (let i = 0; i < LAYERS.length; i++){
+                        if (layers[LAYERS[i]].row == "side") continue
+                        if (yet) x = x.times(tmp[LAYERS[i]].effect)
+                        if (LAYERS[i] == "i") yet = true
+                }
+
+                return x
+        },
+        effect(){
+                if (!isPrestigeEffectActive("i")) return new Decimal(1)
+
+                let amt = player.i.best
+
+                let exp = player.i.best.pow(.2).times(2).min(30)
+
+                let ret = amt.times(4).plus(1).pow(exp)
+
+                //ret = softcap(ret, "h_eff")
+
+                return ret
+        },
+        effectDescription(){
+                let eff = this.effect()
+                let a = "which buffs point and all previous prestige gain by "
+
+                return a + format(eff) + "."
+        },
+        update(diff){
+                let data = player.i
+
+                data.best = data.best.max(data.points)
+                if (false) {
+                        let gain = this.getResetGain()
+                        data.points = data.points.plus(gain.times(diff))
+                        data.total = data.total.plus(gain.times(diff))
+                        data.autotimes += diff
+                        if (data.autotimes > 3) data.autotimes = 3
+                        if (data.autotimes > 1) {
+                                data.autotimes += -1
+                                data.times ++
+                        }
+                }
+                if (false) {
+                        data.abtime += diff
+                        if (data.abtime > 10) data.abtime = 10
+                } else {
+                        data.abtime = 0
+                }
+
+                data.time += diff
+        },
+        row: 8, // Row the layer is in on the tree (0 is the first row)
+        hotkeys: [
+            {key: "i", description: "I: Reset for Ideas", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+        ],
+        layerShown(){return player.h.best.gt(5e16) || player.i.best.gt(0) || hasUnlockedPast("i")},
+        prestigeButtonText(){
+                let gain= this.getResetGain()
+                let pts = this.baseAmount()
+                let pre = this.getGainMultPre()
+                let exp = this.getGainExp()
+                let pst = this.getGainMultPost()
+                let div = this.getBaseDiv()
+
+                let nextnum = Decimal.pow(10, gain.plus(1).div(pst).root(exp).div(pre)).times(div).ceil()
+
+                let nextAt = ""
+                if (gain.lt(1e6) && (hasUnlockedPast("i") || player.i.best.neq(0))) {
+                        nextAt = "<br>Next at " + format(nextnum) + " " + this.baseResource           
+                        let ps = gain.div(player.i.time || 1)
+
+                        if (ps.lt(10/3600)) nextAt += "<br>" + format(ps.times(3600)) + "/h"
+                        else if (ps.lt(1000/60)) nextAt += "<br>" + format(ps.times(60)) + "/m"
+                        else nextAt += "<br>" + format(ps) + "/s"
+                }
+
+                let a = "Reset for " + formatWhole(gain) + " " + this.resource
+
+                return a + nextAt
+        },
+        canReset(){
+                return this.getResetGain().gt(0) && player.i.time >= 2 && !false
+        },
+        tabFormat: {
+                "Upgrades": {
+                        content: ["main-display",
+                                ["prestige-button", "", function (){ return false ? {'display': 'none'} : {}}],
+                                ["display-text",
+                                        function() {return shiftDown ? "Your best Ideas is " + format(player.i.best) : ""}],
+                                ["display-text",
+                                        function() {
+                                                if (hasUnlockedPast("h")) return ""
+                                                return "You have done " + formatWhole(player.i.times) + " Idea resets"
+                                        }
+                                ],
+                                ["display-text",
+                                        function() {
+                                                if (false) return "You are gaining " + format(tmp.i.getResetGain) + " Ideas per second"
+                                                return "There is a two second cooldown for prestiging (" + format(Math.max(0, 2-player.i.time)) + ")" 
+                                        },
+                                        //{"font-size": "20px"}
+                                ],
+                                ["display-text",
+                                        function() {
+                                                if (false) return ""
+                                                return "Doing an Idea reset does not reset side layers" 
+                                        },
+                                        //{"font-size": "20px"}
+                                ],
+                                "blank", 
+                                "upgrades"],
+                        unlocked(){
+                                return true
+                        },
+                },
+                "Buyables": {
+                        content: ["main-display",
+                                "blank", 
+                                "buyables"],
+                        unlocked(){
+                                return false
+                        },
+                },
+                "Milestones": {
+                        content: [
+                                "main-display",
+                                "milestones",
+                        ],
+                        unlocked(){
+                                return true
+                        },
+                },
+        },
+        doReset(layer){
+                let data = player.i
+                if (layer == "i") data.time = 0
+                if (!getsReset("i", layer)) return
+                data.time = 0
+                data.times = 0
+
+                if (!false) {
+                        //upgrades
+                        let keep = []
+                        data.upgrades = filter(data.upgrades, keep)
+                }
+
+                //resources
+                data.points = new Decimal(0)
+                data.total = new Decimal(0)
+                data.best = new Decimal(0)
+
+                //buyables
+                let resetBuyables = [11, 12, 13, 21, 22, 23, 31, 32, 33]
+                for (let j = 0; j < resetBuyables.length; j++) {
+                        break
+                        data.buyables[resetBuyables[j]] = new Decimal(0)
+                }
+        },
+})
 
 
 
