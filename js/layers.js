@@ -4414,11 +4414,32 @@ addLayer("f", {
                                 return hasUpgrade("g", 34) || hasUnlockedPast("h")
                         }, // hasUpgrade("f", 52)
                 },
+                53: {
+                        title: "Fun",
+                        description: "Raise the rebirth to Games effect ^50",
+                        cost: new Decimal("1e7082300"),
+                        unlocked(){ 
+                                return hasUpgrade("h", 23) || hasUnlockedPast("h")
+                        }, // hasUpgrade("f", 53)
+                },
+                54: {
+                        title: "Five",
+                        description: "Per <b>F</b> challenge act as if you have .5% less rebirths",
+                        cost: new Decimal("1e41236e3"),
+                        unlocked(){ 
+                                return hasUpgrade("g", 45) || hasUnlockedPast("h")
+                        }, // hasUpgrade("f", 54)
+                },
+                55: {
+                        title: "France",
+                        description: "Raise rebirth base Game gain effect ^1.5 and act as if you have 20% less rebirths",
+                        cost: new Decimal("1e63758400"),
+                        unlocked(){ 
+                                return hasUpgrade("f", 54) || hasUnlockedPast("h")
+                        }, // hasUpgrade("f", 55)
+                },
 
                 /*
-                fun
-                five
-                france
                 front
                 federal
                 final
@@ -7930,7 +7951,7 @@ addLayer("g", {
                 x = x.times(layers.g.clickables.getAllPartialEffects()["Games"][0])
                 x = x.times(layers.g.clickables.getAllCompletedEffects()["Games"][0])
                 x = x.times(layers.g.clickables.getRebirthEffects()["Games"][0])
-                if (hasMilestone("g", 13)) x = x.times(Math.sqrt(Math.max(player.g.charges, 1)))
+                if (hasMilestone("g", 13)) x = x.times(Decimal.sqrt(Decimal.max(player.g.charges, 1)))
 
                 return x
         },
@@ -8408,11 +8429,12 @@ addLayer("g", {
                                 },
                                 function(x){
                                         if (x.lte(4)) return new Decimal(1)
-                                        let exp = Math.max(.5, Math.min(1.5, x.div(30).toNumber()))
+                                        let exp = Decimal.max(.5, Decimal.min(1.5, x.div(30).toNumber()))
+                                        if (hasUpgrade("h", 24)) exp = exp.times(player.h.upgrades.length)
                                         if (x.gte(129)) {
                                                 let j = x.div(100)
                                                 if (j.gt(256)) j = j.sqrt().times(16)
-                                                exp = Decimal.times(exp, j)
+                                                exp = exp.times(j)
                                         }
                                         let ret = x.div(2).pow(exp)
                                         
@@ -8476,13 +8498,16 @@ addLayer("g", {
                         let symbols = ["*", "*", "*"]
                         let functions = [
                                 function(x){
-                                        return Decimal.pow(x.plus(4), x.sqrt().times(4))
+                                        let exp = x.sqrt().times(4)
+                                        if (hasUpgrade("g", 41)) exp = exp.times(500)
+                                        return Decimal.pow(x.plus(4), exp)
                                 },
                                 function(x){
                                         if (x.lte(6)) return new Decimal(1)
                                         let exp = x.sqrt()
                                         if (x.gte(10)) exp = exp.times(2)
                                         if (x.gte(96)) exp = exp.times(1.25)
+                                        if (hasUpgrade("g", 42)) exp = exp.times(50)
                                         let ret = x.div(6).pow(exp)
                                         return ret
                                 },
@@ -8520,10 +8545,14 @@ addLayer("g", {
                         let functions = [
                                 function(x){
                                         if (x.lte(2)) return new Decimal(1)
+
                                         let exp = x.times(3).sqrt()
+                                        if (hasUpgrade("f", 53)) exp = exp.times(50)
+
                                         let base = new Decimal(100)
                                         if (x.gte(5)) base = base.times(x)
                                         if (x.gte(7)) base = base.times(x.pow(.6))
+
                                         let ret = Decimal.pow(base, exp)
                                         return ret
                                 },
@@ -8538,6 +8567,7 @@ addLayer("g", {
                                         if (x.eq(0)) return new Decimal(1)
                                         let ret = x
                                         if (hasUpgrade("f", 23)) ret = ret.pow(1.5)
+                                        if (hasUpgrade("f", 55)) ret = ret.pow(1.5)
                                         return ret
                                 },
                                 function(x){
@@ -8591,13 +8621,17 @@ addLayer("g", {
                 getRebirthExp2(a){
                         let r = a || this.getPrimaryRebirths(true)
                         let exp2 = 1.45
-                        if (r >= 9) exp2 += .005 * Math.min(r - 8, 10)
-                        if (r >= 14) exp2 += .014 * Math.min(r - 13, 5) ** 2
-                        if (r >= 22) exp2 += .01 * (r - 21)
+                        if (r >= 8) exp2 += .005 * Math.min(r - 8, 10)
+                        if (r >= 13) exp2 += .014 * Math.min(r - 13, 5) ** 2
+                        if (r >= 21) exp2 += .01 * (r - 21)
                         return exp2
                 },
                 getRebirthCostIncrease(){
                         let r = this.getPrimaryRebirths(true)
+                        if (hasUpgrade("h", 23)) r *= Math.pow(.99, player.g.upgrades.length)
+                        if (hasUpgrade("g", 44)) r *= Math.pow(.98, player.h.upgrades.length)
+                        if (hasUpgrade("f", 54)) r *= Math.pow(.995, totalChallengeComps("f"))
+                        if (hasUpgrade("f", 55)) r *= .8
                         let exp2 = this.getRebirthExp2(r)
                         let exp = Decimal.pow(r, exp2)
                         return Decimal.pow(1e18, exp)
@@ -10095,14 +10129,49 @@ addLayer("g", {
                                 return hasUpgrade("g", 34) || hasUnlockedPast("h")
                         },
                 }, // hasUpgrade("g", 35)
+                41: {
+                        title: "Gets",
+                        description: "<b>Friends</b> gives free <b>Future</b> levels and raise completed games to Features boost ^500",
+                        cost: new Decimal("1e333777"),
+                        unlocked(){
+                                return hasUpgrade("f", 53) || hasUnlockedPast("h")
+                        },
+                }, // hasUpgrade("g", 41)
+                42: {
+                        title: "Georgia",
+                        description: "<b>Friends</b> gives free <b>February</b> levels and raise completed games to Games boost ^50",
+                        cost: new Decimal("1e360300"),
+                        unlocked(){
+                                return hasUpgrade("g", 41) || hasUnlockedPast("h")
+                        },
+                }, // hasUpgrade("g", 42)
+                43: {
+                        title: "Grant",
+                        description: "Each rebirth I adds .01 to <b>Friends</b> base and gives a free <b>Friends</b> level",
+                        cost: new Decimal("1e418100"),
+                        unlocked(){
+                                return hasUpgrade("g", 42) || hasUnlockedPast("h")
+                        },
+                }, // hasUpgrade("g", 43)
+                44: {
+                        title: "Goes",
+                        description: "Per <b>H</b> upgrade act as if you have 2% less rebirths",
+                        cost: new Decimal("1e418100"),
+                        unlocked(){
+                                return hasUpgrade("g", 43) || hasUnlockedPast("h")
+                        },
+                }, // hasUpgrade("g", 44)
+                45: {
+                        title: "Galleries",
+                        description: "Start with (9 * Rebirth II) Rebirth I upon repon",
+                        cost: new Decimal("1e781400"),
+                        unlocked(){
+                                return hasUpgrade("g", 44) || hasUnlockedPast("h")
+                        },
+                }, // hasUpgrade("g", 45)
                 
 
                 /*  
-                gets
-                georgia
-                grant
-                Goes
-                galleries
                 gives
                 Guy
                 guidelines
@@ -10173,7 +10242,7 @@ addLayer("g", {
                                                 let a = "You have " + formatWhole(player.g.charges) + "/" + formatWhole(player.g.chargesMax)
                                                 let b = ""
                                                 if (cpm < 1e5) b = " charges and are gaining " + format(cpm) + " per minute"
-                                                else b = " charges and are gaining " + format(cpm / 60) + " per second"
+                                                else b = " charges and are gaining " + format(cpm.div(60)) + " per second"
                                                 let c = ""
                                                 if (cpm > 0 && cpm < 1e5) {
                                                         c = " (next in " + format(Math.max(60/cpm -player.g.chargesTime, 0)) + "s)"
@@ -10276,6 +10345,7 @@ addLayer("g", {
                 if (i == 1){
                         if (hasMilestone("h", 8)) ret = 40
                         if (hasUpgrade("h", 12)) ret = 50
+                        if (hasUpgrade("g", 45)) ret = Math.max(ret, 9 * player.g.rebirths[2])
                 }
                 
                 return ret
@@ -10382,6 +10452,7 @@ addLayer("h", {
         },
         getGainExp(){
                 let x = new Decimal(4)
+                if (hasUpgrade("h", 25)) x = x.plus(player.h.upgrades.length * .2)
                 return x
         },
         getGainMultPre(){
@@ -10617,11 +10688,38 @@ addLayer("h", {
                                 return hasAchievement("ach", "153") || hasUnlockedPast("h")
                         }
                 }, // hasUpgrade("h", 22)
+                23: {
+                        title: "History",
+                        description: "Act as if you have 1% less rebirths per Game upgrade (for Game costs)",
+                        cost: new Decimal(2e6),
+                        unlocked(){
+                                return hasUpgrade("g", 35) || hasUnlockedPast("h")
+                        }
+                }, // hasUpgrade("h", 23)
+                24: {
+                        title: "Hours",
+                        description: "Raise successful devs boost to Games to the number of <b>H</b> upgrades",
+                        cost: new Decimal(2e11),
+                        unlocked(){
+                                return hasUpgrade("f", 55) || hasUnlockedPast("h")
+                        }
+                }, // hasUpgrade("h", 24)
+                25: {
+                        title: "However",
+                        description: "Each <b>H</b> upgrade adds .2 to the <b>H</b> gain exponent",
+                        cost: new Decimal(1e12),
+                        unlocked(){
+                                return hasUpgrade("h", 24) || hasUnlockedPast("h")
+                        }
+                }, // hasUpgrade("h", 25)
 
 
                 /*
-                History
-                Hours
+                
+                human
+                hot
+                hard
+                hand
                 */
         },
         tabFormat: {

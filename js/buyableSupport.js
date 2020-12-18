@@ -1503,6 +1503,11 @@ var MAIN_BUYABLE_DATA = {
                                 return hasUpgrade("g", 31)
                         },
                 },
+                f21: {
+                        active: function(){
+                                return hasUpgrade("g", 42)
+                        },
+                },
         },
         f13: {
                 name: "Future",
@@ -1526,6 +1531,11 @@ var MAIN_BUYABLE_DATA = {
                         let b2 = new Decimal("1e50")
                         return [b0, b1, b2]
                 },
+                f21: {
+                        active: function(){
+                                return hasUpgrade("g", 41)
+                        },
+                },
         },
         f21: {
                 name: "Friends",
@@ -1539,6 +1549,15 @@ var MAIN_BUYABLE_DATA = {
                 eFormula: "x^.8*[base]",
                 base: {
                         initial: new Decimal(.5),
+                        1: {
+                                active: function(){
+                                        return hasUpgrade("g", 43)
+                                },
+                                amount: function(){
+                                        return player.g.rebirths[1] * .01
+                                },
+                                type: "plus",
+                        },
                 },
                 bases(){
                         let b0 = new Decimal("1e3525e3")
@@ -1798,6 +1817,17 @@ var EXTRA_FREE_BUYABLE_DATA = {
                         amount: function(){
                                 return new Decimal(player.f.challenges[11])
                         },
+                },
+        },
+        f21: {
+                1: {
+                        active: function(){
+                                return hasUpgrade("g", 43)
+                        },
+                        amount: function(){
+                                return player.g.rebirths[1]
+                        },
+                        name: "Rebirth I",
                 },
         },
 }
