@@ -11,16 +11,17 @@ var hotkeys = {};
 var maxRow = 0;
 
 function updateHotkeys(){
-    hotkeys = {};
-    for (layer in layers){
-        hk = layers[layer].hotkeys
-        if (hk){
-            for (id in hk){
-				hotkeys[hk[id].key] = hk[id]
-				hotkeys[hk[id].key].layer = layer
-            }
+        hotkeys = {};
+        for (layer in layers){
+                if (!layers[layer].layerShown()) continue
+                hk = layers[layer].hotkeys
+                if (hk){
+                        for (id in hk){
+                                hotkeys[hk[id].key] = hk[id]
+                                hotkeys[hk[id].key].layer = layer
+                        }
+                }
         }
-    }
 }
 
 var ROW_LAYERS = {}

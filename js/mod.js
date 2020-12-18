@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".4.7 Less Than Fifteen",
+	num: ".4.8 Blackjack",
 	name: "",
 }
 
@@ -148,6 +148,9 @@ PROGRESSION_MILESTONES = {
 	105:()=> totalChallengeComps("f") >= 15              || hasAchievement("ach",157),
 	106:()=> totalChallengeComps("f") >= 21              || hasAchievement("ach",161),
 	107:()=> totalChallengeComps("f") >= 28              || hasAchievement("ach",162),
+	108:()=> player.i.best.gte(1)                        || hasAchievement("ach",163),
+	109:()=> player.i.best.gte(10)                       || hasAchievement("ach",164),
+	110:()=> player.i.best.gte(100)                      || hasAchievement("ach",165),
 }
 
 PROGRESSION_MILESTONES_TEXT = {
@@ -258,6 +261,9 @@ PROGRESSION_MILESTONES_TEXT = {
 	105:"15 Feature challenge completions",
 	106:"21 Feature challenge completions",
 	107:"28 Feature challenge completions",
+	108:"1 Idea",
+	109:"10 Ideas",
+	110:"100 Ideas",
 }
 
 function progressReachedNum(){
@@ -281,9 +287,9 @@ function nextMilestone(){
 
 // Display extra things at the top of the page
 var displayThings = [
-	"This may be incorrect: Last updated 11:30 PM pacific 12.17",
+	"This may be incorrect: Last updated 1:33 PM pacific 12.17",
 	function (){
-		return "Endgame: 5 Ideas"
+		return "Endgame: 2e6 Ideas"
 	},
 ]
 
