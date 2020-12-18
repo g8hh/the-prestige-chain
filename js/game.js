@@ -223,7 +223,7 @@ function doReset(layer, force=false) {
 			rowReset("side", layer)
 		}
 		rowReset(x, layer)
-		if (layer == "goalsii") resetChallengeCompsRow(x)
+		if (layer == "goalsii" && x < 5) resetChallengeCompsRow(x)
 	}
 	prevOnReset = undefined
 
