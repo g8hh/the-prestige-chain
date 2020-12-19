@@ -1415,7 +1415,7 @@ var MAIN_BUYABLE_DATA = {
                 },
                 identity: new Decimal(1),
                 effectSymbol: "*",
-                eFormula: "log10(10+x)*[base]",
+                eFormula: "[base]*log10(10+x)",
                 effects: "Medal gain",
                 base: {
                         initial: new Decimal(1),
@@ -1435,7 +1435,7 @@ var MAIN_BUYABLE_DATA = {
                 },
                 identity: new Decimal(1),
                 effectSymbol: "*",
-                eFormula: "log10(10+x)*[base]",
+                eFormula: "[base]*log10(10+x)",
                 effects: "Base <b>G</b> gain",
                 base: {
                         initial: new Decimal(1),
@@ -1546,7 +1546,7 @@ var MAIN_BUYABLE_DATA = {
                 },
                 identity: new Decimal(0),
                 effectSymbol: "+",
-                eFormula: "x^.8*[base]",
+                eFormula: "[base]*x^.8",
                 base: {
                         initial: new Decimal(.5),
                         1: {
@@ -1577,6 +1577,20 @@ var MAIN_BUYABLE_DATA = {
                         let b0 = new Decimal("1e150289e3")
                         let b1 = new Decimal("1.23e45678")
                         let b2 = new Decimal("1e300")
+                        return [b0, b1, b2]
+                },
+        },
+        g11: {
+                name: "Gives",
+                func: "lin",
+                effects: "G gain exponent",
+                base: {
+                        initial: new Decimal(1),
+                },
+                bases(){
+                        let b0 = new Decimal("1e3436e3")
+                        let b1 = new Decimal("1e50")
+                        let b2 = new Decimal("1e3")
                         return [b0, b1, b2]
                 },
         },
@@ -2020,10 +2034,9 @@ function calcBuyableExtra(layer, id){
         // Fully general
         if (!isBuyableDefined(layer, id)) return new Decimal(0)
         if (getNoExtras(layer, id)) return new Decimal(0)
-        let a = new Decimal(0)
-        if (CURRENT_BUYABLE_EXTRAS[layer+id] != undefined) a = CURRENT_BUYABLE_EXTRAS[layer+id]
-        
-        return a 
+        let a = CURRENT_BUYABLE_EXTRAS[layer+id]
+        if (a != undefined) return a
+        return new Decimal(0)
 }
 
 function reCalcBuyableExtra(layer, id){
@@ -2287,6 +2300,8 @@ function getBuyableAmountDisplay(layer, id){
 
 function getBuyableDisplay(layer, id){
         // other than softcapping fully general
+        if (player.tab != layer) return ""
+        //if we arent on the tab, then we dont care :) (makes it faster)
         let amt = "<b><h2>Amount</h2>: " + getBuyableAmountDisplay(layer, id) + "</b><br>"
         let eff1 = "<b><h2>Effect</h2>: " + getBuyableEffectSymbol(layer, id) 
         let savedEff = CURRENT_BUYABLE_EFFECTS[layer + id]

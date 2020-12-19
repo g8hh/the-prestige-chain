@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".4.8.3 Blackjack",
+	num: ".4.9 Blackjack",
 	name: "",
 }
 
@@ -23,7 +23,6 @@ var doNotCallTheseFunctionsEveryTick = ["blowUpEverything",
 					"getTokenToMedalGain",
 					"getAllPrior",
 					"succChance",
-					"getAllPartialEffects",
 					"resetPrior"
 					]
 
@@ -298,12 +297,20 @@ function isEndgame() {
 	return false
 }
 
-
-// Less important things beyond this point!
-
-// You can change this if you have things that can be messed up by long tick lengths
 function maxTickLength() {
 	return 1000 // in ms
+}
+
+function getChangeLogText(){
+	a1 = "v.4.9"
+	a2 = "- Made the game run significantly faster"
+	a3 = "- No longer calculates the text to display things when you are not on the tab"
+	a4 = "- No longer updates temp when doing a reset every time (3 instead of 10 at endgame)"
+	a5 = "- Added the first Game buyable, Gives"
+	a6 = "- Added a Game upgrade which is QoL"
+
+
+	return [a1, a2, a3, a4, a5, a6]
 }
 
 var controlDown = false

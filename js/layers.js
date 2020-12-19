@@ -366,6 +366,7 @@ addLayer("a", {
                 return ret
         },
         effectDescription(){
+                if (player.tab != "a") return ""
                 let eff = this.effect()
                 let a = "which buffs point and all previous prestige gain by "
 
@@ -434,6 +435,7 @@ addLayer("a", {
         ],
         layerShown(){return true},
         prestigeButtonText(){
+                if (player.tab != "a" || hasUpgrade("a", 23)) return ""
                 let gain= this.getResetGain()
                 let pts = this.baseAmount()
                 let pre = this.getGainMultPre()
@@ -542,6 +544,7 @@ addLayer("a", {
                                 return 3 + player.a.upgrades.length
                         },
                         effectDisplay(){
+                                if (player.tab != "a") return ""
                                 return "3 -> " + format(3 + player.a.upgrades.length * .5, 1)
                         },
                         unlocked(){
@@ -1104,6 +1107,7 @@ addLayer("b", {
                 return ret
         },
         effectDescription(){
+                if (player.tab != "b") return ""
                 let eff = this.effect()
                 let a = "which buffs point and all previous prestige gain by "
 
@@ -1149,6 +1153,7 @@ addLayer("b", {
         ],
         layerShown(){return player.a.best.gt(1e6) || player.b.best.gt(0) || hasUnlockedPast("b")},
         prestigeButtonText(){
+                if (player.tab != "b" || hasUpgrade("b", 22)) return ""
                 let gain= this.getResetGain()
                 let pts = this.baseAmount()
                 let pre = this.getGainMultPre()
@@ -1898,6 +1903,7 @@ addLayer("c", {
                 return ret
         },
         effectDescription(){
+                if (player.tab != "c") return ""
                 let eff = this.effect()
                 let a = "which buffs point and all previous prestige gain by "
 
@@ -1944,6 +1950,7 @@ addLayer("c", {
         ],
         layerShown(){return player.b.best.gt(5e10) || player.c.best.gt(0) || hasUnlockedPast("c")},
         prestigeButtonText(){
+                if (player.tab != "c" || hasUpgrade("c", 22)) return ""
                 let gain= this.getResetGain()
                 let pts = this.baseAmount()
                 let pre = this.getGainMultPre()
@@ -2659,6 +2666,7 @@ addLayer("d", {
                 return ret
         },
         effectDescription(){
+                if (player.tab != "d") return ""
                 let eff = this.effect()
                 let a = "which buffs point and all previous prestige gain by "
 
@@ -2705,6 +2713,7 @@ addLayer("d", {
         ],
         layerShown(){return player.c.best.gt(5e10) || player.d.best.gt(0) || hasUnlockedPast("d")},
         prestigeButtonText(){
+                if (player.tab != "d" || hasUpgrade("d", 22)) return ""
                 let gain= this.getResetGain()
                 let pts = this.baseAmount()
                 let pre = this.getGainMultPre()
@@ -3386,6 +3395,7 @@ addLayer("e", {
                 return ret
         },
         effectDescription(){
+                if (player.tab != "e") return ""
                 let eff = this.effect()
                 let a = "which buffs point and all previous prestige gain by "
 
@@ -3432,6 +3442,7 @@ addLayer("e", {
         ],
         layerShown(){return player.d.best.gt(5e10) || player.e.best.gt(0) || hasUnlockedPast("e")},
         prestigeButtonText(){
+                if (player.tab != "e" || hasUpgrade("e", 22)) return ""
                 let gain= this.getResetGain()
                 let pts = this.baseAmount()
                 let pre = this.getGainMultPre()
@@ -4097,7 +4108,7 @@ addLayer("f", {
                 x = x.plus(getGoalChallengeReward("30"))
                 if (hasMilestone("ach", 6)) x = x.plus(1.5)
                 if (hasUpgrade("goalsii", 13)) x = x.plus(0.2 * player.goalsii.upgrades.length)
-                x = x.plus(layers.g.clickables.getRebirthEffects()["F gain exponent"][0])
+                x = x.plus(CURRENT_GAMES_EFFECTS["rebirth"]["F gain exponent"][0])
                 if (hasUpgrade("f", 25)) x = x.plus(player.f.upgrades.length ** 2)
                 if (hasUpgrade("h", 11)) x = x.plus(78 * player.h.upgrades.length)
                 x = x.plus(CURRENT_BUYABLE_EFFECTS["f12"])
@@ -4108,7 +4119,7 @@ addLayer("f", {
                 x = x.times(getGoalChallengeReward("13"))
                 if (hasMilestone("goalsii", 14)) x = x.times(player.goalsii.points.plus(10).log10())
                 x = x.times(player.e.best.max(10).log10().pow(getGoalChallengeReward("24")))
-                x = x.times(layers.g.clickables.getRebirthEffects()["Base F gain"][0])
+                x = x.times(CURRENT_GAMES_EFFECTS["rebirth"]["Base F gain"][0])
                 if (hasUpgrade("h", 11)) x = x.times(Decimal.pow(90, player.h.upgrades.length))
                 return x
         },
@@ -4128,8 +4139,8 @@ addLayer("f", {
                 if (hasUpgrade("goalsii", 24) && getChallengeDepth(4) > 0) {
                         x = x.times(Decimal.pow(1.25, player.goalsii.upgrades.length ** 2))
                 }
-                x = x.times(layers.g.clickables.getAllPartialEffects()["Features"][0])
-                x = x.times(layers.g.clickables.getAllCompletedEffects()["Features"][0])
+                x = x.times(CURRENT_GAMES_EFFECTS["partial"]["Features"][0])
+                x = x.times(CURRENT_GAMES_EFFECTS["complete"]["Features"][0])
 
                 x = x.times(CURRENT_BUYABLE_EFFECTS["f11"])
 
@@ -4156,6 +4167,7 @@ addLayer("f", {
                 return ret
         },
         effectDescription(){
+                if (player.tab != "f") return ""
                 let eff = this.effect()
                 let a = "which buffs point and all previous prestige gain by "
 
@@ -4189,7 +4201,6 @@ addLayer("f", {
                                 if (tmp.f.buyables[12].unlocked) layers.f.buyables[12].buyMax(amt)
                                 if (tmp.f.buyables[13].unlocked) layers.f.buyables[13].buyMax(amt)
                                 if (tmp.f.buyables[21].unlocked) layers.f.buyables[21].buyMax(amt)
-                                /*
                                 if (tmp.f.buyables[22].unlocked) layers.f.buyables[22].buyMax(amt)
                                 /*
                                 if (tmp.f.buyables[23].unlocked) layers.f.buyables[23].buyMax(amt)
@@ -4213,6 +4224,7 @@ addLayer("f", {
         ],
         layerShown(){return player.e.best.gt(5e13) || player.f.best.gt(0) || hasUnlockedPast("f")},
         prestigeButtonText(){
+                if (player.tab != "f" || hasMilestone("goalsii", 9)) return ""
                 let gain= this.getResetGain()
                 let pts = this.baseAmount()
                 let pre = this.getGainMultPre()
@@ -4577,7 +4589,7 @@ addLayer("f", {
                                 buyMaximumBuyable("f", 22, maximum)
                         },
                         unlocked(){ 
-                                return hasUpgrade("i", 11) || hasUnlockedPast("h")
+                                return hasUpgrade("i", 11) || hasUnlockedPast("i")
                         },
                 },
                 /*
@@ -6316,8 +6328,8 @@ addLayer("goalsii", {
                 if (hasMilestone("g", 3)) x = x.times(Decimal.pow(1.5, player.g.milestones.length))
                 if (hasUpgrade("goalsii", 24)) x = x.times(Decimal.pow(1.1, player.goalsii.upgrades.length))
                 x = x.times(getBuyableEffect("e", 32))
-                x = x.times(layers.g.clickables.getAllPartialEffects()["Medals"][0])
-                x = x.times(layers.g.clickables.getRebirthEffects()["Medals"][0])
+                x = x.times(CURRENT_GAMES_EFFECTS["partial"]["Medals"][0])
+                x = x.times(CURRENT_GAMES_EFFECTS["rebirth"]["Medals"][0])
                 if (hasMilestone("g", 14)) {
                         x = x.times(Decimal.pow(2, player.g.milestones.length))
                 }
@@ -6344,6 +6356,7 @@ addLayer("goalsii", {
                 return ret
         },
         effectDescription(){
+                if (player.tab != "goalsii") return ""
                 let eff = this.effect()
                 let a = "which buffs point and all previous prestige gain by "
 
@@ -6372,6 +6385,10 @@ addLayer("goalsii", {
                 if (false) {
                         data.abtime += diff
                         if (data.abtime > 10) data.abtime = 10
+                        if (data.abtime > 1) {
+                                data.abtime += -1
+                                
+                        }
                 } else {
                         data.abtime = 0
                 }
@@ -6421,6 +6438,7 @@ addLayer("goalsii", {
         ],
         layerShown(){return player.goalsii.times > 0 || player.f.times > 0 || player.g.best.gt(0) || hasUnlockedPast("g")},
         prestigeButtonText(){
+                if (player.tab != "goalsii") return ""
                 let b = ""
                 if (player.goalsii.times > 0) {
                         b = "This will keep you in the same challenge <br>"
@@ -6449,6 +6467,7 @@ addLayer("goalsii", {
                                 return "<h3 style='color: #C03000'>00</h3>"
                         },
                         display(){
+                                if (player.tab != "goalsii") return ""
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["00"]) + "<br>"
                                 let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + format(getGoalChallengeReward("00"), 4) + " to<br>"
                                 let c = "all prior prestige gain exponents"
@@ -6476,6 +6495,7 @@ addLayer("goalsii", {
                                 return "<h3 style='color: #C03000'>01</h3>"
                         },
                         display(){
+                                if (player.tab != "goalsii") return ""
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["01"]) + "<br>"
                                 let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + format(getGoalChallengeReward("01").times(100), 4) + "<br>"
                                 let c = "/100 to <b>Country</b> and <b>Omnipotent I</b> base"
@@ -6503,6 +6523,7 @@ addLayer("goalsii", {
                                 return "<h3 style='color: #C03000'>02</h3>"
                         },
                         display(){
+                                if (player.tab != "goalsii") return ""
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["02"]) + "<br>"
                                 let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + format(getGoalChallengeReward("02"), 4) + " to<br>"
                                 let c = "Doodle effect exponent"
@@ -6530,6 +6551,7 @@ addLayer("goalsii", {
                                 return "<h3 style='color: #C03000'>03</h3>"
                         },
                         display(){
+                                if (player.tab != "goalsii") return ""
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["03"]) + "<br>"
                                 let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + format(getGoalChallengeReward("03"), 4) + " to<br>"
                                 let c = "<b>Delivery</b> and <b>December</b> base"
@@ -6557,6 +6579,7 @@ addLayer("goalsii", {
                                 return "<h3 style='color: #C03000'>04</h3>"
                         },
                         display(){
+                                if (player.tab != "goalsii") return ""
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["04"]) + "<br>"
                                 let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + format(getGoalChallengeReward("04"), 4) + "<br>"
                                 let c = "to <b>Experience</b> and <b>Card</b> base"
@@ -6584,6 +6607,7 @@ addLayer("goalsii", {
                                 return "<h3 style='color: #C03000'>10</h3>"
                         },
                         display(){
+                                if (player.tab != "goalsii") return ""
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["10"]) + "<br>"
                                 let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("10")) + "<br>"
                                 let c = "Free <b>Director</b> levels"
@@ -6611,6 +6635,7 @@ addLayer("goalsii", {
                                 return "<h3 style='color: #C03000'>11</h3>"
                         },
                         display(){
+                                if (player.tab != "goalsii") return ""
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["11"]) + "<br>"
                                 let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("11")) + "<br>"
                                 let c = "Free <b>Omnipotent II</b> levels"
@@ -6638,6 +6663,7 @@ addLayer("goalsii", {
                                 return "<h3 style='color: #C03000'>12</h3>"
                         },
                         display(){
+                                if (player.tab != "goalsii") return ""
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["12"]) + "<br>"
                                 let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("12")) + "<br>"
                                 let c = "Free <b>Category</b> levels"
@@ -6665,6 +6691,7 @@ addLayer("goalsii", {
                                 return "<h3 style='color: #C03000'>13</h3>"
                         },
                         display(){
+                                if (player.tab != "goalsii") return ""
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["13"]) + "<br>"
                                 let b = "<h3 style='color: #00FF66'>Reward</h3>: *" + format(getGoalChallengeReward("13"), 4) + " <br>to "
                                 let c = "base <b>F</b> gain"
@@ -6692,6 +6719,7 @@ addLayer("goalsii", {
                                 return "<h3 style='color: #C03000'>14</h3>"
                         },
                         display(){
+                                if (player.tab != "goalsii") return ""
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["14"]) + "<br>"
                                 let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("14")) + "<br>"
                                 let c = "free <b>Experience</b> levels"
@@ -6719,6 +6747,7 @@ addLayer("goalsii", {
                                 return "<h3 style='color: #C03000'>20</h3>"
                         },
                         display(){
+                                if (player.tab != "goalsii") return ""
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["20"]) + "<br>"
                                 let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + format(getGoalChallengeReward("20"), 4) + "<br>"
                                 let c = "to <b>Department</b><br>base"
@@ -6746,6 +6775,7 @@ addLayer("goalsii", {
                                 return "<h3 style='color: #C03000'>21</h3>"
                         },
                         display(){
+                                if (player.tab != "goalsii") return ""
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["21"]) + "<br>"
                                 let b = "<h3 style='color: #00FF66'>Reward</h3>: x" + format(getGoalChallengeReward("21")) + "<br>"
                                 let c = "<b>Egg</b> gain and <b>Account</b> base"
@@ -6773,6 +6803,7 @@ addLayer("goalsii", {
                                 return "<h3 style='color: #C03000'>22</h3>"
                         },
                         display(){
+                                if (player.tab != "goalsii") return ""
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["22"]) + "<br>"
                                 let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("22")) + "<br>"
                                 let c = "free <b>Drive</b><br>levels"
@@ -6800,6 +6831,7 @@ addLayer("goalsii", {
                                 return "<h3 style='color: #C03000'>23</h3>"
                         },
                         display(){
+                                if (player.tab != "goalsii") return ""
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["23"]) + "<br>"
                                 let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + format(getGoalChallengeReward("23"), 4) + " to<br>"
                                 let c = "<b>E</b> gain exp"
@@ -6827,6 +6859,7 @@ addLayer("goalsii", {
                                 return "<h3 style='color: #C03000'>24</h3>"
                         },
                         display(){
+                                if (player.tab != "goalsii") return ""
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["24"]) + "<br>"
                                 let b = "<h3 style='color: #00FF66'>Reward</h3>: log(eggs)^" + format(getGoalChallengeReward("24"), 4) + "<br>"
                                 let c = "boosts base <b>F</b> gain"
@@ -6854,6 +6887,7 @@ addLayer("goalsii", {
                                 return "<h3 style='color: #C03000'>30</h3>"
                         },
                         display(){
+                                if (player.tab != "goalsii") return ""
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["30"]) + "<br>"
                                 let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + format(getGoalChallengeReward("30"), 4) + " to<br>"
                                 let c = "<b>F</b> gain exp"
@@ -6881,6 +6915,7 @@ addLayer("goalsii", {
                                 return "<h3 style='color: #C03000'>31</h3>"
                         },
                         display(){
+                                if (player.tab != "goalsii") return ""
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["31"]) + "<br>"
                                 let b = "<h3 style='color: #00FF66'>Reward</h3>: *" + format(getGoalChallengeReward("31"), 4) + " to<br>"
                                 let c = "medal and base <b>E</b> gain"
@@ -6908,6 +6943,7 @@ addLayer("goalsii", {
                                 return "<h3 style='color: #C03000'>32</h3>"
                         },
                         display(){
+                                if (player.tab != "goalsii") return ""
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["32"]) + "<br>"
                                 let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + format(getGoalChallengeReward("32"), 4) + " to<br>"
                                 let c = "<b>Director</b> base per <b>Director</b>"
@@ -6935,6 +6971,7 @@ addLayer("goalsii", {
                                 return "<h3 style='color: #C03000'>33</h3>"
                         },
                         display(){
+                                if (player.tab != "goalsii") return ""
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["33"]) + "<br>"
                                 let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + format(getGoalChallengeReward("33"), 2) + " to<br>"
                                 let c = "<b>E</b> gain exp"
@@ -6962,6 +6999,7 @@ addLayer("goalsii", {
                                 return "<h3 style='color: #C03000'>34</h3>"
                         },
                         display(){
+                                if (player.tab != "goalsii") return ""
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["34"]) + "<br>"
                                 let b = "<h3 style='color: #00FF66'>Reward</h3>: /" + format(getGoalChallengeReward("34")) + "<br>"
                                 let c = "<b>East</b> cost and <b>Due</b> linear scaling"
@@ -6989,6 +7027,7 @@ addLayer("goalsii", {
                                 return "<h3 style='color: #C03000'>40</h3>"
                         },
                         display(){
+                                if (player.tab != "goalsii") return ""
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["40"]) + "<br>"
                                 let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("40")) + "<br>"
                                 let c = "free <b>Example</b> and <b>Database</b> levels"
@@ -7016,6 +7055,7 @@ addLayer("goalsii", {
                                 return "<h3 style='color: #C03000'>41</h3>"
                         },
                         display(){
+                                if (player.tab != "goalsii") return ""
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["41"]) + "<br>"
                                 let b = "<h3 style='color: #00FF66'>Reward</h3>: *" + format(getGoalChallengeReward("41")) + " to<br>"
                                 let c = "medal gain and <b>Department</b> base"
@@ -7043,6 +7083,7 @@ addLayer("goalsii", {
                                 return "<h3 style='color: #C03000'>42</h3>"
                         },
                         display(){
+                                if (player.tab != "goalsii") return ""
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["42"]) + "<br>"
                                 let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + format(getGoalChallengeReward("42"), 4) + " to<br>"
                                 let c = "<b>Omnipotent III</b> base"
@@ -7070,6 +7111,7 @@ addLayer("goalsii", {
                                 return "<h3 style='color: #C03000'>43</h3>"
                         },
                         display(){
+                                if (player.tab != "goalsii") return ""
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["43"]) + "<br>"
                                 let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("43")) + "<br>"
                                 let c = "free <b>Easy</b> levels"
@@ -7097,6 +7139,7 @@ addLayer("goalsii", {
                                 return "<h3 style='color: #C03000'>44</h3>"
                         },
                         display(){
+                                if (player.tab != "goalsii") return ""
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["44"]) + "<br>"
                                 let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("44")) + "<br>"
                                 let c = "free <b>Enter</b> levels"
@@ -7933,17 +7976,18 @@ addLayer("g", {
         getGainExp(){
                 let x = new Decimal(1.5)
                 if (hasMilestone("g", 10)) x = x.plus(player.g.partialTally.times(.01))
-                x = x.plus(layers.g.clickables.getAllPartialEffects()["G Gain exponent"][0])
+                x = x.plus(CURRENT_GAMES_EFFECTS["partial"]["G Gain exponent"][0])
                 if (hasUpgrade("f", 24)) x = x.plus(player.f.upgrades.length ** 2)
                 if (hasUpgrade("g", 25)) x = x.plus(6 * player.g.upgrades.length)
+                x = x.plus(CURRENT_BUYABLE_EFFECTS["g11"])
                 return x
         },
         getGainMultPre(){
                 let x = new Decimal(1/10)
                 if (hasMilestone("g", 15)) x = x.times(2)
-                x = x.times(layers.g.clickables.getAllPartialEffects()["Base G Gain"][0])
-                x = x.times(layers.g.clickables.getRebirthEffects()["Base G Gain"][0])
-                x = x.times(layers.g.clickables.getAllCompletedEffects()["Base G Gain"][0])
+                x = x.times(CURRENT_GAMES_EFFECTS["partial"]["Base G Gain"][0])
+                x = x.times(CURRENT_GAMES_EFFECTS["rebirth"]["Base G Gain"][0])
+                x = x.times(CURRENT_GAMES_EFFECTS["complete"]["Base G Gain"][0])
                 if (hasMilestone("g", 20)) x = x.times(3)
                 if (hasUpgrade("f", 15)) x = x.times(1.15)
                 if (hasUpgrade("f", 31)) x = x.times(Decimal.pow(1.01, player.f.upgrades.length))
@@ -7976,9 +8020,9 @@ addLayer("g", {
                         if (LAYERS[i] == "g") yet = true
                 }
 
-                x = x.times(layers.g.clickables.getAllPartialEffects()["Games"][0])
-                x = x.times(layers.g.clickables.getAllCompletedEffects()["Games"][0])
-                x = x.times(layers.g.clickables.getRebirthEffects()["Games"][0])
+                x = x.times(CURRENT_GAMES_EFFECTS["partial"]["Games"][0])
+                x = x.times(CURRENT_GAMES_EFFECTS["complete"]["Games"][0])
+                x = x.times(CURRENT_GAMES_EFFECTS["rebirth"]["Games"][0])
                 if (hasMilestone("g", 13)) x = x.times(Decimal.sqrt(Decimal.max(player.g.charges, 1)))
 
                 return x
@@ -8001,6 +8045,7 @@ addLayer("g", {
                 return ret
         },
         effectDescription(){
+                if (player.tab != "g") return ""
                 let eff = this.effect()
                 let a = "which buffs point and all previous prestige gain by "
 
@@ -8009,7 +8054,7 @@ addLayer("g", {
         getMaxCharges(){
                 let ret = new Decimal(10)
                 if (hasMilestone("g", 11)) ret = ret.plus(90)
-                ret = ret.plus(layers.g.clickables.getAllPartialEffects()["Max Charges"][0])
+                ret = ret.plus(CURRENT_GAMES_EFFECTS["partial"]["Max Charges"][0])
                 if (hasMilestone("g", 18)) ret = ret.times(3)
                 if (hasMilestone("g", 21)) ret = ret.times(6)
                 if (hasMilestone("g", 23)){
@@ -8034,9 +8079,33 @@ addLayer("g", {
                                 data.times ++
                         }
                 }
-                if (false) {
-                        data.abtime += diff
+                if (hasUpgrade("g", 51)) {
+                        data.abtime += diff * getABSpeed("g")
                         if (data.abtime > 10) data.abtime = 10
+                        if (data.abtime > 1) {
+                                data.abtime += -1
+                                let key = "g"
+                                let amt = getABBulk("g")
+                                if (tmp[key].buyables[11].unlocked) layers[key].buyables[11].buyMax(amt)
+                                /*
+                                if (tmp[key].buyables[12].unlocked) layers[key].buyables[12].buyMax(amt)
+                                /*
+                                if (tmp[key].buyables[13].unlocked) layers[key].buyables[13].buyMax(amt)
+                                /*
+                                if (tmp[key].buyables[21].unlocked) layers[key].buyables[21].buyMax(amt)
+                                /*
+                                if (tmp[key].buyables[22].unlocked) layers[key].buyables[22].buyMax(amt)
+                                /*
+                                if (tmp[key].buyables[23].unlocked) layers[key].buyables[23].buyMax(amt)
+                                /*
+                                if (tmp[key].buyables[31].unlocked) layers[key].buyables[31].buyMax(amt)
+                                /*
+                                if (tmp[key].buyables[32].unlocked) layers[key].buyables[32].buyMax(amt)
+                                /*
+                                if (tmp[key].buyables[33].unlocked) layers[key].buyables[33].buyMax(amt)
+                                /*
+                                */
+                        }
                 } else {
                         data.abtime = 0
                 }
@@ -8097,6 +8166,7 @@ addLayer("g", {
                                         i.onClick(true)
                                 }
                                 if (hasUpgrade("f", 33)) layers.g.clickables[15].onClick()
+                                if (hasUpgrade("g", 51)) layers.g.clickables[25].onClick()
                         }
                 } else {
                         data.autotime = 0
@@ -8113,6 +8183,7 @@ addLayer("g", {
         ],
         layerShown(){return player.goalsii.tokens.best["44"].gt(0) || player.g.best.gt(0) || hasUnlockedPast("g")},
         prestigeButtonText(){
+                if (player.tab != "g" || hasMilestone("g", 9)) return ""
                 let gain= this.getResetGain()
                 let pts = this.baseAmount()
                 let pre = this.getGainMultPre()
@@ -8364,7 +8435,7 @@ addLayer("g", {
                 }, // hasMilestone("g", 22)
                 23: {
                         requirementDescription: "<b>Germany</b><br>Requires: 8 Rebirth I", 
-                        effectDescription: "Raise charge gain ^1.1, deving costs 10x less charges, and each Rebith doubles max charges",
+                        effectDescription: "Raise charge gain ^1.1, deving costs 10x less charges, and each Rebirth doubles max charges",
                         done(){
                                 return player.g.rebirths[1] >= 8
                         },
@@ -8438,200 +8509,22 @@ addLayer("g", {
                         return ret
                 },
                 getEffectivePartialDevs(){
-                        let arg = new Decimal(player.g.partialTally)
-                        if (arg == undefined) arg = new Decimal(0)
-                        arg = arg.plus(getBuyableEffect("d", 33))
-                        arg = arg.plus(CURRENT_BUYABLE_EFFECTS["f13"])
-                        return arg
+                        return CURRENT_GAMES_VALUES["partial"]
                 },
                 getAllPartialEffects(){
-                        let names = ["Features", "Games", "Medals", "Max Charges", "G Gain exponent", "Base G Gain"]
-                        let symbols = ["*", "*", "*", "+", "+", "*"]
-                        let functions = [
-                                function(x){
-                                        let ret = Decimal.pow(x.plus(1), x.sqrt())
-
-                                        if (ret.gt(1e100) && !hasUpgrade("f", 12)) ret = ret.log10().pow(50)
-
-                                        if (hasUpgrade("e", 42)) ret = ret.pow(20)
-                                        
-                                        return ret
-                                },
-                                function(x){
-                                        if (x.lte(4)) return new Decimal(1)
-                                        let exp = Decimal.max(.5, Decimal.min(1.5, x.div(30).toNumber()))
-                                        if (hasUpgrade("h", 24)) exp = exp.times(player.h.upgrades.length)
-                                        if (x.gte(129)) {
-                                                let j = x.div(100)
-                                                if (j.gt(256)) j = j.sqrt().times(16)
-                                                exp = exp.times(j)
-                                        }
-                                        let ret = x.div(2).pow(exp)
-                                        
-                                        if (ret.gt(1e10) && !hasUpgrade("f", 14)) ret = ret.log10().pow(10)
-                                        return ret
-                                },
-                                function(x){
-                                        if (x.lte(80)) return new Decimal(1)
-                                        let exp = x.sqrt().div(3)
-                                        let ret = x.pow(exp)
-                                        
-                                        if (ret.gt(1e10) && !hasUpgrade("f", 13)) ret = ret.log10().pow(10)
-                                        return ret
-                                },
-                                function(x){
-                                        if (x.lte(108)) return new Decimal(0)
-                                        let ret = x.minus(50).sqrt().times(20)
-                                        if (ret.gt(200))  ret = ret.div(1e2).pow(2).times(1e2)
-                                        if (ret.gt(15e2)) ret = ret.div(5e2).pow(2).times(5e2)
-                                        if (ret.gt(75e3)) ret = ret.div(5e4).pow(2).times(5e4)
-
-                                        if (hasUpgrade("e", 43)) ret = ret.pow(2)
-                                        if (hasUpgrade("g", 24)) ret = ret.pow(2)
-
-                                        return ret.floor()
-                                },
-                                function(x){
-                                        if (x.lte(110)) return new Decimal(0)
-                                        let ret = x.minus(102).sqrt().div(3)
-                                        
-                                        if (ret.gt(10) && !hasUpgrade("f", 32)) ret = ret.log10().times(10)
-                                        return ret
-                                },
-                                function(x){
-                                        if (x.lte(144)) return new Decimal(1)
-                                        let exp = x.div(100)
-                                        if (exp.gt(2)) exp = exp.div(2).log10().plus(2)
-                                        let ret = x.log10().pow(exp)
-                                        
-                                        return ret
-                                }
-                        ]
-                        let ret = {}
-                        let arg = this.getEffectivePartialDevs()
-                        for (i in names){
-                                let v = functions[i](arg)
-                                ret[names[i]] = [v, symbols[i], v.neq(functions[i](new Decimal(0)))]
-                        }
-                        return ret
+                        return CURRENT_GAMES_EFFECTS["partial"]
                 },
                 getEffectiveCompletedDevs(){
-                        let arg = new Decimal(player.g.completedTally)
-                        if (arg == undefined) arg = new Decimal(0)
-                        arg = arg.plus(layers.g.clickables.getRebirthEffects()["Effective Completed Games"][0])
-                        if (hasMilestone("h", 6)) arg = arg.plus(player.h.milestones.length ** 2)
-                        if (hasUpgrade("h", 14)) arg = arg.plus(2 * player.h.upgrades.length * player.goalsii.upgrades.length)
-                        return arg
+                        return CURRENT_GAMES_VALUES["complete"]
                 },
                 getAllCompletedEffects(){
-                        let names = ["Features", "Games", "Base G Gain"]
-                        let symbols = ["*", "*", "*"]
-                        let functions = [
-                                function(x){
-                                        let exp = x.sqrt().times(4)
-                                        if (hasUpgrade("g", 41)) exp = exp.times(500)
-                                        return Decimal.pow(x.plus(4), exp)
-                                },
-                                function(x){
-                                        if (x.lte(6)) return new Decimal(1)
-                                        let exp = x.sqrt()
-                                        if (x.gte(10)) exp = exp.times(2)
-                                        if (x.gte(96)) exp = exp.times(1.25)
-                                        if (hasUpgrade("g", 42)) exp = exp.times(50)
-                                        let ret = x.div(6).pow(exp)
-                                        return ret
-                                },
-                                function(x){
-                                        if (!hasUpgrade("e", 32)) return new Decimal(1)
-                                        if (x.lt(100)) return new Decimal(1)
-                                        let base = x.div(100)
-                                        let exp = x.pow(.2).div(4)
-                                        let ret = Decimal.pow(base, exp)
-                                        return ret
-                                },
-                        ]
-                        let ret = {}
-                        let arg = this.getEffectiveCompletedDevs()
-                        
-                        for (i in names){
-                                let v = functions[i](arg)
-                                ret[names[i]] = [v, symbols[i], v.neq(functions[i](new Decimal(0)))]
-                        }
-                        return ret
+                        return CURRENT_GAMES_EFFECTS["complete"]
                 },
                 getEffectiveRebirths(){
-                        let arg = new Decimal(layers.g.clickables.getPrimaryRebirths())
-                        if (arg == undefined) arg = new Decimal(0)
-                        if (hasUpgrade("g", 11)) arg = arg.plus(player.g.upgrades.length)
-                        if (hasUpgrade("e", 35)) arg = arg.plus(1)
-                        if (hasMilestone("h", 5)) arg = arg.plus(player.h.milestones.length / 2)
-                        if (hasUpgrade("g", 34)) arg = arg.plus(player.f.challenges[12])
-                        arg = arg.plus(CURRENT_BUYABLE_EFFECTS["f21"])
-                        return arg
+                        return CURRENT_GAMES_VALUES["rebirth"]
                 },
                 getRebirthEffects(){
-                        let names = ["Games", "Manual Bulk", "Base G Gain", "F gain exponent", "Base F gain", "Medals", "Effective Completed Games"]
-                        let symbols = ["*", "*", "*", "+", "*", "*", "+"]
-                        let functions = [
-                                function(x){
-                                        if (x.lte(2)) return new Decimal(1)
-
-                                        let exp = x.times(3).sqrt()
-                                        if (hasUpgrade("f", 53)) exp = exp.times(50)
-
-                                        let base = new Decimal(100)
-                                        if (x.gte(5)) base = base.times(x)
-                                        if (x.gte(7)) base = base.times(x.pow(.6))
-
-                                        let ret = Decimal.pow(base, exp)
-                                        return ret
-                                },
-                                function(x){
-                                        if (x.lte(8)) return new Decimal(1)
-                                        let base = x.sqrt()
-                                        let exp = x.sqrt()
-                                        return Decimal.pow(base, exp)
-                                },
-                                function(x){
-                                        if (!hasUpgrade("f", 21)) return new Decimal(1)
-                                        if (x.eq(0)) return new Decimal(1)
-                                        let ret = x
-                                        if (hasUpgrade("f", 23)) ret = ret.pow(1.5)
-                                        if (hasUpgrade("f", 55)) ret = ret.pow(1.5)
-                                        return ret
-                                },
-                                function(x){
-                                        if (!hasUpgrade("f", 22)) return new Decimal(0)
-                                        if (x.eq(0)) return new Decimal(0)
-                                        let ret = x.pow(.75).times(5)
-                                        return ret
-                                },
-                                function(x){
-                                        if (!hasUpgrade("f", 23)) return new Decimal(1)
-                                        if (x.eq(0)) return new Decimal(1)
-                                        let ret = x.pow(x)
-                                        return ret
-                                },
-                                function(x){
-                                        if (!hasUpgrade("f", 24)) return new Decimal(1)
-                                        if (x.eq(0)) return new Decimal(1)
-                                        let ret = x.pow(x.pow(1.1))
-                                        return ret
-                                },
-                                function(x){
-                                        if (!hasUpgrade("f", 25)) return new Decimal(0)
-                                        if (x.eq(0)) return new Decimal(0)
-                                        let ret = x.pow(1.5)
-                                        return ret
-                                },
-                        ]
-                        let ret = {}
-                        let arg = this.getEffectiveRebirths()
-                        for (i in names){
-                                let v = functions[i](arg)
-                                ret[names[i]] = [v, symbols[i], v.neq(functions[i](new Decimal(0)))]
-                        }
-                        return ret
+                        return CURRENT_GAMES_EFFECTS["rebirth"]
                 },
                 getAttemptAmount(force = false){
                         let ret = new Decimal(1)
@@ -8639,7 +8532,7 @@ addLayer("g", {
                         if (hasMilestone("g", 12)) ret = ret.times(10)
                         if (hasMilestone("g", 17)) ret = ret.times(10)
                         if (hasMilestone("g", 20)) ret = ret.times(4)
-                        ret = ret.times(layers.g.clickables.getRebirthEffects()["Manual Bulk"][0])
+                        ret = ret.times(CURRENT_GAMES_EFFECTS["rebirth"]["Manual Bulk"][0])
                         if (hasMilestone("h", 2)) ret = ret.times(10)
                         return ret 
                 },
@@ -8709,6 +8602,7 @@ addLayer("g", {
                                 return "<h3 style='color: #903000'>Tetris</h3>"
                         },
                         display(){
+                                if (player.tab != "g") return ""
                                 let a = "<h3 style='color: #D070C0'>Cost</h3>: " + formatWhole(this.cost()) + " Games<br>"
                                 let b = "<h3 style='color: #00CC66'>Gives</h3>: " + formatWhole(player.g.clickableAmounts[11]) + " charges per minute"
                                 let c = ""
@@ -8742,6 +8636,7 @@ addLayer("g", {
                                 return "<h3 style='color: #903000'>Pac-man</h3>"
                         },
                         display(){
+                                if (player.tab != "g") return ""
                                 let a = "<h3 style='color: #D070C0'>Cost</h3>: " + format(this.cost()) + " Medals<br>"
                                 let b = "<h3 style='color: #00CC66'>Gives</h3>: " + formatWhole(player.g.clickableAmounts[12]) + " charges per minute"
                                 let c = ""
@@ -8771,6 +8666,7 @@ addLayer("g", {
                                 return "<h3 style='color: #903000'>Asteroids</h3>"
                         },
                         display(){
+                                if (player.tab != "g") return ""
                                 let a = "<h3 style='color: #D070C0'>Requires</h3>: " + formatWhole(this.cost()) + " Goals<br>"
                                 let b = "<h3 style='color: #00CC66'>Gives</h3>: " + formatWhole(player.g.clickableAmounts[13]) + " charges per minute"
                                 let c = ""
@@ -8799,6 +8695,7 @@ addLayer("g", {
                                 return "<h3 style='color: #903000'>Half life</h3>"
                         },
                         display(){
+                                if (player.tab != "g") return ""
                                 let a = "<h3 style='color: #D070C0'>Costs</h3>: " + format(this.cost()) + " Features<br>"
                                 let b = "<h3 style='color: #00CC66'>Gives</h3>: " + formatWhole(player.g.clickableAmounts[14]) + " charges per minute"
                                 let c = ""
@@ -8840,6 +8737,7 @@ addLayer("g", {
                                 return "<h3 style='color: #903000'>Quake</h3>"
                         },
                         display(){
+                                if (player.tab != "g") return ""
                                 let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(this.cost()) + " Games<br>"
                                 if (hasUpgrade("goalsii", 31)) return a
                                 let b = "<h3 style='color: #00CC66'>Completion</h3>: " + format(player.g.clickableAmounts[21].times(100).div(layers.g.clickables.getCompletionsReq())) + "%"
@@ -8912,6 +8810,7 @@ addLayer("g", {
                                 return "<h3 style='color: #903000'>Minecraft</h3>"
                         },
                         display(){
+                                if (player.tab != "g") return ""
                                 let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(this.cost()) + " Games<br>"
                                 if (hasUpgrade("goalsii", 31)) return a
                                 let b = "<h3 style='color: #00CC66'>Completion</h3>: " + format(player.g.clickableAmounts[22].times(100).div(layers.g.clickables.getCompletionsReq())) + "%"
@@ -8983,6 +8882,7 @@ addLayer("g", {
                                 return "<h3 style='color: #903000'>GTA V</h3>"
                         },
                         display(){
+                                if (player.tab != "g") return ""
                                 let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(this.cost()) + " Games<br>"
                                 if (hasUpgrade("goalsii", 31)) return a
                                 let b = "<h3 style='color: #00CC66'>Completion</h3>: " + format(player.g.clickableAmounts[23].times(100).div(layers.g.clickables.getCompletionsReq())) + "%"
@@ -9055,6 +8955,7 @@ addLayer("g", {
                                 return "<h3 style='color: #903000'>FIFA</h3>"
                         },
                         display(){
+                                if (player.tab != "g") return ""
                                 let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(this.cost()) + " Games<br>"
                                 if (hasUpgrade("goalsii", 31)) return a
                                 let b = "<h3 style='color: #00CC66'>Completion</h3>: " + format(player.g.clickableAmounts[24].times(100).div(layers.g.clickables.getCompletionsReq())) + "%"
@@ -9127,6 +9028,7 @@ addLayer("g", {
                                 return "<h3 style='color: #903000'>Portal</h3>"
                         },
                         display(){
+                                if (player.tab != "g") return ""
                                 let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(this.cost()) + " Games<br>"
                                 if (hasUpgrade("goalsii", 31)) return a
                                 let b = "<h3 style='color: #00CC66'>Completion</h3>: " + format(player.g.clickableAmounts[31].times(100).div(layers.g.clickables.getCompletionsReq())) + "%"
@@ -9199,6 +9101,7 @@ addLayer("g", {
                                 return "<h3 style='color: #903000'>Pokemon</h3>"
                         },
                         display(){
+                                if (player.tab != "g") return ""
                                 let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(this.cost()) + " Games<br>"
                                 if (hasUpgrade("goalsii", 31)) return a
                                 let b = "<h3 style='color: #00CC66'>Completion</h3>: " + format(player.g.clickableAmounts[32].times(100).div(layers.g.clickables.getCompletionsReq())) + "%"
@@ -9271,6 +9174,7 @@ addLayer("g", {
                                 return "<h3 style='color: #903000'>Diablo</h3>"
                         },
                         display(){
+                                if (player.tab != "g") return ""
                                 let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(this.cost()) + " Games<br>"
                                 if (hasUpgrade("goalsii", 31)) return a
                                 let b = "<h3 style='color: #00CC66'>Completion</h3>: " + format(player.g.clickableAmounts[33].times(100).div(layers.g.clickables.getCompletionsReq())) + "%"
@@ -9343,6 +9247,7 @@ addLayer("g", {
                                 return "<h3 style='color: #903000'>Terraria</h3>"
                         },
                         display(){
+                                if (player.tab != "g") return ""
                                 let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(this.cost()) + " Games<br>"
                                 if (hasUpgrade("goalsii", 31)) return a
                                 let b = "<h3 style='color: #00CC66'>Completion</h3>: " + format(player.g.clickableAmounts[34].times(100).div(layers.g.clickables.getCompletionsReq())) + "%"
@@ -9415,6 +9320,7 @@ addLayer("g", {
                                 return "<h3 style='color: #903000'>Roblox</h3>"
                         },
                         display(){
+                                if (player.tab != "g") return ""
                                 let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(this.cost()) + " Games<br>"
                                 if (hasUpgrade("goalsii", 31)) return a
                                 let b = "<h3 style='color: #00CC66'>Completion</h3>: " + format(player.g.clickableAmounts[41].times(100).div(layers.g.clickables.getCompletionsReq())) + "%"
@@ -9487,6 +9393,7 @@ addLayer("g", {
                                 return "<h3 style='color: #903000'>Autochess</h3>"
                         },
                         display(){
+                                if (player.tab != "g") return ""
                                 let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(this.cost()) + " Games<br>"
                                 if (hasUpgrade("goalsii", 31)) return a
                                 let b = "<h3 style='color: #00CC66'>Completion</h3>: " + format(player.g.clickableAmounts[42].times(100).div(layers.g.clickables.getCompletionsReq())) + "%"
@@ -9559,6 +9466,7 @@ addLayer("g", {
                                 return "<h3 style='color: #903000'>Pong</h3>"
                         },
                         display(){
+                                if (player.tab != "g") return ""
                                 let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(this.cost()) + " Games<br>"
                                 if (hasUpgrade("goalsii", 31)) return a
                                 let b = "<h3 style='color: #00CC66'>Completion</h3>: " + format(player.g.clickableAmounts[43].times(100).div(layers.g.clickables.getCompletionsReq())) + "%"
@@ -9631,6 +9539,7 @@ addLayer("g", {
                                 return "<h3 style='color: #903000'>Dota 2</h3>"
                         },
                         display(){
+                                if (player.tab != "g") return ""
                                 let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(this.cost()) + " Games<br>"
                                 if (hasUpgrade("goalsii", 31)) return a
                                 let b = "<h3 style='color: #00CC66'>Completion</h3>: " + format(player.g.clickableAmounts[44].times(100).div(layers.g.clickables.getCompletionsReq())) + "%"
@@ -9703,6 +9612,7 @@ addLayer("g", {
                                 return "<h3 style='color: #903000'>Snake</h3>"
                         },
                         display(){
+                                if (player.tab != "g") return ""
                                 let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(this.cost()) + " Games<br>"
                                 if (hasUpgrade("goalsii", 31)) return a
                                 let b = "<h3 style='color: #00CC66'>Completion</h3>: " + format(player.g.clickableAmounts[51].times(100).div(layers.g.clickables.getCompletionsReq())) + "%"
@@ -9773,6 +9683,7 @@ addLayer("g", {
                                 return "<h3 style='color: #903000'>Hearthstone</h3>"
                         },
                         display(){
+                                if (player.tab != "g") return ""
                                 let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(this.cost()) + " Games<br>"
                                 if (hasUpgrade("goalsii", 31)) return a
                                 let b = "<h3 style='color: #00CC66'>Completion</h3>: " + format(player.g.clickableAmounts[52].times(100).div(layers.g.clickables.getCompletionsReq())) + "%"
@@ -9843,6 +9754,7 @@ addLayer("g", {
                                 return "<h3 style='color: #903000'>TFT</h3>"
                         },
                         display(){
+                                if (player.tab != "g") return ""
                                 let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(this.cost()) + " Games<br>"
                                 if (hasUpgrade("goalsii", 31)) return a
                                 let b = "<h3 style='color: #00CC66'>Completion</h3>: " + format(player.g.clickableAmounts[53].times(100).div(layers.g.clickables.getCompletionsReq())) + "%"
@@ -9913,6 +9825,7 @@ addLayer("g", {
                                 return "<h3 style='color: #903000'>Valorant</h3>"
                         },
                         display(){
+                                if (player.tab != "g") return ""
                                 let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(this.cost()) + " Games<br>"
                                 if (hasUpgrade("goalsii", 31)) return a
                                 let b = "<h3 style='color: #00CC66'>Completion</h3>: " + format(player.g.clickableAmounts[54].times(100).div(layers.g.clickables.getCompletionsReq())) + "%"
@@ -9983,6 +9896,7 @@ addLayer("g", {
                                 return "<h3 style='color: #903000'>Rebirth I</h3>"
                         },
                         display(){
+                                if (player.tab != "g") return ""
                                 let a = "<h3 style='color: #D070C0'>Requires</h3>: 16 Games at 100%<br>"
                                 let b = "<h3 style='color: #00CC66'>Times</h3>: " + formatWhole(player.g.rebirths[1])
                                 return a + b
@@ -10030,6 +9944,7 @@ addLayer("g", {
                                 return "<h3 style='color: #903000'>Rebirth II</h3>"
                         },
                         display(){
+                                if (player.tab != "g") return ""
                                 let a = "<h3 style='color: #D070C0'>Requires</h3>:" + formatWhole(this.cost()) + " Rebirth I<br>"
                                 let b = "<h3 style='color: #00CC66'>Times</h3>: " + formatWhole(player.g.rebirths[2])
                                 return a + b
@@ -10081,7 +9996,7 @@ addLayer("g", {
                 cols: 5,
                 11: {
                         title: "Girl",
-                        description: "Each upgrade adds 1 to effective rebiths",
+                        description: "Each upgrade adds 1 to effective rebirths",
                         cost: new Decimal("1e26697"),
                         unlocked(){
                                 return hasUpgrade("f", 45) || hasUnlockedPast("g")
@@ -10239,14 +10154,52 @@ addLayer("g", {
                                 return hasUpgrade("g", 44) || hasUnlockedPast("h")
                         },
                 }, // hasUpgrade("g", 45)
+                51: {
+                        title: "Guy",
+                        description: "Automatically buy <b>G</b> buyables and <b>Rebirth II</b>",
+                        cost: new Decimal("1e3552e3"),
+                        unlocked(){
+                                return hasUpgrade("h", 11) || hasUnlockedPast("i")
+                        },
+                }, // hasUpgrade("g", 51)
                 
 
                 /*  
-                gives
-                Guy
+                
                 guidelines
 
                 */
+        },
+        buyables: {
+                rows: 3,
+                cols: 3,
+                11: {
+                        title: "Gives",
+                        display(){
+                                return getBuyableDisplay("g", 11)
+                        },
+                        effect(){
+                                return CURRENT_BUYABLE_EFFECTS["g11"]
+                        },
+                        canAfford(){
+                                return canAffordBuyable("g", 11)
+                        },
+                        total(){
+                                return getBuyableAmount("g", 11).plus(this.extra())
+                        },
+                        extra(){
+                                return calcBuyableExtra("g", 11)
+                        },
+                        buy(){
+                                buyManualBuyable("g", 11)
+                        },
+                        buyMax(maximum){
+                                buyMaximumBuyable("g", 11, maximum)
+                        },
+                        unlocked(){ 
+                                return hasUpgrade("g", 11) || hasUnlockedPast("i")
+                        },
+                },
         },
         tabFormat: {
                 "Upgrades": {
@@ -10278,7 +10231,7 @@ addLayer("g", {
                                 "blank", 
                                 "buyables"],
                         unlocked(){
-                                return false
+                                return hasUpgrade("g", 11) || hasUnlockedPast("i")
                         },
                 },
                 "Milestones": {
@@ -10341,13 +10294,13 @@ addLayer("g", {
                                                 and larger buffs for completing games. <br><br>
                                                 <h2 style = 'color: #CC0033'>Rewards</h2><h2>:</h2><br>
                                                 ` 
-                                                let ecd = layers.g.clickables.getEffectiveCompletedDevs()
+                                                let ecd = CURRENT_GAMES_VALUES["complete"]
                                                 let ecdportion = ecd.eq(player.g.completedTally) ? "" : "+" + format(ecd.minus(player.g.completedTally))
-                                                let pcd = layers.g.clickables.getEffectivePartialDevs()
+                                                let pcd = CURRENT_GAMES_VALUES["partial"]
                                                 let pcdportion = pcd.eq(player.g.partialTally) ? "" : "+" + format(pcd.minus(player.g.partialTally))
                                                 let b = "You have successfully deved " + formatWhole(player.g.partialTally) + pcdportion + " games so:"
                                                 let b2 = ""
-                                                let data2 = layers.g.clickables.getAllCompletedEffects()
+                                                let data2 = CURRENT_GAMES_EFFECTS["complete"]
                                                 for (i in data2){
                                                         let j = data2[i]
                                                         if (!j[2]) continue
@@ -10357,21 +10310,21 @@ addLayer("g", {
                                                 
                                                 let c = "<br><br> You have fully completed " + formatWhole(player.g.completedTally) + ecdportion + " games so:"
                                                 let c2 = ""
-                                                let data1 = layers.g.clickables.getAllPartialEffects()
+                                                let data1 = CURRENT_GAMES_EFFECTS["partial"]
                                                 for (i in data1){
                                                         let j = data1[i]
                                                         if (!j[2]) continue
                                                         c2 += "<br>• " + j[1] + format(j[0]) + " to " + i 
                                                 }
 
-                                                let rb = layers.g.clickables.getPrimaryRebirths()
-                                                let erb = layers.g.clickables.getEffectiveRebirths()
+                                                let rb = tmp.g.clickables.getPrimaryRebirths
+                                                let erb = CURRENT_GAMES_VALUES["rebirth"]
                                                 if (erb.eq(0)) return a + b + c2 + c + b2
                                                 
                                                 let erbportion = erb.eq(rb) ? "" : "+" + format(erb.minus(rb))
                                                 let d = "<br><br> You have rebirthed " + formatWhole(rb) + erbportion + " times so:"
                                                 let d2 = ""
-                                                let data3 = layers.g.clickables.getRebirthEffects()
+                                                let data3 = CURRENT_GAMES_EFFECTS["rebirth"]
                                                 for (i in data3){
                                                         let j = data3[i]
                                                         if (!j[2]) continue
@@ -10382,14 +10335,14 @@ addLayer("g", {
                                 ],
                                 ["display-text",
                                         function() {
-                                                let rb = layers.g.clickables.getPrimaryRebirths()
+                                                let rb = tmp.g.clickables.getPrimaryRebirths
                                                 if (rb == 0 && player.g.completedTally < 15) return ""
                                                 let a = `<br><h2 style = 'color: #CC0033'>Rebirth</h2><h2>:</h2><br>
                                                 You can rebirth when you have fully deved 16 games.<br>
                                                 Upon rebirthing you lose game progress.<br>
                                                 Rebirthing makes attempting to dev harder and causes it to consume more charges. <br><br>
                                                 You have rebirthed ` + formatWhole(rb) + " times."
-                                                let b = "<br>Each attempts costs " + formatWhole(layers.g.clickables.getChargeComsumption()) + " charges."
+                                                let b = "<br>Each attempts costs " + formatWhole(tmp.g.clickables.getChargeComsumption) + " charges."
                                                 if (!hasUnlockedPast("h") && !hasUpgrade("g", 32)) return a + b + "<br><br><br>"
                                                 let c = `<br><br>
                                                 <h2 style = 'color: #CC0033'>Rebirth II</h2><h2>:</h2><br>
@@ -10556,6 +10509,7 @@ addLayer("h", {
                 return ret
         },
         effectDescription(){
+                if (player.tab != "h") return ""
                 let eff = this.effect()
                 let a = "which buffs point and all previous prestige gain by "
 
@@ -10601,6 +10555,7 @@ addLayer("h", {
         ],
         layerShown(){return player.g.best.max(10).log10().gte(103345) || player.h.best.gt(0) || hasUnlockedPast("h")},
         prestigeButtonText(){
+                if (player.tab != "h" || hasUpgrade("h", 22)) return ""
                 let gain= this.getResetGain()
                 let pts = this.baseAmount()
                 let pre = this.getGainMultPre()
@@ -10962,6 +10917,7 @@ addLayer("i", {
                 return ret
         },
         effectDescription(){
+                if (player.tab != "i") return ""
                 let eff = this.effect()
                 let a = "which buffs point and all previous prestige gain by "
 
@@ -11025,6 +10981,7 @@ addLayer("i", {
         ],
         layerShown(){return player.h.best.gt(5e16) || player.i.best.gt(0) || hasUnlockedPast("i")},
         prestigeButtonText(){
+                if (player.tab != "i" || false) return ""
                 let gain= this.getResetGain()
                 let pts = this.baseAmount()
                 let pre = this.getGainMultPre()

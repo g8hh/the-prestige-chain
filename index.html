@@ -8,6 +8,7 @@
 	<script type="text/javascript" src="js/layerSupport.js"></script>
 	<script type="text/javascript" src="js/buyableSupport.js"></script>
 	<script type="text/javascript" src="js/productionSupport.js"></script>
+	<script type="text/javascript" src="js/gameSupport.js"></script>
 	<script type="text/javascript" src="js/goalsii.js"></script>
 	<script type="text/javascript" src="js/softcap.js"></script>
 	<script type="text/javascript" src="js/layers.js"></script>
@@ -96,6 +97,10 @@
 					<td><button class="opt" onclick="fixSaveNaN()">Attempt to fix save</button></td>
 				</tr>
 			</table>
+			<br><br>
+			<h3>Change log:</h3><br> 
+			MAY NOT BE CORRECT OR UP TO DATE <br>
+			<span v-for="a in getChangeLogText()"><br>{{a}}</span><br><br>
 		
 		</div>
 		<div v-if="player.tab=='options'" class="col right">
@@ -179,7 +184,6 @@
 				<div v-for="thing in tmp.displayThings" class="overlayThing"><span v-if="thing" v-html="thing"></span></div>
 			</div>
 			<span v-for="(n, row) in (maxRow + 1)"><table>
-				<td v-if="player.tab=='tree'&& someLayerUnlocked(row) && row != 0" class="left"><br><br><img class="remove" src="remove.png" onclick="resetRow(row)"></img></td>
 				<td v-for="node in TREE_LAYERS[row]"><layer-node :layer='node.layer' :abb='tmp[node.layer].symbol'></layer-node></td>
 				<table><button class="treeNode hidden"></button></td></table>
 			</span>

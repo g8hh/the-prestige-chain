@@ -75,6 +75,47 @@ function formatWhole(decimal) {
 	return addCommas(decimal.floor().mag.toString())
 }
 
+function upperCase(s){
+	l = s.split(" ")
+	s2 = ""
+	for (j in l){
+		i = l[j]
+		if (i.length == 0) continue
+		s2 += i.slice(0, 1).toUpperCase()
+		s2 += i.slice(1, i.length)
+		s2 += " "
+	}
+	return s2
+}
+
+function getName(v){
+	if (typeof v == "object") v = v.toNumber()
+	return upperCase(getNumberName(v))
+}
+
+function getNumberName(v){
+	if (v == 0) return "zero"
+	let lookup = {
+		1: "one",
+		2: "two",
+		3: "three",
+		4: "four",
+		5: "five",
+		6: "six",
+		7: "seven",
+		8: "eight",
+		9: "nine",
+		10: "ten",
+		11: "eleven",
+		12: "twelve",
+		13: "thirteen",
+		14: "fourteen",
+		15: "fifteen",
+		16: "sixteen"
+	}
+	//this is WIP
+}
+
 function formatChances(v) {
 	v = new Decimal(v)
 	if (v.gte(.1)) return format(v)
@@ -260,6 +301,7 @@ function load() {
 
 	setupTemp();
 	updateCurrentDepthValues()
+	updateGamesRewards()
 	updateTemp();
 	updateTemp();
 	loadVue();
