@@ -8788,13 +8788,25 @@ addLayer("g", {
                                 return player.f.points.gte(this.cost()) && (player.g.charges.gte(1) || hasMilestone("g", 22))
                         },
                         onClick(force = false){
-                                for (let i = 0; i < layers.g.clickables.getAttemptAmount(force).toNumber(); i++){
-                                        if (!this.canClick()) return 
-                                        let cost = this.cost()
-                                        if (!hasMilestone("g", 22)) player.g.charges = player.g.charges.minus(1)
-                                        player.g.clickableAmounts[14] = player.g.clickableAmounts[14].plus(1)
-                                        player.f.points = player.f.points.sub(cost).max(0)
-                                }
+                                let maximum = layers.g.clickables.getAttemptAmount(force).toNumber()
+                                //max clicks
+                                if (!hasMilestone("g", 22)) maximum = maximum.min(player.g.charges)
+                                //charges
+                                let g = player.f.points
+                                if (g.lt("1e1900")) return    
+                                
+                                let target = g.div("1e1900").log10().div(10).root(1.5).floor().plus(1)
+
+                                let diff = target.minus(player.g.clickableAmounts[14])
+                                
+                                if (diff.lte(0)) return
+                                
+                                diff = diff.min(maximum)
+
+                                player.g.charges = player.g.charges.minus(diff)
+                                let postcost = Decimal.pow(1e10, player.g.clickableAmounts[14].minus(1).pow(1.5)).times("1e1900")
+                                player.f.points = player.f.points.minus(postcost)
+                                player.g.clickableAmounts[14] = player.g.clickableAmounts[14].plus(diff)
                         },
                 },
                 21: {
@@ -11031,7 +11043,7 @@ addLayer("i", {
                                 return player.i.points.gte(2)
                         },
                         unlocked(){
-                                return hasMilestone("i", 1)
+                                return hasMilestone("i", 1) || hasUnlockedPast("i")
                         }, // hasMilestone("i", 2)
                 },
                 3: {
@@ -11041,7 +11053,7 @@ addLayer("i", {
                                 return player.i.points.gte(3)
                         },
                         unlocked(){
-                                return hasMilestone("i", 2)
+                                return hasMilestone("i", 2) || hasUnlockedPast("i")
                         }, // hasMilestone("i", 3)
                         toggles: [["i", "autobuyF"]]
                 },
@@ -11052,7 +11064,7 @@ addLayer("i", {
                                 return player.i.points.gte(5)
                         },
                         unlocked(){
-                                return hasMilestone("i", 3)
+                                return hasMilestone("i", 3) || hasUnlockedPast("i")
                         }, // hasMilestone("i", 4)
                         toggles: [["i", "autobuyG"]],
                 },
@@ -11063,7 +11075,7 @@ addLayer("i", {
                                 return player.i.points.gte(7)
                         },
                         unlocked(){
-                                return hasMilestone("i", 4)
+                                return hasMilestone("i", 4) || hasUnlockedPast("i")
                         }, // hasMilestone("i", 5)
                         toggles: [["i", "autobuyH"]],
                 },
@@ -11074,7 +11086,7 @@ addLayer("i", {
                                 return player.i.points.gte(11)
                         },
                         unlocked(){
-                                return hasMilestone("i", 5)
+                                return hasMilestone("i", 5) || hasUnlockedPast("i")
                         }, // hasMilestone("i", 6)
                 },
                 7: {
@@ -11084,7 +11096,7 @@ addLayer("i", {
                                 return player.i.points.gte(15)
                         },
                         unlocked(){
-                                return hasMilestone("i", 6)
+                                return hasMilestone("i", 6) || hasUnlockedPast("i")
                         }, // hasMilestone("i", 7)
                 },
                 8: {
@@ -11094,13 +11106,23 @@ addLayer("i", {
                                 return player.i.points.gte(2e6)
                         },
                         unlocked(){
-                                return hasMilestone("i", 7)
+                                return hasMilestone("i", 7) || hasUnlockedPast("i")
                         }, // hasMilestone("i", 8)
                 },
+        },
+        upgrades: {
+                rows: 5,
+                cols: 5,
+                11: {
+                        title: "Info",
+                        description: "Unlock a <b>F</b> buyable and each upgrade in this row unlocks a <b>G</b> buyable [not coded]",
+                        cost: new Decimal(3e6),
+                        unlocked(){
+                                return hasMilestone("i", 8) || hasUnlockedPast("i")
+                        }
+                }, // hasUpgrade("i", 11)
 
                 /*
-                
-                info
                 items
 
                 */
@@ -11159,6 +11181,12 @@ addLayer("i", {
                         //upgrades
                         let keep = []
                         data.upgrades = filter(data.upgrades, keep)
+                }
+                
+                if (!false) {
+                        //upgrades
+                        let keep2 = []
+                        data.milestones = filter(data.milestones, keep)
                 }
 
                 //resources
