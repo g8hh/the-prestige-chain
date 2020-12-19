@@ -1566,6 +1566,20 @@ var MAIN_BUYABLE_DATA = {
                         return [b0, b1, b2]
                 },
         },
+        f22: {
+                name: "Front",
+                func: "lin_sqrt",
+                effects: "Feature effect exponent",
+                base: {
+                        initial: new Decimal(.05),
+                },
+                bases(){
+                        let b0 = new Decimal("1e150289e3")
+                        let b1 = new Decimal("1.23e45678")
+                        let b2 = new Decimal("1e300")
+                        return [b0, b1, b2]
+                },
+        },
 }
 
 var EXTRA_FREE_BUYABLE_DATA = {

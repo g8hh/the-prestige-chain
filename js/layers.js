@@ -4140,7 +4140,8 @@ addLayer("f", {
 
                 let amt = player.f.points
 
-                let exp = tmp.f.challenges[12].rewardEffect
+                let exp = new Decimal(tmp.f.challenges[12].rewardEffect)
+                exp = exp.plus(CURRENT_BUYABLE_EFFECTS["f22"])
 
                 let ret = amt.times(4).plus(1).pow(exp)
 
@@ -4440,12 +4441,6 @@ addLayer("f", {
                                 return hasUpgrade("f", 54) || hasUnlockedPast("h")
                         }, // hasUpgrade("f", 55)
                 },
-
-                /*
-                front
-                federal
-                final
-                */
         },
         buyables: {
                 rows: 3,
@@ -4558,6 +4553,37 @@ addLayer("f", {
                                 return hasUpgrade("f", 52) || hasUnlockedPast("h")
                         },
                 },
+                22: {
+                        title: "Front",
+                        display(){
+                                return getBuyableDisplay("f", 22)
+                        },
+                        effect(){
+                                return CURRENT_BUYABLE_EFFECTS["f22"]
+                        },
+                        canAfford(){
+                                return canAffordBuyable("f", 22)
+                        },
+                        total(){
+                                return getBuyableAmount("f", 22).plus(this.extra())
+                        },
+                        extra(){
+                                return calcBuyableExtra("f", 22)
+                        },
+                        buy(){
+                                buyManualBuyable("f", 22)
+                        },
+                        buyMax(maximum){
+                                buyMaximumBuyable("f", 22, maximum)
+                        },
+                        unlocked(){ 
+                                return hasUpgrade("i", 11) || hasUnlockedPast("h")
+                        },
+                },
+                /*
+                federal
+                final
+                */
         },
         challenges: {
                 rows: 2,
@@ -8788,7 +8814,7 @@ addLayer("g", {
                                 return player.f.points.gte(this.cost()) && (player.g.charges.gte(1) || hasMilestone("g", 22))
                         },
                         onClick(force = false){
-                                let maximum = layers.g.clickables.getAttemptAmount(force).toNumber()
+                                let maximum = layers.g.clickables.getAttemptAmount(force)
                                 //max clicks
                                 if (!hasMilestone("g", 22)) maximum = maximum.min(player.g.charges)
                                 //charges
