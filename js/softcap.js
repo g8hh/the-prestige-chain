@@ -318,7 +318,14 @@ var softcap_data = {
 			start: 1e20,
 			pow: .3,
 		},
-	}
+	},
+	g_buy12: {
+		1: {
+			func: "log",
+			start: 1e100,
+			pow: 50,
+		},
+	},
 }
 
 var softcap_vars = {

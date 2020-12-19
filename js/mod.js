@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".4.9 Blackjack",
+	num: ".4.10 Blackjack",
 	name: "",
 }
 
@@ -150,6 +150,8 @@ PROGRESSION_MILESTONES = {
 	108:()=> player.i.best.gte(1)                        || hasAchievement("ach",163),
 	109:()=> player.i.best.gte(10)                       || hasAchievement("ach",164),
 	110:()=> player.i.best.gte(100)                      || hasAchievement("ach",165),
+	111:()=> totalChallengeComps("f") >= 36              || hasAchievement("ach",166),
+	112:()=> totalChallengeComps("f") >= 45              || hasAchievement("ach",167),
 }
 
 PROGRESSION_MILESTONES_TEXT = {
@@ -263,6 +265,8 @@ PROGRESSION_MILESTONES_TEXT = {
 	108:"1 Idea",
 	109:"10 Ideas",
 	110:"100 Ideas",
+	111:"36 Feature challenge completions",
+	112:"45 Feature challenge completions",
 }
 
 function progressReachedNum(){
@@ -286,9 +290,9 @@ function nextMilestone(){
 
 // Display extra things at the top of the page
 var displayThings = [
-	"This may be incorrect: Last updated 2:11 PM pacific 12.17",
+	"This may be incorrect: Last updated 3:39 PM pacific 12.19",
 	function (){
-		return "Endgame: 2e6 Ideas"
+		return "Endgame: 42 Feature challenges"
 	},
 ]
 
@@ -308,9 +312,14 @@ function getChangeLogText(){
 	a4 = "- No longer updates temp when doing a reset every time (3 instead of 10 at endgame)"
 	a5 = "- Added the first Game buyable, Gives"
 	a6 = "- Added a Game upgrade which is QoL"
+	b1 = "v.4.10"
+	b2 = "- Added Game buyable, Guidelines"
+	b3 = "- Added Feature challenge, Federal"
+	b4 = "- Added two achievements"
+	b5 = "- Added two Game and two Idea upgrades"
 
 
-	return [a1, a2, a3, a4, a5, a6]
+	return [a1, a2, a3, a4, a5, a6, "", b1, b2, b3, b4, b5, ""]
 }
 
 var controlDown = false

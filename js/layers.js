@@ -18,6 +18,9 @@ function getPointGen() {
 
         gain = gain.pow(getPointGenExp())
 
+
+        if (inChallenge("f", 22)) gain = doDilation(gain, .9)
+
 	return gain
 }
 
@@ -4593,7 +4596,7 @@ addLayer("f", {
                         },
                 },
                 /*
-                federal
+                
                 final
                 */
         },
@@ -4664,6 +4667,28 @@ addLayer("f", {
                         currencyInternalName: "points",
                         completionLimit: 20,
                         countsAs: [11, 12],
+                },
+                22: {
+                        name: "Federal",
+                        challengeDescription: "<b>Further</b> and dilate point gain ^.9",
+                        rewardDescription: "Boost base <b>G</b> gain",
+                        rewardEffect(){
+                                let c = challengeCompletions("f", 22)
+                                let ret = Decimal.pow(2, c)
+                                return ret
+                        },
+                        goal(){
+                                let init = new Decimal("1e156487e3")
+                                let factor = getChallengeFactor(challengeCompletions("f", 22))
+                                if (factor.eq(1)) factor = new Decimal(0)
+                                return init.times(Decimal.pow("1e5590e3", factor))
+                        },
+                        unlocked(){
+                                return hasUpgrade("i", 12) || hasUnlockedPast("i")
+                        },
+                        currencyInternalName: "points",
+                        completionLimit: 20,
+                        countsAs: [11, 12, 21],
                 },
         },
         tabFormat: {
@@ -5973,7 +5998,6 @@ addLayer("ach", {
                                 return hasUnlockedPast("g")
                         },
                 },
-                /*
                 166: {
                         name: "One Hundred and Eleven",
                         done(){
@@ -5986,7 +6010,6 @@ addLayer("ach", {
                                 return hasUnlockedPast("g")
                         },
                 },
-                /*
                 167: {
                         name: "One Hundred and Twelve",
                         done(){
@@ -8008,6 +8031,8 @@ addLayer("g", {
                 if (hasUpgrade("goalsii", 32)) x = x.times(Decimal.pow(1.1, player.goalsii.upgrades.length))
                 if (hasUpgrade("g", 33)) x = x.times(Decimal.pow(2, totalChallengeComps("f")))
                 if (hasMilestone("i", 3)) x = x.times(Decimal.pow(2, player.i.milestones.length))
+                x = x.times(tmp.f.challenges[22].rewardEffect)
+                x = x.times(CURRENT_BUYABLE_EFFECTS["g12"])
                 return x
         },
         getGainMultPost(){
@@ -8087,7 +8112,6 @@ addLayer("g", {
                                 let key = "g"
                                 let amt = getABBulk("g")
                                 if (tmp[key].buyables[11].unlocked) layers[key].buyables[11].buyMax(amt)
-                                /*
                                 if (tmp[key].buyables[12].unlocked) layers[key].buyables[12].buyMax(amt)
                                 /*
                                 if (tmp[key].buyables[13].unlocked) layers[key].buyables[13].buyMax(amt)
@@ -8555,6 +8579,7 @@ addLayer("g", {
                         if (hasUpgrade("h", 23)) r *= Math.pow(.99, player.g.upgrades.length)
                         if (hasUpgrade("g", 44)) r *= Math.pow(.98, player.h.upgrades.length)
                         if (hasUpgrade("f", 54)) r *= Math.pow(.995, totalChallengeComps("f"))
+                        if (hasUpgrade("i", 12)) r *= Math.pow(.97, player.i.upgrades.length)
                         if (hasUpgrade("f", 55)) r *= .8
                         return r
                 },
@@ -9680,7 +9705,7 @@ addLayer("g", {
                 },
                 52: {
                         title(){
-                                return "<h3 style='color: #903000'>Hearthstone</h3>"
+                                return "<h3 style='color: #903000'>WoW</h3>"
                         },
                         display(){
                                 if (player.tab != "g") return ""
@@ -10159,15 +10184,33 @@ addLayer("g", {
                         description: "Automatically buy <b>G</b> buyables and <b>Rebirth II</b>",
                         cost: new Decimal("1e3552e3"),
                         unlocked(){
-                                return hasUpgrade("h", 11) || hasUnlockedPast("i")
+                                return hasUpgrade("i", 11) || hasUnlockedPast("i")
                         },
                 }, // hasUpgrade("g", 51)
+                52: {
+                        title: "Gear",
+                        description: "Each <b>I</b> upgrade adds .001 to the <b>Guidelines</b> base",
+                        cost: new Decimal("1e4990e3"),
+                        unlocked(){
+                                return hasUpgrade("i", 12) || hasUnlockedPast("i")
+                        },
+                }, // hasUpgrade("g", 52)
+                53: {
+                        title: "Giving",
+                        description: "<b>Guidelines</b> gives free <b>Gives</b> levels and <b>Front</b> gives free <b>Friends</b> levels",
+                        cost: new Decimal("1e7072e3"),
+                        unlocked(){
+                                return hasUpgrade("g", 52) || hasUnlockedPast("i")
+                        },
+                }, // hasUpgrade("g", 53)
                 
 
                 /*  
-                
-                guidelines
-
+                goal
+                graduate
+                generally
+                generation
+                guarantee
                 */
         },
         buyables: {
@@ -10197,7 +10240,34 @@ addLayer("g", {
                                 buyMaximumBuyable("g", 11, maximum)
                         },
                         unlocked(){ 
-                                return hasUpgrade("g", 11) || hasUnlockedPast("i")
+                                return hasUpgrade("i", 11) || hasUnlockedPast("i")
+                        },
+                },
+                12: {
+                        title: "Guidelines",
+                        display(){
+                                return getBuyableDisplay("g", 12)
+                        },
+                        effect(){
+                                return CURRENT_BUYABLE_EFFECTS["g12"]
+                        },
+                        canAfford(){
+                                return canAffordBuyable("g", 12)
+                        },
+                        total(){
+                                return getBuyableAmount("g", 12).plus(this.extra())
+                        },
+                        extra(){
+                                return calcBuyableExtra("g", 12)
+                        },
+                        buy(){
+                                buyManualBuyable("g", 12)
+                        },
+                        buyMax(maximum){
+                                buyMaximumBuyable("g", 12, maximum)
+                        },
+                        unlocked(){ 
+                                return hasUpgrade("i", 12) || hasUnlockedPast("i")
                         },
                 },
         },
@@ -10408,7 +10478,6 @@ addLayer("g", {
                 //buyables
                 let resetBuyables = [11, 12, 13, 21, 22, 23, 31, 32, 33]
                 for (let j = 0; j < resetBuyables.length; j++) {
-                        break
                         player.g.buyables[resetBuyables[j]] = new Decimal(0)
                 }
 
@@ -10476,6 +10545,7 @@ addLayer("h", {
         getGainExp(){
                 let x = new Decimal(4)
                 if (hasUpgrade("h", 25)) x = x.plus(player.h.upgrades.length * .2)
+                if (hasUpgrade("i", 13)) x = x.plus(player.i.upgrades.length * 10)
                 return x
         },
         getGainMultPre(){
@@ -11098,15 +11168,34 @@ addLayer("i", {
                 cols: 5,
                 11: {
                         title: "Info",
-                        description: "Unlock a <b>F</b> buyable and each upgrade in this row unlocks a <b>G</b> buyable [not coded]",
+                        description: "Unlock an <b>F</b> buyable and each upgrade in this row unlocks a <b>G</b> buyable",
                         cost: new Decimal(3e6),
                         unlocked(){
                                 return hasMilestone("i", 8) || hasUnlockedPast("i")
                         }
                 }, // hasUpgrade("i", 11)
+                12: {
+                        title: "Items",
+                        description: "Unlock an <b>F</b> challenge and per upgrade act as if you have 3% less rebirths",
+                        cost: new Decimal(3e6),
+                        unlocked(){
+                                return hasUpgrade("g", 51) || hasUnlockedPast("i")
+                        }
+                }, // hasUpgrade("i", 12)
+                13: {
+                        title: "Item",
+                        description: "Each upgrade adds 10 to the <b>H</b> gain exponent[no buyable yet]",
+                        cost: new Decimal(3e6),
+                        unlocked(){
+                                return hasUpgrade("g", 52) || hasUnlockedPast("i")
+                        }
+                }, // hasUpgrade("i", 13)
 
                 /*
-                items
+                international
+                internet
+                index
+                including
 
                 */
         },

@@ -1565,6 +1565,11 @@ var MAIN_BUYABLE_DATA = {
                         let b2 = new Decimal("1e100")
                         return [b0, b1, b2]
                 },
+                f22: {
+                        active: function(){
+                                hasUpgrade("g", 53)
+                        },
+                },
         },
         f22: {
                 name: "Front",
@@ -1593,7 +1598,35 @@ var MAIN_BUYABLE_DATA = {
                         let b2 = new Decimal("1e3")
                         return [b0, b1, b2]
                 },
+                g12: {
+                        active: function(){
+                                return hasUpgrade("g", 53)
+                        },
+                },
         },
+        g12: {
+                name: "Guidelines",
+                func: "exp",
+                effects: "base G gain",
+                base: {
+                        initial: new Decimal(1.05),
+                        1: {
+                                active: function(){
+                                        return hasUpgrade("g", 52)
+                                },
+                                amount: function(){
+                                        return new Decimal(.001 * player.i.upgrades.length)
+                                },
+                                type: "add",
+                        },
+                },
+                bases(){
+                        let b0 = new Decimal("1e4558e3")
+                        let b1 = new Decimal("1e2000")
+                        let b2 = new Decimal("1e5")
+                        return [b0, b1, b2]
+                },
+        }
 }
 
 var EXTRA_FREE_BUYABLE_DATA = {
