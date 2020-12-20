@@ -1567,7 +1567,7 @@ var MAIN_BUYABLE_DATA = {
                 },
                 f22: {
                         active: function(){
-                                hasUpgrade("g", 53)
+                                return hasUpgrade("g", 53)
                         },
                 },
         },
