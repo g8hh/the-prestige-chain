@@ -4678,10 +4678,12 @@ addLayer("f", {
                                 return ret
                         },
                         goal(){
-                                let init = new Decimal("1e156487e3")
-                                let factor = getChallengeFactor(challengeCompletions("f", 22))
+                                let c = challengeCompletions("f", 22)
+                                let init = new Decimal("1e160154e3")
+                                let factor = getChallengeFactor(c)
                                 if (factor.eq(1)) factor = new Decimal(0)
-                                return init.times(Decimal.pow("1e5590e3", factor))
+                                if (c == 2) factor = new Decimal(3.788)
+                                return init.times(Decimal.pow("1e3820e3", factor))
                         },
                         unlocked(){
                                 return hasUpgrade("i", 12) || hasUnlockedPast("i")
@@ -8196,7 +8198,17 @@ addLayer("g", {
                         data.autotime = 0
                 }
 
-                if (hasMilestone("i", 8)) player.g.rebirths[1] = layers.g.clickables.getCurrentMaxRebirths()
+                if (hasMilestone("i", 8)) {
+                        cmr = layers.g.clickables.getCurrentMaxRebirths()
+                        let diff = cmr - player.g.rebirths[1]
+                        player.g.rebirths[1] = cmr 
+                        if (diff > 0){
+                                for (i in data.clickableAmounts){
+                                        if (["11","12","13","14"].includes(i)) continue
+                                        data.clickableAmounts[i] = new Decimal(0)
+                                }
+                        }
+                }
 
 
                 data.time += diff
@@ -10182,7 +10194,7 @@ addLayer("g", {
                 51: {
                         title: "Guy",
                         description: "Automatically buy <b>G</b> buyables and <b>Rebirth II</b>",
-                        cost: new Decimal("1e3535e3"),
+                        cost: new Decimal("1e3525e3"),
                         unlocked(){
                                 return hasUpgrade("i", 11) || hasUnlockedPast("i")
                         },
@@ -10190,7 +10202,7 @@ addLayer("g", {
                 52: {
                         title: "Gear",
                         description: "Each <b>I</b> upgrade adds .001 to the <b>Guidelines</b> base",
-                        cost: new Decimal("1e4990e3"),
+                        cost: new Decimal("1e5157e3"),
                         unlocked(){
                                 return hasUpgrade("i", 12) || hasUnlockedPast("i")
                         },

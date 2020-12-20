@@ -1593,7 +1593,7 @@ var MAIN_BUYABLE_DATA = {
                         initial: new Decimal(1),
                 },
                 bases(){
-                        let b0 = new Decimal("1e3436e3")
+                        let b0 = new Decimal("1e3435e3")
                         let b1 = new Decimal("1e50")
                         let b2 = new Decimal("1e3")
                         return [b0, b1, b2]

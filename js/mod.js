@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".4.10.1 Blackjack",
+	num: ".4.10.2 Blackjack",
 	name: "",
 }
 
@@ -290,9 +290,9 @@ function nextMilestone(){
 
 // Display extra things at the top of the page
 var displayThings = [
-	"This may be incorrect: Last updated 3:39 PM pacific 12.19",
+	"This may be incorrect: Last updated 4:49 PM pacific 12.19",
 	function (){
-		return "Endgame: 42 Feature challenges"
+		return "Endgame: 43 Feature challenges"
 	},
 ]
 
@@ -319,9 +319,15 @@ function getChangeLogText(){
 	b5 = "- Added two Game and two Idea upgrades"
 	b6 = "v.4.10.1"
 	b7 = "- Fixed a progression bug"
+	b8 = "v.4.10.2"
+	b9 = "- Fix a bug where autocompleted rebirth I's does not reset progressions to 0%"
+	b10= "- Rebalance wrt above"
 
 
-	return [a1, a2, a3, a4, a5, a6, "", b1, b2, b3, b4, b5, "", b6, b7, ""]
+	let part1 = [a1, a2, a3, a4, a5, a6, "", b1, b2, b3, b4, b5, "", b6, b7, "", b8, b9, b10, ""]
+
+
+	return part1.concat()
 }
 
 var controlDown = false
