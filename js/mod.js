@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".4.10.3 Blackjack",
+	num: ".4.11 Blackjack",
 	name: "",
 }
 
@@ -290,10 +290,8 @@ function nextMilestone(){
 
 // Display extra things at the top of the page
 var displayThings = [
-	"This may be incorrect: Last updated 4:49 PM pacific 12.19",
-	function (){
-		return "Endgame: 50 Feature challenges"
-	},
+	"Check the change log!",
+	"Endgame: 77 Feature challenges",
 ]
 
 // Determines when the game "ends"
@@ -324,13 +322,18 @@ function getChangeLogText(){
 	b10= "- Rebalance wrt above"
 	b11= "v.4.10.3"
 	b12= "- Fixed a typo and rebalanced because of it"
+	c1 = "v.4.11"
+	c2 = "- Finished Item"
+	c3 = "- Added a Game and three medal upgrades"
+	c4 = "- Added a Game buyable"
+	c5 = "- Gave Going a hardcap at 5e7 (50 Million) successful devs"
 
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
 	let part2 = [b1, b2, b3, b4, b5, "", b6, b7, "", b8, b9, b10, "", b11, b12, ""]
+	let part3 = [c1, c2, c3, c4, c5, ""]
 
-
-	return part1.concat(part2)
+	return part1.concat(part2).concat(part3)
 }
 
 var controlDown = false

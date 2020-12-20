@@ -122,14 +122,14 @@ function totalChallengeComps(layer){
 
 function getABBulk(layer){
         let amt = 1
-        if (hasUpgrade("e", 11))           amt *= Math.max(player.ach.achievements.length, 1)
+        if (hasUpgrade("e", 11))           amt *= Decimal.max(player.ach.achievements.length, 1)
         if (hasUpgrade("d", 35))           amt *= 100
         if (hasUpgrade("e", 23))           amt *= 100
         if (hasMilestone("ach", 4))        amt *= 100
         if (hasMilestone("goalsii", 0))    amt *= 10
         if (hasMilestone("goalsii", 1))    amt *= 10
         if (hasMilestone("goalsii", 8))    amt *= player.goalsii.points.max(1).toNumber()
-        if (hasMilestone("goalsii", 11))   amt *= Math.pow(2, player.goalsii.milestones.length)
+        if (hasMilestone("goalsii", 11))   amt *= Decimal.pow(2, player.goalsii.milestones.length)
         if (layer == "a") {
                 if (hasUpgrade("a", 35)) amt *= 10
                 if (hasUpgrade("b", 21)) {
@@ -7675,12 +7675,56 @@ addLayer("goalsii", {
                                 return hasUpgrade("goalsii", 34) || hasUnlockedPast("h")
                         }, // hasUpgrade("goalsii", 35)
                 },
+                41: {
+                        title: "Poisson",
+                        description: "Per upgrade add 1 to the <b>H</b> gain exponent",
+                        cost: new Decimal("5e186621"),
+                        currencyDisplayName: "<br><b style='color: #6600FF'>00</b> Tokens",
+                        currencyLocation(){
+                                return player.goalsii.tokens.copy
+                        },
+                        currencyInternalName(){
+                                return "00"
+                        },
+                        unlocked(){ 
+                                return hasUpgrade("g", 54) || hasUnlockedPast("i")
+                        }, // hasUpgrade("goalsii", 41)
+                },
+                42: {
+                        title: "Russell",
+                        description: "Per upgrade act as if you have 2% less rebirths",
+                        cost: new Decimal("1e186645"),
+                        currencyDisplayName: "<br><b style='color: #6600FF'>00</b> Tokens",
+                        currencyLocation(){
+                                return player.goalsii.tokens.copy
+                        },
+                        currencyInternalName(){
+                                return "00"
+                        },
+                        unlocked(){ 
+                                return hasUpgrade("goalsii", 41) || hasUnlockedPast("i")
+                        }, // hasUpgrade("goalsii", 42)
+                },
+                43: {
+                        title: "Schrier",
+                        description: "Unlock Rebirth III [not yet]",
+                        cost: new Decimal("1e14195e3"),
+                        currencyDisplayName: "<br><b style='color: #6600FF'>00</b> Tokens",
+                        currencyLocation(){
+                                return player.goalsii.tokens.copy
+                        },
+                        currencyInternalName(){
+                                return "00"
+                        },
+                        unlocked(){ 
+                                return hasUpgrade("goalsii", 42) || hasUnlockedPast("i")
+                        }, // hasUpgrade("goalsii", 43)
+                },
+
+                // "<b>Goal</b> gives free <b>Guideline</b> levels"
                 
 
                 /*
-                Poisson
-                Russell
-                Schrier
                 Turing
                 U
                 Villiani
@@ -8000,7 +8044,7 @@ addLayer("g", {
         },
         getGainExp(){
                 let x = new Decimal(1.5)
-                if (hasMilestone("g", 10)) x = x.plus(player.g.partialTally.times(.01))
+                if (hasMilestone("g", 10)) x = x.plus(player.g.partialTally.min(5e7).times(.01))
                 x = x.plus(CURRENT_GAMES_EFFECTS["partial"]["G Gain exponent"][0])
                 if (hasUpgrade("f", 24)) x = x.plus(player.f.upgrades.length ** 2)
                 if (hasUpgrade("g", 25)) x = x.plus(6 * player.g.upgrades.length)
@@ -8115,7 +8159,6 @@ addLayer("g", {
                                 let amt = getABBulk("g")
                                 if (tmp[key].buyables[11].unlocked) layers[key].buyables[11].buyMax(amt)
                                 if (tmp[key].buyables[12].unlocked) layers[key].buyables[12].buyMax(amt)
-                                /*
                                 if (tmp[key].buyables[13].unlocked) layers[key].buyables[13].buyMax(amt)
                                 /*
                                 if (tmp[key].buyables[21].unlocked) layers[key].buyables[21].buyMax(amt)
@@ -8340,7 +8383,7 @@ addLayer("g", {
                 }, // hasMilestone("g", 9)
                 10: {
                         requirementDescription: "<b>Going</b><br>Requires: 72 Successful devs", 
-                        effectDescription: "Remove the medal gain softcap and each successful dev adds .01 to the <b>G</b> gain exponent",
+                        effectDescription: "Remove the medal gain softcap and each successful dev adds .01 to the <b>G</b> gain exponent (up to 5e7)",
                         done(){
                                 return player.g.partialTally.gte(72)
                         },
@@ -8593,6 +8636,8 @@ addLayer("g", {
                         if (hasUpgrade("f", 54)) r *= Math.pow(.995, totalChallengeComps("f"))
                         if (hasUpgrade("i", 12)) r *= Math.pow(.97, player.i.upgrades.length)
                         if (hasUpgrade("f", 55)) r *= .8
+                        if (hasUpgrade("g", 54)) r *= .9
+                        if (hasUpgrade("goalsii", 42)) r *= Math.pow(.98, player.goalsii.upgrades.length)
                         return r
                 },
                 getRebirthCostIncrease(){
@@ -10215,11 +10260,17 @@ addLayer("g", {
                                 return hasUpgrade("g", 52) || hasUnlockedPast("i")
                         },
                 }, // hasUpgrade("g", 53)
+                54: {
+                        title: "Graduate",
+                        description: "Act as if you have 10% less rebirths and unlock a row of medal upgrades",
+                        cost: new Decimal("1e11048e3"),
+                        unlocked(){
+                                return hasUpgrade("i", 13) || hasUnlockedPast("i")
+                        },
+                }, // hasUpgrade("g", 54)
                 
 
                 /*  
-                goal
-                graduate
                 generally
                 generation
                 guarantee
@@ -10280,6 +10331,33 @@ addLayer("g", {
                         },
                         unlocked(){ 
                                 return hasUpgrade("i", 12) || hasUnlockedPast("i")
+                        },
+                },
+                13: {
+                        title: "Goal",
+                        display(){
+                                return getBuyableDisplay("g", 13)
+                        },
+                        effect(){
+                                return CURRENT_BUYABLE_EFFECTS["g13"]
+                        },
+                        canAfford(){
+                                return canAffordBuyable("g", 13)
+                        },
+                        total(){
+                                return getBuyableAmount("g", 13).plus(this.extra())
+                        },
+                        extra(){
+                                return calcBuyableExtra("g", 13)
+                        },
+                        buy(){
+                                buyManualBuyable("g", 13)
+                        },
+                        buyMax(maximum){
+                                buyMaximumBuyable("g", 13, maximum)
+                        },
+                        unlocked(){ 
+                                return hasUpgrade("i", 13) || hasUnlockedPast("i")
                         },
                 },
         },
@@ -10558,6 +10636,7 @@ addLayer("h", {
                 let x = new Decimal(4)
                 if (hasUpgrade("h", 25)) x = x.plus(player.h.upgrades.length * .2)
                 if (hasUpgrade("i", 13)) x = x.plus(player.i.upgrades.length * 10)
+                if (hasUpgrade("goalsii", 41)) x = x.plus(player.goalsii.upgrades.length)
                 return x
         },
         getGainMultPre(){
@@ -11196,7 +11275,7 @@ addLayer("i", {
                 }, // hasUpgrade("i", 12)
                 13: {
                         title: "Item",
-                        description: "Each upgrade adds 10 to the <b>H</b> gain exponent[no buyable yet]",
+                        description: "Each upgrade adds 10 to the <b>H</b> gain exponent",
                         cost: new Decimal(3e6),
                         unlocked(){
                                 return hasUpgrade("g", 52) || hasUnlockedPast("i")

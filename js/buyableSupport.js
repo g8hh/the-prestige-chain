@@ -1524,6 +1524,15 @@ var MAIN_BUYABLE_DATA = {
                                 },
                                 type: "times"
                         },
+                        2: {
+                                active: function(){
+                                        return true
+                                },
+                                amount: function(){
+                                        return CURRENT_BUYABLE_EFFECTS["g13"]
+                                },
+                                type: "plus"
+                        },
                 },
                 bases(){
                         let b0 = new Decimal("1e1225e3")
@@ -1626,7 +1635,21 @@ var MAIN_BUYABLE_DATA = {
                         let b2 = new Decimal("1e5")
                         return [b0, b1, b2]
                 },
-        }
+        },
+        g13: {
+                name: "Goal",
+                func: "lin",
+                effects: "<b>Future</b> base",
+                base: {
+                        initial: new Decimal(5),
+                },
+                bases(){
+                        let b0 = new Decimal("1e11047e3")
+                        let b1 = new Decimal("1e10")
+                        let b2 = new Decimal("1e10")
+                        return [b0, b1, b2]
+                },
+        },
 }
 
 var EXTRA_FREE_BUYABLE_DATA = {
