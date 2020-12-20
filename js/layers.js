@@ -462,7 +462,7 @@ addLayer("a", {
                 return a + nextAt
         },
         canReset(){
-                return this.getResetGain().gt(0) && player.a.time >= 2 && !hasUpgrade("a", 23)
+                return player.a.time >= 2 && !hasUpgrade("a", 23) && this.getResetGain().gt(0)
         },
         upgrades: {
                 rows: 5,
@@ -1180,7 +1180,7 @@ addLayer("b", {
                 return a + nextAt
         },
         canReset(){
-                return this.getResetGain().gt(0) && player.b.time >= 5 && !hasUpgrade("b", 22)
+                return player.b.time >= 5 && !hasUpgrade("b", 22) && this.getResetGain().gt(0)
         },
         upgrades: {
                 rows: 5,
@@ -1977,7 +1977,7 @@ addLayer("c", {
                 return a + nextAt
         },
         canReset(){
-                return this.getResetGain().gt(0) && player.c.time >= 5 && !hasUpgrade("c", 22)
+                return player.c.time >= 5 && !hasUpgrade("c", 22) && this.getResetGain().gt(0)
         },
         upgrades:{
                 rows: 5,
@@ -2740,7 +2740,7 @@ addLayer("d", {
                 return a + nextAt
         },
         canReset(){
-                return this.getResetGain().gt(0) && player.d.time >= 5 && !hasUpgrade("d", 22)
+                return player.d.time >= 5 && !hasUpgrade("d", 22) && this.getResetGain().gt(0)
         },
         upgrades: {
                 rows: 5,
@@ -3469,7 +3469,7 @@ addLayer("e", {
                 return a + nextAt
         },
         canReset(){
-                return this.getResetGain().gt(0) && player.e.time >= 5 && !hasUpgrade("e", 22)
+                return player.e.time >= 5 && !hasUpgrade("e", 22) && this.getResetGain().gt(0)
         },
         upgrades: {
                 rows: 5,
@@ -4251,7 +4251,7 @@ addLayer("f", {
                 return a + nextAt
         },
         canReset(){
-                return this.getResetGain().gt(0) && player.f.time >= 2 && !hasMilestone("goalsii", 9)
+                return player.f.time >= 2 && !hasMilestone("goalsii", 9) && this.getResetGain().gt(0)
         },
         upgrades: {
                 rows: 5,
@@ -7707,8 +7707,8 @@ addLayer("goalsii", {
                 },
                 43: {
                         title: "Schrier",
-                        description: "Unlock Rebirth III [not yet]",
-                        cost: new Decimal("1e14195e3"),
+                        description: "Unlock Rebirth III",
+                        cost: new Decimal("1e14159e3"),
                         currencyDisplayName: "<br><b style='color: #6600FF'>00</b> Tokens",
                         currencyLocation(){
                                 return player.goalsii.tokens.copy
@@ -8288,7 +8288,7 @@ addLayer("g", {
                 return a + nextAt
         },
         canReset(){
-                return this.getResetGain().gt(0) && player.g.time >= 2 && !hasMilestone("g", 9)
+                return player.g.time >= 2 && !hasMilestone("g", 9) && this.getResetGain().gt(0)
         },
         milestones: {
                 1: {
@@ -8734,13 +8734,18 @@ addLayer("g", {
                                 return player.goalsii.points.gte(this.cost()) && (player.g.charges.gte(1) || hasMilestone("g", 22))
                         },
                         onClick(force = false){
-                                for (let i = 0; i < layers.g.clickables.getAttemptAmount(force).toNumber(); i++){
-                                        if (!this.canClick()) return 
-                                        let cost = this.cost()
-                                        if (!hasMilestone("g", 22)) player.g.charges = player.g.charges.minus(1)
-                                        player.g.clickableAmounts[12] = player.g.clickableAmounts[12].plus(1)
-                                        player.goalsii.points = player.goalsii.points.minus(cost).max(0)
-                                }
+                                let data = player.g
+                                
+                                let maxMedals = player.goalsii.points.gte(1e8) ? player.goalsii.points.div(1e8).log(10).root(2).plus(1).floor() : data.clickableAmounts[12]
+                                let maxCharges = data.charges
+                                let attempts = layers.g.clickables.getAttemptAmount(force)
+                                
+                                let target = maxMedals.sub(data.clickableAmounts[12]).max(0).min(maxCharges).min(attempts)
+
+                                player.g.clickableAmounts[12] = player.g.clickableAmounts[12].plus(target)
+                                let nc = Decimal.pow(10, player.g.clickableAmounts[12].minus(1).pow(2)).times(1e8)
+                                if (target.gt(0)) player.goalsii.points = player.goalsii.points.minus(nc).max(0)
+                                if (!hasMilestone("g", 22)) player.g.charges = player.g.charges.minus(target).max(0)
                         },
                 },
                 13: {
@@ -8764,12 +8769,17 @@ addLayer("g", {
                                 return player.ach.points.gte(this.cost()) && (player.g.charges.gte(1) || hasMilestone("g", 22))
                         },
                         onClick(force = false){
-                                for (let i = 0; i < layers.g.clickables.getAttemptAmount(force).toNumber(); i++){
-                                        if (!this.canClick()) return 
-                                        let cost = this.cost()
-                                        if (!hasMilestone("g", 22)) player.g.charges = player.g.charges.minus(1)
-                                        player.g.clickableAmounts[13] = player.g.clickableAmounts[13].plus(1)
-                                }
+                                let data = player.g
+                                let pts = player.ach.points
+                                
+                                let maxMedals = pts.gte(82) ? pts.minus(82).plus(1).div(3).pow(2).ceil() : data.clickableAmounts[13]
+                                let maxCharges = data.charges
+                                let attempts = layers.g.clickables.getAttemptAmount(force)
+                                
+                                let target = maxMedals.sub(data.clickableAmounts[13]).max(0).min(maxCharges).min(attempts)
+
+                                player.g.clickableAmounts[13] = player.g.clickableAmounts[13].plus(target)
+                                if (!hasMilestone("g", 22)) player.g.charges = player.g.charges.minus(target).max(0)
                         },
                 },
                 14: {
@@ -9991,7 +10001,7 @@ addLayer("g", {
                                 rb = layers.g.clickables.getPrimaryRebirths(true)
                                 let a = gdata.partialTally.gte(Decimal.times(160, (rb + 1) * (rb + 2) / 2))
                                 let b = gdata.charges.gte(layers.g.clickables.getChargeComsumption())
-                                return a && b
+                                return a && b && layers.g.clickables.getChargesPerMinute().gt(0)
                         },
                         onClick(force = false){
                                 let data = player.g
@@ -10018,7 +10028,7 @@ addLayer("g", {
                                         i = l[j]
                                         data1[i] = new Decimal(0)
                                 }
-                                data.charges = new Decimal(0)
+                                data.charges = new Decimal(3)
                         },
                 },
                 25: {
@@ -10041,7 +10051,7 @@ addLayer("g", {
                                 let gdata = player.g
                                 let a = new Decimal(gdata.rebirths[1]).gte(this.cost())
                                 let b = gdata.charges.gte(layers.g.clickables.getChargeComsumption())
-                                return a && b
+                                return a && b && layers.g.clickables.getChargesPerMinute().gt(0)
                         },
                         onClick(force = false){
                                 let data = player.g
@@ -10068,7 +10078,59 @@ addLayer("g", {
                                         i = l[j]
                                         data1[i] = new Decimal(0)
                                 }
-                                data.charges = new Decimal(0)
+                                data.charges = new Decimal(3)
+                                if (!hasMilestone("i", 2)) data.rebirths[1] = layers.g.getStartingRebirth(1)
+                        },
+                },
+                35: {
+                        title(){
+                                return "<h3 style='color: #903000'>Rebirth III</h3>"
+                        },
+                        display(){
+                                if (player.tab != "g") return ""
+                                let a = "<h3 style='color: #D070C0'>Requires</h3>:" + formatWhole(this.cost()) + " Rebirth II<br>"
+                                let b = "<h3 style='color: #00CC66'>Times</h3>: " + formatWhole(player.g.rebirths[3])
+                                return a + b
+                        },
+                        unlocked(){
+                                return hasUpgrade("goalsii", 43) || hasUnlockedPast("i")
+                        },
+                        cost(){
+                                return 10 + 10 * player.g.rebirths[3]
+                        },
+                        canClick(){
+                                let gdata = player.g
+                                let a = new Decimal(gdata.rebirths[2]).gte(this.cost())
+                                let b = gdata.charges.gte(layers.g.clickables.getChargeComsumption())
+                                return a && b && layers.g.clickables.getChargesPerMinute().gt(0)
+                        },
+                        onClick(force = false){
+                                let data = player.g
+                                for (let i = 0; i < layers.g.clickables.getAttemptAmount(force).toNumber(); i++){
+                                        if (!this.canClick()) return 
+                                        data.charges = data.charges.minus(layers.g.clickables.getChargeComsumption())
+                                        data.rebirths[3] += 1
+                                        this.resetPrior()
+                                }
+                        },
+                        resetPrior(){
+                                /*
+                                This to reset:
+                                1. All progress in games
+                                2. Charges
+                                */
+                                let data = player.g
+                                let data1 = data.clickableAmounts
+                                let l = [21, 22, 23, 24,
+                                         31, 32, 33, 34,
+                                         41, 42, 43, 44,
+                                         51, 52, 53, 54,]
+                                for (j in l){
+                                        i = l[j]
+                                        data1[i] = new Decimal(0)
+                                }
+                                data.charges = new Decimal(3)
+                                if (!false) data.rebirths[2] = layers.g.getStartingRebirth(2)
                                 if (!hasMilestone("i", 2)) data.rebirths[1] = layers.g.getStartingRebirth(1)
                         },
                 },
@@ -10741,7 +10803,7 @@ addLayer("h", {
                 return a + nextAt
         },
         canReset(){
-                return this.getResetGain().gt(0) && player.h.time >= 2 && !hasUpgrade("h", 22)
+                return player.h.time >= 2 && !hasUpgrade("h", 22) && this.getResetGain().gt(0)
         },
         milestones: {
                 1: {
@@ -11138,7 +11200,12 @@ addLayer("i", {
         },
         row: 8, // Row the layer is in on the tree (0 is the first row)
         hotkeys: [
-            {key: "i", description: "I: Reset for Ideas", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+                {key: "i", description: "I: Reset for Ideas", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+                {key: "3", description: "3: Rebirth III", onPress(){
+                                let data = layers.g.clickables[35]
+                                if (data.canClick()) data.onClick()
+                        }
+                },
         ],
         layerShown(){return player.h.best.gt(5e16) || player.i.best.gt(0) || hasUnlockedPast("i")},
         prestigeButtonText(){
@@ -11167,7 +11234,7 @@ addLayer("i", {
                 return a + nextAt
         },
         canReset(){
-                return this.getResetGain().gt(0) && player.i.time >= 2 && !false
+                return player.i.time >= 2 && !false && this.getResetGain().gt(0)
         },
         milestones: {
                 1: {

@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".4.11 Blackjack",
+	num: ".4.12 Blackjack",
 	name: "",
 }
 
@@ -327,13 +327,21 @@ function getChangeLogText(){
 	c3 = "- Added a Game and three medal upgrades"
 	c4 = "- Added a Game buyable"
 	c5 = "- Gave Going a hardcap at 5e7 (50 Million) successful devs"
+	d1 = "v.4.12"
+	d2 = "- Implemented Rebirth III and Schrier"
+	d3 = "- Fixed a bug where you can get charge softlocked"
+	d4 = "- Made some code optimizations to make the game run ever so slightly faster"
+	d5 = "- Softcaps completed devs to Base G Gain"
+	d6 = "- Make Pac-Mac and Asteriods more effeicient in bulk buying"
+	d7 = "- Made the changelog better :)"
 
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
 	let part2 = [b1, b2, b3, b4, b5, "", b6, b7, "", b8, b9, b10, "", b11, b12, ""]
 	let part3 = [c1, c2, c3, c4, c5, ""]
+	let part4 = [d1, d2, d3, d4, d5, d6, d7, ""]
 
-	return part1.concat(part2).concat(part3)
+	return [part4, part3, part2, part1]
 }
 
 var controlDown = false

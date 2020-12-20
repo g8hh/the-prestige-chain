@@ -142,6 +142,8 @@ function reCalcCompleteDevEffects(arg){
                         let base = x.div(100)
                         let exp = x.pow(.2).div(4)
                         let ret = Decimal.pow(base, exp)
+
+                        if (ret.gt(1e100)) ret = ret.log10().div(10).pow(100)
                         return ret
                 },
         ]

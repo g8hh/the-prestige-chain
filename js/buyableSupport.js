@@ -2206,10 +2206,9 @@ function reCalcBuyableBase(layer, id){
                 console.log("ya boi broke" + layer+ id)
                 Decimal(0)
         }
+        if (!isBuyableActive(layer, id)) return getIdentity(layer, id)
         let data1 = MAIN_BUYABLE_DATA[layer+id]
-        if (!isBuyableActive(layer, id)) {
-                return getIdentity(layer, id)
-        }
+        
         let data2 = data1.base
         let a = data2.initial
         let b = 0
@@ -2289,6 +2288,7 @@ function getBuyableCost(layer, id, delta = new Decimal(0)){
 
 function canAffordBuyable(layer, id, cost = undefined){
         // Fully general
+        if (player.tab != layer) return false
         if (cost == undefined) cost = getBuyableCost(layer, id, 0)
         let a = player[layer].points.gte(cost)
         let b = getBuyableAmount(layer, id).lt(getMaxBuyablesAmount(layer))
@@ -2418,6 +2418,7 @@ function formatBuyableCostBase(x){
         return format(x)
 }
 
+//NEW STUFFS
 
 function replaceString(s,find,replace){
         let d = 1 + s.length - find.length
