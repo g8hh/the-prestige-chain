@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".4.10 Blackjack",
+	num: ".4.10.1 Blackjack",
 	name: "",
 }
 
@@ -317,9 +317,11 @@ function getChangeLogText(){
 	b3 = "- Added Feature challenge, Federal"
 	b4 = "- Added two achievements"
 	b5 = "- Added two Game and two Idea upgrades"
+	b6 = "v.4.10.1"
+	b7 = "- Fixed a progression bug"
 
 
-	return [a1, a2, a3, a4, a5, a6, "", b1, b2, b3, b4, b5, ""]
+	return [a1, a2, a3, a4, a5, a6, "", b1, b2, b3, b4, b5, "", b6, b7, ""]
 }
 
 var controlDown = false

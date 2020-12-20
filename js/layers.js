@@ -10182,7 +10182,7 @@ addLayer("g", {
                 51: {
                         title: "Guy",
                         description: "Automatically buy <b>G</b> buyables and <b>Rebirth II</b>",
-                        cost: new Decimal("1e3552e3"),
+                        cost: new Decimal("1e3535e3"),
                         unlocked(){
                                 return hasUpgrade("i", 11) || hasUnlockedPast("i")
                         },
