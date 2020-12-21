@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".4.13 Blackjack",
+	num: ".4.14 Blackjack",
 	name: "",
 }
 
@@ -297,7 +297,7 @@ function nextMilestone(){
 // Display extra things at the top of the page
 var displayThings = [
 	"Check the change log!",
-	"Endgame: 77 Feature challenges",
+	"Endgame: 1e1825 Hearts",
 ]
 
 // Determines when the game "ends"
@@ -344,6 +344,10 @@ function getChangeLogText(){
 	e2 = "- Added two F buyables"
 	e3 = "- Added two Medal, two Heart, one Idea, and the final Game upgrades"
 	e4 = "- Added QoL for Rebirth III"
+	f1 = "v.4.14"
+	f2 = "- Added two G buyables"
+	f3 = "- Added three Idea upgrades"
+	f4 = "- Fixed a bug with Feature challenge challenge completions"
 
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
@@ -351,8 +355,9 @@ function getChangeLogText(){
 	let part3 = [c1, c2, c3, c4, c5, ""]
 	let part4 = [d1, d2, d3, d4, d5, d6, d7, ""]
 	let part5 = [e1, e2, e3, e4, ""]
+	let part6 = [f1, f2, f3, f4, ""]
 
-	return [part5, part4, part3, part2, part1]
+	return [part6, part5, part4, part3, part2, part1]
 }
 
 var controlDown = false

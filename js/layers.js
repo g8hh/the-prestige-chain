@@ -77,6 +77,7 @@ function getChallengeFactor(comps){
         let b1 = new Decimal(comps).pow(1.5).plus(1)
         if (b1.gt(10)) b1 = Decimal.pow(10, b1.div(10))
         if (b1.gt(1e10)) b1 = b1.tetrate(1.01) 
+        if (b1.gt(1e16)) b1 = b1.tetrate(1.01) 
         return b1
 }
 
@@ -4209,7 +4210,6 @@ addLayer("f", {
                                 if (tmp.f.buyables[21].unlocked) layers.f.buyables[21].buyMax(amt)
                                 if (tmp.f.buyables[22].unlocked) layers.f.buyables[22].buyMax(amt)
                                 if (tmp.f.buyables[23].unlocked) layers.f.buyables[23].buyMax(amt)
-                                /*
                                 if (tmp.f.buyables[31].unlocked) layers.f.buyables[31].buyMax(amt)
                                 /*
                                 if (tmp.f.buyables[32].unlocked) layers.f.buyables[32].buyMax(amt)
@@ -4666,7 +4666,7 @@ addLayer("f", {
                 11: {
                         name: "Files",
                         challengeDescription: "All previous layer buyables have no effect",
-                        rewardDescription: "Give free <b>Feburary</b> levels",
+                        rewardDescription: "Give free <b>February</b> levels",
                         rewardEffect(){
                                 let c = challengeCompletions("f", 11)
                                 let ret = Math.pow(c, 3) + c * 31
@@ -4740,7 +4740,9 @@ addLayer("f", {
                         rewardDescription: "Boost base <b>G</b> gain",
                         rewardEffect(){
                                 let c = challengeCompletions("f", 22)
-                                let ret = Decimal.pow(2, c)
+                                let base = new Decimal(2)
+                                base = base.plus(CURRENT_BUYABLE_EFFECTS["g21"])
+                                let ret = Decimal.pow(base, c)
                                 return ret
                         },
                         goal(){
@@ -7887,7 +7889,7 @@ addLayer("goalsii", {
                 },
                 45: {
                         title: "Ufimtsev",
-                        description: "Automatically bulk buy Rebirth II and unlock an <b>F</b> buyable [no buy yet]",
+                        description: "Automatically bulk buy Rebirth II and unlock an <b>F</b> buyable",
                         cost: new Decimal("1e28689e3"),
                         unlocked(){ 
                                 return hasUpgrade("goalsii", 44) || hasUnlockedPast("i")
@@ -8332,9 +8334,7 @@ addLayer("g", {
                                 if (tmp[key].buyables[11].unlocked) layers[key].buyables[11].buyMax(amt)
                                 if (tmp[key].buyables[12].unlocked) layers[key].buyables[12].buyMax(amt)
                                 if (tmp[key].buyables[13].unlocked) layers[key].buyables[13].buyMax(amt)
-                                /*
                                 if (tmp[key].buyables[21].unlocked) layers[key].buyables[21].buyMax(amt)
-                                /*
                                 if (tmp[key].buyables[22].unlocked) layers[key].buyables[22].buyMax(amt)
                                 /*
                                 if (tmp[key].buyables[23].unlocked) layers[key].buyables[23].buyMax(amt)
@@ -10525,9 +10525,7 @@ addLayer("g", {
                 
 
                 /*  
-                
-                generation
-                guarantee
+                guarantee [used]
                 */
         },
         buyables: {
@@ -10612,6 +10610,60 @@ addLayer("g", {
                         },
                         unlocked(){ 
                                 return hasUpgrade("i", 13) || hasUnlockedPast("i")
+                        },
+                },
+                21: {
+                        title: "Generation",
+                        display(){
+                                return getBuyableDisplay("g", 21)
+                        },
+                        effect(){
+                                return CURRENT_BUYABLE_EFFECTS["g21"]
+                        },
+                        canAfford(){
+                                return canAffordBuyable("g", 21)
+                        },
+                        total(){
+                                return getBuyableAmount("g", 21).plus(this.extra())
+                        },
+                        extra(){
+                                return calcBuyableExtra("g", 21)
+                        },
+                        buy(){
+                                buyManualBuyable("g", 21)
+                        },
+                        buyMax(maximum){
+                                buyMaximumBuyable("g", 21, maximum)
+                        },
+                        unlocked(){ 
+                                return hasUpgrade("i", 14) || hasUnlockedPast("i")
+                        },
+                },
+                22: {
+                        title: "Guarantee",
+                        display(){
+                                return getBuyableDisplay("g", 22)
+                        },
+                        effect(){
+                                return CURRENT_BUYABLE_EFFECTS["g22"]
+                        },
+                        canAfford(){
+                                return canAffordBuyable("g", 22)
+                        },
+                        total(){
+                                return getBuyableAmount("g", 22).plus(this.extra())
+                        },
+                        extra(){
+                                return calcBuyableExtra("g", 22)
+                        },
+                        buy(){
+                                buyManualBuyable("g", 22)
+                        },
+                        buyMax(maximum){
+                                buyMaximumBuyable("g", 22, maximum)
+                        },
+                        unlocked(){ 
+                                return hasUpgrade("i", 15) || hasUnlockedPast("i")
                         },
                 },
         },
@@ -11319,6 +11371,7 @@ addLayer("i", {
         },
         getGainMultPre(){
                 let x = Decimal.pow(7, -1)
+                if (hasUpgrade("i", 14)) x = x.times(Decimal.pow(1.1, player.i.upgrades.length))
                 return x
         },
         getGainMultPost(){
@@ -11357,7 +11410,7 @@ addLayer("i", {
                 let data = player.i
 
                 data.best = data.best.max(data.points)
-                if (false) {
+                if (hasUpgrade("i", 22)) {
                         let gain = this.getResetGain()
                         data.points = data.points.plus(gain.times(diff))
                         data.total = data.total.plus(gain.times(diff))
@@ -11416,7 +11469,7 @@ addLayer("i", {
         ],
         layerShown(){return player.h.best.gt(5e16) || player.i.best.gt(0) || hasUnlockedPast("i")},
         prestigeButtonText(){
-                if (player.tab != "i" || false) return ""
+                if (player.tab != "i" || hasUpgrade("i", 22)) return ""
                 let gain= this.getResetGain()
                 let pts = this.baseAmount()
                 let pre = this.getGainMultPre()
@@ -11441,7 +11494,7 @@ addLayer("i", {
                 return a + nextAt
         },
         canReset(){
-                return player.i.time >= 2 && !false && this.getResetGain().gt(0)
+                return player.i.time >= 2 && !hasUpgrade("i", 22) && this.getResetGain().gt(0)
         },
         milestones: {
                 1: {
@@ -11557,26 +11610,48 @@ addLayer("i", {
                 }, // hasUpgrade("i", 13)
                 14: {
                         title: "International",
-                        description: "Per upgrade raise <b>A</b> gain ^1.1 [no buy yet]",
+                        description: "Per upgrade raise <b>A</b> gain ^1.1 and multiply base <b>I</b> gain by 1.1",
                         cost: new Decimal(1e10),
                         unlocked(){
                                 return hasUpgrade("h", 32) || hasUnlockedPast("i")
                         }
                 }, // hasUpgrade("i", 14)
+                15: {
+                        title: "Internet",
+                        description: "Per upgrade add .01 to <b>Gives</b> base and <b>Generation</b> gives free <b>Goal</b> levels",
+                        cost: new Decimal(3e10),
+                        unlocked(){
+                                return hasUpgrade("i", 14) || hasUnlockedPast("i")
+                        }
+                }, // hasUpgrade("i", 15)
+                21: {
+                        title: "Index",
+                        description: "<b>Guarantee</b> and <b>Generation</b> give free <b>Guidelines</b> levels",
+                        cost: new Decimal(3e11),
+                        unlocked(){
+                                return hasUpgrade("i", 15) || hasUnlockedPast("i")
+                        }
+                }, // hasUpgrade("i", 21)
+                22: {
+                        title: "Including",
+                        description: "Remove the ability to prestige but gain 100% of <b>I</b> upon prestige per second",
+                        cost: new Decimal(1e12),
+                        unlocked(){
+                                return hasUpgrade("i", 21) || hasUnlockedPast("i")
+                        }
+                }, // hasUpgrade("i", 22)
 
                 
 
                 /*
-                internet
-                index
-                including
+                including [used]
 
                 */
         },
         tabFormat: {
                 "Upgrades": {
                         content: ["main-display",
-                                ["prestige-button", "", function (){ return false ? {'display': 'none'} : {}}],
+                                ["prestige-button", "", function (){ return hasUpgrade("i", 22) ? {'display': 'none'} : {}}],
                                 ["display-text",
                                         function() {return shiftDown ? "Your best Ideas is " + format(player.i.best) : ""}],
                                 ["display-text",
@@ -11587,7 +11662,7 @@ addLayer("i", {
                                 ],
                                 ["display-text",
                                         function() {
-                                                if (false) return "You are gaining " + format(tmp.i.getResetGain) + " Ideas per second"
+                                                if (hasUpgrade("i", 22)) return "You are gaining " + format(tmp.i.getResetGain) + " Ideas per second"
                                                 return "There is a two second cooldown for prestiging (" + format(Math.max(0, 2-player.i.time)) + ")" 
                                         },
                                         //{"font-size": "20px"}

@@ -1487,7 +1487,16 @@ var MAIN_BUYABLE_DATA = {
                                         return hasUpgrade("g", 35)
                                 },
                                 amount: function(){
-                                        return Math.max(1, player.g.upgrades.length) / 10
+                                        return new Decimal(player.g.upgrades.length / 10)
+                                },
+                                type: "plus"
+                        },
+                        2: {
+                                active: function(){
+                                        return true
+                                },
+                                amount: function(){
+                                        return CURRENT_BUYABLE_EFFECTS["g22"]
                                 },
                                 type: "plus"
                         },
@@ -1637,6 +1646,15 @@ var MAIN_BUYABLE_DATA = {
                 effects: "G gain exponent",
                 base: {
                         initial: new Decimal(1),
+                        1: {
+                                active: function(){
+                                        return hasUpgrade("i", 15)
+                                },
+                                amount: function(){
+                                        return new Decimal(player.i.upgrades.length * .01)
+                                },
+                                type: "plus"
+                        },
                 },
                 bases(){
                         let b0 = new Decimal("1e3435e3")
@@ -1677,6 +1695,16 @@ var MAIN_BUYABLE_DATA = {
                                 return hasUpgrade("goalsii", 44)
                         },
                 },
+                g21: {
+                        active: function(){
+                                return hasUpgrade("i", 21)
+                        },
+                },
+                g22: {
+                        active: function(){
+                                return hasUpgrade("i", 21)
+                        },
+                },
         },
         g13: {
                 name: "Goal",
@@ -1691,7 +1719,41 @@ var MAIN_BUYABLE_DATA = {
                         let b2 = new Decimal("1e10")
                         return [b0, b1, b2]
                 },
+                g21: {
+                        active: function(){
+                                return hasUpgrade("i", 15)
+                        },
+                },
         },
+        g21: {
+                name: "Generation",
+                func: "lin",
+                effects: "<b>Federal</b> base",
+                base: {
+                        initial: new Decimal(.01),
+                },
+                bases(){
+                        let b0 = new Decimal("1e302e6")
+                        let b1 = new Decimal("1ee5")
+                        let b2 = new Decimal("1ee2")
+                        return [b0, b1, b2]
+                },
+        },
+        g22: {
+                name: "Guarantee",
+                func: "lin",
+                effects: "<b>February</b> base",
+                base: {
+                        initial: new Decimal(.01),
+                },
+                bases(){
+                        let b0 = new Decimal("1e347e6")
+                        let b1 = new Decimal("1e5e5")
+                        let b2 = new Decimal("1e5e2")
+                        return [b0, b1, b2]
+                },
+        },
+        
 }
 
 var EXTRA_FREE_BUYABLE_DATA = {
