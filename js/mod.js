@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".4.12 Blackjack",
+	num: ".4.13 Blackjack",
 	name: "",
 }
 
@@ -152,6 +152,9 @@ PROGRESSION_MILESTONES = {
 	110:()=> player.i.best.gte(100)                      || hasAchievement("ach",165),
 	111:()=> totalChallengeComps("f") >= 36              || hasAchievement("ach",166),
 	112:()=> totalChallengeComps("f") >= 45              || hasAchievement("ach",167),
+	113:()=> totalChallengeComps("f") >= 55              || hasAchievement("ach",171),
+	114:()=> totalChallengeComps("f") >= 66              || hasAchievement("ach",172),
+	115:()=> totalChallengeComps("f") >= 78              || hasAchievement("ach",173),
 }
 
 PROGRESSION_MILESTONES_TEXT = {
@@ -267,6 +270,9 @@ PROGRESSION_MILESTONES_TEXT = {
 	110:"100 Ideas",
 	111:"36 Feature challenge completions",
 	112:"45 Feature challenge completions",
+	113:"55 Feature challenge completions",
+	114:"66 Feature challenge completions",
+	115:"78 Feature challenge completions",
 }
 
 function progressReachedNum(){
@@ -334,14 +340,19 @@ function getChangeLogText(){
 	d5 = "- Softcaps completed devs to Base G Gain"
 	d6 = "- Make Pac-Mac and Asteriods more effeicient in bulk buying"
 	d7 = "- Made the changelog better :)"
+	e1 = "v.4.13"
+	e2 = "- Added two F buyables"
+	e3 = "- Added two Medal, two Heart, one Idea, and the final Game upgrades"
+	e4 = "- Added QoL for Rebirth III"
 
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
 	let part2 = [b1, b2, b3, b4, b5, "", b6, b7, "", b8, b9, b10, "", b11, b12, ""]
 	let part3 = [c1, c2, c3, c4, c5, ""]
 	let part4 = [d1, d2, d3, d4, d5, d6, d7, ""]
+	let part5 = [e1, e2, e3, e4, ""]
 
-	return [part4, part3, part2, part1]
+	return [part5, part4, part3, part2, part1]
 }
 
 var controlDown = false

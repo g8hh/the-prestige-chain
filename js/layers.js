@@ -204,7 +204,6 @@ function getABSpeed(layer){
 
 function getPrestigeGainChangeExp(layer){
         let exp = new Decimal(1)
-        if (layer == "a" && inChallenge("c", 12)) exp = exp.div(2)
         if (["a", "b", "c", "d", "e", "f"].includes(layer)) {
                 exp = exp.times(Decimal.pow(.985, getChallengeDepth(1)))
                 if (hasMilestone("g", 1)) exp = exp.times(1.001)
@@ -216,6 +215,10 @@ function getPrestigeGainChangeExp(layer){
                 exp = exp.times(Decimal.pow(.9, getChallengeDepth(2)))
                 exp = exp.times(Decimal.pow(.8, getChallengeDepth(3)))
                 if (hasUpgrade("goalsii", 14) && getChallengeDepth(4) > 0) exp = exp.times(2)
+        }
+        if (layer == "a") {
+                if (hasUpgrade("i", 14)) exp = exp.times(Decimal.pow(1.1, player.i.upgrades.length))
+                if (inChallenge("c", 12)) exp = exp.div(2)
         }
         return exp
 }
@@ -4205,7 +4208,6 @@ addLayer("f", {
                                 if (tmp.f.buyables[13].unlocked) layers.f.buyables[13].buyMax(amt)
                                 if (tmp.f.buyables[21].unlocked) layers.f.buyables[21].buyMax(amt)
                                 if (tmp.f.buyables[22].unlocked) layers.f.buyables[22].buyMax(amt)
-                                /*
                                 if (tmp.f.buyables[23].unlocked) layers.f.buyables[23].buyMax(amt)
                                 /*
                                 if (tmp.f.buyables[31].unlocked) layers.f.buyables[31].buyMax(amt)
@@ -4595,9 +4597,67 @@ addLayer("f", {
                                 return hasUpgrade("i", 11) || hasUnlockedPast("i")
                         },
                 },
-                /*
+                23: {
+                        title: "Final",
+                        display(){
+                                return getBuyableDisplay("f", 23)
+                        },
+                        effect(){
+                                return CURRENT_BUYABLE_EFFECTS["f23"]
+                        },
+                        canAfford(){
+                                return canAffordBuyable("f", 23)
+                        },
+                        total(){
+                                return getBuyableAmount("f", 23).plus(this.extra())
+                        },
+                        extra(){
+                                return calcBuyableExtra("f", 23)
+                        },
+                        buy(){
+                                buyManualBuyable("f", 23)
+                        },
+                        buyMax(maximum){
+                                buyMaximumBuyable("f", 23, maximum)
+                        },
+                        unlocked(){ 
+                                return hasUpgrade("goalsii", 44) || hasUnlockedPast("i")
+                        },
+                },
+                31: {
+                        title: "Finance",
+                        display(){
+                                return getBuyableDisplay("f", 31)
+                        },
+                        effect(){
+                                return CURRENT_BUYABLE_EFFECTS["f31"]
+                        },
+                        canAfford(){
+                                return canAffordBuyable("f", 31)
+                        },
+                        total(){
+                                return getBuyableAmount("f", 31).plus(this.extra())
+                        },
+                        extra(){
+                                return calcBuyableExtra("f", 31)
+                        },
+                        buy(){
+                                buyManualBuyable("f", 31)
+                        },
+                        buyMax(maximum){
+                                buyMaximumBuyable("f", 31, maximum)
+                        },
+                        unlocked(){ 
+                                return hasUpgrade("goalsii", 45) || hasUnlockedPast("i")
+                        },
+                },
                 
-                final
+                /*
+                fast
+                function
+                fact
+                far
+                feel
                 */
         },
         challenges: {
@@ -4622,7 +4682,9 @@ addLayer("f", {
                                 return hasUpgrade("h", 15) || hasUnlockedPast("h")
                         },
                         currencyInternalName: "points",
-                        completionLimit: 20,
+                        completionLimit(){
+                                return hasUpgrade("g", 55) ? 25 : 20
+                        },
                 },
                 12: {
                         name: "Film",
@@ -4643,7 +4705,9 @@ addLayer("f", {
                                 return hasUpgrade("g", 33) || hasUnlockedPast("h")
                         },
                         currencyInternalName: "points",
-                        completionLimit: 20,
+                        completionLimit(){
+                                return hasUpgrade("g", 55) ? 25 : 20
+                        },
                         countsAs: [11],
                 },
                 21: {
@@ -4665,7 +4729,9 @@ addLayer("f", {
                                 return hasUpgrade("g", 35) || hasUnlockedPast("h")
                         },
                         currencyInternalName: "points",
-                        completionLimit: 20,
+                        completionLimit(){
+                                return hasUpgrade("g", 55) ? 25 : 20
+                        },
                         countsAs: [11, 12],
                 },
                 22: {
@@ -4689,7 +4755,9 @@ addLayer("f", {
                                 return hasUpgrade("i", 12) || hasUnlockedPast("i")
                         },
                         currencyInternalName: "points",
-                        completionLimit: 20,
+                        completionLimit(){
+                                return hasUpgrade("g", 55) ? 25 : 20
+                        },
                         countsAs: [11, 12, 21],
                 },
         },
@@ -6024,6 +6092,94 @@ addLayer("ach", {
                                 return hasUnlockedPast("g")
                         },
                 },
+                171: {
+                        name: "One Hundred and Thirteen",
+                        done(){
+                                return PROGRESSION_MILESTONES[113]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[113]
+                        },
+                        unlocked(){
+                                return hasUnlockedPast("g")
+                        },
+                },
+                172: {
+                        name: "One Hundred and Fourteen",
+                        done(){
+                                return PROGRESSION_MILESTONES[114]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[114]
+                        },
+                        unlocked(){
+                                return hasUnlockedPast("g")
+                        },
+                },
+                173: {
+                        name: "One Hundred and Fifteen",
+                        done(){
+                                return PROGRESSION_MILESTONES[115]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[115]
+                        },
+                        unlocked(){
+                                return hasUnlockedPast("g")
+                        },
+                },
+                /*
+                174: {
+                        name: "One Hundred and Sixteen",
+                        done(){
+                                return PROGRESSION_MILESTONES[116]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[116]
+                        },
+                        unlocked(){
+                                return hasUnlockedPast("g")
+                        },
+                },
+                /*
+                175: {
+                        name: "One Hundred and Ten",
+                        done(){
+                                return PROGRESSION_MILESTONES[117]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[117]
+                        },
+                        unlocked(){
+                                return hasUnlockedPast("g")
+                        },
+                },
+                /*
+                176: {
+                        name: "One Hundred and Eighteen",
+                        done(){
+                                return PROGRESSION_MILESTONES[118]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[118]
+                        },
+                        unlocked(){
+                                return hasUnlockedPast("g")
+                        },
+                },
+                /*
+                177: {
+                        name: "One Hundred and Nineteen",
+                        done(){
+                                return PROGRESSION_MILESTONES[119]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[119]
+                        },
+                        unlocked(){
+                                return hasUnlockedPast("g")
+                        },
+                },
                 /*
                 */
         },
@@ -6337,6 +6493,7 @@ addLayer("goalsii", {
                 if (hasMilestone("goalsii", 13)) x = x.plus(1)
                 if (hasUpgrade("f", 42)) x = x.plus(player.f.upgrades.length)
                 if (hasUpgrade("e", 55)) x = x.plus(player.g.upgrades.length * 34)
+                x = x.plus(CURRENT_BUYABLE_EFFECTS["f23"])
                 return x
         },
         getGainMultPre(){
@@ -7720,13 +7877,28 @@ addLayer("goalsii", {
                                 return hasUpgrade("goalsii", 42) || hasUnlockedPast("i")
                         }, // hasUpgrade("goalsii", 43)
                 },
+                44: {
+                        title: "Turing",
+                        description: "<b>Goal</b> gives free <b>Guidelines</b> levels and unlock an <b>F</b> buyable",
+                        cost: new Decimal("1e23266e3"),
+                        unlocked(){ 
+                                return hasUpgrade("goalsii", 43) || hasUnlockedPast("i")
+                        }, // hasUpgrade("goalsii", 44)
+                },
+                45: {
+                        title: "Ufimtsev",
+                        description: "Automatically bulk buy Rebirth II and unlock an <b>F</b> buyable [no buy yet]",
+                        cost: new Decimal("1e28689e3"),
+                        unlocked(){ 
+                                return hasUpgrade("goalsii", 44) || hasUnlockedPast("i")
+                        }, // hasUpgrade("goalsii", 45)
+                },
 
-                // "<b>Goal</b> gives free <b>Guideline</b> levels"
+                // 
                 
 
                 /*
-                Turing
-                U
+                
                 Villiani
                 Wiles
                 Xi
@@ -8236,6 +8408,7 @@ addLayer("g", {
                                 }
                                 if (hasUpgrade("f", 33)) layers.g.clickables[15].onClick()
                                 if (hasUpgrade("g", 51)) layers.g.clickables[25].onClick()
+                                if (hasUpgrade("h", 32)) layers.g.clickables[35].onClick()
                         }
                 } else {
                         data.autotime = 0
@@ -8245,6 +8418,17 @@ addLayer("g", {
                         cmr = layers.g.clickables.getCurrentMaxRebirths()
                         let diff = cmr - player.g.rebirths[1]
                         player.g.rebirths[1] = cmr 
+                        if (diff > 0){
+                                for (i in data.clickableAmounts){
+                                        if (["11","12","13","14"].includes(i)) continue
+                                        data.clickableAmounts[i] = new Decimal(0)
+                                }
+                        }
+                }
+
+                if (hasUpgrade("goalsii", 45)) {
+                        let diff = Math.floor(player.g.rebirths[1]/10) - player.g.rebirths[2]
+                        player.g.rebirths[2] += Math.max(diff, 0)
                         if (diff > 0){
                                 for (i in data.clickableAmounts){
                                         if (["11","12","13","14"].includes(i)) continue
@@ -10330,10 +10514,18 @@ addLayer("g", {
                                 return hasUpgrade("i", 13) || hasUnlockedPast("i")
                         },
                 }, // hasUpgrade("g", 54)
+                55: {
+                        title: "Generally",
+                        description: "You can complete 5 more of each <b>F</b> challenge",
+                        cost: new Decimal("1e222807e3"),
+                        unlocked(){
+                                return hasUpgrade("g", 54) || hasUnlockedPast("i")
+                        },
+                }, // hasUpgrade("g", 55)
                 
 
                 /*  
-                generally
+                
                 generation
                 guarantee
                 */
@@ -10703,6 +10895,7 @@ addLayer("h", {
         },
         getGainMultPre(){
                 let x = Decimal.pow(10, -4)
+                if (hasUpgrade("h", 32)) x = x.times(Decimal.pow(2, player.g.rebirths[3]))
                 return x
         },
         getGainMultPost(){
@@ -10964,18 +11157,31 @@ addLayer("h", {
                 }, // hasUpgrade("h", 24)
                 25: {
                         title: "However",
-                        description: "Each <b>H</b> upgrade adds .2 to the <b>H</b> gain exponent",
+                        description: "Each upgrade adds .2 to the <b>H</b> gain exponent",
                         cost: new Decimal(1e12),
                         unlocked(){
                                 return hasUpgrade("h", 24) || hasUnlockedPast("h")
                         }
                 }, // hasUpgrade("h", 25)
+                31: {
+                        title: "Human",
+                        description: "Each upgrade adds .1 to the <b>I</b> gain exponent",
+                        cost: new Decimal("1e687"),
+                        unlocked(){
+                                return hasUpgrade("g", 55) || hasUnlockedPast("i")
+                        }
+                }, // hasUpgrade("h", 31)
+                32: {
+                        title: "Hot",
+                        description: "Automatically <b>Rebirth III</b> and each <b>Rebirth III</b> doubles base <b>H</b> gain",
+                        cost: new Decimal("1e835"),
+                        unlocked(){
+                                return (hasUpgrade("h", 31) && totalChallengeComps("f") >= 85) || hasUnlockedPast("i")
+                        }
+                }, // hasUpgrade("h", 32)
 
 
                 /*
-                
-                human
-                hot
                 hard
                 hand
                 */
@@ -11108,6 +11314,7 @@ addLayer("i", {
         getGainExp(){
                 let x = new Decimal(2)
                 if (hasMilestone("i", 7)) x = x.plus(1)
+                if (hasUpgrade("h", 31)) x = x.plus(player.h.upgrades.length * .1)
                 return x
         },
         getGainMultPre(){
@@ -11348,9 +11555,18 @@ addLayer("i", {
                                 return hasUpgrade("g", 52) || hasUnlockedPast("i")
                         }
                 }, // hasUpgrade("i", 13)
+                14: {
+                        title: "International",
+                        description: "Per upgrade raise <b>A</b> gain ^1.1 [no buy yet]",
+                        cost: new Decimal(1e10),
+                        unlocked(){
+                                return hasUpgrade("h", 32) || hasUnlockedPast("i")
+                        }
+                }, // hasUpgrade("i", 14)
+
+                
 
                 /*
-                international
                 internet
                 index
                 including

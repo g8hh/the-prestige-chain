@@ -1586,11 +1586,48 @@ var MAIN_BUYABLE_DATA = {
                 effects: "Feature effect exponent",
                 base: {
                         initial: new Decimal(.05),
+                        1: {
+                                active(){
+                                        return true
+                                },
+                                amount(){
+                                        return CURRENT_BUYABLE_EFFECTS["f31"]
+                                },
+                                type: "plus",
+                        },
                 },
                 bases(){
                         let b0 = new Decimal("1e150289e3")
                         let b1 = new Decimal("1.23e45678")
                         let b2 = new Decimal("1e300")
+                        return [b0, b1, b2]
+                },
+        },
+        f23: {
+                name: "Final",
+                func: "lin_sqrt",
+                effects: "Medal gain exponent",
+                base: {
+                        initial: new Decimal(1),
+                },
+                bases(){
+                        let b0 = new Decimal("1e27e13")
+                        let b1 = new Decimal("1ee10")
+                        let b2 = new Decimal("1ee6")
+                        return [b0, b1, b2]
+                },
+        },
+        f31: {
+                name: "Finance",
+                func: "lin",
+                effects: "Front base",
+                base: {
+                        initial: new Decimal(.0001),
+                },
+                bases(){
+                        let b0 = new Decimal("1e1.7e15")
+                        let b1 = new Decimal("1ee13")
+                        let b2 = new Decimal("1ee8")
                         return [b0, b1, b2]
                 },
         },
@@ -1634,6 +1671,11 @@ var MAIN_BUYABLE_DATA = {
                         let b1 = new Decimal("1e2000")
                         let b2 = new Decimal("1e5")
                         return [b0, b1, b2]
+                },
+                g13: {
+                        active: function(){
+                                return hasUpgrade("goalsii", 44)
+                        },
                 },
         },
         g13: {

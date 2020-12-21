@@ -302,6 +302,18 @@ var softcap_data = {
 	f_eff:{
 		
 	},
+	f_buy31: {
+		1: {
+			func: "pow",
+			start: .1,
+			pow: .7,
+		},
+		2: {
+			func: "pow",
+			start: 1,
+			pow: .7,
+		},
+	},
 	goalsii_eff: {
 		1: {
 			func: "pow",
