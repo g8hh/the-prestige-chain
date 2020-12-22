@@ -1640,6 +1640,43 @@ var MAIN_BUYABLE_DATA = {
                         return [b0, b1, b2]
                 },
         },
+        f32: {
+                name: "Fast",
+                func: "lin",
+                effects: "Amoeba effect exponent",
+                base: {
+                        initial: new Decimal(.1),
+                        1: {
+                                active: function(){
+                                        return true
+                                },
+                                amount: function(){
+                                        return CURRENT_BUYABLE_EFFECTS["g23"]
+                                },
+                                type: "plus",
+                        },
+                },
+                bases(){
+                        let b0 = new Decimal("1ee23")
+                        let b1 = new Decimal("1ee19")
+                        let b2 = new Decimal("1ee13")
+                        return [b0, b1, b2]
+                },
+        },
+        f33: {
+                name: "Omnipotent VI",
+                func: "lin",
+                effects: "<b>Egg</b> effect exponent",
+                base: {
+                        initial: new Decimal(.1),
+                },
+                bases(){
+                        let b0 = new Decimal("1e3e23")
+                        let b1 = new Decimal("1ee20")
+                        let b2 = new Decimal("1ee14")
+                        return [b0, b1, b2]
+                },
+        },
         g11: {
                 name: "Gives",
                 func: "lin",
@@ -1724,6 +1761,16 @@ var MAIN_BUYABLE_DATA = {
                                 return hasUpgrade("i", 15)
                         },
                 },
+                g22: {
+                        active: function(){
+                                return hasUpgrade("h", 41)
+                        },
+                },
+                g23: {
+                        active: function(){
+                                return hasUpgrade("h", 41)
+                        },
+                },
         },
         g21: {
                 name: "Generation",
@@ -1738,6 +1785,16 @@ var MAIN_BUYABLE_DATA = {
                         let b2 = new Decimal("1ee2")
                         return [b0, b1, b2]
                 },
+                g22: {
+                        active: function(){
+                                return hasUpgrade("h", 41)
+                        },
+                },
+                g23: {
+                        active: function(){
+                                return hasUpgrade("h", 41)
+                        },
+                },
         },
         g22: {
                 name: "Guarantee",
@@ -1750,6 +1807,34 @@ var MAIN_BUYABLE_DATA = {
                         let b0 = new Decimal("1e347e6")
                         let b1 = new Decimal("1e5e5")
                         let b2 = new Decimal("1e5e2")
+                        return [b0, b1, b2]
+                },
+                g23: {
+                        active: function(){
+                                return hasUpgrade("h", 42)
+                        },
+                },
+        },
+        g23: {
+                name: "Growing",
+                func: "lin",
+                effects: "<b>Fast</b> base",
+                base: {
+                        initial: new Decimal(.01),
+                        1: {
+                                active: function(){
+                                        return hasUpgrade("h", 42)
+                                },
+                                amount: function(){
+                                        return new Decimal(player.h.upgrades.length * .001)
+                                },
+                                type: "plus",
+                        },
+                },
+                bases(){
+                        let b0 = new Decimal("1e95e9")
+                        let b1 = new Decimal("1ee8")
+                        let b2 = new Decimal("1ee4")
                         return [b0, b1, b2]
                 },
         },

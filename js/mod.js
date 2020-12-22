@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".4.14 Blackjack",
+	num: ".4.15 Blackjack",
 	name: "",
 }
 
@@ -155,6 +155,10 @@ PROGRESSION_MILESTONES = {
 	113:()=> totalChallengeComps("f") >= 55              || hasAchievement("ach",171),
 	114:()=> totalChallengeComps("f") >= 66              || hasAchievement("ach",172),
 	115:()=> totalChallengeComps("f") >= 78              || hasAchievement("ach",173),
+	116:()=> totalChallengeComps("f") >= 91              || hasAchievement("ach",174),
+	117:()=> totalChallengeComps("f") >= 105             || hasAchievement("ach",175),
+	118:()=> totalChallengeComps("f") >= 120             || hasAchievement("ach",176),
+	119:()=> totalChallengeComps("f") >= 136             || hasAchievement("ach",177),
 }
 
 PROGRESSION_MILESTONES_TEXT = {
@@ -273,6 +277,10 @@ PROGRESSION_MILESTONES_TEXT = {
 	113:"55 Feature challenge completions",
 	114:"66 Feature challenge completions",
 	115:"78 Feature challenge completions",
+	116:"91 Feature challenge completions",
+	117:"105 Feature challenge completions",
+	118:"120 Feature challenge completions",
+	119:"136 Feature challenge completions",
 }
 
 function progressReachedNum(){
@@ -347,7 +355,11 @@ function getChangeLogText(){
 	f1 = "v.4.14"
 	f2 = "- Added two G buyables"
 	f3 = "- Added three Idea upgrades"
-	f4 = "- Fixed a bug with Feature challenge challenge completions"
+	f4 = "- Fixed a bug with Feature challenge completion disply"
+	g1 = "v.4.14"
+	g2 = "- Added a G buyables and two F buyables"
+	g3 = "- Added five Heart upgrades"
+	g4 = "- Created four new achievements"
 
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
@@ -356,8 +368,9 @@ function getChangeLogText(){
 	let part4 = [d1, d2, d3, d4, d5, d6, d7, ""]
 	let part5 = [e1, e2, e3, e4, ""]
 	let part6 = [f1, f2, f3, f4, ""]
+	let part7 = [g1, g2, g3, g4, ""]
 
-	return [part6, part5, part4, part3, part2, part1]
+	return [part7, part6, part5, part4, part3, part2, part1]
 }
 
 var controlDown = false

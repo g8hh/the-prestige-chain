@@ -366,7 +366,10 @@ addLayer("a", {
 
                 let amt = player.a.points
 
-                let ret = amt.plus(1).sqrt()
+                let exp = new Decimal(.5)
+                exp = exp.plus(CURRENT_BUYABLE_EFFECTS["f32"])
+
+                let ret = amt.plus(1).pow(exp)
 
                 ret = softcap(ret, "a_eff")
 
@@ -3394,8 +3397,10 @@ addLayer("e", {
                 if (!isPrestigeEffectActive("e")) return new Decimal(1)
 
                 let amt = player.e.points
+                let exp = new Decimal(2)
+                exp = exp.plus(CURRENT_BUYABLE_EFFECTS["f33"])
 
-                let ret = amt.times(24).plus(1).pow(2)
+                let ret = amt.times(24).plus(1).pow(exp)
 
                 ret = softcap(ret, "e_eff")
 
@@ -4211,12 +4216,8 @@ addLayer("f", {
                                 if (tmp.f.buyables[22].unlocked) layers.f.buyables[22].buyMax(amt)
                                 if (tmp.f.buyables[23].unlocked) layers.f.buyables[23].buyMax(amt)
                                 if (tmp.f.buyables[31].unlocked) layers.f.buyables[31].buyMax(amt)
-                                /*
                                 if (tmp.f.buyables[32].unlocked) layers.f.buyables[32].buyMax(amt)
-                                /*
                                 if (tmp.f.buyables[33].unlocked) layers.f.buyables[33].buyMax(amt)
-                                /*
-                                */
                         }
                 } else {
                         data.abtime = 0
@@ -4651,9 +4652,61 @@ addLayer("f", {
                                 return hasUpgrade("goalsii", 45) || hasUnlockedPast("i")
                         },
                 },
-                
+                32: {
+                        title: "Fast",
+                        display(){
+                                return getBuyableDisplay("f", 32)
+                        },
+                        effect(){
+                                return CURRENT_BUYABLE_EFFECTS["f32"]
+                        },
+                        canAfford(){
+                                return canAffordBuyable("f", 32)
+                        },
+                        total(){
+                                return getBuyableAmount("f", 32).plus(this.extra())
+                        },
+                        extra(){
+                                return calcBuyableExtra("f", 32)
+                        },
+                        buy(){
+                                buyManualBuyable("f", 32)
+                        },
+                        buyMax(maximum){
+                                buyMaximumBuyable("f", 32, maximum)
+                        },
+                        unlocked(){ 
+                                return hasUpgrade("h", 33) || hasUnlockedPast("i")
+                        },
+                },
+                33: {
+                        title: "Omnipotent VI",
+                        display(){
+                                return getBuyableDisplay("f", 33)
+                        },
+                        effect(){
+                                return CURRENT_BUYABLE_EFFECTS["f33"]
+                        },
+                        canAfford(){
+                                return canAffordBuyable("f", 33)
+                        },
+                        total(){
+                                return getBuyableAmount("f", 33).plus(this.extra())
+                        },
+                        extra(){
+                                return calcBuyableExtra("f", 33)
+                        },
+                        buy(){
+                                buyManualBuyable("f", 33)
+                        },
+                        buyMax(maximum){
+                                buyMaximumBuyable("f", 33, maximum)
+                        },
+                        unlocked(){ 
+                                return hasUpgrade("h", 34) || hasUnlockedPast("i")
+                        },
+                },
                 /*
-                fast
                 function
                 fact
                 far
@@ -4683,7 +4736,11 @@ addLayer("f", {
                         },
                         currencyInternalName: "points",
                         completionLimit(){
-                                return hasUpgrade("g", 55) ? 25 : 20
+                                let ret = 20
+                                if (hasUpgrade("g", 55)) ret += 5
+                                if (hasUpgrade("h", 34)) ret += player.i.upgrades.length
+
+                                return ret
                         },
                 },
                 12: {
@@ -4706,7 +4763,11 @@ addLayer("f", {
                         },
                         currencyInternalName: "points",
                         completionLimit(){
-                                return hasUpgrade("g", 55) ? 25 : 20
+                                let ret = 20
+                                if (hasUpgrade("g", 55)) ret += 5
+                                if (hasUpgrade("h", 34)) ret += player.i.upgrades.length
+
+                                return ret
                         },
                         countsAs: [11],
                 },
@@ -4730,7 +4791,11 @@ addLayer("f", {
                         },
                         currencyInternalName: "points",
                         completionLimit(){
-                                return hasUpgrade("g", 55) ? 25 : 20
+                                let ret = 20
+                                if (hasUpgrade("g", 55)) ret += 5
+                                if (hasUpgrade("h", 34)) ret += player.i.upgrades.length
+
+                                return ret
                         },
                         countsAs: [11, 12],
                 },
@@ -4758,7 +4823,11 @@ addLayer("f", {
                         },
                         currencyInternalName: "points",
                         completionLimit(){
-                                return hasUpgrade("g", 55) ? 25 : 20
+                                let ret = 20
+                                if (hasUpgrade("g", 55)) ret += 5
+                                if (hasUpgrade("h", 34)) ret += player.i.upgrades.length
+
+                                return ret
                         },
                         countsAs: [11, 12, 21],
                 },
@@ -6130,7 +6199,6 @@ addLayer("ach", {
                                 return hasUnlockedPast("g")
                         },
                 },
-                /*
                 174: {
                         name: "One Hundred and Sixteen",
                         done(){
@@ -6143,7 +6211,6 @@ addLayer("ach", {
                                 return hasUnlockedPast("g")
                         },
                 },
-                /*
                 175: {
                         name: "One Hundred and Ten",
                         done(){
@@ -6156,7 +6223,6 @@ addLayer("ach", {
                                 return hasUnlockedPast("g")
                         },
                 },
-                /*
                 176: {
                         name: "One Hundred and Eighteen",
                         done(){
@@ -6169,7 +6235,6 @@ addLayer("ach", {
                                 return hasUnlockedPast("g")
                         },
                 },
-                /*
                 177: {
                         name: "One Hundred and Nineteen",
                         done(){
@@ -6182,8 +6247,6 @@ addLayer("ach", {
                                 return hasUnlockedPast("g")
                         },
                 },
-                /*
-                */
         },
         milestones: {
                 1: {
@@ -8336,7 +8399,6 @@ addLayer("g", {
                                 if (tmp[key].buyables[13].unlocked) layers[key].buyables[13].buyMax(amt)
                                 if (tmp[key].buyables[21].unlocked) layers[key].buyables[21].buyMax(amt)
                                 if (tmp[key].buyables[22].unlocked) layers[key].buyables[22].buyMax(amt)
-                                /*
                                 if (tmp[key].buyables[23].unlocked) layers[key].buyables[23].buyMax(amt)
                                 /*
                                 if (tmp[key].buyables[31].unlocked) layers[key].buyables[31].buyMax(amt)
@@ -8822,6 +8884,7 @@ addLayer("g", {
                         if (hasUpgrade("f", 55)) r *= .8
                         if (hasUpgrade("g", 54)) r *= .9
                         if (hasUpgrade("goalsii", 42)) r *= Math.pow(.98, player.goalsii.upgrades.length)
+                        if (hasUpgrade("h", 33)) r *= Math.pow(.998, totalChallengeComps("f"))
                         return r
                 },
                 getRebirthCostIncrease(){
@@ -10525,7 +10588,12 @@ addLayer("g", {
                 
 
                 /*  
-                guarantee [used]
+                generated
+                guys
+                guitar
+                goals
+                gave
+
                 */
         },
         buyables: {
@@ -10664,6 +10732,33 @@ addLayer("g", {
                         },
                         unlocked(){ 
                                 return hasUpgrade("i", 15) || hasUnlockedPast("i")
+                        },
+                },
+                23: {
+                        title: "Growing",
+                        display(){
+                                return getBuyableDisplay("g", 23)
+                        },
+                        effect(){
+                                return CURRENT_BUYABLE_EFFECTS["g23"]
+                        },
+                        canAfford(){
+                                return canAffordBuyable("g", 23)
+                        },
+                        total(){
+                                return getBuyableAmount("g", 23).plus(this.extra())
+                        },
+                        extra(){
+                                return calcBuyableExtra("g", 23)
+                        },
+                        buy(){
+                                buyManualBuyable("g", 23)
+                        },
+                        buyMax(maximum){
+                                buyMaximumBuyable("g", 23, maximum)
+                        },
+                        unlocked(){ 
+                                return hasUpgrade("h", 35) || hasUnlockedPast("i")
                         },
                 },
         },
@@ -10948,6 +11043,7 @@ addLayer("h", {
         getGainMultPre(){
                 let x = Decimal.pow(10, -4)
                 if (hasUpgrade("h", 32)) x = x.times(Decimal.pow(2, player.g.rebirths[3]))
+                if (hasUpgrade("h", 35)) x = x.times(Decimal.max(1, totalChallengeComps("f")))
                 return x
         },
         getGainMultPost(){
@@ -11161,7 +11257,7 @@ addLayer("h", {
                 }, // hasUpgrade("h", 13)
                 14: {
                         title: "High",
-                        description: "Per upgrade per medal upgrade get two free effecitve completed devs and unlock <b>F</b> buyable autobuyer",
+                        description: "Per upgrade per medal upgrade get two free effecitve completed devs and unlock an <b>F</b> buyable autobuyer",
                         cost: new Decimal(150),
                         unlocked(){
                                 return hasUpgrade("goalsii", 35) || hasUnlockedPast("h")
@@ -11231,11 +11327,54 @@ addLayer("h", {
                                 return (hasUpgrade("h", 31) && totalChallengeComps("f") >= 85) || hasUnlockedPast("i")
                         }
                 }, // hasUpgrade("h", 32)
+                33: {
+                        title: "Hard",
+                        description: "Per <b>F</b> challenge completion act as if you hvae .2% less rebirths and unlock an <b>F</b> buyable",
+                        cost: new Decimal("1e1850"),
+                        unlocked(){
+                                return hasUpgrade("i", 22) || hasUnlockedPast("i")
+                        }
+                }, // hasUpgrade("h", 33)
+                34: {
+                        title: "Hand",
+                        description: "Per <b>I</b> upgrade increase <b>F</b> challenge completion limit by 1 and unlock an <b>F</b> buyable",
+                        cost: new Decimal("1e2075"),
+                        unlocked(){
+                                return hasUpgrade("h", 33) || hasUnlockedPast("i")
+                        }
+                }, // hasUpgrade("h", 34)
+                35: {
+                        title: "Head",
+                        description: "<b>F</b> challenges completed multiplies base <b>H</b> gain and unlock a <b>G</b> buyable",
+                        cost: new Decimal("1e2200"),
+                        unlocked(){
+                                return hasUpgrade("h", 34) || hasUnlockedPast("i")
+                        }
+                }, // hasUpgrade("h", 35)
+                41: {
+                        title: "Having",
+                        description: "<b>Growing</b> and <b>Guarantee</b> give free <b>Goal</b> and <b>Generation</b> levels",
+                        cost: new Decimal("1e2410"),
+                        unlocked(){
+                                return hasUpgrade("h", 35) || hasUnlockedPast("i")
+                        }
+                }, // hasUpgrade("h", 41)
+                42: {
+                        title: "Hosting",
+                        description: "<b>Growing</b> gives free <b>Guarantee</b> levels and per upgrade add .001 to the <b>Growing</b> base",
+                        cost: new Decimal("1e2540"),
+                        unlocked(){
+                                return hasUpgrade("h", 41) || hasUnlockedPast("i")
+                        }
+                }, // hasUpgrade("h", 42)
 
 
                 /*
-                hard
-                hand
+                heart
+                half
+                hardware
+                holiday
+                held
                 */
         },
         tabFormat: {
