@@ -28,6 +28,7 @@ function getPointGenExp(){
         let exp = new Decimal(1)
         if (inChallenge("b", 22)) exp = exp.div(2)
         exp = exp.times(Decimal.pow(.9, getChallengeDepth(2)))
+        exp = exp.times(CURRENT_BUYABLE_EFFECTS["g31"])
         return exp
 }
 
@@ -8400,7 +8401,6 @@ addLayer("g", {
                                 if (tmp[key].buyables[21].unlocked) layers[key].buyables[21].buyMax(amt)
                                 if (tmp[key].buyables[22].unlocked) layers[key].buyables[22].buyMax(amt)
                                 if (tmp[key].buyables[23].unlocked) layers[key].buyables[23].buyMax(amt)
-                                /*
                                 if (tmp[key].buyables[31].unlocked) layers[key].buyables[31].buyMax(amt)
                                 /*
                                 if (tmp[key].buyables[32].unlocked) layers[key].buyables[32].buyMax(amt)
@@ -10588,7 +10588,6 @@ addLayer("g", {
                 
 
                 /*  
-                generated
                 guys
                 guitar
                 goals
@@ -10759,6 +10758,33 @@ addLayer("g", {
                         },
                         unlocked(){ 
                                 return hasUpgrade("h", 35) || hasUnlockedPast("i")
+                        },
+                },
+                31: {
+                        title: "Generated",
+                        display(){
+                                return getBuyableDisplay("g", 31)
+                        },
+                        effect(){
+                                return CURRENT_BUYABLE_EFFECTS["g31"]
+                        },
+                        canAfford(){
+                                return canAffordBuyable("g", 31)
+                        },
+                        total(){
+                                return getBuyableAmount("g", 31).plus(this.extra())
+                        },
+                        extra(){
+                                return calcBuyableExtra("g", 31)
+                        },
+                        buy(){
+                                buyManualBuyable("g", 31)
+                        },
+                        buyMax(maximum){
+                                buyMaximumBuyable("g", 31, maximum)
+                        },
+                        unlocked(){ 
+                                return hasUpgrade("i", 23) || hasUnlockedPast("i")
                         },
                 },
         },
@@ -11044,6 +11070,7 @@ addLayer("h", {
                 let x = Decimal.pow(10, -4)
                 if (hasUpgrade("h", 32)) x = x.times(Decimal.pow(2, player.g.rebirths[3]))
                 if (hasUpgrade("h", 35)) x = x.times(Decimal.max(1, totalChallengeComps("f")))
+                if (hasUpgrade("i", 23)) x = x.times(Decimal.pow(10, player.i.upgrades.length))
                 return x
         },
         getGainMultPost(){
@@ -11329,7 +11356,7 @@ addLayer("h", {
                 }, // hasUpgrade("h", 32)
                 33: {
                         title: "Hard",
-                        description: "Per <b>F</b> challenge completion act as if you hvae .2% less rebirths and unlock an <b>F</b> buyable",
+                        description: "Per <b>F</b> challenge completion act as if you have .2% less rebirths and unlock an <b>F</b> buyable",
                         cost: new Decimal("1e1850"),
                         unlocked(){
                                 return hasUpgrade("i", 22) || hasUnlockedPast("i")
@@ -11367,10 +11394,17 @@ addLayer("h", {
                                 return hasUpgrade("h", 41) || hasUnlockedPast("i")
                         }
                 }, // hasUpgrade("h", 42)
+                43: {
+                        title: "Heart",
+                        description: "Each <b>I</b> upgrade adds .001 to the <b>Generated</b> base and adds .2 to the <b>I</b> gain exponent",
+                        cost: new Decimal("1e5475"),
+                        unlocked(){
+                                return totalChallengeComps("f") >= 111 || hasUnlockedPast("i")
+                        }
+                }, // hasUpgrade("h", 43)
 
 
                 /*
-                heart
                 half
                 hardware
                 holiday
@@ -11506,6 +11540,7 @@ addLayer("i", {
                 let x = new Decimal(2)
                 if (hasMilestone("i", 7)) x = x.plus(1)
                 if (hasUpgrade("h", 31)) x = x.plus(player.h.upgrades.length * .1)
+                if (hasUpgrade("h", 43)) x = x.plus(player.i.upgrades.length * .2)
                 return x
         },
         getGainMultPre(){
@@ -11531,6 +11566,7 @@ addLayer("i", {
                 let amt = player.i.best
 
                 let exp = player.i.best.pow(.4).times(2).min(30)
+                if (hasUpgrade("i", 24)) exp = exp.times(tmp.f.challenges[21].rewardEffect)
 
                 let ret = amt.times(2).pow(2).plus(1).pow(exp)
 
@@ -11779,12 +11815,30 @@ addLayer("i", {
                                 return hasUpgrade("i", 21) || hasUnlockedPast("i")
                         }
                 }, // hasUpgrade("i", 22)
+                23: {
+                        title: "Image",
+                        description: "Unlock a <b>G</b> buyable and each upgrade multiplies base <b>H</b> gain by 10",
+                        cost: new Decimal(2e15),
+                        unlocked(){
+                                return hasUpgrade("h", 42) || hasUnlockedPast("i")
+                        }
+                }, // hasUpgrade("i", 23)
+                24: {
+                        title: "Insurance",
+                        description: "<b>Further</b> effects <b>I</b> effect and <b>Generated</b> gives free <b>Growing</b> levels",
+                        cost: new Decimal(2e16),
+                        unlocked(){
+                                return hasUpgrade("i", 23) || hasUnlockedPast("i")
+                        }
+                }, // hasUpgrade("i", 24)
 
                 
 
                 /*
-                including [used]
-
+                
+                include
+                industry
+                issues
                 */
         },
         tabFormat: {

@@ -1837,8 +1837,36 @@ var MAIN_BUYABLE_DATA = {
                         let b2 = new Decimal("1ee4")
                         return [b0, b1, b2]
                 },
+                g31: {
+                        active: function(){
+                                return hasUpgrade("i", 24)
+                        },
+                },
         },
-        
+        g31: {
+                name: "Generated",
+                func: "exp_sqrt",
+                effects: "point gain",
+                effectSymbol: "^",
+                base: {
+                        initial: new Decimal(1.1),
+                        1: {
+                                active: function(){
+                                        return hasUpgrade("h", 43)
+                                },
+                                amount: function(){
+                                        return new Decimal(.001 * player.i.upgrades.length)
+                                },
+                                type: "plus"
+                        }
+                },
+                bases(){
+                        let b0 = new Decimal("1e153e9")
+                        let b1 = new Decimal("1e5e8")
+                        let b2 = new Decimal("1ee5")
+                        return [b0, b1, b2]
+                },
+        },
 }
 
 var EXTRA_FREE_BUYABLE_DATA = {
@@ -2377,9 +2405,10 @@ function getBuyableEffectFunction(layer, id){
 function getBuyableEffectSymbol(layer, id){
         // Fully general
         if (!isValidBuyableCode(layer + id)) return "bug"
-        let func = MAIN_BUYABLE_DATA[layer+id]["func"]
-        if (typeof func == "function") return MAIN_BUYABLE_DATA[layer+id]["effectSymbol"]
-        return BUYABLES_FUNCTION_NAMES[func]["eff"] || "bug"
+        let data = MAIN_BUYABLE_DATA[layer+id]
+        let func = data["func"]
+        
+        return data["effectSymbol"] || BUYABLES_FUNCTION_NAMES[func]["eff"] || "bug"
 }
 
 function getBuyableEffectString(layer, id){

@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".4.15 Blackjack",
+	num: ".4.16 Blackjack",
 	name: "",
 }
 
@@ -356,10 +356,13 @@ function getChangeLogText(){
 	f2 = "- Added two G buyables"
 	f3 = "- Added three Idea upgrades"
 	f4 = "- Fixed a bug with Feature challenge completion disply"
-	g1 = "v.4.14"
+	g1 = "v.4.15"
 	g2 = "- Added a G buyables and two F buyables"
 	g3 = "- Added five Heart upgrades"
 	g4 = "- Created four new achievements"
+	h1 = "v.4.16"
+	h2 = "- Added a G buyables"
+	h3 = "- Added a Heart upgrade and two Idea upgrades"
 
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
@@ -369,8 +372,9 @@ function getChangeLogText(){
 	let part5 = [e1, e2, e3, e4, ""]
 	let part6 = [f1, f2, f3, f4, ""]
 	let part7 = [g1, g2, g3, g4, ""]
+	let part8 = [h1, h2, h3, ""]
 
-	return [part7, part6, part5, part4, part3, part2, part1]
+	return [part8, part7, part6, part5, part4, part3, part2, part1]
 }
 
 var controlDown = false
