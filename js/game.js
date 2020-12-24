@@ -465,6 +465,11 @@ function fixSaveNaN(){
 
 var ticking = false
 var devstop = false
+var perSecondCount = 0
+
+function doPerSecondStuff(){
+	updateHotkeys()
+}
 
 var interval = setInterval(function() {
 	if (player===undefined||tmp===undefined) return;
@@ -488,5 +493,11 @@ var interval = setInterval(function() {
 	doPreTickStuff()
 	updateTemp();
 	gameLoop(diff)
+	perSecondCount += diff
+	if (perSecondCount > 10) perSecondCount = 10
+	if (perSecondCount > 1) {
+		perSecondCount += -1
+		doPerSecondStuff()
+	}
 	ticking = false
 }, 50)
