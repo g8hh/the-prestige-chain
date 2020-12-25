@@ -4750,8 +4750,11 @@ addLayer("f", {
                         rewardDescription: "Raise the <b>F</b> effect to a power",
                         rewardEffect(){
                                 let c = challengeCompletions("f", 12)
-                                let ret = Math.sqrt(c + 1)
-                                return ret
+                                let exp = new Decimal(.5)
+                                exp = exp.plus(CURRENT_BUYABLE_EFFECTS["g32"])
+
+                                let ret = Decimal.pow(c + 1, exp)
+                                return ret.toNumber()
                         },
                         goal(){
                                 let init = new Decimal("1e20876e3")
@@ -8402,7 +8405,6 @@ addLayer("g", {
                                 if (tmp[key].buyables[22].unlocked) layers[key].buyables[22].buyMax(amt)
                                 if (tmp[key].buyables[23].unlocked) layers[key].buyables[23].buyMax(amt)
                                 if (tmp[key].buyables[31].unlocked) layers[key].buyables[31].buyMax(amt)
-                                /*
                                 if (tmp[key].buyables[32].unlocked) layers[key].buyables[32].buyMax(amt)
                                 /*
                                 if (tmp[key].buyables[33].unlocked) layers[key].buyables[33].buyMax(amt)
@@ -10588,7 +10590,6 @@ addLayer("g", {
                 
 
                 /*  
-                guys
                 guitar
                 goals
                 gave
@@ -10785,6 +10786,33 @@ addLayer("g", {
                         },
                         unlocked(){ 
                                 return hasUpgrade("i", 23) || hasUnlockedPast("i")
+                        },
+                },
+                32: {
+                        title: "Guys",
+                        display(){
+                                return getBuyableDisplay("g", 32)
+                        },
+                        effect(){
+                                return CURRENT_BUYABLE_EFFECTS["g32"]
+                        },
+                        canAfford(){
+                                return canAffordBuyable("g", 32)
+                        },
+                        total(){
+                                return getBuyableAmount("g", 32).plus(this.extra())
+                        },
+                        extra(){
+                                return calcBuyableExtra("g", 32)
+                        },
+                        buy(){
+                                buyManualBuyable("g", 32)
+                        },
+                        buyMax(maximum){
+                                buyMaximumBuyable("g", 32, maximum)
+                        },
+                        unlocked(){ 
+                                return hasUpgrade("h", 44) || hasUnlockedPast("i")
                         },
                 },
         },
@@ -11402,11 +11430,25 @@ addLayer("h", {
                                 return totalChallengeComps("f") >= 111 || hasUnlockedPast("i")
                         }
                 }, // hasUpgrade("h", 43)
+                44: {
+                        title: "Half",
+                        description: "Each upgrade adds .01 to the <b>Omnipotent VI</b> base and unlock a <b>G</b> buyable",
+                        cost: new Decimal("1e6666"),
+                        unlocked(){
+                                return hasUpgrade("i", 24) || hasUnlockedPast("i")
+                        }
+                }, // hasUpgrade("h", 44)
+                45: {
+                        title: "Hardware",
+                        description: "<b>Rebirth II</b> and <b>Guys</b> give free <b>Generated</b> buyables",
+                        cost: new Decimal("1e6789"),
+                        unlocked(){
+                                return hasUpgrade("h", 44) || hasUnlockedPast("i")
+                        }
+                }, // hasUpgrade("h", 45)
 
 
                 /*
-                half
-                hardware
                 holiday
                 held
                 */
@@ -11481,7 +11523,7 @@ addLayer("h", {
                 //buyables
                 let resetBuyables = [11, 12, 13, 21, 22, 23, 31, 32, 33]
                 for (let j = 0; j < resetBuyables.length; j++) {
-                        break
+                        break //remove when buyables added
                         data.buyables[resetBuyables[j]] = new Decimal(0)
                 }
         },
@@ -11546,6 +11588,7 @@ addLayer("i", {
         getGainMultPre(){
                 let x = Decimal.pow(7, -1)
                 if (hasUpgrade("i", 14)) x = x.times(Decimal.pow(1.1, player.i.upgrades.length))
+                if (hasUpgrade("i", 25)) x = x.times(Math.max(1, totalChallengeComps("f")))
                 return x
         },
         getGainMultPost(){
@@ -11831,12 +11874,18 @@ addLayer("i", {
                                 return hasUpgrade("i", 23) || hasUnlockedPast("i")
                         }
                 }, // hasUpgrade("i", 24)
+                25: {
+                        title: "Include",
+                        description: "<b>F</b> challenge completions multiply base <b>I</b> gain and <b>Guys</b> gives free <b>Growing</b> levels",
+                        cost: new Decimal(1e25),
+                        unlocked(){
+                                return hasUpgrade("h", 45) || hasUnlockedPast("i")
+                        }
+                }, // hasUpgrade("i", 25)
 
                 
 
                 /*
-                
-                include
                 industry
                 issues
                 */
@@ -11911,7 +11960,7 @@ addLayer("i", {
                 //buyables
                 let resetBuyables = [11, 12, 13, 21, 22, 23, 31, 32, 33]
                 for (let j = 0; j < resetBuyables.length; j++) {
-                        break
+                        break //remove when buyables added
                         data.buyables[resetBuyables[j]] = new Decimal(0)
                 }
         },

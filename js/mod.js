@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".4.16.1 Blackjack",
+	num: ".4.17 Blackjack",
 	name: "",
 }
 
@@ -305,7 +305,7 @@ function nextMilestone(){
 // Display extra things at the top of the page
 var displayThings = [
 	"Check the change log!",
-	"Endgame: 1e1825 Hearts",
+	"Endgame: 3e41 Hearts",
 ]
 
 // Determines when the game "ends"
@@ -361,10 +361,14 @@ function getChangeLogText(){
 	g3 = "- Added five Heart upgrades"
 	g4 = "- Created four new achievements"
 	h1 = "v.4.16"
-	h2 = "- Added a G buyables"
+	h2 = "- Added a G buyable"
 	h3 = "- Added a Heart upgrade and two Idea upgrades"
 	h4 = "v.4.16.1"
 	h5 = "- Fixed a hotkey bug"
+	j1 = "v.4.17"
+	j2 = "- Added a G buyable"
+	j3 = "- Added two Heart upgrades and a Idea upgrade"
+	j4 = "- Prepared for J which I need name suggestions for"
 
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
@@ -375,8 +379,9 @@ function getChangeLogText(){
 	let part6 = [f1, f2, f3, f4, ""]
 	let part7 = [g1, g2, g3, g4, ""]
 	let part8 = [h1, h2, h3, "", h4, h5, ""]
+	let part9 = [j1, j2, j3, j4, ""]
 
-	return [part8, part7, part6, part5, part4, part3, part2, part1]
+	return [part9, part8, part7, part6, part5, part4, part3, part2, part1]
 }
 
 var controlDown = false

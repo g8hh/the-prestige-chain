@@ -1669,6 +1669,15 @@ var MAIN_BUYABLE_DATA = {
                 effects: "<b>Egg</b> effect exponent",
                 base: {
                         initial: new Decimal(.1),
+                        1: {
+                                active: function(){
+                                        return hasUpgrade("h", 44)
+                                },
+                                amount: function(){
+                                        return new Decimal(.01 * player.h.upgrades.length)
+                                },
+                                type: "plus",
+                        },
                 },
                 bases(){
                         let b0 = new Decimal("1e3e23")
@@ -1842,6 +1851,11 @@ var MAIN_BUYABLE_DATA = {
                                 return hasUpgrade("i", 24)
                         },
                 },
+                g32: {
+                        active: function(){
+                                return hasUpgrade("i", 25)
+                        },
+                },
         },
         g31: {
                 name: "Generated",
@@ -1857,13 +1871,32 @@ var MAIN_BUYABLE_DATA = {
                                 amount: function(){
                                         return new Decimal(.001 * player.i.upgrades.length)
                                 },
-                                type: "plus"
-                        }
+                                type: "plus",
+                        },
                 },
                 bases(){
                         let b0 = new Decimal("1e153e9")
                         let b1 = new Decimal("1e5e8")
                         let b2 = new Decimal("1ee5")
+                        return [b0, b1, b2]
+                },
+                g32: {
+                        active: function(){
+                                return hasUpgrade("h", 45)
+                        },
+                },
+        },
+        g32: {
+                name: "Guys",
+                func: "lin_sqrt",
+                effects: "<b>Film</b> exponent",
+                base: {
+                        initial: new Decimal(.001),
+                },
+                bases(){
+                        let b0 = new Decimal("1e498e9")
+                        let b1 = new Decimal("1")
+                        let b2 = new Decimal("1e1e6")
                         return [b0, b1, b2]
                 },
         },
@@ -2129,6 +2162,17 @@ var EXTRA_FREE_BUYABLE_DATA = {
                                 return player.g.rebirths[1]
                         },
                         name: "Rebirth I",
+                },
+        },
+        g31: {
+                1: {
+                        active: function(){
+                                return hasUpgrade("h", 45)
+                        },
+                        amount: function(){
+                                return player.g.rebirths[2]
+                        },
+                        name: "Rebirth II",
                 },
         },
 }

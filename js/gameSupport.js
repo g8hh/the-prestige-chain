@@ -134,6 +134,7 @@ function reCalcCompleteDevEffects(arg){
                         if (x.gte(96)) exp = exp.times(1.25)
                         if (hasUpgrade("g", 42)) exp = exp.times(50)
                         let ret = x.div(6).pow(exp)
+                        if (ret.log10().gt(1e12)) ret = Decimal.pow(10, ret.log10().div(1e12).cbrt().times(1e12))
                         return ret
                 },
                 function(x){
