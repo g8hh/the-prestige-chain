@@ -125,43 +125,44 @@ function totalChallengeComps(layer){
 }
 
 function getABBulk(layer){
-        let amt = 1
-        if (hasUpgrade("e", 11))           amt *= Decimal.max(player.ach.achievements.length, 1)
-        if (hasUpgrade("d", 35))           amt *= 100
-        if (hasUpgrade("e", 23))           amt *= 100
-        if (hasMilestone("ach", 4))        amt *= 100
-        if (hasMilestone("goalsii", 0))    amt *= 10
-        if (hasMilestone("goalsii", 1))    amt *= 10
-        if (hasMilestone("goalsii", 8))    amt *= player.goalsii.points.max(1).toNumber()
-        if (hasMilestone("goalsii", 11))   amt *= Decimal.pow(2, player.goalsii.milestones.length)
+        //please use decimal now ty
+        let amt = new Decimal(1)
+        if (hasUpgrade("e", 11))           amt = amt.times(Decimal.max(player.ach.achievements.length, 1))
+        if (hasUpgrade("d", 35))           amt = amt.times(100)
+        if (hasUpgrade("e", 23))           amt = amt.times(100)
+        if (hasMilestone("ach", 4))        amt = amt.times(100)
+        if (hasMilestone("goalsii", 0))    amt = amt.times(10)
+        if (hasMilestone("goalsii", 1))    amt = amt.times(10)
+        if (hasMilestone("goalsii", 8))    amt = amt.times(player.goalsii.points.max(1))
+        if (hasMilestone("goalsii", 11))   amt = amt.times(Decimal.pow(2, player.goalsii.milestones.length))
         if (layer == "a") {
-                if (hasUpgrade("a", 35)) amt *= 10
+                if (hasUpgrade("a", 35)) amt = amt.times(10)
                 if (hasUpgrade("b", 21)) {
-                        amt *= 2
-                        if (hasUpgrade("b", 22)) amt *= 2
-                        if (hasUpgrade("b", 23)) amt *= 2
-                        if (hasUpgrade("b", 24)) amt *= 2
-                        if (hasUpgrade("b", 25)) amt *= 2
+                        amt = amt.times(2)
+                        if (hasUpgrade("b", 22)) amt = amt.times(2)
+                        if (hasUpgrade("b", 23)) amt = amt.times(2)
+                        if (hasUpgrade("b", 24)) amt = amt.times(2)
+                        if (hasUpgrade("b", 25)) amt = amt.times(2)
                 }
                 if (hasUpgrade("b", 32)) {
-                        amt *= 2
-                        if (hasUpgrade("b", 31)) amt *= 2
-                        if (hasUpgrade("b", 33)) amt *= 2
-                        if (hasUpgrade("b", 34)) amt *= 2
-                        if (hasUpgrade("b", 35)) amt *= 2
+                        amt = amt.times(2)
+                        if (hasUpgrade("b", 31)) amt = amt.times(2)
+                        if (hasUpgrade("b", 33)) amt = amt.times(2)
+                        if (hasUpgrade("b", 34)) amt = amt.times(2)
+                        if (hasUpgrade("b", 35)) amt = amt.times(2)
                 }
-                if (hasUpgrade("c", 41)) amt *= 10
+                if (hasUpgrade("c", 41)) amt = amt.times(10)
                 return amt
         }
         if (layer == "b") {
                 if (hasUpgrade("b", 32)) {
-                        amt *= 2
-                        if (hasUpgrade("b", 31)) amt *= 2
-                        if (hasUpgrade("b", 33)) amt *= 2
-                        if (hasUpgrade("b", 34)) amt *= 2
-                        if (hasUpgrade("b", 35)) amt *= 2
+                        amt = amt.times(2)
+                        if (hasUpgrade("b", 31)) amt = amt.times(2)
+                        if (hasUpgrade("b", 33)) amt = amt.times(2)
+                        if (hasUpgrade("b", 34)) amt = amt.times(2)
+                        if (hasUpgrade("b", 35)) amt = amt.times(2)
                 }
-                if (hasUpgrade("c", 41)) amt *= 2
+                if (hasUpgrade("c", 41)) amt = amt.times(2)
                 return amt
         }
         if (layer == "c"){
@@ -3283,7 +3284,7 @@ addLayer("d", {
                                 "challenges",
                         ],
                         unlocked(){
-                                return false || hasUnlockedPast("i")
+                                return false
                         },
                 },
         },
@@ -11910,7 +11911,8 @@ addLayer("i", {
         },
         tabFormat: {
                 "Upgrades": {
-                        content: ["main-display",
+                        content: [
+                                "main-display",
                                 ["prestige-button", "", function (){ return hasUpgrade("i", 22) ? {'display': 'none'} : {}}],
                                 ["display-text",
                                         function() {return shiftDown ? "Your best Ideas is " + format(player.i.best) : ""}],
@@ -11928,7 +11930,8 @@ addLayer("i", {
                                         //{"font-size": "20px"}
                                 ],
                                 "blank", 
-                                "upgrades"],
+                                ["upgrades", [1,5]]
+                        ],
                         unlocked(){
                                 return true
                         },
@@ -12005,6 +12008,27 @@ addLayer("j", {
                         times: 0,
                         autotimes: 0,
                         autodevtime: 0,
+                        puzzle: {
+                                exp: new Decimal(0),
+                                bankedExp: new Decimal(0),
+                                knowledge: new Decimal(0),
+                                mode: 4,
+                                completed: new Decimal(0),
+                                currentX: 10,
+                                currentY: 10,
+                                maxSize: 20,
+                                upgrades: [],
+                                repeatables: {
+                                        11: new Decimal(0),
+                                        12: new Decimal(0),
+                                        13: new Decimal(0),
+                                        14: new Decimal(0),
+                                        34: new Decimal(0),
+                                        44: new Decimal(0),
+                                        54: new Decimal(0),
+                                        64: new Decimal(0),
+                                },
+                        },
                 }
         },
         color: "#66CCFF",
@@ -12210,6 +12234,45 @@ addLayer("j", {
                 journal
                 */
         },
+        clickables: {
+                rows: 6,
+                cols: 5, //only using 4 rn
+                11: {
+                        title(){
+                                return "<h3 style='color: #FF3333'>Success Chance</h3>"
+                        },
+                        display(){
+                                if (player.tab != "j") return ""
+                                let a = "<h3 style='color: #993300'>Cost</h3>: " + formatWhole(this.cost()) + " Knowledge<br>"
+                                let b = "<h3 style='color: #339900'>Curent</h3>: " + formatWhole(player.j.puzzle.repeatables[11]) + " levels<br>"
+                                let c = "<h3 style='color: #9933CC'>Effect</h3>: *" + format(this.effect()) + " success chance<br>"
+                                return a + b + c
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        cost(){
+                                return Decimal.pow(player.j.puzzle.repeatables[11].plus(1), .5).floor()
+                        },
+                        canClick(){
+                                return player.j.puzzle.knowledge.gte(this.cost())
+                        },
+                        effect(){
+                                let lvl = player.j.puzzle.repeatables[11]
+                                return Decimal.pow(lvl.plus(1), lvl.plus(1).log10())
+                        },
+                        onClick(){
+                                let data = player.j.puzzle
+                                let cost = this.cost()
+
+                                if (cost.gt(data.knowledge)) return 
+                                data.knowledge = data.knowledge.minus(cost)
+                                data.repeatable[11] = data.repeatables[11].plus(1)
+
+                                return //bulk needs to be done eventually
+                        },
+                },
+        },
         tabFormat: {
                 "Upgrades": {
                         content: ["main-display",
@@ -12229,7 +12292,7 @@ addLayer("j", {
                                         },
                                 ],
                                 "blank", 
-                                "upgrades"],
+                                ["upgrades", [1,5]]],
                         unlocked(){
                                 return true
                         },
@@ -12251,6 +12314,95 @@ addLayer("j", {
                                 return true
                         },
                 },
+                "Puzzle": {
+                        content: [
+                                "main-display",
+                                ["clickables", [1,2]],
+                                //display text here
+                                ["clickables", [3,6]],
+                        ],
+                        unlocked(){
+                                return hasMilestone("j", 4) || hasUnlockedPast("j")
+                        },
+                },
+                "Details": {
+                        content: [
+                                "main-display",
+                                ["display-text",
+                                `
+                                you can look at this but pls dont ask about this and its subject to change<br>
+                                
+                                <h2>Puzzle mechanic:</h2><br>
+
+                                You have a 10x10 puzzle (initially)<br>
+                                You can buy three upgrades, <br>
+                                1. success chance, [50% base]<br>
+                                2. attempt speed, [.5s base]<br>
+                                3. bulk attempt [expensive], [1x base]<br>
+
+                                You have edge, corner, and center pieces<br>
+                                There are 4 settings you can be in<br>
+                                1. Filter<br>
+                                1a. It filters for pieces putting them into catagories<br>
+                                2. Build edges [reqs all corners, edges found]<br>
+                                3. Build center [reqs edges built, centers found]<br>
+                                3a. Puts parts together<br>
+                                4. Finish puzzle<br>
+                                <br>
+                                Finishing a puzzle halves success chance & attempt speed<br>
+                                You get things for finishing a puzzle<br>
+                                Exp: 1 per comp<br>
+                                Banked Exp: [puzzles beaten so far] + 1 per comp<br>
+                                Knowledge: 1 per comp<br>
+                                <br>
+                                Exp is spent on OTHER stuff<br>
+                                Knowledge is spent on the three things mentioned at the top<br>
+                                <br>
+                                You can reset which makes you start at one puzzle again and gives you ur banked exp<br>
+                                <br>
+                                <h2>Numbers:</h2><br>
+                                1. Per tick you filter one piece randomly<br>
+                                2. Per tick you have 1/[edges unplaced] to get an edge placed<br>
+                                3. Per tick you have 1/[centers unplaced] to get an center placed<br>
+                                4. Takes one tick to finish<br>
+                                <br>
+                                Cost of succ: sqrt(1+x) <br>
+                                Effect: *[lvl+1]^log(1+lvl)<br>
+                                <br>
+                                Cost of attempt speed: 1+x<br>
+                                Effect: /log10(lvl + 10)<br>
+                                <br>
+                                Cost of bulk: 10^x<br>
+                                Effect: +x<br>
+                                <br>
+                                Larger puzzle:<br>
+                                Randomly adds 1 to either x or y coord of the puzzle (max 20 each)<br>
+                                Cost: 100*10^sqrt(x) knowledge<br>
+                                Prestiges: Everything before except exp<br>
+                                Effect: *sqrt(1+x) exp [floored]<br>
+                                <br>
+                                Some prestige II kinda thing that reqs 20x20 puzzle<br> 
+                                (or 30x30 if i increase abv limit)<br>
+                                <br>
+                                <br>
+                                <h2>Buttons:</h2><br>
+                                <br>
+                                [succ] [atmp spd] [blk amt] [lrgr pzl]<br>
+                                [filter] [bld edge] [bld cntr] [finish pzl]<br>
+                                <br>
+                                GAP WITH DATA AND STUFF<br>
+                                <br>
+                                [upgrades via clickables, maybe last col is repeatable?]<br>
+                                first row: <br>
+                                [per upg in this row unl H buy] [unl omni VII] [unl row of medal upgs] [+.001 to all G buy bases, repeatable]<br>
+                                <br><br><br>
+                                `
+                                ]
+                        ],
+                        unlocked(){
+                                return true
+                        },
+                }
         },
         doReset(layer){
                 let data = player.j
@@ -12284,6 +12436,70 @@ addLayer("j", {
                 }
         },
 })
+
+/*
+Puzzle mechanic:
+
+You have a 10x10 puzzle (initially)
+You can buy three upgrades, 
+1. success chance, [50% base]
+2. attempt speed, [.5s base]
+3. bulk attempt [expensive], [1x base]
+
+You have edge, corner, and center pieces
+There are [number] settings you can be in
+1. Filter
+1a. It filters for pieces putting them into catagories
+2. Build edges [reqs all corners, edges found]
+3. Build center [reqs edges built, centers found]
+3a. Puts parts together
+4. Finish puzzle
+
+Finishing a puzzle halves success chance & attempt speed
+You get things for finishing a puzzle
+Exp: 1 per comp
+Banked Exp: [puzzles beaten so far] + 1 per comp
+Knowledge: 1 per comp
+
+Exp is spent on OTHER stuff
+Knowledge is spent on the three things mentioned at the top
+
+You can reset which makes you start at one puzzle again and gives you ur banked exp
+
+Numbers:
+1. Per tick you filter one piece randomly
+2. Per tick you have 1/[edges unplaced] to get an edge placed
+3. Per tick you have 1/[centers unplaced] to get an center placed
+4. Takes one tick to finish
+
+Cost of succ: sqrt(1+x) 
+Effect: *[lvl+1]^log(1+lvl)
+
+Cost of attempt speed: 1+x
+Effect: /log10(lvl + 10)
+
+Cost of bulk: 10^x
+Effect: +x
+
+Larger puzzle:
+Randomly adds 1 to either x or y coord of the puzzle
+Cost: 100*10^sqrt(x) knowledge
+Prestiges: Everything before except exp
+Effect: *sqrt(1+x) exp [floored]
+
+
+Buttons: 
+
+[succ] [atmp spd] [blk amt] [lrgr pzl]
+[filter] [bld edge] [bld cntr] [finish pzl]
+
+GAP WITH DATA AND STUFF
+
+[upgrades via clickables, maybe last col is repeatable?]
+
+
+
+*/
 
 
 

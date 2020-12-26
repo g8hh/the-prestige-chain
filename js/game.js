@@ -13,6 +13,19 @@ function finishedChallenges(layer, data){
 	return challengeCompletions(layer, data) == (tmp[layer].challenges[data].completionLimit || 1)
 }
 
+function getIntergerInterval(s,e){
+	let l = []
+	for (let c = s; c <= e; c++){
+		l.push(c)
+	}
+	return l
+}
+
+function getActualInterval(data, lim){
+	if (data == undefined) return getIntergerInterval(1, lim)
+	return getIntergerInterval(data[0], Math.min(lim, data[1]))
+}
+
 function getResetGain(layer, useType = null) {
 	let type = useType
 	if (!useType) type = tmp[layer].type

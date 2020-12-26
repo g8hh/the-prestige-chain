@@ -1,9 +1,5 @@
 /*
 Goal: keep track of all the game stuffs
-
-First goal:
-Deal with all of the rewards nonesense
-
 */
 
 
@@ -135,6 +131,7 @@ function reCalcCompleteDevEffects(arg){
                         if (hasUpgrade("g", 42)) exp = exp.times(50)
                         let ret = x.div(6).pow(exp)
                         if (ret.log10().gt(1e12)) ret = Decimal.pow(10, ret.log10().div(1e12).cbrt().times(1e12))
+                        if (ret.log10().gt(1e13)) ret = Decimal.pow(10, ret.log10().div(1e13).cbrt().times(1e13))
                         return ret
                 },
                 function(x){
