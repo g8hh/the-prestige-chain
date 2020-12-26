@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".5.2 Avalanche",
+	num: ".5.3 Avalanche",
 	name: "",
 }
 
@@ -23,7 +23,11 @@ var doNotCallTheseFunctionsEveryTick = ["blowUpEverything",
 					"getTokenToMedalGain",
 					"getAllPrior",
 					"succChance",
-					"resetPrior"
+					"resetPrior",
+					"doSearch",
+					"doEdges",
+					"doCenters",
+					"attemptFinish",
 					]
 
 function getStartPoints(){
@@ -305,7 +309,7 @@ function nextMilestone(){
 // Display extra things at the top of the page
 var displayThings = [
 	"Check the change log!",
-	"Endgame: 4e6 Jigsaws",
+	"Endgame: 3 Banked Exp",
 ]
 
 // Determines when the game "ends"
@@ -379,6 +383,12 @@ function getChangeLogText(){
 	m1 = "v.5.2"
 	m2 = "- Started the Puzzle feature"
 	m3 = "- Added a clickable"
+	n1 = "v.5.3"
+	n2 = "- Implemented lots of the Puzzle feature"
+	n3 = "- Implemented filtering"
+	n4 = "- Implemented building edges"
+	n5 = "- Implemented building centers"
+	n6 = "- Implemented finishing"
 
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
@@ -393,8 +403,9 @@ function getChangeLogText(){
 	let part10= [k1, k2, k3, ""]
 	let part11= [l1, l2, l3, ""]
 	let part12= [m1, m2, m3, ""]
+	let part13= [n1, n2, n3, n4, n5, n6, ""]
 
-	return [part12, part11, part10, part9, part8, part7, part6, part5, part4, part3, part2, part1]
+	return [part13, part12, part11, part10, part9, part8, part7, part6, part5, part4, part3, part2, part1]
 }
 
 var controlDown = false

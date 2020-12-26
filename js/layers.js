@@ -266,6 +266,7 @@ function getPrestigeName(layer){
 }
 
 function getTimesRequired(chance){
+        if (chance >= 1) return 1
         let r1 = Math.random()
         //we want (1-chance)^n < r1
         let n = Math.log(r1)/Math.log(1-chance) 
@@ -12010,14 +12011,18 @@ addLayer("j", {
                         autodevtime: 0,
                         puzzle: {
                                 exp: new Decimal(0),
+                                bestExp: new Decimal(0),
                                 bankedExp: new Decimal(0),
                                 knowledge: new Decimal(0),
+                                bestKnowledge: new Decimal(0),
                                 mode: 4,
                                 completed: new Decimal(0),
                                 currentX: 10,
                                 currentY: 10,
                                 maxSize: 20,
                                 upgrades: [],
+                                time: 0,
+                                finished: 0,
                                 repeatables: {
                                         11: new Decimal(0),
                                         12: new Decimal(0),
@@ -12027,6 +12032,16 @@ addLayer("j", {
                                         44: new Decimal(0),
                                         54: new Decimal(0),
                                         64: new Decimal(0),
+                                },
+                                found: {
+                                        edges: 0,
+                                        corners: 0,
+                                        centers: 0,
+                                },
+                                placed: {
+                                        edges: 0,
+                                        corners: 0,
+                                        centers: 0,
                                 },
                         },
                 }
@@ -12126,6 +12141,33 @@ addLayer("j", {
 
                 data.time += diff
                 data.autodevtime += diff
+
+                //puzzle
+                let data2 = data.puzzle
+                let tot1 = (data2.currentX - 2) * (data2.currentY - 2)
+                let tot2 = (data2.currentX - 2 + data2.currentY - 2) * 2
+                let tot3 = 4
+                data2.bestKnowledge = data2.bestKnowledge.max(data2.knowledge)
+                data2.bestExp = data2.bestExp.max(data2.exp)
+                data2.time += diff * tmp.j.clickables.getAttemptSpeed.toNumber()
+                if (data2.mode == 1) layers.j.clickables.doSearch(Math.floor(data2.time))
+                if (data2.mode == 2) {
+                        if (tot3 == data2.found.corners && tot2 == data2.found.edges) {
+                                layers.j.clickables.doEdges(Math.floor(data2.time))
+                        }
+                }
+                if (data2.mode == 3) {
+                        if (tot1 == data2.found.centers) {
+                                layers.j.clickables.doCenters(Math.floor(data2.time))
+                        }
+                }
+                if (data2.mode == 4) {
+                        if (data2.time > 1) layers.j.clickables.attemptFinish()
+                }
+
+                //do stuff for other settings
+
+                data2.time += -1 * Math.floor(data2.time)
                 
                 if (data.autodevtime < 1) return
                 data.autodevtime += -1
@@ -12237,6 +12279,108 @@ addLayer("j", {
         clickables: {
                 rows: 6,
                 cols: 5, //only using 4 rn
+                jigsawEffect(){
+                        let ret = player.j.points.max(10).log10().log10()
+                        return ret
+                },
+                nameOfModeV(){
+                        let m = player.j.puzzle.mode
+                        if (m == 1) return "filter pieces"
+                        if (m == 2) return "build the edge"
+                        if (m == 3) return "build the center"
+                        return "finish the puzzle"
+                },
+                getAttemptSpeed(){
+                        let ret = this.jigsawEffect()
+                        ret = ret.times(this[12].effect())
+                        return ret
+                },
+                getAttemptChance(){
+                        let ret = Decimal.pow(.5, player.j.puzzle.repeatables[14]).times(.5)
+                        ret = ret.times(this[11].effect())
+                        return ret
+                },
+                doSearch(times = 1){
+                        let data = player.j.puzzle
+                        let tot1 = (data.currentX - 2) * (data.currentY - 2)
+                        let tot2 = (data.currentX - 2 + data.currentY - 2) * 2
+                        let tot3 = 4
+                        for (i = 0; i < times; i ++){
+                                let rem1 = tot1 - data.found.centers
+                                let rem2 = tot2 - data.found.edges
+                                let rem3 = tot3 - data.found.corners
+                                let remtot = rem1 + rem2 + rem3 
+                                let r = Math.random()
+                                if (r < rem1/remtot) data.found.centers ++
+                                else if (r < (rem1 + rem2)/remtot) data.found.edges ++
+                                else if (r < (rem1 + rem2 + rem3)/remtot) data.found.corners ++
+                        }
+                },
+                doEdges(times = 1){
+                        let data = player.j.puzzle
+                        let b = 0
+                        let c = 0
+                        while (c < 1000){
+                                c ++ 
+                                if (data.placed.corners < 4) {
+                                        let left = 4 - data.placed.edges 
+                                        b += getTimesRequired(layers.j.clickables.getAttemptChance().div(left))
+                                        if (b > times) break 
+                                        data.placed.corners ++ 
+                                } //corners
+                                else if (data.placed.edges < (data.currentX - 2 + data.currentY - 2) * 2) {
+                                        let left = (data.currentX - 2 + data.currentY - 2) * 2 - data.placed.edges
+                                        b += getTimesRequired(layers.j.clickables.getAttemptChance().div(left).times(10))
+                                        if (b > times) break 
+                                        data.placed.edges ++
+                                }//edges
+                                else break
+                        }
+                },
+                doCenters(times = 1){
+                        let data = player.j.puzzle
+                        let b = 0
+                        let c = 0
+                        while (c < 1000){
+                                c ++ 
+                                if (data.placed.centers < (data.currentX - 2) * (data.currentY - 2)) {
+                                        let left = (data.currentX - 2) * (data.currentY - 2) - data.placed.centers
+                                        b += getTimesRequired(layers.j.clickables.getAttemptChance().div(left).times(50))
+                                        if (b > times) break 
+                                        data.placed.centers ++
+                                }//centers
+                                else break
+                        }
+                },
+                attemptFinish(){
+                        let data = player.j.puzzle
+                        let tot1 = (data.currentX - 2) * (data.currentY - 2)
+                        let tot2 = (data.currentX - 2 + data.currentY - 2) * 2
+                        let tot3 = 4
+                        if (tot1 != data.placed.centers) return 
+                        if (tot2 != data.placed.edges) return 
+                        if (tot3 != data.placed.corners) return 
+                        data.finished ++
+                        data.exp = data.exp.plus(1)
+                        data.bankedExp = data.bankedExp.plus(data.finished)
+                        data.knowledge = data.knowledge.plus(1)
+                        data.placed = {
+                                edges: 0,
+                                corners: 0,
+                                centers: 0,
+                        }
+                        data.found = {
+                                edges: 0,
+                                corners: 0,
+                                centers: 0,
+                        }
+
+                },
+                /*
+                getTimesNeeded(){
+                        return getTimesRequired(this.getAttemptChance())
+                },
+                */
                 11: {
                         title(){
                                 return "<h3 style='color: #FF3333'>Success Chance</h3>"
@@ -12259,7 +12403,7 @@ addLayer("j", {
                         },
                         effect(){
                                 let lvl = player.j.puzzle.repeatables[11]
-                                return Decimal.pow(lvl.plus(1), lvl.plus(1).log10())
+                                return Decimal.pow(lvl.plus(1), lvl.plus(1).log10().div(3))
                         },
                         onClick(){
                                 let data = player.j.puzzle
@@ -12267,9 +12411,202 @@ addLayer("j", {
 
                                 if (cost.gt(data.knowledge)) return 
                                 data.knowledge = data.knowledge.minus(cost)
-                                data.repeatable[11] = data.repeatables[11].plus(1)
+                                data.repeatables[11] = data.repeatables[11].plus(1)
 
                                 return //bulk needs to be done eventually
+                        },
+                },
+                12: {
+                        title(){
+                                return "<h3 style='color: #FF3333'>Attempt Speed</h3>"
+                        },
+                        display(){
+                                if (player.tab != "j") return ""
+                                let a = "<h3 style='color: #993300'>Cost</h3>: " + formatWhole(this.cost()) + " Knowledge<br>"
+                                let b = "<h3 style='color: #339900'>Curent</h3>: " + formatWhole(player.j.puzzle.repeatables[12]) + " levels<br>"
+                                let c = "<h3 style='color: #9933CC'>Effect</h3>: *" + format(this.effect()) + " Attempt Speed<br>"
+                                return a + b + c
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        cost(){
+                                return player.j.puzzle.repeatables[12].plus(1)
+                        },
+                        canClick(){
+                                return player.j.puzzle.knowledge.gte(this.cost())
+                        },
+                        effect(){
+                                let lvl = player.j.puzzle.repeatables[12]
+                                return lvl.plus(10).log10().pow(2)
+                        },
+                        onClick(){
+                                let data = player.j.puzzle
+                                let cost = this.cost()
+
+                                if (cost.gt(data.knowledge)) return 
+                                data.knowledge = data.knowledge.minus(cost)
+                                data.repeatables[12] = data.repeatabless[12].plus(1)
+
+                                return //bulk needs to be done eventually
+                        },
+                },
+                13: {
+                        title(){
+                                return "<h3 style='color: #FF3333'>Bulk Amount</h3>"
+                        },
+                        display(){
+                                if (player.tab != "j") return ""
+                                let a = "<h3 style='color: #993300'>Cost</h3>: " + formatWhole(this.cost()) + " Knowledge<br>"
+                                let b = "<h3 style='color: #339900'>Curent</h3>: " + formatWhole(player.j.puzzle.repeatables[13]) + " levels<br>"
+                                let c = "<h3 style='color: #9933CC'>Effect</h3>: Bulk Amount of " + format(this.effect()) + "<br>"
+                                return a + b + c
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        cost(){
+                                return Decimal.pow(10, player.j.puzzle.repeatables[13]).times(25)
+                        },
+                        canClick(){
+                                return player.j.puzzle.knowledge.gte(this.cost()) && false
+                        },
+                        effect(){
+                                return player.j.puzzle.repeatables[13].plus(1)
+                        },
+                        onClick(){
+                                let data = player.j.puzzle
+                                let cost = this.cost()
+
+                                if (cost.gt(data.knowledge)) return 
+                                data.knowledge = data.knowledge.minus(cost)
+                                data.repeatables[13] = data.repeatables[13].plus(1)
+
+                                return //bulk needs to be done eventually
+                        },
+                },
+                14: {
+                        title(){
+                                return "<h3 style='color: #FF3333'>Larger Puzzle</h3>"
+                        },
+                        display(){
+                                if (player.tab != "j") return ""
+                                let a = "<h3 style='color: #993300'>Cost</h3>: " + formatWhole(this.cost()) + " Knowledge<br>"
+                                return a 
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        cost(){
+                                return Decimal.pow(10, player.j.puzzle.repeatables[14].sqrt()).times(100).floor()
+                        },
+                        canClick(){
+                                return player.j.puzzle.knowledge.gte(this.cost()) && (player.j.puzzle.currentX < 20 || player.j.puzzle.currentY < 20)
+                        },
+                        effect(){
+                                return player.j.puzzle.repeatables[14].plus(1)
+                        },
+                        onClick(){
+                                let data = player.j.puzzle
+                                let cost = this.cost()
+
+                                if (!this.canClick()) return 
+                                data.knowledge = data.knowledge.minus(cost)
+                                data.repeatables[14] = data.repeatables[14].plus(1)
+                                if (data.currentY == 20 ) {
+                                        data.currentX ++
+                                } else if (data.currentX == 20) {
+                                        data.currentY ++
+                                } else if (Math.random() < .5) {
+                                        data.currentY ++
+                                } else data.currentX ++
+                                data.placed = {
+                                        edges: 0,
+                                        corners: 0,
+                                        centers: 0,
+                                }
+                                data.found = {
+                                        edges: 0,
+                                        corners: 0,
+                                        centers: 0,
+                                }
+
+                                return //bulk needs to be done eventually
+                        },
+                },
+                21: {
+                        title(){
+                                if (player.j.puzzle.mode == 1) return "<h3 style='color: #FFFFFF'>Filter</h3>"
+                                return "<h3 style='color: #FF3333'>Filter</h3>"
+                        },
+                        display(){
+                                return ""
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        canClick(){
+                                return true
+                        },
+                        onClick(){
+                                player.j.puzzle.mode = 1
+                        },
+                },
+                22: {
+                        title(){
+                                if (player.j.puzzle.mode == 2) return "<h3 style='color: #FFFFFF'>Edges</h3>"
+                                return "<h3 style='color: #FF3333'>Edges</h3>"
+                        },
+                        display(){
+                                if (player.j.puzzle.found.corners < 4) return "Requires: 4 corners found"
+                                return ""
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        canClick(){
+                                return true
+                        },
+                        onClick(){
+                                player.j.puzzle.mode = 2
+                        },
+                },
+                23: {
+                        title(){
+                                if (player.j.puzzle.mode == 3) return "<h3 style='color: #FFFFFF'>Center</h3>"
+                                return "<h3 style='color: #FF3333'>Center</h3>"
+                        },
+                        display(){
+                                let a = player.j.puzzle.currentX * 2 + player.j.puzzle.currentY * 2 - 8
+                                if (player.j.puzzle.found.edges < a) return "Requires: " + formatWhole(a) + " edges found"
+                                return ""
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        canClick(){
+                                return true
+                        },
+                        onClick(){
+                                player.j.puzzle.mode = 3
+                        },
+                },
+                24: {
+                        title(){
+                                if (player.j.puzzle.mode == 4) return "<h3 style='color: #FFFFFF'>Finish</h3>"
+                                return "<h3 style='color: #FF3333'>Finish</h3>"
+                        },
+                        display(){
+                                return ""
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        canClick(){
+                                return true
+                        },
+                        onClick(){
+                                player.j.puzzle.mode = 4
                         },
                 },
         },
@@ -12316,9 +12653,23 @@ addLayer("j", {
                 },
                 "Puzzle": {
                         content: [
-                                "main-display",
+                                ["display-text", function(){
+                                        let data = player.j.puzzle
+                                        let a = "You have " + formatWhole(player.j.points) + " jigsaws, causing a " + format(tmp.j.clickables.jigsawEffect, 4) + " speed multiplier<br>"
+                                        let b = "You have " + formatWhole(data.exp) + " experience, " + formatWhole(data.bankedExp) + " banked experience, " + formatWhole(data.knowledge) + " knowledge<br>"
+                                        let c = "You are currently working on a <h3>" + data.currentX + "</h3>x<h3>" + data.currentY + "</h3> puzzle<br>"
+                                        return a + b + c
+                                }],
                                 ["clickables", [1,2]],
-                                //display text here
+                                ["display-text", function(){
+                                        let data = player.j.puzzle
+                                        let data2 = data.found
+                                        let data3 = data.placed
+                                        let a = "You have found " + formatWhole(data2.corners) + " corners, " + formatWhole(data2.edges) + " edges and, " + formatWhole(data2.centers) + " centers.<br>"
+                                        let b = "You have placed " + formatWhole(data3.corners) + " corners, " + formatWhole(data3.edges) + " edges and, " + formatWhole(data3.centers) + " centers.<br>"
+                                        let c = "You are currently attempting to " + tmp.j.clickables.nameOfModeV + " every " + format(tmp.j.clickables.getAttemptSpeed.pow(-1)) + " seconds (" + formatWhole(Math.min(data.time,1) * 100) + "%).<br>"
+                                        return a + b + c
+                                }],
                                 ["clickables", [3,6]],
                         ],
                         unlocked(){
@@ -12330,57 +12681,39 @@ addLayer("j", {
                                 "main-display",
                                 ["display-text",
                                 `
-                                you can look at this but pls dont ask about this and its subject to change<br>
-                                
                                 <h2>Puzzle mechanic:</h2><br>
 
                                 You have a 10x10 puzzle (initially)<br>
                                 You can buy three upgrades, <br>
                                 1. success chance, [50% base]<br>
                                 2. attempt speed, [.5s base]<br>
-                                3. bulk attempt [expensive], [1x base]<br>
-
-                                You have edge, corner, and center pieces<br>
+                                3. bulk attempt, [1x base]<br>
+                                <br>
+                                There are edge, corner, and center pieces<br>
                                 There are 4 settings you can be in<br>
                                 1. Filter<br>
                                 1a. It filters for pieces putting them into catagories<br>
-                                2. Build edges [reqs all corners, edges found]<br>
-                                3. Build center [reqs edges built, centers found]<br>
+                                2. Build edges [gives 10x chances if on edges]<br>
+                                3. Build center [gives 50x chances]<br>
                                 3a. Puts parts together<br>
                                 4. Finish puzzle<br>
                                 <br>
-                                Finishing a puzzle halves success chance & attempt speed<br>
-                                You get things for finishing a puzzle<br>
-                                Exp: 1 per comp<br>
-                                Banked Exp: [puzzles beaten so far] + 1 per comp<br>
-                                Knowledge: 1 per comp<br>
                                 <br>
-                                Exp is spent on OTHER stuff<br>
-                                Knowledge is spent on the three things mentioned at the top<br>
+                                Note that you both need to be on the correct piece (randomly chosen)<br>
+                                and succeed to place the piece<br>
+                                Finishing a puzzle allows you to restart<br>
+                                You get things for finishing a puzzle:<br>
+                                Exp: 1<br>
+                                Banked Exp: [puzzles beaten so far] + 1<br>
+                                Knowledge: 1<br>
                                 <br>
-                                You can reset which makes you start at one puzzle again and gives you ur banked exp<br>
+                                Exp is spent on other stuff such as upgrade<br>
+                                Knowledge is spent on the three upgrades mentioned at the top<br>
                                 <br>
-                                <h2>Numbers:</h2><br>
-                                1. Per tick you filter one piece randomly<br>
-                                2. Per tick you have 1/[edges unplaced] to get an edge placed<br>
-                                3. Per tick you have 1/[centers unplaced] to get an center placed<br>
-                                4. Takes one tick to finish<br>
+                                You can reset which makes you start at one puzzle again and gives you your banked exp<br> [not yet]
                                 <br>
-                                Cost of succ: sqrt(1+x) <br>
-                                Effect: *[lvl+1]^log(1+lvl)<br>
-                                <br>
-                                Cost of attempt speed: 1+x<br>
-                                Effect: /log10(lvl + 10)<br>
-                                <br>
-                                Cost of bulk: 10^x<br>
-                                Effect: +x<br>
-                                <br>
-                                Larger puzzle:<br>
-                                Randomly adds 1 to either x or y coord of the puzzle (max 20 each)<br>
-                                Cost: 100*10^sqrt(x) knowledge<br>
-                                Prestiges: Everything before except exp<br>
-                                Effect: *sqrt(1+x) exp [floored]<br>
-                                <br>
+                                `
+                                /*
                                 Some prestige II kinda thing that reqs 20x20 puzzle<br> 
                                 (or 30x30 if i increase abv limit)<br>
                                 <br>
@@ -12396,7 +12729,7 @@ addLayer("j", {
                                 first row: <br>
                                 [per upg in this row unl H buy] [unl omni VII] [unl row of medal upgs] [+.001 to all G buy bases, repeatable]<br>
                                 <br><br><br>
-                                `
+                                */
                                 ]
                         ],
                         unlocked(){
@@ -12436,70 +12769,6 @@ addLayer("j", {
                 }
         },
 })
-
-/*
-Puzzle mechanic:
-
-You have a 10x10 puzzle (initially)
-You can buy three upgrades, 
-1. success chance, [50% base]
-2. attempt speed, [.5s base]
-3. bulk attempt [expensive], [1x base]
-
-You have edge, corner, and center pieces
-There are [number] settings you can be in
-1. Filter
-1a. It filters for pieces putting them into catagories
-2. Build edges [reqs all corners, edges found]
-3. Build center [reqs edges built, centers found]
-3a. Puts parts together
-4. Finish puzzle
-
-Finishing a puzzle halves success chance & attempt speed
-You get things for finishing a puzzle
-Exp: 1 per comp
-Banked Exp: [puzzles beaten so far] + 1 per comp
-Knowledge: 1 per comp
-
-Exp is spent on OTHER stuff
-Knowledge is spent on the three things mentioned at the top
-
-You can reset which makes you start at one puzzle again and gives you ur banked exp
-
-Numbers:
-1. Per tick you filter one piece randomly
-2. Per tick you have 1/[edges unplaced] to get an edge placed
-3. Per tick you have 1/[centers unplaced] to get an center placed
-4. Takes one tick to finish
-
-Cost of succ: sqrt(1+x) 
-Effect: *[lvl+1]^log(1+lvl)
-
-Cost of attempt speed: 1+x
-Effect: /log10(lvl + 10)
-
-Cost of bulk: 10^x
-Effect: +x
-
-Larger puzzle:
-Randomly adds 1 to either x or y coord of the puzzle
-Cost: 100*10^sqrt(x) knowledge
-Prestiges: Everything before except exp
-Effect: *sqrt(1+x) exp [floored]
-
-
-Buttons: 
-
-[succ] [atmp spd] [blk amt] [lrgr pzl]
-[filter] [bld edge] [bld cntr] [finish pzl]
-
-GAP WITH DATA AND STUFF
-
-[upgrades via clickables, maybe last col is repeatable?]
-
-
-
-*/
 
 
 
