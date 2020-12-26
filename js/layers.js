@@ -83,6 +83,7 @@ function getChallengeFactor(comps){
 }
 
 function isBuyableActive(layer, thang){
+        if (layer == "j") return true
         if (layer == "i") return true
         if (layer == "h") return true
         if (layer == "g") return true
@@ -102,6 +103,7 @@ function isBuyableActive(layer, thang){
 }
 
 function isPrestigeEffectActive(layer){
+        if (layer == "j") return true
         if (layer == "i") return true
         if (layer == "h") return true
         if (layer == "g") return true
@@ -8810,7 +8812,7 @@ addLayer("g", {
                         let b = data[13].plus(data[14])
                         let base = a.plus(b)
                         if (hasMilestone("i", 4)) base = base.plus(100)
-                        if (hasMilestone("h", 1)) base = base.plus(1)
+                        if (hasMilestone("h", 1)) base = base.plus(2)
                         if (hasMilestone("h", 5)) base = base.plus(player.h.milestones.length)
                         if (hasMilestone("h", 6)) base = base.plus(player.h.milestones.length ** 2)
                         if (hasMilestone("h", 3)) base = base.times(1.2)
@@ -11204,7 +11206,7 @@ addLayer("h", {
         milestones: {
                 1: {
                         requirementDescription: "<b>Have</b><br>Requires: 1 Hearts", 
-                        effectDescription: "Double the chance to succeed, raise charges gain ^1.1, keep <b>Growth</b>, and gain 1 charge per minute",
+                        effectDescription: "Double the chance to succeed, raise charges gain ^1.1, keep <b>Growth</b>, and gain 2 charges per minute",
                         done(){
                                 return player.h.points.gte(1)
                         },
@@ -11898,7 +11900,7 @@ addLayer("i", {
                                         function() {return shiftDown ? "Your best Ideas is " + format(player.i.best) : ""}],
                                 ["display-text",
                                         function() {
-                                                if (hasUnlockedPast("h")) return ""
+                                                if (hasUnlockedPast("i")) return ""
                                                 return "You have done " + formatWhole(player.i.times) + " Idea resets"
                                         }
                                 ],
@@ -11947,9 +11949,283 @@ addLayer("i", {
                 }
                 
                 if (!false) {
+                        //milestones
+                        let keep2 = []
+                        for (i = 0; i < player.j.times; i++) {
+                                if (i >= 8) break
+                                if (!hasMilestone("j", 1)) break
+                                keep2.push(["1", "2", "3", "4", "5", "6", "7", "8"][i])
+                        }
+                        data.milestones = filter(data.milestones, keep2)
+                }
+
+
+                //resources
+                data.points = new Decimal(0)
+                data.total = new Decimal(0)
+                data.best = new Decimal(0)
+
+                //buyables
+                let resetBuyables = [11, 12, 13, 21, 22, 23, 31, 32, 33]
+                for (let j = 0; j < resetBuyables.length; j++) {
+                        break //remove when buyables added
+                        data.buyables[resetBuyables[j]] = new Decimal(0)
+                }
+        },
+})
+
+addLayer("j", {
+        name: "Jigsaws", // This is optional, only used in a few places, If absent it just uses the layer id.
+        symbol: "J", // This appears on the layer's node. Default is the id with the first letter capitalized
+        position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+        startData() { 
+                return {
+                        unlocked: true,
+                        points: new Decimal(0),
+                        best: new Decimal(0),
+                        total: new Decimal(0),
+                        abtime: 0,
+                        time: 0,
+                        times: 0,
+                        autotimes: 0,
+                        autodevtime: 0,
+                }
+        },
+        color: "#66CCFF",
+        branches: ["i"],
+        requires: new Decimal(0), // Can be a function that takes requirement increases into account
+        resource: "Jigsaws", // Name of prestige currency
+        baseResource: "Ideas", // Name of resource prestige is based on
+        baseAmount() {
+                return player.i.best
+        }, // Get the current amount of baseResource
+        type: "custom", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+        getResetGain() {
+                let pts = this.baseAmount()
+                let pre = this.getGainMultPre()
+                let exp = this.getGainExp()
+                let pst = this.getGainMultPost()
+                let div = this.getBaseDiv()
+
+                let a = pts.div(div)
+                if (a.lt(1)) return new Decimal(0)
+
+                let ret = a.log10().times(pre).pow(exp).times(pst)
+
+                if (!hasUnlockedPast("j") && player.j.best.eq(0)) ret = ret.min(1)
+
+                ret = doPrestigeGainChange(ret, "j")
+
+                return ret.floor()
+        },
+        getBaseDiv(){
+                let x = new Decimal("3e30")
+                return x
+        },
+        getGainExp(){
+                let x = new Decimal(2)
+                return x
+        },
+        getGainMultPre(){
+                let x = Decimal.pow(11, -1)
+                return x
+        },
+        getGainMultPost(){
+                let x = new Decimal(1)
+
+                let yet = false
+                for (let i = 0; i < LAYERS.length; i++){
+                        if (layers[LAYERS[i]].row == "side") continue
+                        if (yet) x = x.times(tmp[LAYERS[i]].effect)
+                        if (LAYERS[i] == "j") yet = true
+                }
+
+                return x
+        },
+        effect(){
+                if (!isPrestigeEffectActive("j")) return new Decimal(1)
+
+                let amt = player.j.best
+
+                let exp = player.j.best.pow(.5).times(4).min(500)
+
+                let ret = amt.times(3).plus(1).pow(exp)
+
+                //ret = softcap(ret, "h_eff")
+
+                return ret
+        },
+        effectDescription(){
+                if (player.tab != "j") return ""
+                let eff = this.effect()
+                let a = "which buffs point and all previous prestige gain by "
+
+                return a + format(eff) + "."
+        },
+        update(diff){
+                let data = player.j
+
+                data.best = data.best.max(data.points)
+                if (false) {
+                        let gain = this.getResetGain()
+                        data.points = data.points.plus(gain.times(diff))
+                        data.total = data.total.plus(gain.times(diff))
+                        data.autotimes += diff
+                        if (data.autotimes > 3) data.autotimes = 3
+                        if (data.autotimes > 1) {
+                                data.autotimes += -1
+                                data.times ++
+                        }
+                }
+                if (false) {
+                        data.abtime += diff
+                        if (data.abtime > 10) data.abtime = 10
+                } else {
+                        data.abtime = 0
+                }
+
+                data.time += diff
+                data.autodevtime += diff
+                
+                if (data.autodevtime < 1) return
+                data.autodevtime += -1
+                if (data.autodevtime > 10) data.autodevtime = 10
+
+        },
+        row: 9, // Row the layer is in on the tree (0 is the first row)
+        hotkeys: [
+                {key: "j", description: "J: Reset for Jigsaws", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+                {key: "4", description: "4: Rebirth IV [not yet]", onPress(){
+                                return //change later
+                                let data = layers.g.clickables[45]
+                                if (data.canClick()) data.onClick()
+                        }
+                },
+        ],
+        layerShown(){return hasUpgrade("i", 25) || player.j.best.gt(0) || hasUnlockedPast("j")},
+        prestigeButtonText(){
+                if (player.tab != "j" || false) return ""
+                let gain= this.getResetGain()
+                let pts = this.baseAmount()
+                let pre = this.getGainMultPre()
+                let exp = this.getGainExp()
+                let pst = this.getGainMultPost()
+                let div = this.getBaseDiv()
+
+                let nextnum = Decimal.pow(10, gain.plus(1).div(pst).root(exp).div(pre)).times(div).ceil()
+
+                let nextAt = ""
+                if (gain.lt(1e6) && (hasUnlockedPast("j") || player.j.best.neq(0))) {
+                        nextAt = "<br>Next at " + format(nextnum) + " " + this.baseResource           
+                        let ps = gain.div(player.j.time || 1)
+
+                        if (ps.lt(10/3600)) nextAt += "<br>" + format(ps.times(3600)) + "/h"
+                        else if (ps.lt(1000/60)) nextAt += "<br>" + format(ps.times(60)) + "/m"
+                        else nextAt += "<br>" + format(ps) + "/s"
+                }
+
+                let a = "Reset for " + formatWhole(gain) + " " + this.resource
+
+                return a + nextAt
+        },
+        canReset(){
+                return player.j.time >= 2 && !false && this.getResetGain().gt(0)
+        },
+        milestones: {
+                1: {
+                        requirementDescription: "<b>Just</b><br>Requires: 1 Jigsaw", 
+                        effectDescription: "Per <b>J</b> reset keep one <b>I</b> milestone",
+                        done(){
+                                return player.j.points.gte(1)
+                        },
+                        unlocked(){
+                                return true || hasUnlockedPast("j")
+                        }, // hasMilestone("j", 1)
+                },
+        },
+        upgrades: {
+                rows: 5,
+                cols: 5,
+                /*
+                11: {
+                        title: "Info",
+                        description: "Unlock an <b>F</b> buyable and each upgrade in this row unlocks a <b>G</b> buyable",
+                        cost: new Decimal(3e6),
+                        unlocked(){
+                                return true || hasUnlockedPast("j")
+                        }
+                }, // hasUpgrade("j", 11)
+                */
+
+                /*
+                january
+                jobs
+                job
+                join
+                june
+                july
+                journal
+                */
+        },
+        tabFormat: {
+                "Upgrades": {
+                        content: ["main-display",
+                                ["prestige-button", "", function (){ return false ? {'display': 'none'} : {}}],
+                                ["display-text",
+                                        function() {return shiftDown ? "Your best Jigsaws is " + format(player.j.best) : ""}],
+                                ["display-text",
+                                        function() {
+                                                if (hasUnlockedPast("j")) return ""
+                                                return "You have done " + formatWhole(player.j.times) + " Jigsaw resets"
+                                        }
+                                ],
+                                ["display-text",
+                                        function() {
+                                                if (false) return "You are gaining " + format(tmp.j.getResetGain) + " Jigsaws per second"
+                                                return "There is a two second cooldown for prestiging (" + format(Math.max(0, 2-player.j.time)) + ")" 
+                                        },
+                                ],
+                                "blank", 
+                                "upgrades"],
+                        unlocked(){
+                                return true
+                        },
+                },
+                "Buyables": {
+                        content: ["main-display",
+                                "blank", 
+                                "buyables"],
+                        unlocked(){
+                                return false
+                        },
+                },
+                "Milestones": {
+                        content: [
+                                "main-display",
+                                "milestones",
+                        ],
+                        unlocked(){
+                                return true
+                        },
+                },
+        },
+        doReset(layer){
+                let data = player.j
+                if (layer == "j") data.time = 0
+                if (!getsReset("j", layer)) return
+                data.time = 0
+                data.times = 0
+
+                if (!false) {
+                        //upgrades
+                        let keep = []
+                        data.upgrades = filter(data.upgrades, keep)
+                }
+                
+                if (!false) {
                         //upgrades
                         let keep2 = []
-                        data.milestones = filter(data.milestones, keep)
+                        data.milestones = filter(data.milestones, keep2)
                 }
 
                 //resources
