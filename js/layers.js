@@ -3141,7 +3141,7 @@ addLayer("d", {
                                 buyMaximumBuyable("d", 23, maximum)
                         },
                         unlocked(){ 
-                                return hasMilestone("goalsii", 21) || hasUnlockedPast("e")
+                                return hasMilestone("goalsii", 21) || hasUnlockedPast("g") || player.g.best.gt(0)
                         },
                 },
                 31: {
@@ -3168,7 +3168,7 @@ addLayer("d", {
                                 buyMaximumBuyable("d", 31, maximum)
                         },
                         unlocked(){ 
-                                return hasMilestone("goalsii", 24) || hasUnlockedPast("e")
+                                return hasMilestone("goalsii", 24) || hasUnlockedPast("g") || player.g.best.gt(0)
                         },
                 },
                 32: {
