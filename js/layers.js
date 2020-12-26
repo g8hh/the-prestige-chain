@@ -8508,7 +8508,20 @@ addLayer("g", {
         },
         row: 6, // Row the layer is in on the tree (0 is the first row)
         hotkeys: [
-            {key: "g", description: "G: Reset for Games", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+                {key: "g", description: "G: Reset for Games", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+                {key: "0", description: "0: Attempt to dev all games once", onPress(){
+                                let data = layers.g.clickables
+                                let b = [11, 12, 13, 14,
+                                        21, 22, 23, 24,
+                                        31, 32, 33, 34,
+                                        41, 42, 43, 44,
+                                        51, 52, 53, 54,]
+                                for (i = 0; i < 20; i++){
+                                        let data2 = data[b[i]]
+                                        if (data2.canClick()) data2.onClick()
+                                }
+                        }
+                },
         ],
         layerShown(){return player.goalsii.tokens.best["44"].gt(0) || player.g.best.gt(0) || hasUnlockedPast("g")},
         prestigeButtonText(){
@@ -8625,7 +8638,7 @@ addLayer("g", {
                         requirementDescription: "<b>Gallery</b><br>Requires: 40% Completion on Portal", 
                         effectDescription: "Remove the ability to prestige but gain 100% of Games on prestige per second",
                         done(){
-                                return player.g.clickableAmounts[31].gte(4)
+                                return player.g.clickableAmounts[31].gte(4) || player.g.rebirths[1] > 0
                         },
                         unlocked(){
                                 return hasMilestone("g", 8) || hasUnlockedPast("g")
@@ -8889,6 +8902,7 @@ addLayer("g", {
                         if (hasUpgrade("g", 54)) r *= .9
                         if (hasUpgrade("goalsii", 42)) r *= Math.pow(.98, player.goalsii.upgrades.length)
                         if (hasUpgrade("h", 33)) r *= Math.pow(.998, totalChallengeComps("f"))
+                        if (hasMilestone("j", 3)) r *= Math.pow(.96, player.j.milestones.length)
                         return r
                 },
                 getRebirthCostIncrease(){
@@ -11585,12 +11599,14 @@ addLayer("i", {
                 if (hasMilestone("i", 7)) x = x.plus(1)
                 if (hasUpgrade("h", 31)) x = x.plus(player.h.upgrades.length * .1)
                 if (hasUpgrade("h", 43)) x = x.plus(player.i.upgrades.length * .2)
+                if (hasMilestone("j", 4)) x = x.plus(123.456 * player.j.milestones.length)
                 return x
         },
         getGainMultPre(){
                 let x = Decimal.pow(7, -1)
                 if (hasUpgrade("i", 14)) x = x.times(Decimal.pow(1.1, player.i.upgrades.length))
                 if (hasUpgrade("i", 25)) x = x.times(Math.max(1, totalChallengeComps("f")))
+                if (hasMilestone("j", 2)) x = x.times(Decimal.pow(2, player.j.milestones.length))
                 return x
         },
         getGainMultPost(){
@@ -11942,7 +11958,7 @@ addLayer("i", {
                 data.time = 0
                 data.times = 0
 
-                if (!false) {
+                if (!hasMilestone("j", 3)) {
                         //upgrades
                         let keep = []
                         data.upgrades = filter(data.upgrades, keep)
@@ -12047,7 +12063,7 @@ addLayer("j", {
 
                 let amt = player.j.best
 
-                let exp = player.j.best.pow(.5).times(4).min(500)
+                let exp = player.j.best.pow(.35).times(4).min(500)
 
                 let ret = amt.times(3).plus(1).pow(exp)
 
@@ -12142,6 +12158,36 @@ addLayer("j", {
                                 return true || hasUnlockedPast("j")
                         }, // hasMilestone("j", 1)
                 },
+                2: {
+                        requirementDescription: "<b>January</b><br>Requires: 5 Jigsaws", 
+                        effectDescription: "Per <b>J</b> milestone double base <b>I</b> gain",
+                        done(){
+                                return player.j.points.gte(5)
+                        },
+                        unlocked(){
+                                return hasMilestone("j", 1) || hasUnlockedPast("j")
+                        }, // hasMilestone("j", 2)
+                },
+                3: {
+                        requirementDescription: "<b>Jobs</b><br>Requires: 625 Jigsaws", 
+                        effectDescription: "Keep <b>I</b> upgrades and per <b>J</b> milestone act as if you have 4% less rebirths",
+                        done(){
+                                return player.j.points.gte(625)
+                        },
+                        unlocked(){
+                                return hasMilestone("j", 2) || hasUnlockedPast("j")
+                        }, // hasMilestone("j", 3)
+                },
+                4: {
+                        requirementDescription: "<b>Job</b><br>Requires: 1,953,125 Jigsaws", 
+                        effectDescription: "Per <b>J</b> milestone add 123.456 to <b>I</b> gain exponent",
+                        done(){
+                                return player.j.points.gte(1953125)
+                        },
+                        unlocked(){
+                                return hasMilestone("j", 3) || hasUnlockedPast("j")
+                        }, // hasMilestone("j", 4)
+                },
         },
         upgrades: {
                 rows: 5,
@@ -12158,9 +12204,6 @@ addLayer("j", {
                 */
 
                 /*
-                january
-                jobs
-                job
                 join
                 june
                 july

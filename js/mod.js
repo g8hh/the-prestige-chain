@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".5 Avalanche",
+	num: ".5.1 Avalanche",
 	name: "",
 }
 
@@ -305,7 +305,7 @@ function nextMilestone(){
 // Display extra things at the top of the page
 var displayThings = [
 	"Check the change log!",
-	"Endgame: 3e41 Hearts",
+	"Endgame: 4e6 Jigsaws",
 ]
 
 // Determines when the game "ends"
@@ -373,6 +373,9 @@ function getChangeLogText(){
 	k2 = "- Added Jigsaw"
 	k3 = "- Added a Jigsaw milestone"
 	k4 = "- Fixed bugs with prestige resets"
+	l1 = "v.5.1"
+	l2 = "- Added three Jigsaw milestones"
+	l3 = "- Added a hotkey under 0"
 
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
@@ -385,8 +388,9 @@ function getChangeLogText(){
 	let part8 = [h1, h2, h3, "", h4, h5, ""]
 	let part9 = [j1, j2, j3, j4, ""]
 	let part10= [k1, k2, k3, ""]
+	let part11= [l1, l2, l3, ""]
 
-	return [part10, part9, part8, part7, part6, part5, part4, part3, part2, part1]
+	return [part11, part10, part9, part8, part7, part6, part5, part4, part3, part2, part1]
 }
 
 var controlDown = false
