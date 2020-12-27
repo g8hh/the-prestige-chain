@@ -1839,6 +1839,15 @@ var MAIN_BUYABLE_DATA = {
                                 },
                                 type: "plus",
                         },
+                        2: {
+                                active: function(){
+                                        return true
+                                },
+                                amount: function(){
+                                        return CURRENT_BUYABLE_EFFECTS["h12"]
+                                },
+                                type: "plus",
+                        },
                 },
                 bases(){
                         let b0 = new Decimal("1e95e9")
@@ -1873,6 +1882,15 @@ var MAIN_BUYABLE_DATA = {
                                 },
                                 type: "plus",
                         },
+                        2: {
+                                active: function(){
+                                        return true
+                                },
+                                amount: function(){
+                                        return CURRENT_BUYABLE_EFFECTS["g33"]
+                                },
+                                type: "plus",
+                        },
                 },
                 bases(){
                         let b0 = new Decimal("1e153e9")
@@ -1897,6 +1915,86 @@ var MAIN_BUYABLE_DATA = {
                         let b0 = new Decimal("1e498e9")
                         let b1 = new Decimal("1")
                         let b2 = new Decimal("1e1e6")
+                        return [b0, b1, b2]
+                },
+        },
+        g33: {
+                name: "Omnipotent VII",
+                func: "lin",
+                effects: "<b>Generated</b> base",
+                base: {
+                        initial: new Decimal(.001),
+                },
+                bases(){
+                        let b0 = new Decimal("1e1310e9")
+                        let b1 = new Decimal("1e4e9")
+                        let b2 = new Decimal("1e1e7")
+                        return [b0, b1, b2]
+                },
+                h12: {
+                        active: function(){
+                                return player.j.puzzle.upgrades.includes(33)
+                        },
+                },
+        },
+        h11: {
+                name: "Holiday",
+                func: "lin",
+                effects: "<b>G</b> gain exponent",
+                base: {
+                        initial: new Decimal(1e6),
+                },
+                bases(){
+                        let b0 = new Decimal("1e1160e3")
+                        let b1 = new Decimal("1e1000")
+                        let b2 = new Decimal("1e5")
+                        return [b0, b1, b2]
+                },
+                h12: {
+                        active: function(){
+                                return player.j.puzzle.upgrades.includes(33)
+                        },
+                },
+        },
+        h12: {
+                name: "Held",
+                func: "lin",
+                effects: "<b>Growing</b> base",
+                base: {
+                        initial: new Decimal(.002),
+                },
+                bases(){
+                        let b0 = new Decimal("1e1165e3")
+                        let b1 = new Decimal("1e3000")
+                        let b2 = new Decimal("1e10")
+                        return [b0, b1, b2]
+                },
+                h13: {
+                        active: function(){
+                                return hasUpgrade("h", 51)
+                        },
+                },
+        },
+        h13: {
+                name: "Hope",
+                func: "exp",
+                effects: "<b>H</b> gain",
+                base: {
+                        initial: new Decimal("1e1000"),
+                        1: {
+                                active: function(){
+                                        return hasUpgrade("h", 51)
+                                },
+                                amount: function(){
+                                        return Decimal.sqrt(player.i.upgrades.length).max(1)
+                                },
+                                type: "pow",
+                        },
+                },
+                bases(){
+                        let b0 = new Decimal("1e1180e3")
+                        let b1 = new Decimal("1e1000")
+                        let b2 = new Decimal("1e20")
                         return [b0, b1, b2]
                 },
         },
@@ -2551,6 +2649,8 @@ function getBuyableCost(layer, id, delta = new Decimal(0)){
 function canAffordBuyable(layer, id, cost = undefined){
         // Fully general
         if (player.tab != layer) return false
+        let amt = getBuyableAmount(layer, id)
+        if (amt.eq(amt.plus(1))) return false
         if (cost == undefined) cost = getBuyableCost(layer, id, 0)
         let a = player[layer].points.gte(cost)
         let b = getBuyableAmount(layer, id).lt(getMaxBuyablesAmount(layer))
@@ -2689,8 +2789,6 @@ function replaceString(s,find,replace){
         }
         return s 
 }
-
-
 
 
 

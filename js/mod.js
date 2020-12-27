@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".5.4 Avalanche",
+	num: ".5.5 Avalanche",
 	name: "",
 }
 
@@ -285,6 +285,7 @@ PROGRESSION_MILESTONES_TEXT = {
 	117:"105 Feature challenge completions",
 	118:"120 Feature challenge completions",
 	119:"136 Feature challenge completions",
+	// 3**0, 3**1, 3**2... 3**6 bestExp?
 }
 
 function progressReachedNum(){
@@ -309,7 +310,7 @@ function nextMilestone(){
 // Display extra things at the top of the page
 var displayThings = [
 	"Check the change log!",
-	"Endgame: Join",
+	"Endgame: Homepage",
 ]
 
 // Determines when the game "ends"
@@ -392,12 +393,18 @@ function getChangeLogText(){
 	n7 = "- Implemented two knowledge based upgrades"
 	n8 = "v.5.3.2"
 	n9 = "- Fixed a bug with attempt speed"
-	m1 = "v.5.4"
-	m2 = "- Implemented Success Chance and Attempt Speed"
-	m3 = "- Implemented Puzzle reset"
-	m4 = "- Created three upgrades that don't do anything yet"
-	m5 = "- Created a reasonable details page [give suggestions]"
-	m6 = "- Now display placing success chance"
+	o1 = "v.5.4"
+	o2 = "- Implemented Success Chance and Attempt Speed"
+	o3 = "- Implemented Puzzle reset"
+	o4 = "- Created three upgrades that don't do anything yet"
+	o5 = "- Created a reasonable details page"
+	o6 = "- Now display placing success chance"
+	p1 = "v.5.5"
+	p2 = "- Added a hotkey for comma and period (left/right subtabs)"
+	p3 = "- Added the final G buyable and three H buyables"
+	p4 = "- Added an H upgrade and implemented three Puzzle upgrades"
+	p5 = "- Added a display for puzzles completed this reset"
+	p6 = "- Slight changes to details page [give suggestions for more]"
 
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
@@ -413,10 +420,11 @@ function getChangeLogText(){
 	let part11= [l1, l2, l3, ""]
 	let part12= [m1, m2, m3, ""]
 	let part13= [n1, n2, n3, n4, n5, n6, n7, "", n8, n9, ""]
-	let part14= [m1, m2, m3, m4, m5, m6, ""]
+	let part14= [o1, o2, o3, o4, o5, o6, ""]
+	let part15= [p1, p2, p3, p4, p5, p6, ""]
 
 	let final1 = [part10, part9, part8, part7, part6, part5, part4, part3, part2, part1]
-	let final2 = [part14, part13, part12, part11]
+	let final2 = [part15, part14, part13, part12, part11]
 
 	return final2.concat(final1)
 }

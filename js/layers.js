@@ -262,11 +262,14 @@ function getPrestigeName(layer){
                 e: "Eggs",
                 f: "Features",
                 g: "Games",
+                h: "Hearts",
+                i: "Ideas",
         }[layer]
 }
 
 function getTimesRequired(chance){
         if (chance >= 1) return 1
+        if (chance <= 0) return Infinity
         let r1 = Math.random()
         //we want (1-chance)^n < r1
         let n = Math.log(r1)/Math.log(1-chance) 
@@ -423,30 +426,44 @@ addLayer("a", {
         },
         row: 0, // Row the layer is in on the tree (0 is the first row)
         hotkeys: [
-            {key: "]", description: "]: Buy max of all upgrades", 
-                onPress(){
-                        let l =  ["a", "b", "c", "d", "e", "goalsii", "f", "g", "h", "i", "j"]
-                        let trylist = [11, 12, 13, 14, 15, 
-                                21, 22, 23, 24, 25,
-                                31, 32, 33, 34, 35,
-                                41, 42, 43, 44, 45,
-                                51, 52, 53, 54, 55,]
-                        for (j in l){
-                                i = l[j] //i is our layer
-                                if (layers[i] == undefined) continue
-                                for (k in trylist) {
-                                        //if we have the upgrade continue
-                                        if (hasUpgrade(i, trylist[k])) continue
-                                        if (layers[i].upgrades[trylist[k]] == undefined) continue
-                                        //if the upgrade is undefined continue
-                                        
-                                        //if we dont have it, try to buy it 
-                                        buyUpgrade(i, trylist[k])
+                {key: "]", description: "]: Buy max of all upgrades", 
+                        onPress(){
+                                let l =  ["a", "b", "c", "d", "e", "goalsii", "f", "g", "h", "i", "j"]
+                                let trylist = [11, 12, 13, 14, 15, 
+                                        21, 22, 23, 24, 25,
+                                        31, 32, 33, 34, 35,
+                                        41, 42, 43, 44, 45,
+                                        51, 52, 53, 54, 55,]
+                                for (j in l){
+                                        i = l[j] //i is our layer
+                                        if (layers[i] == undefined) continue
+                                        for (k in trylist) {
+                                                //if we have the upgrade continue
+                                                if (hasUpgrade(i, trylist[k])) continue
+                                                if (layers[i].upgrades[trylist[k]] == undefined) continue
+                                                //if the upgrade is undefined continue
+                                                
+                                                //if we dont have it, try to buy it 
+                                                buyUpgrade(i, trylist[k])
+                                        }
                                 }
                         }
-                }
-            },
-            {key: "a", description: "A: Reset for Amoeba", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+                },
+                {key: "a", description: "A: Reset for Amoeba", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+                {key: ",", description: ",: Move one tab to the left", 
+                        onPress(){
+                                let l = player.tab
+                                if (layers[l] == undefined) return
+                                player.subtabs[l].mainTabs = getNextLeftTab(l)
+                        }
+                },
+                {key: ".", description: ".: Move one tab to the right", 
+                        onPress(){
+                                let l = player.tab
+                                if (layers[l] == undefined) return
+                                player.subtabs[l].mainTabs = getNextRightTab(l)
+                        }
+                },
         ],
         layerShown(){return true},
         prestigeButtonText(){
@@ -8294,6 +8311,7 @@ addLayer("g", {
                 if (hasUpgrade("f", 24)) x = x.plus(player.f.upgrades.length ** 2)
                 if (hasUpgrade("g", 25)) x = x.plus(6 * player.g.upgrades.length)
                 x = x.plus(CURRENT_BUYABLE_EFFECTS["g11"])
+                x = x.plus(CURRENT_BUYABLE_EFFECTS["h11"])
                 return x
         },
         getGainMultPre(){
@@ -8410,10 +8428,7 @@ addLayer("g", {
                                 if (tmp[key].buyables[23].unlocked) layers[key].buyables[23].buyMax(amt)
                                 if (tmp[key].buyables[31].unlocked) layers[key].buyables[31].buyMax(amt)
                                 if (tmp[key].buyables[32].unlocked) layers[key].buyables[32].buyMax(amt)
-                                /*
                                 if (tmp[key].buyables[33].unlocked) layers[key].buyables[33].buyMax(amt)
-                                /*
-                                */
                         }
                 } else {
                         data.abtime = 0
@@ -8905,6 +8920,7 @@ addLayer("g", {
                         if (hasUpgrade("goalsii", 42)) r *= Math.pow(.98, player.goalsii.upgrades.length)
                         if (hasUpgrade("h", 33)) r *= Math.pow(.998, totalChallengeComps("f"))
                         if (hasMilestone("j", 3)) r *= Math.pow(.96, player.j.milestones.length)
+                        if (player.j.puzzle.upgrades.includes(32)) r *= Math.pow(.95, player.j.puzzle.upgrades.length)
                         return r
                 },
                 getRebirthCostIncrease(){
@@ -10833,6 +10849,33 @@ addLayer("g", {
                                 return hasUpgrade("h", 44) || hasUnlockedPast("i")
                         },
                 },
+                33: {
+                        title: "Omnipotent VII",
+                        display(){
+                                return getBuyableDisplay("g", 33)
+                        },
+                        effect(){
+                                return CURRENT_BUYABLE_EFFECTS["g33"]
+                        },
+                        canAfford(){
+                                return canAffordBuyable("g", 33)
+                        },
+                        total(){
+                                return getBuyableAmount("g", 33).plus(this.extra())
+                        },
+                        extra(){
+                                return calcBuyableExtra("g", 33)
+                        },
+                        buy(){
+                                buyManualBuyable("g", 33)
+                        },
+                        buyMax(maximum){
+                                buyMaximumBuyable("g", 33, maximum)
+                        },
+                        unlocked(){ 
+                                return player.j.puzzle.upgrades.includes(32) || hasUnlockedPast("j")
+                        },
+                },
         },
         tabFormat: {
                 "Upgrades": {
@@ -11129,6 +11172,8 @@ addLayer("h", {
                         if (LAYERS[i] == "h") yet = true
                 }
 
+                x = x.times(CURRENT_BUYABLE_EFFECTS["h13"])
+
                 return x
         },
         effect(){
@@ -11167,9 +11212,31 @@ addLayer("h", {
                                 data.times ++
                         }
                 }
-                if (false) {
-                        data.abtime += diff
+                if (player.j.puzzle.upgrades.includes(33)) {
+                        data.abtime += diff * getABSpeed("h")
                         if (data.abtime > 10) data.abtime = 10
+                        if (data.abtime > 1){
+                                data.abtime += -1
+                                let key = "h"
+                                let amt = getABBulk("h")
+                                if (tmp[key].buyables[11].unlocked) layers[key].buyables[11].buyMax(amt)
+                                if (tmp[key].buyables[12].unlocked) layers[key].buyables[12].buyMax(amt)
+                                if (tmp[key].buyables[13].unlocked) layers[key].buyables[13].buyMax(amt)
+                                /*
+                                if (tmp[key].buyables[21].unlocked) layers[key].buyables[21].buyMax(amt)
+                                /*
+                                if (tmp[key].buyables[22].unlocked) layers[key].buyables[22].buyMax(amt)
+                                /*
+                                if (tmp[key].buyables[23].unlocked) layers[key].buyables[23].buyMax(amt)
+                                /*
+                                if (tmp[key].buyables[31].unlocked) layers[key].buyables[31].buyMax(amt)
+                                /*
+                                if (tmp[key].buyables[32].unlocked) layers[key].buyables[32].buyMax(amt)
+                                /*
+                                if (tmp[key].buyables[33].unlocked) layers[key].buyables[33].buyMax(amt)
+                                /*
+                                */
+                        }
                 } else {
                         data.abtime = 0
                 }
@@ -11464,12 +11531,111 @@ addLayer("h", {
                                 return hasUpgrade("h", 44) || hasUnlockedPast("i")
                         }
                 }, // hasUpgrade("h", 45)
+                51: {
+                        title: "Homepage",
+                        description: "Raise <b>Hope</b> effect to the square root of the number of <b>I</b> upgrades and <b>Hope</b> give free <b>Held</b> buyables",
+                        cost: new Decimal("1e1204e3"),
+                        unlocked(){
+                                return player.j.puzzle.upgrades.includes(33) || hasUnlockedPast("j")
+                        }
+                }, // hasUpgrade("h", 51)
 
 
                 /*
-                holiday
-                held
+                
+                hour
+                Huge
+                Hi
+                Homes
+                Hill
+                Hold
+                Happy
                 */
+        },
+        buyables: {
+                rows: 3,
+                cols: 3,
+                11: {
+                        title: "Holiday",
+                        display(){
+                                return getBuyableDisplay("h", 11)
+                        },
+                        effect(){
+                                return CURRENT_BUYABLE_EFFECTS["h11"]
+                        },
+                        canAfford(){
+                                return canAffordBuyable("h", 11)
+                        },
+                        total(){
+                                return getBuyableAmount("h", 11).plus(this.extra())
+                        },
+                        extra(){
+                                return calcBuyableExtra("h", 11)
+                        },
+                        buy(){
+                                buyManualBuyable("h", 11)
+                        },
+                        buyMax(maximum){
+                                buyMaximumBuyable("h", 11, maximum)
+                        },
+                        unlocked(){ 
+                                return player.j.puzzle.upgrades.includes(31) || hasUnlockedPast("j")
+                        },
+                },
+                12: {
+                        title: "Held",
+                        display(){
+                                return getBuyableDisplay("h", 12)
+                        },
+                        effect(){
+                                return CURRENT_BUYABLE_EFFECTS["h12"]
+                        },
+                        canAfford(){
+                                return canAffordBuyable("h", 12)
+                        },
+                        total(){
+                                return getBuyableAmount("h", 12).plus(this.extra())
+                        },
+                        extra(){
+                                return calcBuyableExtra("h", 12)
+                        },
+                        buy(){
+                                buyManualBuyable("h", 12)
+                        },
+                        buyMax(maximum){
+                                buyMaximumBuyable("h", 12, maximum)
+                        },
+                        unlocked(){ 
+                                return player.j.puzzle.upgrades.includes(32) || hasUnlockedPast("j")
+                        },
+                },
+                13: {
+                        title: "Hope",
+                        display(){
+                                return getBuyableDisplay("h", 13)
+                        },
+                        effect(){
+                                return CURRENT_BUYABLE_EFFECTS["h13"]
+                        },
+                        canAfford(){
+                                return canAffordBuyable("h", 13)
+                        },
+                        total(){
+                                return getBuyableAmount("h", 13).plus(this.extra())
+                        },
+                        extra(){
+                                return calcBuyableExtra("h", 13)
+                        },
+                        buy(){
+                                buyManualBuyable("h", 13)
+                        },
+                        buyMax(maximum){
+                                buyMaximumBuyable("h", 13, maximum)
+                        },
+                        unlocked(){ 
+                                return player.j.puzzle.upgrades.includes(33) || hasUnlockedPast("j")
+                        },
+                },
         },
         tabFormat: {
                 "Upgrades": {
@@ -11501,7 +11667,7 @@ addLayer("h", {
                                 "blank", 
                                 "buyables"],
                         unlocked(){
-                                return false
+                                return player.j.puzzle.upgrades.includes(31) || hasUnlockedPast("j")
                         },
                 },
                 "Milestones": {
@@ -11541,7 +11707,6 @@ addLayer("h", {
                 //buyables
                 let resetBuyables = [11, 12, 13, 21, 22, 23, 31, 32, 33]
                 for (let j = 0; j < resetBuyables.length; j++) {
-                        break //remove when buyables added
                         data.buyables[resetBuyables[j]] = new Decimal(0)
                 }
         },
@@ -12648,10 +12813,10 @@ addLayer("j", {
                 },
                 31: {
                         title(){
-                                return "<h3 style='color: #FF3333'>Join</h3>"
+                                return "<b style='color: #003333'>Join</b>"
                         },
                         display(){
-                                let a = "Per upgrade in this row unlock an <b>H</b> buyable [not yet]"
+                                let a = "Per upgrade in this row unlock an <b>H</b> buyable"
                                 let b = "<br><br>Cost: " + formatWhole(this.cost())
                                 return a + b
                         },
@@ -12666,7 +12831,7 @@ addLayer("j", {
                         },
                         style(){
                                 return {
-                                        "background-color": player.j.puzzle.upgrades.includes(31) ? "#77bf5f" : "#bf8f8f"
+                                        "background-color": player.j.puzzle.upgrades.includes(31) ? "#77bf5f" : this.canClick() ? "#66CCFF" : "#bf8f8f"
                                 }
                         },
                         onClick(){
@@ -12678,10 +12843,12 @@ addLayer("j", {
                 },
                 32: {
                         title(){
-                                return "<h3 style='color: #FF3333'>June</h3>"
+                                return "<b style='color: #003333'>June</b>"
                         },
                         display(){
-                                return "Unlock the final <b>G</b> buyable (+.001*x <b>Generated</b> base scs@1) [not yet]"
+                                let a = "Unlock the final <b>G</b> buyable and per upgrade act as if you have 5% less rebirths"
+                                let b = "<br><br>Cost: " + formatWhole(this.cost())
+                                return a + b
                         },
                         unlocked(){
                                 return player.j.puzzle.upgrades.includes(31) || hasUnlockedPast("j")
@@ -12694,7 +12861,7 @@ addLayer("j", {
                         },
                         style(){
                                 return {
-                                        "background-color": player.j.puzzle.upgrades.includes(32) ? "#77bf5f" : "#bf8f8f"
+                                        "background-color": player.j.puzzle.upgrades.includes(32) ? "#77bf5f" : this.canClick() ? "#66CCFF" : "#bf8f8f"
                                 }
                         },
                         onClick(){
@@ -12706,10 +12873,12 @@ addLayer("j", {
                 },
                 33: {
                         title(){
-                                return "<h3 style='color: #FF3333'>July</h3>"
+                                return "<b style='color: #003333'>July</b>"
                         },
                         display(){
-                                return "Unlock a row of medal upgrades [not yet]"
+                                let a = "Automatically buy <b>H</b> buyables and <b>Held</b> gives free <b>Holiday</b> and <b>Omnipotent VII</b> levels"
+                                let b = "<br><br>Cost: " + formatWhole(this.cost())
+                                return a + b
                         },
                         unlocked(){
                                 return player.j.puzzle.upgrades.includes(32) || hasUnlockedPast("j")
@@ -12722,7 +12891,7 @@ addLayer("j", {
                         },
                         style(){
                                 return {
-                                        "background-color": player.j.puzzle.upgrades.includes(33) ? "#77bf5f" : "#bf8f8f"
+                                        "background-color": player.j.puzzle.upgrades.includes(33) ? "#77bf5f" : this.canClick() ? "#66CCFF" : "#bf8f8f"
                                 }
                         },
                         onClick(){
@@ -12780,7 +12949,7 @@ addLayer("j", {
                                         let data = player.j.puzzle
                                         let a = "You have " + formatWhole(player.j.points) + " jigsaws, causing a " + format(tmp.j.clickables.jigsawEffect, 4) + " speed multiplier<br>"
                                         let b = "You have " + formatWhole(data.exp) + " experience, " + formatWhole(data.bankedExp) + " banked experience, " + formatWhole(data.knowledge) + " knowledge<br>"
-                                        let c = "You are currently working on a <h3>" + data.currentX + "</h3>x<h3>" + data.currentY + "</h3> puzzle<br>"
+                                        let c = "You are currently working on a <h3>" + data.currentX + "</h3>x<h3>" + data.currentY + "</h3> puzzle (" + formatWhole(data.finished) + " completed)<br>"
                                         return a + b + c
                                 }],
                                 ["clickables", [1,2]],
@@ -12837,9 +13006,9 @@ addLayer("j", {
                                 Exp is spent on upgrades that boost the rest of the game<br>
                                 Knowledge is spent on the three upgrades mentioned at the top<br>
                                 <br><br>
-                                Finishing one puzzle allows you to restart<br>
-                                Restarting makes you start at the first puzzle again and gives you your banked exp<br> [not yet]
-                                <br><br><br>
+                                Finishing at least one puzzle allows you to restart (requires 2 initially)<br>
+                                Restarting makes you start at the first puzzle again and gives you your banked exp
+                                <br><br><br><br>
                                 `
                                 /*
                                 Some prestige II kinda thing that reqs 20x20 puzzle<br> 
