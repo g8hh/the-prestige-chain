@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".5.5.1 Avalanche",
+	num: ".5.6 Avalanche",
 	name: "",
 }
 
@@ -163,6 +163,13 @@ PROGRESSION_MILESTONES = {
 	117:()=> totalChallengeComps("f") >= 105             || hasAchievement("ach",175),
 	118:()=> totalChallengeComps("f") >= 120             || hasAchievement("ach",176),
 	119:()=> totalChallengeComps("f") >= 136             || hasAchievement("ach",177),
+	120:()=> player.j.puzzle.bestExp.gte(1)              || hasAchievement("ach",181),
+	121:()=> player.j.puzzle.bestExp.gte(3)              || hasAchievement("ach",182),
+	122:()=> player.j.puzzle.bestExp.gte(9)              || hasAchievement("ach",183),
+	123:()=> player.j.puzzle.bestExp.gte(27)             || hasAchievement("ach",184),
+	124:()=> player.j.puzzle.bestExp.gte(81)             || hasAchievement("ach",185),
+	125:()=> player.j.puzzle.bestExp.gte(243)            || hasAchievement("ach",186),
+	126:()=> player.j.puzzle.bestExp.gte(729)            || hasAchievement("ach",187),
 }
 
 PROGRESSION_MILESTONES_TEXT = {
@@ -285,7 +292,13 @@ PROGRESSION_MILESTONES_TEXT = {
 	117:"105 Feature challenge completions",
 	118:"120 Feature challenge completions",
 	119:"136 Feature challenge completions",
-	// 3**0, 3**1, 3**2... 3**6 bestExp?
+	120:"1 exp",
+	121:"3 exp",
+	122:"9 exp",
+	123:"27 exp",
+	124:"81 exp",
+	125:"243 exp",
+	126:"729 exp",
 }
 
 function progressReachedNum(){
@@ -310,7 +323,7 @@ function nextMilestone(){
 // Display extra things at the top of the page
 var displayThings = [
 	"Check the change log!",
-	"Endgame: Homepage",
+	"Endgame: 4 Japan",
 ]
 
 // Determines when the game "ends"
@@ -407,6 +420,12 @@ function getChangeLogText(){
 	p6 = "- Slight changes to details page [give suggestions for more]"
 	p7 = "v.5.5.1"
 	p8 = "- Fix a bug with puzzle upgrades"
+	q1 = "v.5.6"
+	q2 = "- Added an H buyable"
+	q3 = "- Added a repeatable puzzle upgrade"
+	q4 = "- Added a normal puzzle upgrade"
+	q5 = "- Implemented Bulk Amount"
+	q6 = "- Added a new row of achievements"
 
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]

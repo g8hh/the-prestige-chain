@@ -250,7 +250,31 @@ function doPrestigeGainChange(amt, layer){
 }
 
 function getMaxBuyablesAmount(layer){
-        return Decimal.pow(10, 20)
+        let ret = Decimal.pow(10, 20)
+        if (layer == "a") {
+                ret = ret.times(CURRENT_BUYABLE_EFFECTS["h21"])
+        }
+        if (layer == "b") {
+                ret = ret.times(CURRENT_BUYABLE_EFFECTS["h21"])
+        }
+        if (layer == "c") {
+                ret = ret.times(CURRENT_BUYABLE_EFFECTS["h21"])
+        }
+        if (layer == "d") {
+                ret = ret.times(CURRENT_BUYABLE_EFFECTS["h21"])
+        }
+        if (layer == "e") {
+                ret = ret.times(CURRENT_BUYABLE_EFFECTS["h21"])
+        }
+        if (layer == "f") {
+                ret = ret.times(CURRENT_BUYABLE_EFFECTS["h21"])
+        }
+        if (layer == "g") {
+                ret = ret.times(CURRENT_BUYABLE_EFFECTS["h21"])
+        }
+       
+        
+        return ret
 }
 
 function getPrestigeName(layer){
@@ -5001,7 +5025,7 @@ addLayer("ach", {
                 return false
         },
         achievements: {
-                rows: 20,
+                rows: 220,
                 cols: 7,
                 11: {
                         name: "One",
@@ -6270,6 +6294,90 @@ addLayer("ach", {
                         },
                         unlocked(){
                                 return hasUnlockedPast("g")
+                        },
+                },
+                181: {
+                        name: "One Hundred and Twenty",
+                        done(){
+                                return PROGRESSION_MILESTONES[120]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[120]
+                        },
+                        unlocked(){
+                                return hasUnlockedPast("i")
+                        },
+                },
+                182: {
+                        name: "One Hundred and Twenty-One",
+                        done(){
+                                return PROGRESSION_MILESTONES[121]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[121]
+                        },
+                        unlocked(){
+                                return hasUnlockedPast("i")
+                        },
+                },
+                183: {
+                        name: "One Hundred and Twenty-Two",
+                        done(){
+                                return PROGRESSION_MILESTONES[122]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[122]
+                        },
+                        unlocked(){
+                                return hasUnlockedPast("i")
+                        },
+                },
+                184: {
+                        name: "One Hundred and Twenty-Three",
+                        done(){
+                                return PROGRESSION_MILESTONES[123]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[123]
+                        },
+                        unlocked(){
+                                return hasUnlockedPast("i")
+                        },
+                },
+                185: {
+                        name: "One Hundred and Twenty-Four",
+                        done(){
+                                return PROGRESSION_MILESTONES[124]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[124]
+                        },
+                        unlocked(){
+                                return hasUnlockedPast("i")
+                        },
+                },
+                186: {
+                        name: "One Hundred and Twenty-Five",
+                        done(){
+                                return PROGRESSION_MILESTONES[125]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[125]
+                        },
+                        unlocked(){
+                                return hasUnlockedPast("i")
+                        },
+                },
+                187: {
+                        name: "One Hundred and Twenty-Six",
+                        done(){
+                                return PROGRESSION_MILESTONES[126]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[126]
+                        },
+                        unlocked(){
+                                return hasUnlockedPast("i")
                         },
                 },
         },
@@ -11222,7 +11330,6 @@ addLayer("h", {
                                 if (tmp[key].buyables[11].unlocked) layers[key].buyables[11].buyMax(amt)
                                 if (tmp[key].buyables[12].unlocked) layers[key].buyables[12].buyMax(amt)
                                 if (tmp[key].buyables[13].unlocked) layers[key].buyables[13].buyMax(amt)
-                                /*
                                 if (tmp[key].buyables[21].unlocked) layers[key].buyables[21].buyMax(amt)
                                 /*
                                 if (tmp[key].buyables[22].unlocked) layers[key].buyables[22].buyMax(amt)
@@ -11542,8 +11649,6 @@ addLayer("h", {
 
 
                 /*
-                
-                hour
                 Huge
                 Hi
                 Homes
@@ -11634,6 +11739,33 @@ addLayer("h", {
                         },
                         unlocked(){ 
                                 return player.j.puzzle.upgrades.includes(33) || hasUnlockedPast("j")
+                        },
+                },
+                21: {
+                        title: "Hour",
+                        display(){
+                                return getBuyableDisplay("h", 21)
+                        },
+                        effect(){
+                                return CURRENT_BUYABLE_EFFECTS["h21"]
+                        },
+                        canAfford(){
+                                return canAffordBuyable("h", 21)
+                        },
+                        total(){
+                                return getBuyableAmount("h", 21).plus(this.extra())
+                        },
+                        extra(){
+                                return calcBuyableExtra("h", 21)
+                        },
+                        buy(){
+                                buyManualBuyable("h", 21)
+                        },
+                        buyMax(maximum){
+                                buyMaximumBuyable("h", 21, maximum)
+                        },
+                        unlocked(){ 
+                                return player.j.puzzle.upgrades.includes(34) || hasUnlockedPast("j")
                         },
                 },
         },
@@ -12193,10 +12325,10 @@ addLayer("j", {
                                         12: new Decimal(0),
                                         13: new Decimal(0),
                                         14: new Decimal(0),
-                                        34: new Decimal(0),
-                                        44: new Decimal(0),
-                                        54: new Decimal(0),
-                                        64: new Decimal(0),
+                                        35: new Decimal(0),
+                                        45: new Decimal(0),
+                                        55: new Decimal(0),
+                                        65: new Decimal(0),
                                 },
                                 found: {
                                         edges: 0,
@@ -12315,15 +12447,16 @@ addLayer("j", {
                 data2.bestKnowledge = data2.bestKnowledge.max(data2.knowledge)
                 data2.bestExp = data2.bestExp.max(data2.exp)
                 data2.time += diff * tmp.j.clickables.getAttemptSpeed.toNumber()
-                if (data2.mode == 1) layers.j.clickables.doSearch(Math.floor(data2.time))
+                let multiplier = tmp.j.clickables[13].effect.toNumber()
+                if (data2.mode == 1) layers.j.clickables.doSearch(Math.floor(data2.time) * multiplier)
                 if (data2.mode == 2) {
                         if (tot3 == data2.found.corners && tot2 == data2.found.edges) {
-                                layers.j.clickables.doEdges(Math.floor(data2.time))
+                                layers.j.clickables.doEdges(Math.floor(data2.time) * multiplier)
                         }
                 }
                 if (data2.mode == 3) {
                         if (tot1 == data2.found.centers) {
-                                layers.j.clickables.doCenters(Math.floor(data2.time))
+                                layers.j.clickables.doCenters(Math.floor(data2.time) * multiplier)
                         }
                 }
                 if (data2.mode == 4) {
@@ -12435,7 +12568,12 @@ addLayer("j", {
                 */
 
                 /*
-                journal
+                Jewelry
+                Joined
+                Japanese
+                Jersey
+                Jack
+                Justice
                 */
         },
         clickables: {
@@ -12460,6 +12598,7 @@ addLayer("j", {
                 getAttemptChance(){
                         let ret = Decimal.pow(.5, player.j.puzzle.finished).times(.5)
                         ret = ret.times(this[11].effect())
+                        ret = ret.times(this[35].effect())
                         return ret
                 },
                 doSearch(times = 1){
@@ -12595,7 +12734,9 @@ addLayer("j", {
                         },
                         effect(){
                                 let lvl = player.j.puzzle.repeatables[12]
-                                return lvl.plus(10).log10().pow(2)
+                                let exp = new Decimal(2)
+                                if (player.j.puzzle.upgrades.includes(34)) exp = exp.times(2)
+                                return lvl.plus(10).log10().pow(exp)
                         },
                         onClick(){
                                 let data = player.j.puzzle
@@ -12620,13 +12761,13 @@ addLayer("j", {
                                 return a + b + c
                         },
                         unlocked(){
-                                return true
+                                return player.j.puzzle.upgrades.includes(34) || hasUnlockedPast("j")
                         },
                         cost(){
-                                return Decimal.pow(10, player.j.puzzle.repeatables[13]).times(25)
+                                return Decimal.pow(4, player.j.puzzle.repeatables[13]).times(20)
                         },
                         canClick(){
-                                return player.j.puzzle.knowledge.gte(this.cost()) && false
+                                return player.j.puzzle.knowledge.gte(this.cost())
                         },
                         effect(){
                                 return player.j.puzzle.repeatables[13].plus(1)
@@ -12658,10 +12799,7 @@ addLayer("j", {
                                 return Decimal.pow(10, player.j.puzzle.repeatables[14].sqrt()).times(100).floor()
                         },
                         canClick(){
-                                return player.j.puzzle.knowledge.gte(this.cost()) && (player.j.puzzle.currentX < 20 || player.j.puzzle.currentY < 20)
-                        },
-                        effect(){
-                                return player.j.puzzle.repeatables[14].plus(1)
+                                return false && player.j.puzzle.knowledge.gte(this.cost()) && (player.j.puzzle.currentX < 20 || player.j.puzzle.currentY < 20)
                         },
                         onClick(){
                                 let data = player.j.puzzle
@@ -12817,11 +12955,11 @@ addLayer("j", {
                         },
                         display(){
                                 let a = "Per upgrade in this row unlock an <b>H</b> buyable"
-                                let b = "<br><br>Cost: " + formatWhole(this.cost())
+                                let b = "<br><br>Cost: " + formatWhole(this.cost()) + " Exp"
                                 return a + b
                         },
                         unlocked(){
-                                return player.j.puzzle.bestExp.gt(8) || hasUnlockedPast("j")
+                                return player.j.puzzle.bestExp.gt(2) || hasUnlockedPast("j")
                         },
                         canClick(){
                                 return player.j.puzzle.exp.gte(this.cost()) && !player.j.puzzle.upgrades.includes(31)
@@ -12847,7 +12985,7 @@ addLayer("j", {
                         },
                         display(){
                                 let a = "Unlock the final <b>G</b> buyable and per upgrade act as if you have 5% less rebirths"
-                                let b = "<br><br>Cost: " + formatWhole(this.cost())
+                                let b = "<br><br>Cost: " + formatWhole(this.cost()) + " Exp"
                                 return a + b
                         },
                         unlocked(){
@@ -12877,7 +13015,7 @@ addLayer("j", {
                         },
                         display(){
                                 let a = "Automatically buy <b>H</b> buyables and <b>Held</b> gives free <b>Holiday</b> and <b>Omnipotent VII</b> levels"
-                                let b = "<br><br>Cost: " + formatWhole(this.cost())
+                                let b = "<br><br>Cost: " + formatWhole(this.cost()) + " Exp"
                                 return a + b
                         },
                         unlocked(){
@@ -12901,6 +13039,71 @@ addLayer("j", {
                                 data.upgrades.push(33)
                         },
                 },
+                34: {
+                        title(){
+                                return "<b style='color: #003333'>Journal</b>"
+                        },
+                        display(){
+                                let a = "Unlock Bulk Amount and square Attempt speed"
+                                let b = "<br><br>Cost: " + formatWhole(this.cost()) + " Exp"
+                                return a + b
+                        },
+                        unlocked(){
+                                return player.j.puzzle.upgrades.includes(33) || hasUnlockedPast("j")
+                        },
+                        canClick(){
+                                return player.j.puzzle.exp.gte(this.cost()) && !player.j.puzzle.upgrades.includes(34)
+                        },
+                        cost(){
+                                return new Decimal(80)
+                        },
+                        style(){
+                                return {
+                                        "background-color": player.j.puzzle.upgrades.includes(34) ? "#77bf5f" : this.canClick() ? "#66CCFF" : "#bf8f8f"
+                                }
+                        },
+                        onClick(){
+                                if (!this.canClick()) return
+                                let data = player.j.puzzle
+                                data.exp = data.exp.minus(this.cost())
+                                data.upgrades.push(34)
+                        },
+                },
+                35: {
+                        title(){
+                                return "<b style='color: #003333'>Japan</b>"
+                        },
+                        display(){
+                                let a = "Multiply success chance by 1.2"
+                                let c = "<br>Currently: *" + format(this.effect())
+                                let b = "<br><br>Cost: " + formatWhole(this.cost()) + " Exp"
+                                return a + c + b
+                        },
+                        unlocked(){
+                                return player.j.puzzle.upgrades.includes(34) || hasUnlockedPast("j")
+                        },
+                        canClick(){
+                                return player.j.puzzle.exp.gte(this.cost())
+                        },
+                        cost(){
+                                return Decimal.pow(1.5, player.j.puzzle.repeatables[35].pow(2)).ceil()
+                        },
+                        effect(){
+                                return Decimal.pow(1.2, player.j.puzzle.repeatables[35])
+                        },
+                        style(){
+                                return {
+                                        "background-color": this.canClick() ? "#66CCFF" : "#bf8f8f"
+                                }
+                        },
+                        onClick(){
+                                if (!this.canClick()) return
+                                let data = player.j.puzzle
+                                data.exp = data.exp.minus(this.cost())
+                                data.repeatables[35] = data.repeatables[35].plus(1)
+                        },
+                },
+                
         },
         tabFormat: {
                 "Upgrades": {

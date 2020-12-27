@@ -1998,6 +1998,20 @@ var MAIN_BUYABLE_DATA = {
                         return [b0, b1, b2]
                 },
         },
+        h21: {
+                name: "Hour",
+                func: "exp_sqrt",
+                effects: "all prior buyable limit",
+                base: {
+                        initial: new Decimal("2"),
+                },
+                bases(){
+                        let b0 = new Decimal("1e1623e3")
+                        let b1 = new Decimal("1")
+                        let b2 = new Decimal("1e25")
+                        return [b0, b1, b2]
+                },
+        },
 }
 
 var EXTRA_FREE_BUYABLE_DATA = {
