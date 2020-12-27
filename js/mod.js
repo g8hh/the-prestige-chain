@@ -443,9 +443,10 @@ function getChangeLogText(){
 	let part13= [n1, n2, n3, n4, n5, n6, n7, "", n8, n9, ""]
 	let part14= [o1, o2, o3, o4, o5, o6, ""]
 	let part15= [p1, p2, p3, p4, p5, p6, "", p7, p8, ""]
+	let part16= [q1, q2, q3, q4, q5, q6, ""]
 
 	let final1 = [part10, part9, part8, part7, part6, part5, part4, part3, part2, part1]
-	let final2 = [part15, part14, part13, part12, part11]
+	let final2 = [part16, part15, part14, part13, part12, part11]
 
 	return final2.concat(final1)
 }
