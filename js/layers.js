@@ -12824,7 +12824,7 @@ addLayer("j", {
                                 return player.j.puzzle.bestExp.gt(8) || hasUnlockedPast("j")
                         },
                         canClick(){
-                                return player.j.puzzle.exp.gt(this.cost()) && !player.j.puzzle.upgrades.includes(31)
+                                return player.j.puzzle.exp.gte(this.cost()) && !player.j.puzzle.upgrades.includes(31)
                         },
                         cost(){
                                 return new Decimal(10)
@@ -12854,7 +12854,7 @@ addLayer("j", {
                                 return player.j.puzzle.upgrades.includes(31) || hasUnlockedPast("j")
                         },
                         canClick(){
-                                return player.j.puzzle.exp.gt(this.cost()) && !player.j.puzzle.upgrades.includes(32)
+                                return player.j.puzzle.exp.gte(this.cost()) && !player.j.puzzle.upgrades.includes(32)
                         },
                         cost(){
                                 return new Decimal(20)
@@ -12884,7 +12884,7 @@ addLayer("j", {
                                 return player.j.puzzle.upgrades.includes(32) || hasUnlockedPast("j")
                         },
                         canClick(){
-                                return player.j.puzzle.exp.gt(this.cost()) && !player.j.puzzle.upgrades.includes(33)
+                                return player.j.puzzle.exp.gte(this.cost()) && !player.j.puzzle.upgrades.includes(33)
                         },
                         cost(){
                                 return new Decimal(40)
