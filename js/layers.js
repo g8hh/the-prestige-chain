@@ -12270,9 +12270,6 @@ addLayer("j", {
                 */
 
                 /*
-                join
-                june
-                july
                 journal
                 */
         },
@@ -12296,7 +12293,7 @@ addLayer("j", {
                         return ret
                 },
                 getAttemptChance(){
-                        let ret = Decimal.pow(.5, player.j.puzzle.repeatables[14]).times(.5)
+                        let ret = Decimal.pow(.5, player.j.puzzle.finished).times(.5)
                         ret = ret.times(this[11].effect())
                         return ret
                 },
@@ -12323,7 +12320,7 @@ addLayer("j", {
                         while (c < 1000){
                                 c ++ 
                                 if (data.placed.corners < 4) {
-                                        let left = 4 - data.placed.edges 
+                                        let left = 4 - data.placed.corners 
                                         b += getTimesRequired(layers.j.clickables.getAttemptChance().div(left))
                                         if (b > times) break 
                                         data.placed.corners ++ 
@@ -12376,11 +12373,6 @@ addLayer("j", {
                         }
 
                 },
-                /*
-                getTimesNeeded(){
-                        return getTimesRequired(this.getAttemptChance())
-                },
-                */
                 11: {
                         title(){
                                 return "<h3 style='color: #FF3333'>Success Chance</h3>"
@@ -12558,7 +12550,16 @@ addLayer("j", {
                                 return "<h3 style='color: #FF3333'>Edges</h3>"
                         },
                         display(){
-                                if (player.j.puzzle.found.corners < 4) return "Requires: 4 corners found"
+                                let data = player.j.puzzle
+                                if (data.found.corners < 4) return "Requires: 4 corners found"
+                                if (data.placed.corners < 4) {
+                                        let left = 4 - data.placed.corners 
+                                        return "Chance " + format(layers.j.clickables.getAttemptChance().div(left).min(1).times(100)) + "%"
+                                }
+                                if (data.placed.edges < (data.currentX - 2 + data.currentY - 2) * 2) {
+                                        let left = (data.currentX - 2 + data.currentY - 2) * 2 - data.placed.edges
+                                        return "Chance " + format(layers.j.clickables.getAttemptChance().div(left).min(.1).times(1000)) + "%"
+                                }
                                 return ""
                         },
                         unlocked(){
@@ -12577,8 +12578,13 @@ addLayer("j", {
                                 return "<h3 style='color: #FF3333'>Center</h3>"
                         },
                         display(){
-                                let a = player.j.puzzle.currentX * 2 + player.j.puzzle.currentY * 2 - 8
-                                if (player.j.puzzle.found.edges < a) return "Requires: " + formatWhole(a) + " edges found"
+                                let data = player.j.puzzle
+                                let a = data.currentX * 2 + data.currentY * 2 - 8
+                                if (data.found.edges < a) return "Requires: " + formatWhole(a) + " edges found"
+                                if (data.placed.centers < (data.currentX - 2) * (data.currentY - 2)) {
+                                        let left = (data.currentX - 2) * (data.currentY - 2) - data.placed.centers
+                                        return "Chance " + format(layers.j.clickables.getAttemptChance().div(left).min(.02).times(5000)) + "%"
+                                }
                                 return ""
                         },
                         unlocked(){
@@ -12607,6 +12613,123 @@ addLayer("j", {
                         },
                         onClick(){
                                 player.j.puzzle.mode = 4
+                        },
+                },
+                25: {
+                        title(){
+                                return "<h3 style='color: #FF3333'>Reset</h3>"
+                        },
+                        display(){
+                                return "Reset puzzle progress to get Banked Experience"
+                        },
+                        unlocked(){
+                                return player.j.puzzle.bestExp.gt(2) || player.j.puzzle.bankedExp.gt(2) || hasUnlockedPast("j")
+                        },
+                        canClick(){
+                                return player.j.puzzle.bankedExp.gt(0)
+                        },
+                        onClick(){
+                                if (!this.canClick()) return
+                                let data = player.j.puzzle
+                                data.exp = data.exp.plus(data.bankedExp)
+                                data.bankedExp = new Decimal(0)
+                                data.placed = {
+                                        edges: 0,
+                                        corners: 0,
+                                        centers: 0,
+                                }
+                                data.found = {
+                                        edges: 0,
+                                        corners: 0,
+                                        centers: 0,
+                                }
+                                data.finished = 0
+                        },
+                },
+                31: {
+                        title(){
+                                return "<h3 style='color: #FF3333'>Join</h3>"
+                        },
+                        display(){
+                                let a = "Per upgrade in this row unlock an <b>H</b> buyable [not yet]"
+                                let b = "<br><br>Cost: " + formatWhole(this.cost())
+                                return a + b
+                        },
+                        unlocked(){
+                                return player.j.puzzle.bestExp.gt(8) || hasUnlockedPast("j")
+                        },
+                        canClick(){
+                                return player.j.puzzle.exp.gt(this.cost()) && !player.j.puzzle.upgrades.includes(31)
+                        },
+                        cost(){
+                                return new Decimal(10)
+                        },
+                        style(){
+                                return {
+                                        "background-color": player.j.puzzle.upgrades.includes(31) ? "#77bf5f" : "#bf8f8f"
+                                }
+                        },
+                        onClick(){
+                                if (!this.canClick()) return
+                                let data = player.j.puzzle
+                                data.exp = data.exp.minus(this.cost())
+                                data.upgrades.push(31)
+                        },
+                },
+                32: {
+                        title(){
+                                return "<h3 style='color: #FF3333'>June</h3>"
+                        },
+                        display(){
+                                return "Unlock the final <b>G</b> buyable (+.001*x <b>Generated</b> base scs@1) [not yet]"
+                        },
+                        unlocked(){
+                                return player.j.puzzle.upgrades.includes(31) || hasUnlockedPast("j")
+                        },
+                        canClick(){
+                                return player.j.puzzle.exp.gt(this.cost()) && !player.j.puzzle.upgrades.includes(32)
+                        },
+                        cost(){
+                                return new Decimal(20)
+                        },
+                        style(){
+                                return {
+                                        "background-color": player.j.puzzle.upgrades.includes(32) ? "#77bf5f" : "#bf8f8f"
+                                }
+                        },
+                        onClick(){
+                                if (!this.canClick()) return
+                                let data = player.j.puzzle
+                                data.exp = data.exp.minus(this.cost())
+                                data.upgrades.push(32)
+                        },
+                },
+                33: {
+                        title(){
+                                return "<h3 style='color: #FF3333'>July</h3>"
+                        },
+                        display(){
+                                return "Unlock a row of medal upgrades [not yet]"
+                        },
+                        unlocked(){
+                                return player.j.puzzle.upgrades.includes(32) || hasUnlockedPast("j")
+                        },
+                        canClick(){
+                                return player.j.puzzle.exp.gt(this.cost()) && !player.j.puzzle.upgrades.includes(33)
+                        },
+                        cost(){
+                                return new Decimal(40)
+                        },
+                        style(){
+                                return {
+                                        "background-color": player.j.puzzle.upgrades.includes(33) ? "#77bf5f" : "#bf8f8f"
+                                }
+                        },
+                        onClick(){
+                                if (!this.canClick()) return
+                                let data = player.j.puzzle
+                                data.exp = data.exp.minus(this.cost())
+                                data.upgrades.push(33)
                         },
                 },
         },
@@ -12667,7 +12790,7 @@ addLayer("j", {
                                         let data3 = data.placed
                                         let a = "You have found " + formatWhole(data2.corners) + " corners, " + formatWhole(data2.edges) + " edges and, " + formatWhole(data2.centers) + " centers.<br>"
                                         let b = "You have placed " + formatWhole(data3.corners) + " corners, " + formatWhole(data3.edges) + " edges and, " + formatWhole(data3.centers) + " centers.<br>"
-                                        let c = "You are currently attempting to " + tmp.j.clickables.nameOfModeV + " every " + format(tmp.j.clickables.getAttemptSpeed.pow(-1)) + " seconds (" + formatWhole(Math.min(data.time,1) * 100) + "%).<br>"
+                                        let c = "You are currently attempting to " + tmp.j.clickables.nameOfModeV + " every " + format(tmp.j.clickables.getAttemptSpeed.pow(-1)) + " seconds (" + formatWhole(Math.floor(Math.min(data.time, 1) * 100)) + "%).<br>"
                                         return a + b + c
                                 }],
                                 ["clickables", [3,6]],
@@ -12686,7 +12809,7 @@ addLayer("j", {
                                 You have a 10x10 puzzle (initially)<br>
                                 You can buy three upgrades, <br>
                                 1. success chance, [50% base]<br>
-                                2. attempt speed, [.5s base]<br>
+                                2. attempt speed, [1s base]<br>
                                 3. bulk attempt, [1x base]<br>
                                 <br>
                                 There are edge, corner, and center pieces<br>
@@ -12701,17 +12824,22 @@ addLayer("j", {
                                 <br>
                                 Note that you both need to be on the correct piece (randomly chosen)<br>
                                 and succeed to place the piece<br>
-                                Finishing a puzzle allows you to restart<br>
+                                In other words, you have <br>
+                                <b style='color:#883333'> [which piece factor]/[remaining piece of type]*[base chance] </b>
+                                <br>chance to succeed<br>
+                                This [base chance] is halved per completed puzzle and boost by various upgrades<br>
+                                <br>
                                 You get things for finishing a puzzle:<br>
                                 Exp: 1<br>
                                 Banked Exp: [puzzles beaten so far] + 1<br>
                                 Knowledge: 1<br>
                                 <br>
-                                Exp is spent on other stuff such as upgrade<br>
+                                Exp is spent on upgrades that boost the rest of the game<br>
                                 Knowledge is spent on the three upgrades mentioned at the top<br>
-                                <br>
-                                You can reset which makes you start at one puzzle again and gives you your banked exp<br> [not yet]
-                                <br>
+                                <br><br>
+                                Finishing one puzzle allows you to restart<br>
+                                Restarting makes you start at the first puzzle again and gives you your banked exp<br> [not yet]
+                                <br><br><br>
                                 `
                                 /*
                                 Some prestige II kinda thing that reqs 20x20 puzzle<br> 

@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".5.3.2 Avalanche",
+	num: ".5.4 Avalanche",
 	name: "",
 }
 
@@ -309,7 +309,7 @@ function nextMilestone(){
 // Display extra things at the top of the page
 var displayThings = [
 	"Check the change log!",
-	"Endgame: 3 Banked Exp",
+	"Endgame: Join",
 ]
 
 // Determines when the game "ends"
@@ -392,6 +392,12 @@ function getChangeLogText(){
 	n7 = "- Implemented two knowledge based upgrades"
 	n8 = "v.5.3.2"
 	n9 = "- Fixed a bug with attempt speed"
+	m1 = "v.5.4"
+	m2 = "- Implemented Success Chance and Attempt Speed"
+	m3 = "- Implemented Puzzle reset"
+	m4 = "- Created three upgrades that don't do anything yet"
+	m5 = "- Created a reasonable details page [give suggestions]"
+	m6 = "- Now display placing success chance"
 
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
@@ -406,9 +412,13 @@ function getChangeLogText(){
 	let part10= [k1, k2, k3, ""]
 	let part11= [l1, l2, l3, ""]
 	let part12= [m1, m2, m3, ""]
-	let part13= [n1, n2, n3, n4, n5, n6, n7, n8, n9, ""]
+	let part13= [n1, n2, n3, n4, n5, n6, n7, "", n8, n9, ""]
+	let part14= [m1, m2, m3, m4, m5, m6, ""]
 
-	return [part13, part12, part11, part10, part9, part8, part7, part6, part5, part4, part3, part2, part1]
+	let final1 = [part10, part9, part8, part7, part6, part5, part4, part3, part2, part1]
+	let final2 = [part14, part13, part12, part11]
+
+	return final2.concat(final1)
 }
 
 var controlDown = false
