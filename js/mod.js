@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".5.3.1 Avalanche",
+	num: ".5.3.2 Avalanche",
 	name: "",
 }
 
@@ -390,6 +390,8 @@ function getChangeLogText(){
 	n5 = "- Implemented building centers"
 	n6 = "- Implemented finishing"
 	n7 = "- Implemented two knowledge based upgrades"
+	n8 = "v.5.3.2"
+	n9 = "- Fixed a bug with attempt speed"
 
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
@@ -404,7 +406,7 @@ function getChangeLogText(){
 	let part10= [k1, k2, k3, ""]
 	let part11= [l1, l2, l3, ""]
 	let part12= [m1, m2, m3, ""]
-	let part13= [n1, n2, n3, n4, n5, n6, n7, ""]
+	let part13= [n1, n2, n3, n4, n5, n6, n7, n8, n9, ""]
 
 	return [part13, part12, part11, part10, part9, part8, part7, part6, part5, part4, part3, part2, part1]
 }

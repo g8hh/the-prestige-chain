@@ -1262,7 +1262,7 @@ addLayer("b", {
                 },
                 23: {
                         title: "Best",
-                        description: "Access gives free Any levels",
+                        description: "<b>Access</b> gives free <b>Any</b> levels",
                         cost: new Decimal(5e5),
                         unlocked(){
                                 return hasUpgrade("b", 22) || hasUnlockedPast("b")
@@ -12446,7 +12446,7 @@ addLayer("j", {
 
                                 if (cost.gt(data.knowledge)) return 
                                 data.knowledge = data.knowledge.minus(cost)
-                                data.repeatables[12] = data.repeatabless[12].plus(1)
+                                data.repeatables[12] = data.repeatables[12].plus(1)
 
                                 return //bulk needs to be done eventually
                         },
