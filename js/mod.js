@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".5.6.1 Avalanche",
+	num: ".5.7 Avalanche",
 	name: "",
 }
 
@@ -426,6 +426,12 @@ function getChangeLogText(){
 	q4 = "- Added a normal puzzle upgrade"
 	q5 = "- Implemented Bulk Amount"
 	q6 = "- Added a new row of achievements"
+	r1 = "v.5.7"
+	r2 = "- Removed 140+ instances of a function being called when its value was already stored"
+	r3 = "- Removed 10+ instances of calculating display text without displaying it"
+	r4 = "- Added a Shift+[Letter] hotkey to jump to that tab"
+	r5 = "- Added a Shift+, and Shift+. to move to the left-most/right-most tab"
+	r6 = "- Code cleanup (.pow10(); created generalized functions; various other small things)"
 
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
@@ -444,9 +450,10 @@ function getChangeLogText(){
 	let part14= [o1, o2, o3, o4, o5, o6, ""]
 	let part15= [p1, p2, p3, p4, p5, p6, "", p7, p8, ""]
 	let part16= [q1, q2, q3, q4, q5, q6, ""]
+	let part17= [r1, r2, r3, r4, r5, r6, ""]
 
 	let final1 = [part10, part9, part8, part7, part6, part5, part4, part3, part2, part1]
-	let final2 = [part16, part15, part14, part13, part12, part11]
+	let final2 = [part17, part16, part15, part14, part13, part12, part11]
 
 	return final2.concat(final1)
 }

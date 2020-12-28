@@ -740,15 +740,13 @@ function addTime(diff, layer) {
 document.onkeydown = function(e) {
 	if (player===undefined) return;
 	if (gameEnded&&!player.keepGoing) return;
-	let shiftDown = e.shiftKey
-	let ctrlDown = e.ctrlKey
-	let key = e.key
-	if (ctrlDown) key = "ctrl+" + key
 	if (onFocused) return
-	if (ctrlDown && hotkeys[key]) e.preventDefault()
-	if(hotkeys[key]){
-		if (player[hotkeys[key].layer].unlocked)
-			hotkeys[key].onPress()
+	let key = e.key
+	if (controlDown) key = "ctrl+" + key
+	if (shiftDown) key = "shift+" + key
+	if (e.ctrlKey && hotkeys[key]) e.preventDefault()
+	if (hotkeys[key] != undefined){
+		if (player[hotkeys[key].layer].unlocked) hotkeys[key].onPress()
 	}
 }
 
