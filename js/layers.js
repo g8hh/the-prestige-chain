@@ -379,23 +379,9 @@ function getGeneralizedPrestigeButtonText(layer){
         return a + nextAt
 }
 
-
-
 var devSpeedUp = false
 
-
-/*
-bacteria
-circles
-doodles
-eggs
-features
-games
-hooks
-*/
-
-//upgrade names:
-// https://github.com/first20hours/google-10000-english/blob/master/google-10000-english.txt
+// upgrade names: https://github.com/first20hours/google-10000-english/blob/master/google-10000-english.txt
 
 addLayer("a", {
         name: "Amoebas", // This is optional, only used in a few places, If absent it just uses the layer id.
@@ -1127,9 +1113,9 @@ addLayer("a", {
 })
 
 addLayer("b", {
-        name: "Bacteria", // This is optional, only used in a few places, If absent it just uses the layer id.
-        symbol: "B", // This appears on the layer's node. Default is the id with the first letter capitalized
-        position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+        name: "Bacteria",
+        symbol: "B",
+        position: 0,
         startData() { return {
                 unlocked: true,
 		points: new Decimal(0),
@@ -1142,11 +1128,11 @@ addLayer("b", {
         }},
         color: "#0B4CC3",
         branches: ["a"],
-        requires: new Decimal(0), // Can be a function that takes requirement increases into account
-        resource: "Bacterias", // Name of prestige currency
-        baseResource: "Amoebas", // Name of resource prestige is based on
-        baseAmount() {return player.a.points.floor()}, // Get the current amount of baseResource
-        type: "custom", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+        requires: new Decimal(0),
+        resource: "Bacterias",
+        baseResource: "Amoebas",
+        baseAmount() {return player.a.points.floor()},
+        type: "custom",
         getResetGain() {
                 return getGeneralizedPrestigeGain("b")
         },
@@ -1209,7 +1195,7 @@ addLayer("b", {
                 }
                 player.b.time += diff
         },
-        row: 1, // Row the layer is in on the tree (0 is the first row)
+        row: 1,
         hotkeys: [
                 {key: "b", description: "B: Reset for Bacteria", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
                 {key: "shift+B", description: "Shift+J: Go to Bacteria", onPress(){
@@ -1435,9 +1421,6 @@ addLayer("b", {
                                 return hasUpgrade("c", 35) || hasUnlockedPast("d")
                         }, //hasUpgrade("b", 55)
                 },
-                /*
-                Base
-                */
         },
         buyables: {
                 rows: 3,
@@ -1868,9 +1851,9 @@ addLayer("b", {
 
 
 addLayer("c", {
-        name: "Circles", // This is optional, only used in a few places, If absent it just uses the layer id.
-        symbol: "C", // This appears on the layer's node. Default is the id with the first letter capitalized
-        position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+        name: "Circles",
+        symbol: "C",
+        position: 0,
         startData() { return {
                 unlocked: true,
 		points: new Decimal(0),
@@ -1883,11 +1866,11 @@ addLayer("c", {
         }},
         color: "#CBCCC3",
         branches: ["b"],
-        requires: new Decimal(0), // Can be a function that takes requirement increases into account
-        resource: "Circles", // Name of prestige currency
-        baseResource: "Bacterias", // Name of resource prestige is based on
-        baseAmount() {return player.b.points.floor()}, // Get the current amount of baseResource
-        type: "custom", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+        requires: new Decimal(0),
+        resource: "Circles",
+        baseResource: "Bacterias",
+        baseAmount() {return player.b.points.floor()},
+        type: "custom",
         getResetGain() {
                 return getGeneralizedPrestigeGain("c")
         },
@@ -2173,16 +2156,6 @@ addLayer("c", {
                                 return hasUpgrade("d", 35) || hasUnlockedPast("e")
                         }, //hasUpgrade("c", 55)
                 },
-
-                /*
-                cost
-                come
-                cart
-                complete
-                comment
-                create
-                club
-                */
         },
         buyables: {
                 rows: 3,
@@ -2581,9 +2554,9 @@ addLayer("c", {
 
 
 addLayer("d", {
-        name: "Doodles", // This is optional, only used in a few places, If absent it just uses the layer id.
-        symbol: "D", // This appears on the layer's node. Default is the id with the first letter capitalized
-        position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+        name: "Doodles",
+        symbol: "D",
+        position: 0,
         startData() { return {
                 unlocked: true,
 		points: new Decimal(0),
@@ -2596,11 +2569,11 @@ addLayer("d", {
         }},
         color: "#306363",
         branches: ["c"],
-        requires: new Decimal(0), // Can be a function that takes requirement increases into account
-        resource: "Doodles", // Name of prestige currency
-        baseResource: "Circles", // Name of resource prestige is based on
-        baseAmount() {return player.c.points.floor()}, // Get the current amount of baseResource
-        type: "custom", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+        requires: new Decimal(0),
+        resource: "Doodles",
+        baseResource: "Circles",
+        baseAmount() {return player.c.points.floor()},
+        type: "custom",
         getResetGain() {
                 return getGeneralizedPrestigeGain("d")
         },
@@ -2671,7 +2644,7 @@ addLayer("d", {
                 }
                 data.time += diff
         },
-        row: 3, // Row the layer is in on the tree (0 is the first row)
+        row: 3,
         hotkeys: [
                 {key: "d", description: "D: Reset for Doodles", onPress(){if (canReset(this.layer)) doReset(this.layer)}},                      
                 {key: "shift+D", description: "Shift+D: Go to Doodles", onPress(){
@@ -2905,12 +2878,6 @@ addLayer("d", {
                                 return hasUpgrade("d", 54) || hasUnlockedPast("g")
                         }, // hasUpgrade("d", 55)
                 },
-
-                /*
-                domain
-                designed
-                death
-                */
         },
         buyables: {
                 rows: 3,
@@ -3261,9 +3228,9 @@ addLayer("d", {
 
 
 addLayer("e", {
-        name: "Eggs", // This is optional, only used in a few places, If absent it just uses the layer id.
-        symbol: "E", // This appears on the layer's node. Default is the id with the first letter capitalized
-        position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+        name: "Eggs",
+        symbol: "E",
+        position: 0,
         startData() { return {
                 unlocked: true,
 		points: new Decimal(0),
@@ -3276,11 +3243,11 @@ addLayer("e", {
         }},
         color: "#FFFFCC",
         branches: ["d"],
-        requires: new Decimal(0), // Can be a function that takes requirement increases into account
-        resource: "Eggs", // Name of prestige currency
-        baseResource: "Doodles", // Name of resource prestige is based on
-        baseAmount() {return player.d.points.floor()}, // Get the current amount of baseResource
-        type: "custom", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+        requires: new Decimal(0),
+        resource: "Eggs",
+        baseResource: "Doodles",
+        baseAmount() {return player.d.points.floor()},
+        type: "custom",
         getResetGain() {
                 return getGeneralizedPrestigeGain("e")
         },
@@ -3356,7 +3323,7 @@ addLayer("e", {
                 }
                 data.time += diff
         },
-        row: 4, // Row the layer is in on the tree (0 is the first row)
+        row: 4,
         hotkeys: [
                 {key: "e", description: "E: Reset for Eggs", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
                 {key: "shift+E", description: "Shift+E: Go to Eggs", onPress(){
@@ -3972,9 +3939,9 @@ addLayer("e", {
 })
 
 addLayer("f", {
-        name: "Features", // This is optional, only used in a few places, If absent it just uses the layer id.
-        symbol: "F", // This appears on the layer's node. Default is the id with the first letter capitalized
-        position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+        name: "Features",
+        symbol: "F",
+        position: 0,
         startData() { return {
                 unlocked: true,
 		points: new Decimal(0),
@@ -3988,11 +3955,11 @@ addLayer("f", {
         }},
         color: "#660099",
         branches: ["e"],
-        requires: new Decimal(0), // Can be a function that takes requirement increases into account
-        resource: "Features", // Name of prestige currency
-        baseResource: "Eggs", // Name of resource prestige is based on
-        baseAmount() {return player.e.points.floor()}, // Get the current amount of baseResource
-        type: "custom", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+        requires: new Decimal(0),
+        resource: "Features",
+        baseResource: "Eggs",
+        baseAmount() {return player.e.points.floor()},
+        type: "custom",
         getResetGain() {
                 return getGeneralizedPrestigeGain("f")
         },
@@ -4084,7 +4051,7 @@ addLayer("f", {
                 }
                 data.time += diff
         },
-        row: 5, // Row the layer is in on the tree (0 is the first row)
+        row: 5,
         hotkeys: [
                 {key: "f", description: "F: Reset for Features", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
                 {key: "shift+F", description: "Shift+F: Go to Features", onPress(){
@@ -4550,12 +4517,6 @@ addLayer("f", {
                                 return hasUpgrade("h", 34) || hasUnlockedPast("i")
                         },
                 },
-                /*
-                function
-                fact
-                far
-                feel
-                */
         },
         challenges: {
                 rows: 2,
@@ -4767,9 +4728,9 @@ addLayer("f", {
 })
 
 addLayer("ach", {
-        name: "Goals", // This is optional, only used in a few places, If absent it just uses the layer id.
-        symbol: "⭑", // This appears on the layer's node. Default is the id with the first letter capitalized
-        position: 1, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+        name: "Goals",
+        symbol: "⭑", 
+        position: 1,
         startData() { return {
                 unlocked: true,
 		points: new Decimal(0),
@@ -4783,11 +4744,11 @@ addLayer("ach", {
         }},
         color: "#FFC746",
         branches: ["goalsii"],
-        requires: new Decimal(0), // Can be a function that takes requirement increases into account
-        resource: "Goals", // Name of prestige currency
-        baseResource: "points", // Name of resource prestige is based on
-        baseAmount() {return new Decimal(0)}, // Get the current amount of baseResource
-        type: "custom", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+        requires: new Decimal(0),
+        resource: "Goals",
+        baseResource: "points",
+        baseAmount() {return new Decimal(0)},
+        type: "custom",
         getResetGain() {
                 return new Decimal(0)
         },
@@ -6188,11 +6149,11 @@ addLayer("ach", {
         milestones: {
                 1: {
                         requirementDescription(){
-                                return "<b>Life</b><br>Requires: " + formatWhole(this.req()) + " Goals"
+                                return "<b>Life</b><br>Requires: " + formatWhole(tmp.ach.milestones.req) + " Goals"
                         }, 
                         effectDescription: "You permanently keep all <b>A</b> upgrades",
                         done(){
-                                return player.ach.points.gte(this.req())
+                                return player.ach.points.gte(tmp.ach.milestones.req)
                         },
                         req(){
                                 let a = 30
@@ -6205,11 +6166,11 @@ addLayer("ach", {
                 },
                 2: {
                         requirementDescription() {
-                                return "<b>The Universe</b><br>Requires: " + formatWhole(this.req()) + " Goals"
+                                return "<b>The Universe</b><br>Requires: " + formatWhole(tmp.ach.milestones.req) + " Goals"
                         }, 
                         effectDescription: "You permanently keep all <b>B</b> upgrades",
                         done(){
-                                return player.ach.points.gte(this.req())
+                                return player.ach.points.gte(tmp.ach.milestones.req)
                         },
                         req(){
                                 let a = 36
@@ -6222,11 +6183,11 @@ addLayer("ach", {
                 },
                 3: {
                         requirementDescription(){
-                                return "<b>And Everything</b><br>Requires: " + formatWhole(this.req()) + " Goals"
+                                return "<b>And Everything</b><br>Requires: " + formatWhole(tmp.ach.milestones.req) + " Goals"
                         }, 
                         effectDescription: "You permanently keep all <b>C</b> upgrades",
                         done(){
-                                return player.ach.points.gte(this.req())
+                                return player.ach.points.gte(tmp.ach.milestones.req)
                         },
                         req(){
                                 let a = 49
@@ -6239,11 +6200,11 @@ addLayer("ach", {
                 },
                 4: {
                         requirementDescription() {
-                                return "<b>Tell me and I forget</b><br>Requires: " + formatWhole(this.req()) + " Goals"
+                                return "<b>Tell me and I forget</b><br>Requires: " + formatWhole(tmp.ach.milestones.req) + " Goals"
                         }, 
                         effectDescription: "All autobuyers buy 100x more",
                         done(){
-                                return player.ach.points.gte(this.req())
+                                return player.ach.points.gte(tmp.ach.milestones.req)
                         },
                         req(){
                                 let a = 52
@@ -6256,11 +6217,11 @@ addLayer("ach", {
                 },
                 5: {
                         requirementDescription() {
-                                return "<b>Teach me and I remember</b><br>Requires: " + formatWhole(this.req()) + " Goals"
+                                return "<b>Teach me and I remember</b><br>Requires: " + formatWhole(tmp.ach.milestones.req) + " Goals"
                         }, 
                         effectDescription: "You permanently keep all <b>D</b> upgrades",
                         done(){
-                                return player.ach.points.gte(this.req())
+                                return player.ach.points.gte(tmp.ach.milestones.req)
                         },
                         req(){
                                 let a = 70
@@ -6273,11 +6234,11 @@ addLayer("ach", {
                 },
                 6: {
                         requirementDescription() {
-                                return "<b>Involve me and I learn</b><br>Requires: " + formatWhole(this.req()) + " Goals (needs Eighty or in Challenge 4)"
+                                return "<b>Involve me and I learn</b><br>Requires: " + formatWhole(tmp.ach.milestones.req) + " Goals (needs Eighty or in Challenge 4)"
                         }, 
                         effectDescription: "You permanently keep all <b>E</b> upgrades and add 1.5 to the <b>F</b> gain exponent",
                         done(){
-                                return player.ach.points.gte(this.req()) && (getChallengeDepth(4) > 0 || hasAchievement("ach", 123))
+                                return player.ach.points.gte(tmp.ach.milestones.req) && (getChallengeDepth(4) > 0 || hasAchievement("ach", 123))
                         },
                         req(){
                                 let a = 69
@@ -6411,9 +6372,9 @@ addLayer("ghostTWO", {
 })
 
 addLayer("goalsii", {
-        name: "Goals II", // This is optional, only used in a few places, If absent it just uses the layer id.
-        symbol: "✦", // This appears on the layer's node. Default is the id with the first letter capitalized
-        position: 3, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+        name: "Goals II",
+        symbol: "✦",
+        position: 3,
         startData() { 
                 let a = {}
                 let b = {}
@@ -6462,11 +6423,11 @@ addLayer("goalsii", {
         },
         color: "#CC66CC",
         branches: ["ach"],
-        requires: new Decimal(0), // Can be a function that takes requirement increases into account
-        resource: "Medals", // Name of prestige currency
-        baseResource: "points", // Name of resource prestige is based on
-        baseAmount() {return new Decimal(0)}, // Get the current amount of baseResource
-        type: "custom", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+        requires: new Decimal(0),
+        resource: "Medals",
+        baseResource: "points",
+        baseAmount() {return new Decimal(0)},
+        type: "custom",
         getResetGain() {
                 let a 
                 if (player.f.best.eq(0)) a = new Decimal(0)
@@ -6611,7 +6572,7 @@ addLayer("goalsii", {
                         layers.goalsii.onPrestige(gain)
                 }
         },
-        row: "side", // Row the layer is in on the tree (0 is the first row)
+        row: "side",
         hotkeys: [
                 {key: "[", description: "[: Reset for Medals", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
                 {key: "shift+[", description: "Shift+[: Go to Medals", onPress(){
@@ -8175,9 +8136,9 @@ addLayer("goalsii", {
 })
 
 addLayer("g", {
-        name: "Games", // This is optional, only used in a few places, If absent it just uses the layer id.
-        symbol: "G", // This appears on the layer's node. Default is the id with the first letter capitalized
-        position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+        name: "Games",
+        symbol: "G",
+        position: 0,
         startData() { 
                 let l = [11,12,13,14,21,22,23,24,31,32,33,34,41,42,43,44,51,52,53,54]
                 let b = {}
@@ -8213,14 +8174,14 @@ addLayer("g", {
         },
         color: "#996600",
         branches: ["f"],
-        requires: new Decimal(0), // Can be a function that takes requirement increases into account
-        resource: "Games", // Name of prestige currency
-        baseResource: "Features", // Name of resource prestige is based on
+        requires: new Decimal(0),
+        resource: "Games",
+        baseResource: "Features",
         baseAmount() {
                 if (hasUpgrade("f", 11)) return player.f.best
                 return player.f.bestc44.floor()
-        }, // Get the current amount of baseResource
-        type: "custom", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+        },
+        type: "custom",
         getResetGain() {
                 if (tmp.g.baseAmount.lt(1e19)) return new Decimal(0)
                 return getGeneralizedPrestigeGain("g")
@@ -8351,7 +8312,7 @@ addLayer("g", {
                         data.chargesTime = 0
                 }
 
-                let rb = layers.g.clickables.getPrimaryRebirths(true)
+                let rb = player.g.rebirths[1]
 
                 data.completedTally = Decimal.times(16, rb)
                 
@@ -8389,6 +8350,7 @@ addLayer("g", {
                                 if (hasUpgrade("f", 33)) layers.g.clickables[15].onClick()
                                 if (hasUpgrade("g", 51)) layers.g.clickables[25].onClick()
                                 if (hasUpgrade("h", 32)) layers.g.clickables[35].onClick()
+                                if (player.j.puzzle.upgrades.includes(42)) layers.g.clickables[45].onClick()
                         }
                 } else {
                         data.autotime = 0
@@ -8417,10 +8379,9 @@ addLayer("g", {
                         }
                 }
 
-
                 data.time += diff
         },
-        row: 6, // Row the layer is in on the tree (0 is the first row)
+        row: 6,
         hotkeys: [
                 {key: "g", description: "G: Reset for Games", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
                 {key: "shift+G", description: "Shift+G: Go to Games", onPress(){
@@ -8780,7 +8741,7 @@ addLayer("g", {
                         return data[1] + 10 * data[2] + 100 * data[3] + 1e3 * data[4] + 1e4 * data[5] 
                 },
                 getRebirthExp2(a){
-                        let r = a || this.getPrimaryRebirths(true)
+                        let r = a || player.g.rebirths[1]
                         if (typeof r == "object") r = r.toNumber()
                         let exp2 = 1.45
                         if (r >= 8) exp2 += .005 * Math.min(r - 8, 10)
@@ -8803,7 +8764,7 @@ addLayer("g", {
                         return r
                 },
                 getRebirthCostIncrease(){
-                        let r = this.getPrimaryRebirths(true)
+                        let r = player.g.rebirths[1]
                         r *= tmp.g.clickables.getRebirthActingScaler
                         let exp2 = this.getRebirthExp2(r)
                         let exp = Decimal.pow(r, exp2)
@@ -8832,11 +8793,11 @@ addLayer("g", {
                         return count + 1
                 },
                 getCompletionsReq(){
-                        let ret = 10 + 10 * this.getPrimaryRebirths(true)
+                        let ret = 10 + 10 * player.g.rebirths[1]
                         return ret
                 },
                 getChargeComsumption(){
-                        let rb = this.getPrimaryRebirths(true)
+                        let rb = player.g.rebirths[1]
                         let ret = Decimal.pow(10, Decimal.pow(rb, .8))
                         if (hasMilestone("g", 23)) ret = ret.div(10)
                         return ret.floor()
@@ -8847,7 +8808,7 @@ addLayer("g", {
                         },
                         display(){
                                 if (player.tab != "g") return ""
-                                let a = "<h3 style='color: #D070C0'>Cost</h3>: " + formatWhole(this.cost()) + " Games<br>"
+                                let a = "<h3 style='color: #D070C0'>Cost</h3>: " + formatWhole(tmp.g.clickables[11].cost) + " Games<br>"
                                 let b = "<h3 style='color: #00CC66'>Gives</h3>: " + formatWhole(player.g.clickableAmounts[11]) + " charges per minute"
                                 let c = ""
                                 return a + b + c
@@ -8881,7 +8842,7 @@ addLayer("g", {
                         },
                         display(){
                                 if (player.tab != "g") return ""
-                                let a = "<h3 style='color: #D070C0'>Cost</h3>: " + format(this.cost()) + " Medals<br>"
+                                let a = "<h3 style='color: #D070C0'>Cost</h3>: " + format(tmp.g.clickables[12].cost) + " Medals<br>"
                                 let b = "<h3 style='color: #00CC66'>Gives</h3>: " + formatWhole(player.g.clickableAmounts[12]) + " charges per minute"
                                 let c = ""
                                 return a + b + c
@@ -8893,7 +8854,7 @@ addLayer("g", {
                                 return Decimal.pow(10, player.g.clickableAmounts[12].pow(2)).times(1e8)
                         },
                         canClick(){
-                                return player.goalsii.points.gte(this.cost()) && (player.g.charges.gte(1) || hasMilestone("g", 22))
+                                return player.goalsii.points.gte(tmp.g.clickables[12].cost) && (player.g.charges.gte(1) || hasMilestone("g", 22))
                         },
                         onClick(force = false){
                                 let data = player.g
@@ -8916,7 +8877,7 @@ addLayer("g", {
                         },
                         display(){
                                 if (player.tab != "g") return ""
-                                let a = "<h3 style='color: #D070C0'>Requires</h3>: " + formatWhole(this.cost()) + " Goals<br>"
+                                let a = "<h3 style='color: #D070C0'>Requires</h3>: " + formatWhole(tmp.g.clickables[13].cost) + " Goals<br>"
                                 let b = "<h3 style='color: #00CC66'>Gives</h3>: " + formatWhole(player.g.clickableAmounts[13]) + " charges per minute"
                                 let c = ""
                                 return a + b + c
@@ -8928,7 +8889,7 @@ addLayer("g", {
                                 return 82 + player.g.clickableAmounts[13].sqrt().times(3).floor().toNumber()
                         },
                         canClick(){
-                                return player.ach.points.gte(this.cost()) && (player.g.charges.gte(1) || hasMilestone("g", 22))
+                                return player.ach.points.gte(tmp.g.clickables[13].cost) && (player.g.charges.gte(1) || hasMilestone("g", 22))
                         },
                         onClick(force = false){
                                 let data = player.g
@@ -8950,7 +8911,7 @@ addLayer("g", {
                         },
                         display(){
                                 if (player.tab != "g") return ""
-                                let a = "<h3 style='color: #D070C0'>Costs</h3>: " + format(this.cost()) + " Features<br>"
+                                let a = "<h3 style='color: #D070C0'>Costs</h3>: " + format(tmp.g.clickables[14].cost) + " Features<br>"
                                 let b = "<h3 style='color: #00CC66'>Gives</h3>: " + formatWhole(player.g.clickableAmounts[14]) + " charges per minute"
                                 let c = ""
                                 return a + b + c
@@ -8962,13 +8923,11 @@ addLayer("g", {
                                 return Decimal.pow(1e10, player.g.clickableAmounts[14].pow(1.5)).times("1e1900")
                         },
                         canClick(){
-                                return player.f.points.gte(this.cost()) && (player.g.charges.gte(1) || hasMilestone("g", 22))
+                                return player.f.points.gte(tmp.g.clickables[14].cost) && (player.g.charges.gte(1) || hasMilestone("g", 22))
                         },
                         onClick(force = false){
                                 let maximum = layers.g.clickables.getAttemptAmount(force)
-                                //max clicks
                                 if (!hasMilestone("g", 22)) maximum = maximum.min(player.g.charges)
-                                //charges
                                 let g = player.f.points
                                 if (g.lt("1e1900")) return    
                                 
@@ -8992,7 +8951,7 @@ addLayer("g", {
                         },
                         display(){
                                 if (player.tab != "g") return ""
-                                let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(this.cost()) + " Games<br>"
+                                let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(tmp.g.clickables[21].cost) + " Games<br>"
                                 if (hasUpgrade("goalsii", 31)) return a
                                 let b = "<h3 style='color: #00CC66'>Completion</h3>: " + format(player.g.clickableAmounts[21].times(100).div(tmp.g.clickables.getCompletionsReq)) + "%"
                                 let c = ""
@@ -9065,7 +9024,7 @@ addLayer("g", {
                         },
                         display(){
                                 if (player.tab != "g") return ""
-                                let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(this.cost()) + " Games<br>"
+                                let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(tmp.g.clickables[22].cost) + " Games<br>"
                                 if (hasUpgrade("goalsii", 31)) return a
                                 let b = "<h3 style='color: #00CC66'>Completion</h3>: " + format(player.g.clickableAmounts[22].times(100).div(tmp.g.clickables.getCompletionsReq)) + "%"
                                 let c = ""
@@ -9137,7 +9096,7 @@ addLayer("g", {
                         },
                         display(){
                                 if (player.tab != "g") return ""
-                                let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(this.cost()) + " Games<br>"
+                                let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(tmp.g.clickables[23].cost) + " Games<br>"
                                 if (hasUpgrade("goalsii", 31)) return a
                                 let b = "<h3 style='color: #00CC66'>Completion</h3>: " + format(player.g.clickableAmounts[23].times(100).div(tmp.g.clickables.getCompletionsReq)) + "%"
                                 let c = ""
@@ -9210,7 +9169,7 @@ addLayer("g", {
                         },
                         display(){
                                 if (player.tab != "g") return ""
-                                let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(this.cost()) + " Games<br>"
+                                let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(tmp.g.clickables[24].cost) + " Games<br>"
                                 if (hasUpgrade("goalsii", 31)) return a
                                 let b = "<h3 style='color: #00CC66'>Completion</h3>: " + format(player.g.clickableAmounts[24].times(100).div(tmp.g.clickables.getCompletionsReq)) + "%"
                                 let c = ""
@@ -9283,7 +9242,7 @@ addLayer("g", {
                         },
                         display(){
                                 if (player.tab != "g") return ""
-                                let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(this.cost()) + " Games<br>"
+                                let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(tmp.g.clickables[31].cost) + " Games<br>"
                                 if (hasUpgrade("goalsii", 31)) return a
                                 let b = "<h3 style='color: #00CC66'>Completion</h3>: " + format(player.g.clickableAmounts[31].times(100).div(tmp.g.clickables.getCompletionsReq)) + "%"
                                 let c = ""
@@ -9356,7 +9315,7 @@ addLayer("g", {
                         },
                         display(){
                                 if (player.tab != "g") return ""
-                                let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(this.cost()) + " Games<br>"
+                                let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(tmp.g.clickables[32].cost) + " Games<br>"
                                 if (hasUpgrade("goalsii", 31)) return a
                                 let b = "<h3 style='color: #00CC66'>Completion</h3>: " + format(player.g.clickableAmounts[32].times(100).div(tmp.g.clickables.getCompletionsReq)) + "%"
                                 let c = ""
@@ -9429,7 +9388,7 @@ addLayer("g", {
                         },
                         display(){
                                 if (player.tab != "g") return ""
-                                let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(this.cost()) + " Games<br>"
+                                let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(tmp.g.clickables[33].cost) + " Games<br>"
                                 if (hasUpgrade("goalsii", 31)) return a
                                 let b = "<h3 style='color: #00CC66'>Completion</h3>: " + format(player.g.clickableAmounts[33].times(100).div(tmp.g.clickables.getCompletionsReq)) + "%"
                                 let c = ""
@@ -9502,7 +9461,7 @@ addLayer("g", {
                         },
                         display(){
                                 if (player.tab != "g") return ""
-                                let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(this.cost()) + " Games<br>"
+                                let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(tmp.g.clickables[34].cost) + " Games<br>"
                                 if (hasUpgrade("goalsii", 31)) return a
                                 let b = "<h3 style='color: #00CC66'>Completion</h3>: " + format(player.g.clickableAmounts[34].times(100).div(tmp.g.clickables.getCompletionsReq)) + "%"
                                 let c = ""
@@ -9575,7 +9534,7 @@ addLayer("g", {
                         },
                         display(){
                                 if (player.tab != "g") return ""
-                                let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(this.cost()) + " Games<br>"
+                                let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(tmp.g.clickables[41].cost) + " Games<br>"
                                 if (hasUpgrade("goalsii", 31)) return a
                                 let b = "<h3 style='color: #00CC66'>Completion</h3>: " + format(player.g.clickableAmounts[41].times(100).div(tmp.g.clickables.getCompletionsReq)) + "%"
                                 let c = ""
@@ -9648,7 +9607,7 @@ addLayer("g", {
                         },
                         display(){
                                 if (player.tab != "g") return ""
-                                let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(this.cost()) + " Games<br>"
+                                let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(tmp.g.clickables[42].cost) + " Games<br>"
                                 if (hasUpgrade("goalsii", 31)) return a
                                 let b = "<h3 style='color: #00CC66'>Completion</h3>: " + format(player.g.clickableAmounts[42].times(100).div(tmp.g.clickables.getCompletionsReq)) + "%"
                                 let c = ""
@@ -9721,7 +9680,7 @@ addLayer("g", {
                         },
                         display(){
                                 if (player.tab != "g") return ""
-                                let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(this.cost()) + " Games<br>"
+                                let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(tmp.g.clickables[43].cost) + " Games<br>"
                                 if (hasUpgrade("goalsii", 31)) return a
                                 let b = "<h3 style='color: #00CC66'>Completion</h3>: " + format(player.g.clickableAmounts[43].times(100).div(tmp.g.clickables.getCompletionsReq)) + "%"
                                 let c = ""
@@ -9794,7 +9753,7 @@ addLayer("g", {
                         },
                         display(){
                                 if (player.tab != "g") return ""
-                                let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(this.cost()) + " Games<br>"
+                                let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(tmp.g.clickables[44].cost) + " Games<br>"
                                 if (hasUpgrade("goalsii", 31)) return a
                                 let b = "<h3 style='color: #00CC66'>Completion</h3>: " + format(player.g.clickableAmounts[44].times(100).div(tmp.g.clickables.getCompletionsReq)) + "%"
                                 let c = ""
@@ -9867,7 +9826,7 @@ addLayer("g", {
                         },
                         display(){
                                 if (player.tab != "g") return ""
-                                let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(this.cost()) + " Games<br>"
+                                let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(tmp.g.clickables[51].cost) + " Games<br>"
                                 if (hasUpgrade("goalsii", 31)) return a
                                 let b = "<h3 style='color: #00CC66'>Completion</h3>: " + format(player.g.clickableAmounts[51].times(100).div(tmp.g.clickables.getCompletionsReq)) + "%"
                                 let c = ""
@@ -9938,7 +9897,7 @@ addLayer("g", {
                         },
                         display(){
                                 if (player.tab != "g") return ""
-                                let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(this.cost()) + " Games<br>"
+                                let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(tmp.g.clickables[52].cost) + " Games<br>"
                                 if (hasUpgrade("goalsii", 31)) return a
                                 let b = "<h3 style='color: #00CC66'>Completion</h3>: " + format(player.g.clickableAmounts[52].times(100).div(tmp.g.clickables.getCompletionsReq)) + "%"
                                 let c = ""
@@ -10009,7 +9968,7 @@ addLayer("g", {
                         },
                         display(){
                                 if (player.tab != "g") return ""
-                                let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(this.cost()) + " Games<br>"
+                                let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(tmp.g.clickables[53].cost) + " Games<br>"
                                 if (hasUpgrade("goalsii", 31)) return a
                                 let b = "<h3 style='color: #00CC66'>Completion</h3>: " + format(player.g.clickableAmounts[53].times(100).div(tmp.g.clickables.getCompletionsReq)) + "%"
                                 let c = ""
@@ -10080,7 +10039,7 @@ addLayer("g", {
                         },
                         display(){
                                 if (player.tab != "g") return ""
-                                let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(this.cost()) + " Games<br>"
+                                let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(tmp.g.clickables[54].cost) + " Games<br>"
                                 if (hasUpgrade("goalsii", 31)) return a
                                 let b = "<h3 style='color: #00CC66'>Completion</h3>: " + format(player.g.clickableAmounts[54].times(100).div(tmp.g.clickables.getCompletionsReq)) + "%"
                                 let c = ""
@@ -10160,27 +10119,20 @@ addLayer("g", {
                         },
                         canClick(){
                                 let gdata = player.g
-                                rb = layers.g.clickables.getPrimaryRebirths(true)
+                                rb = player.g.rebirths[1]
                                 let a = gdata.partialTally.gte(Decimal.times(160, (rb + 1) * (rb + 2) / 2))
                                 let b = gdata.charges.gte(layers.g.clickables.getChargeComsumption())
                                 return a && b && tmp.g.clickables.getChargesPerMinute.gt(0)
                         },
                         onClick(force = false){
                                 let data = player.g
-                                let b = layers.g.clickables.getAttemptAmount(force).toNumber()
-                                for (let i = 0; i < b; i++){
-                                        if (!this.canClick()) return 
-                                        data.charges = data.charges.minus(layers.g.clickables.getChargeComsumption())
-                                        data.rebirths[1] += 1
-                                        this.resetPrior()
-                                }
+                                
+                                if (!this.canClick()) return 
+                                data.charges = data.charges.minus(layers.g.clickables.getChargeComsumption())
+                                data.rebirths[1] += 1
+                                this.resetPrior()
                         },
                         resetPrior(){
-                                /*
-                                This to reset:
-                                1. All progress in games
-                                2. Charges
-                                */
                                 let data = player.g
                                 let data1 = data.clickableAmounts
                                 let l = [21, 22, 23, 24,
@@ -10200,7 +10152,7 @@ addLayer("g", {
                         },
                         display(){
                                 if (player.tab != "g") return ""
-                                let a = "<h3 style='color: #D070C0'>Requires</h3>:" + formatWhole(this.cost()) + " Rebirth I<br>"
+                                let a = "<h3 style='color: #D070C0'>Requires</h3>:" + formatWhole(tmp.g.clickables[25].cost) + " Rebirth I<br>"
                                 let b = "<h3 style='color: #00CC66'>Times</h3>: " + formatWhole(player.g.rebirths[2])
                                 return a + b
                         },
@@ -10218,20 +10170,12 @@ addLayer("g", {
                         },
                         onClick(force = false){
                                 let data = player.g
-                                let b = layers.g.clickables.getAttemptAmount(force).toNumber()
-                                for (let i = 0; i < b; i++){
-                                        if (!this.canClick()) return 
-                                        data.charges = data.charges.minus(layers.g.clickables.getChargeComsumption())
-                                        data.rebirths[2] += 1
-                                        this.resetPrior()
-                                }
+                                if (!this.canClick()) return 
+                                data.charges = data.charges.minus(layers.g.clickables.getChargeComsumption())
+                                data.rebirths[2] += 1
+                                this.resetPrior()
                         },
                         resetPrior(){
-                                /*
-                                This to reset:
-                                1. All progress in games
-                                2. Charges
-                                */
                                 let data = player.g
                                 let data1 = data.clickableAmounts
                                 let l = [21, 22, 23, 24,
@@ -10252,7 +10196,7 @@ addLayer("g", {
                         },
                         display(){
                                 if (player.tab != "g") return ""
-                                let a = "<h3 style='color: #D070C0'>Requires</h3>:" + formatWhole(this.cost()) + " Rebirth II<br>"
+                                let a = "<h3 style='color: #D070C0'>Requires</h3>:" + formatWhole(tmp.g.clickables[35].cost) + " Rebirth II<br>"
                                 let b = "<h3 style='color: #00CC66'>Times</h3>: " + formatWhole(player.g.rebirths[3])
                                 return a + b
                         },
@@ -10270,20 +10214,12 @@ addLayer("g", {
                         },
                         onClick(force = false){
                                 let data = player.g
-                                let b = layers.g.clickables.getAttemptAmount(force).toNumber()
-                                for (let i = 0; i < b; i++){
-                                        if (!this.canClick()) return 
-                                        data.charges = data.charges.minus(layers.g.clickables.getChargeComsumption())
-                                        data.rebirths[3] += 1
-                                        this.resetPrior()
-                                }
+                                if (!this.canClick()) return 
+                                data.charges = data.charges.minus(layers.g.clickables.getChargeComsumption())
+                                data.rebirths[3] += 1
+                                this.resetPrior()
                         },
                         resetPrior(){
-                                /*
-                                This to reset:
-                                1. All progress in games
-                                2. Charges
-                                */
                                 let data = player.g
                                 let data1 = data.clickableAmounts
                                 let l = [21, 22, 23, 24,
@@ -10295,7 +10231,53 @@ addLayer("g", {
                                         data1[i] = new Decimal(0)
                                 }
                                 data.charges = new Decimal(3)
-                                if (!false) data.rebirths[2] = layers.g.getStartingRebirth(2)
+                                if (!player.j.puzzle.upgrades.includes(34)) data.rebirths[2] = layers.g.getStartingRebirth(2)
+                                if (!hasMilestone("i", 2)) data.rebirths[1] = layers.g.getStartingRebirth(1)
+                        },
+                },
+                45: {
+                        title(){
+                                return "<h3 style='color: #903000'>Rebirth IV</h3>"
+                        },
+                        display(){
+                                if (player.tab != "g") return ""
+                                let a = "<h3 style='color: #D070C0'>Requires</h3>:" + formatWhole(tmp.g.clickables[45].cost) + " Rebirth III<br>"
+                                let b = "<h3 style='color: #00CC66'>Times</h3>: " + formatWhole(player.g.rebirths[4])
+                                return a + b
+                        },
+                        unlocked(){
+                                return player.j.puzzle.upgrades.includes(41) || hasUnlockedPast("j")
+                        },
+                        cost(){
+                                return 10 + 10 * player.g.rebirths[4]
+                        },
+                        canClick(){
+                                let gdata = player.g
+                                let a = new Decimal(gdata.rebirths[3]).gte(this.cost())
+                                let b = gdata.charges.gte(layers.g.clickables.getChargeComsumption())
+                                return a && b && tmp.g.clickables.getChargesPerMinute.gt(0)
+                        },
+                        onClick(force = false){
+                                let data = player.g
+                                if (!this.canClick()) return 
+                                data.charges = data.charges.minus(layers.g.clickables.getChargeComsumption())
+                                data.rebirths[4] += 1
+                                this.resetPrior()
+                        },
+                        resetPrior(){
+                                let data = player.g
+                                let data1 = data.clickableAmounts
+                                let l = [21, 22, 23, 24,
+                                         31, 32, 33, 34,
+                                         41, 42, 43, 44,
+                                         51, 52, 53, 54,]
+                                for (j in l){
+                                        i = l[j]
+                                        data1[i] = new Decimal(0)
+                                }
+                                data.charges = new Decimal(3)
+                                if (!player.j.puzzle.upgrades.includes(42)) data.rebirths[3] = layers.g.getStartingRebirth(3)
+                                if (!player.j.puzzle.upgrades.includes(34)) data.rebirths[2] = layers.g.getStartingRebirth(2)
                                 if (!hasMilestone("i", 2)) data.rebirths[1] = layers.g.getStartingRebirth(1)
                         },
                 },
@@ -10994,9 +10976,9 @@ addLayer("g", {
 
 
 addLayer("h", {
-        name: "Hearts", // This is optional, only used in a few places, If absent it just uses the layer id.
-        symbol: "H", // This appears on the layer's node. Default is the id with the first letter capitalized
-        position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+        name: "Hearts",
+        symbol: "H",
+        position: 0, 
         startData() { 
                 return {
                         unlocked: true,
@@ -11011,13 +10993,13 @@ addLayer("h", {
         },
         color: "#FF3399",
         branches: ["g"],
-        requires: new Decimal(0), // Can be a function that takes requirement increases into account
-        resource: "Hearts", // Name of prestige currency
-        baseResource: "Games", // Name of resource prestige is based on
+        requires: new Decimal(0),
+        resource: "Hearts",
+        baseResource: "Games",
         baseAmount() {
                 return player.g.best
-        }, // Get the current amount of baseResource
-        type: "custom", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+        },
+        type: "custom",
         getResetGain() {
                 return getGeneralizedPrestigeGain("h")
         },
@@ -11068,7 +11050,7 @@ addLayer("h", {
 
                 data.best = data.best.max(data.points)
                 if (hasUpgrade("h", 22)) {
-                        let gain = this.getResetGain()
+                        let gain = tmp.h.getResetGain
                         data.points = data.points.plus(gain.times(diff))
                         data.total = data.total.plus(gain.times(diff))
                         data.autotimes += diff
@@ -11110,7 +11092,7 @@ addLayer("h", {
                 return getGeneralizedPrestigeButtonText("h")
         },
         canReset(){
-                return player.h.time >= 2 && !hasUpgrade("h", 22) && this.getResetGain().gt(0)
+                return player.h.time >= 2 && !hasUpgrade("h", 22) && tmp.h.getResetGain.gt(0)
         },
         milestones: {
                 1: {
@@ -11571,9 +11553,9 @@ addLayer("h", {
 
 
 addLayer("i", {
-        name: "Ideas", // This is optional, only used in a few places, If absent it just uses the layer id.
-        symbol: "I", // This appears on the layer's node. Default is the id with the first letter capitalized
-        position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+        name: "Ideas",
+        symbol: "I",
+        position: 0,
         startData() { 
                 return {
                         unlocked: true,
@@ -11589,13 +11571,13 @@ addLayer("i", {
         },
         color: "#FFFF33",
         branches: ["h"],
-        requires: new Decimal(0), // Can be a function that takes requirement increases into account
-        resource: "Ideas", // Name of prestige currency
-        baseResource: "Hearts", // Name of resource prestige is based on
+        requires: new Decimal(0),
+        resource: "Ideas",
+        baseResource: "Hearts",
         baseAmount() {
                 return player.h.best
-        }, // Get the current amount of baseResource
-        type: "custom", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+        },
+        type: "custom",
         getResetGain() {
                 return getGeneralizedPrestigeGain("i")
         },
@@ -11645,7 +11627,7 @@ addLayer("i", {
 
                 data.best = data.best.max(data.points)
                 if (hasUpgrade("i", 22)) {
-                        let gain = this.getResetGain()
+                        let gain = tmp.i.getResetGain
                         data.points = data.points.plus(gain.times(diff))
                         data.total = data.total.plus(gain.times(diff))
                         data.autotimes += diff
@@ -11710,7 +11692,7 @@ addLayer("i", {
                 return getGeneralizedPrestigeButtonText("i")
         },
         canReset(){
-                return player.i.time >= 2 && !hasUpgrade("i", 22) && this.getResetGain().gt(0)
+                return player.i.time >= 2 && !hasUpgrade("i", 22) && tmp.i.getResetGain.gt(0)
         },
         milestones: {
                 1: {
@@ -11979,9 +11961,9 @@ addLayer("i", {
 })
 
 addLayer("j", {
-        name: "Jigsaws", // This is optional, only used in a few places, If absent it just uses the layer id.
-        symbol: "J", // This appears on the layer's node. Default is the id with the first letter capitalized
-        position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+        name: "Jigsaws",
+        symbol: "J",
+        position: 0,
         startData() { 
                 return {
                         unlocked: true,
@@ -12005,6 +11987,7 @@ addLayer("j", {
                                 currentY: 10,
                                 maxSize: 20,
                                 upgrades: [],
+                                autotime: 0,
                                 time: 0,
                                 finished: 0,
                                 repeatables: {
@@ -12080,7 +12063,7 @@ addLayer("j", {
 
                 data.best = data.best.max(data.points)
                 if (false) {
-                        let gain = this.getResetGain()
+                        let gain = tmp.j.getResetGain
                         data.points = data.points.plus(gain.times(diff))
                         data.total = data.total.plus(gain.times(diff))
                         data.autotimes += diff
@@ -12106,26 +12089,27 @@ addLayer("j", {
                 let tot3 = 4
                 data2.bestKnowledge = data2.bestKnowledge.max(data2.knowledge)
                 data2.bestExp = data2.bestExp.max(data2.exp)
-                data2.time += diff * tmp.j.clickables.getAttemptSpeed.toNumber()
+                data2.time += diff
+                data2.autotime += diff * tmp.j.clickables.getAttemptSpeed.toNumber()
                 let multiplier = tmp.j.clickables[13].effect.toNumber()
-                if (data2.mode == 1) layers.j.clickables.doSearch(Math.floor(data2.time) * multiplier)
+                if (data2.mode == 1) layers.j.clickables.doSearch(Math.floor(data2.autotime) * multiplier)
                 if (data2.mode == 2) {
                         if (tot3 == data2.found.corners && tot2 == data2.found.edges) {
-                                layers.j.clickables.doEdges(Math.floor(data2.time) * multiplier)
+                                layers.j.clickables.doEdges(Math.floor(data2.autotime) * multiplier)
                         }
                 }
                 if (data2.mode == 3) {
-                        if (tot1 == data2.found.centers) {
-                                layers.j.clickables.doCenters(Math.floor(data2.time) * multiplier)
+                        if (tot1 == data2.found.centers && tot2 == data2.placed.edges) {
+                                layers.j.clickables.doCenters(Math.floor(data2.autotime) * multiplier)
                         }
                 }
                 if (data2.mode == 4) {
-                        if (data2.time > 1) layers.j.clickables.attemptFinish()
+                        if (data2.autotime > 1) layers.j.clickables.attemptFinish()
                 }
 
                 //do stuff for other settings
 
-                data2.time += -1 * Math.floor(data2.time)
+                data2.autotime += -1 * Math.floor(data2.autotime)
                 
                 if (data.autodevtime < 1) return
                 data.autodevtime += -1
@@ -12147,8 +12131,7 @@ addLayer("j", {
                                 showTab("j")
                         }
                 },
-                {key: "4", description: "4: Rebirth IV [not yet]", onPress(){
-                                return //change later
+                {key: "4", description: "4: Rebirth IV", onPress(){
                                 let data = layers.g.clickables[45]
                                 if (data.canClick()) data.onClick()
                         }
@@ -12169,6 +12152,10 @@ addLayer("j", {
                                 layers.j.clickables[24].onClick()
                         }
                 },
+                {key: "0", description: "0: Puzzle Reset", onPress(){
+                                layers.j.clickables[25].onClick()
+                        }
+                },
         ],
         layerShown(){return hasUpgrade("i", 25) || player.j.best.gt(0) || hasUnlockedPast("j")},
         prestigeButtonText(){
@@ -12176,7 +12163,7 @@ addLayer("j", {
                 return getGeneralizedPrestigeButtonText("j")
         },
         canReset(){
-                return player.j.time >= 2 && !false && this.getResetGain().gt(0)
+                return player.j.time >= 2 && !false && tmp.j.getResetGain.gt(0)
         },
         milestones: {
                 1: {
@@ -12235,8 +12222,6 @@ addLayer("j", {
                 */
 
                 /*
-                Jewelry
-                Joined
                 Japanese
                 Jersey
                 Jack
@@ -12258,14 +12243,14 @@ addLayer("j", {
                         return "finish the puzzle"
                 },
                 getAttemptSpeed(){
-                        let ret = this.jigsawEffect()
-                        ret = ret.times(this[12].effect())
+                        let ret = tmp.j.clickables.jigsawEffect
+                        ret = ret.times(tmp.j.clickables[12].effect)
                         return ret
                 },
                 getAttemptChance(){
                         let ret = Decimal.pow(.5, player.j.puzzle.finished).times(.5)
-                        ret = ret.times(this[11].effect())
-                        ret = ret.times(this[35].effect())
+                        ret = ret.times(tmp.j.clickables[11].effect)
+                        ret = ret.times(tmp.j.clickables[35].effect)
                         return ret
                 },
                 doSearch(times = 1){
@@ -12330,8 +12315,8 @@ addLayer("j", {
                         if (tot3 != data.placed.corners) return 
                         data.finished ++
                         data.exp = data.exp.plus(1)
-                        data.bankedExp = data.bankedExp.plus(data.finished)
-                        data.knowledge = data.knowledge.plus(1)
+                        data.bankedExp = data.bankedExp.plus(tmp.j.clickables[14].effect.times(data.finished).floor())
+                        data.knowledge = data.knowledge.plus(tmp.j.clickables[14].effect.floor())
                         data.placed = {
                                 edges: 0,
                                 corners: 0,
@@ -12342,7 +12327,6 @@ addLayer("j", {
                                 corners: 0,
                                 centers: 0,
                         }
-
                 },
                 11: {
                         title(){
@@ -12350,9 +12334,9 @@ addLayer("j", {
                         },
                         display(){
                                 if (player.tab != "j") return ""
-                                let a = "<h3 style='color: #993300'>Cost</h3>: " + formatWhole(this.cost()) + " Knowledge<br>"
+                                let a = "<h3 style='color: #993300'>Cost</h3>: " + formatWhole(tmp.j.clickables[11].cost) + " Knowledge<br>"
                                 let b = "<h3 style='color: #339900'>Curent</h3>: " + formatWhole(player.j.puzzle.repeatables[11]) + " levels<br>"
-                                let c = "<h3 style='color: #9933CC'>Effect</h3>: *" + format(this.effect()) + " success chance<br>"
+                                let c = "<h3 style='color: #9933CC'>Effect</h3>: *" + format(tmp.j.clickables[11].effect) + " success chance<br>"
                                 return a + b + c
                         },
                         unlocked(){
@@ -12362,7 +12346,7 @@ addLayer("j", {
                                 return Decimal.pow(player.j.puzzle.repeatables[11].plus(1), .5).floor()
                         },
                         canClick(){
-                                return player.j.puzzle.knowledge.gte(this.cost())
+                                return player.j.puzzle.knowledge.gte(tmp.j.clickables[11].cost)
                         },
                         effect(){
                                 let lvl = player.j.puzzle.repeatables[11]
@@ -12385,9 +12369,9 @@ addLayer("j", {
                         },
                         display(){
                                 if (player.tab != "j") return ""
-                                let a = "<h3 style='color: #993300'>Cost</h3>: " + formatWhole(this.cost()) + " Knowledge<br>"
+                                let a = "<h3 style='color: #993300'>Cost</h3>: " + formatWhole(tmp.j.clickables[12].cost) + " Knowledge<br>"
                                 let b = "<h3 style='color: #339900'>Curent</h3>: " + formatWhole(player.j.puzzle.repeatables[12]) + " levels<br>"
-                                let c = "<h3 style='color: #9933CC'>Effect</h3>: *" + format(this.effect()) + " Attempt Speed<br>"
+                                let c = "<h3 style='color: #9933CC'>Effect</h3>: *" + format(tmp.j.clickables[12].effect) + " Attempt Speed<br>"
                                 return a + b + c
                         },
                         unlocked(){
@@ -12397,7 +12381,7 @@ addLayer("j", {
                                 return player.j.puzzle.repeatables[12].plus(1)
                         },
                         canClick(){
-                                return player.j.puzzle.knowledge.gte(this.cost())
+                                return player.j.puzzle.knowledge.gte(tmp.j.clickables[12].cost)
                         },
                         effect(){
                                 let lvl = player.j.puzzle.repeatables[12]
@@ -12422,19 +12406,19 @@ addLayer("j", {
                         },
                         display(){
                                 if (player.tab != "j") return ""
-                                let a = "<h3 style='color: #993300'>Cost</h3>: " + formatWhole(this.cost()) + " Knowledge<br>"
+                                let a = "<h3 style='color: #993300'>Cost</h3>: " + formatWhole(tmp.j.clickables[13].cost) + " Knowledge<br>"
                                 let b = "<h3 style='color: #339900'>Curent</h3>: " + formatWhole(player.j.puzzle.repeatables[13]) + " levels<br>"
-                                let c = "<h3 style='color: #9933CC'>Effect</h3>: Bulk Amount of " + format(this.effect()) + "<br>"
+                                let c = "<h3 style='color: #9933CC'>Effect</h3>: Bulk Amount of " + format(tmp.j.clickables[13].effect) + "<br>"
                                 return a + b + c
                         },
                         unlocked(){
                                 return player.j.puzzle.upgrades.includes(34) || hasUnlockedPast("j")
                         },
                         cost(){
-                                return Decimal.pow(4, player.j.puzzle.repeatables[13]).times(20)
+                                return Decimal.pow(1.5, player.j.puzzle.repeatables[13]).times(10).floor()
                         },
                         canClick(){
-                                return player.j.puzzle.knowledge.gte(this.cost())
+                                return player.j.puzzle.knowledge.gte(tmp.j.clickables[13].cost)
                         },
                         effect(){
                                 return player.j.puzzle.repeatables[13].plus(1)
@@ -12456,17 +12440,21 @@ addLayer("j", {
                         },
                         display(){
                                 if (player.tab != "j") return ""
-                                let a = "<h3 style='color: #993300'>Cost</h3>: " + formatWhole(this.cost()) + " Knowledge<br>"
-                                return a 
+                                let a = "<h3 style='color: #993300'>Cost</h3>: " + formatWhole(tmp.j.clickables[14].cost) + " Knowledge<br>"
+                                let c = "<h3 style='color: #9933CC'>Effect</h3>: *" + format(tmp.j.clickables[14].effect) + " Knowledge and Banked Exp gain<br>"
+                                return a + c
                         },
                         unlocked(){
                                 return true
                         },
                         cost(){
-                                return Decimal.pow(10, player.j.puzzle.repeatables[14].sqrt()).times(40).floor()
+                                return Decimal.pow(4, player.j.puzzle.repeatables[14].sqrt()).times(40).floor()
                         },
                         canClick(){
-                                return false && player.j.puzzle.knowledge.gte(this.cost()) && (player.j.puzzle.currentX < 20 || player.j.puzzle.currentY < 20)
+                                return player.j.puzzle.knowledge.gte(this.cost()) && (player.j.puzzle.currentX < 20 || player.j.puzzle.currentY < 20)
+                        },
+                        effect(){
+                                return Decimal.pow(1.8, player.j.puzzle.repeatables[14])
                         },
                         onClick(){
                                 let data = player.j.puzzle
@@ -12594,13 +12582,13 @@ addLayer("j", {
                                 return "<h3 style='color: #FF3333'>Reset</h3>"
                         },
                         display(){
-                                return "Reset puzzle progress to get Banked Experience"
+                                return "Reset puzzle progress to get Banked Experience (" + format(Math.max(0, 60 - player.j.puzzle.time)) + "s)" 
                         },
                         unlocked(){
                                 return player.j.puzzle.bestExp.gt(2) || player.j.puzzle.bankedExp.gt(2) || hasUnlockedPast("j")
                         },
                         canClick(){
-                                return player.j.puzzle.bankedExp.gt(0)
+                                return player.j.puzzle.bankedExp.gt(0) && player.j.puzzle.time >= 60
                         },
                         onClick(){
                                 if (!this.canClick()) return
@@ -12618,6 +12606,7 @@ addLayer("j", {
                                         centers: 0,
                                 }
                                 data.finished = 0
+                                data.time = 0
                         },
                 },
                 31: {
@@ -12626,27 +12615,27 @@ addLayer("j", {
                         },
                         display(){
                                 let a = "Per upgrade in this row unlock an <b>H</b> buyable"
-                                let b = "<br><br>Cost: " + formatWhole(this.cost()) + " Exp"
+                                let b = "<br><br>Cost: " + formatWhole(tmp.j.clickables[31].cost) + " Exp"
                                 return a + b
                         },
                         unlocked(){
                                 return player.j.puzzle.bestExp.gt(2) || hasUnlockedPast("j")
                         },
                         canClick(){
-                                return player.j.puzzle.exp.gte(this.cost()) && !player.j.puzzle.upgrades.includes(31)
+                                return player.j.puzzle.exp.gte(tmp.j.clickables[31].cost) && !player.j.puzzle.upgrades.includes(31)
                         },
                         cost(){
                                 return new Decimal(10)
                         },
                         style(){
                                 return {
-                                        "background-color": player.j.puzzle.upgrades.includes(31) ? "#77bf5f" : this.canClick() ? "#66CCFF" : "#bf8f8f"
+                                        "background-color": player.j.puzzle.upgrades.includes(31) ? "#77bf5f" : tmp.j.clickables[31].canClick ? "#66CCFF" : "#bf8f8f"
                                 }
                         },
                         onClick(){
-                                if (!this.canClick()) return
+                                if (!tmp.j.clickables[31].canClick) return
                                 let data = player.j.puzzle
-                                data.exp = data.exp.minus(this.cost())
+                                data.exp = data.exp.minus(tmp.j.clickables[31].cost)
                                 data.upgrades.push(31)
                         },
                 },
@@ -12656,27 +12645,27 @@ addLayer("j", {
                         },
                         display(){
                                 let a = "Unlock the final <b>G</b> buyable and per upgrade act as if you have 5% less rebirths"
-                                let b = "<br><br>Cost: " + formatWhole(this.cost()) + " Exp"
+                                let b = "<br><br>Cost: " + formatWhole(tmp.j.clickables[32].cost) + " Exp"
                                 return a + b
                         },
                         unlocked(){
                                 return player.j.puzzle.upgrades.includes(31) || hasUnlockedPast("j")
                         },
                         canClick(){
-                                return player.j.puzzle.exp.gte(this.cost()) && !player.j.puzzle.upgrades.includes(32)
+                                return player.j.puzzle.exp.gte(tmp.j.clickables[32].cost) && !player.j.puzzle.upgrades.includes(32)
                         },
                         cost(){
                                 return new Decimal(20)
                         },
                         style(){
                                 return {
-                                        "background-color": player.j.puzzle.upgrades.includes(32) ? "#77bf5f" : this.canClick() ? "#66CCFF" : "#bf8f8f"
+                                        "background-color": player.j.puzzle.upgrades.includes(32) ? "#77bf5f" : tmp.j.clickables[32].canClick ? "#66CCFF" : "#bf8f8f"
                                 }
                         },
                         onClick(){
-                                if (!this.canClick()) return
+                                if (!tmp.j.clickables[32].canClick) return
                                 let data = player.j.puzzle
-                                data.exp = data.exp.minus(this.cost())
+                                data.exp = data.exp.minus(tmp.j.clickables[32].cost)
                                 data.upgrades.push(32)
                         },
                 },
@@ -12686,27 +12675,27 @@ addLayer("j", {
                         },
                         display(){
                                 let a = "Automatically buy <b>H</b> buyables and <b>Held</b> gives free <b>Holiday</b> and <b>Omnipotent VII</b> levels"
-                                let b = "<br><br>Cost: " + formatWhole(this.cost()) + " Exp"
+                                let b = "<br><br>Cost: " + formatWhole(tmp.j.clickables[33].cost) + " Exp"
                                 return a + b
                         },
                         unlocked(){
                                 return player.j.puzzle.upgrades.includes(32) || hasUnlockedPast("j")
                         },
                         canClick(){
-                                return player.j.puzzle.exp.gte(this.cost()) && !player.j.puzzle.upgrades.includes(33)
+                                return player.j.puzzle.exp.gte(tmp.j.clickables[33].cost) && !player.j.puzzle.upgrades.includes(33)
                         },
                         cost(){
                                 return new Decimal(40)
                         },
                         style(){
                                 return {
-                                        "background-color": player.j.puzzle.upgrades.includes(33) ? "#77bf5f" : this.canClick() ? "#66CCFF" : "#bf8f8f"
+                                        "background-color": player.j.puzzle.upgrades.includes(33) ? "#77bf5f" : tmp.j.clickables[33].canClick ? "#66CCFF" : "#bf8f8f"
                                 }
                         },
                         onClick(){
-                                if (!this.canClick()) return
+                                if (!tmp.j.clickables[33].canClick) return
                                 let data = player.j.puzzle
-                                data.exp = data.exp.minus(this.cost())
+                                data.exp = data.exp.minus(tmp.j.clickables[33].cost)
                                 data.upgrades.push(33)
                         },
                 },
@@ -12715,28 +12704,28 @@ addLayer("j", {
                                 return "<b style='color: #003333'>Journal</b>"
                         },
                         display(){
-                                let a = "Unlock Bulk Amount and square Attempt speed"
-                                let b = "<br><br>Cost: " + formatWhole(this.cost()) + " Exp"
+                                let a = "Unlock Bulk Amount, square Attempt speed, and Rebirth II is no longer reset by later rebirths"
+                                let b = "<br><br>Cost: " + formatWhole(tmp.j.clickables[34].cost) + " Exp"
                                 return a + b
                         },
                         unlocked(){
                                 return player.j.puzzle.upgrades.includes(33) || hasUnlockedPast("j")
                         },
                         canClick(){
-                                return player.j.puzzle.exp.gte(this.cost()) && !player.j.puzzle.upgrades.includes(34)
+                                return player.j.puzzle.exp.gte(tmp.j.clickables[34].cost) && !player.j.puzzle.upgrades.includes(34)
                         },
                         cost(){
                                 return new Decimal(80)
                         },
                         style(){
                                 return {
-                                        "background-color": player.j.puzzle.upgrades.includes(34) ? "#77bf5f" : this.canClick() ? "#66CCFF" : "#bf8f8f"
+                                        "background-color": player.j.puzzle.upgrades.includes(34) ? "#77bf5f" : tmp.j.clickables[34].canClick ? "#66CCFF" : "#bf8f8f"
                                 }
                         },
                         onClick(){
-                                if (!this.canClick()) return
+                                if (!tmp.j.clickables[34].canClick) return
                                 let data = player.j.puzzle
-                                data.exp = data.exp.minus(this.cost())
+                                data.exp = data.exp.minus(tmp.j.clickables[34].cost)
                                 data.upgrades.push(34)
                         },
                 },
@@ -12746,15 +12735,15 @@ addLayer("j", {
                         },
                         display(){
                                 let a = "Multiply success chance by 1.2"
-                                let c = "<br>Currently: *" + format(this.effect())
-                                let b = "<br><br>Cost: " + formatWhole(this.cost()) + " Exp"
+                                let c = "<br>Currently: *" + format(tmp.j.clickables[35].effect)
+                                let b = "<br><br>Cost: " + formatWhole(tmp.j.clickables[35].cost) + " Exp"
                                 return a + c + b
                         },
                         unlocked(){
                                 return player.j.puzzle.upgrades.includes(34) || hasUnlockedPast("j")
                         },
                         canClick(){
-                                return player.j.puzzle.exp.gte(this.cost())
+                                return player.j.puzzle.exp.gte(tmp.j.clickables[35].cost)
                         },
                         cost(){
                                 return Decimal.pow(1.5, player.j.puzzle.repeatables[35].pow(2)).ceil()
@@ -12764,14 +12753,74 @@ addLayer("j", {
                         },
                         style(){
                                 return {
-                                        "background-color": this.canClick() ? "#66CCFF" : "#bf8f8f"
+                                        "background-color": tmp.j.clickables[35].canClick ? "#66CCFF" : "#bf8f8f"
                                 }
                         },
                         onClick(){
-                                if (!this.canClick()) return
+                                if (!tmp.j.clickables[35].canClick) return
                                 let data = player.j.puzzle
-                                data.exp = data.exp.minus(this.cost())
+                                data.exp = data.exp.minus(tmp.j.clickables[35].cost)
                                 data.repeatables[35] = data.repeatables[35].plus(1)
+                        },
+                },
+                41: {
+                        title(){
+                                return "<b style='color: #003333'>Jewelry</b>"
+                        },
+                        display(){
+                                let a = "<b>Hour</b> gives free <b>Hope</b> levels and unlock rebirth IV"
+                                let b = "<br><br>Cost: " + formatWhole(tmp.j.clickables[41].cost) + " Exp"
+                                return a + b
+                        },
+                        unlocked(){
+                                return player.j.puzzle.bestKnowledge.gte(30) || hasUnlockedPast("j")
+                        },
+                        canClick(){
+                                return player.j.puzzle.exp.gte(tmp.j.clickables[41].cost) && !player.j.puzzle.upgrades.includes(41)
+                        },
+                        cost(){
+                                return new Decimal(160)
+                        },
+                        style(){
+                                return {
+                                        "background-color": player.j.puzzle.upgrades.includes(41) ? "#77bf5f" : tmp.j.clickables[41].canClick ? "#66CCFF" : "#bf8f8f"
+                                }
+                        },
+                        onClick(){
+                                if (!tmp.j.clickables[41].canClick) return
+                                let data = player.j.puzzle
+                                data.exp = data.exp.minus(tmp.j.clickables[41].cost)
+                                data.upgrades.push(41)
+                        },
+                },
+                42: {
+                        title(){
+                                return "<b style='color: #003333'>Joined</b>"
+                        },
+                        display(){
+                                let a = "<b>Rebirth IV</b> doesn't reset <b>Rebirth III</b>, autobuy <b>Rebirth IV</b>, and <b>Rebirth IV</b> gives free <b>Hour</b> levels"
+                                let b = "<br><br>Cost: " + formatWhole(tmp.j.clickables[42].cost) + " Exp"
+                                return a + b
+                        },
+                        unlocked(){
+                                return player.j.puzzle.upgrades.includes(41) || hasUnlockedPast("j")
+                        },
+                        canClick(){
+                                return player.j.puzzle.exp.gte(tmp.j.clickables[42].cost) && !player.j.puzzle.upgrades.includes(42)
+                        },
+                        cost(){
+                                return new Decimal(320)
+                        },
+                        style(){
+                                return {
+                                        "background-color": player.j.puzzle.upgrades.includes(42) ? "#77bf5f" : tmp.j.clickables[42].canClick ? "#66CCFF" : "#bf8f8f"
+                                }
+                        },
+                        onClick(){
+                                if (!tmp.j.clickables[42].canClick) return
+                                let data = player.j.puzzle
+                                data.exp = data.exp.minus(tmp.j.clickables[42].cost)
+                                data.upgrades.push(42)
                         },
                 },
                 
@@ -12841,7 +12890,7 @@ addLayer("j", {
                                         let data3 = data.placed
                                         let a = "You have found " + formatWhole(data2.corners) + " corners, " + formatWhole(data2.edges) + " edges and, " + formatWhole(data2.centers) + " centers.<br>"
                                         let b = "You have placed " + formatWhole(data3.corners) + " corners, " + formatWhole(data3.edges) + " edges and, " + formatWhole(data3.centers) + " centers.<br>"
-                                        let c = "You are currently attempting to " + tmp.j.clickables.nameOfModeV + " every " + format(tmp.j.clickables.getAttemptSpeed.pow(-1)) + " seconds (" + formatWhole(Math.floor(Math.min(data.time, 1) * 100)) + "%).<br>"
+                                        let c = "You are currently attempting to " + tmp.j.clickables.nameOfModeV + " every " + format(tmp.j.clickables.getAttemptSpeed.pow(-1)) + " seconds (" + formatWhole(Math.floor(Math.min(data.autotime, 1) * 100)) + "%).<br>"
                                         return a + b + c
                                 }],
                                 ["clickables", [3,6]],

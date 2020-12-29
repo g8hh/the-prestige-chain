@@ -1997,6 +1997,11 @@ var MAIN_BUYABLE_DATA = {
                         let b2 = new Decimal("1e20")
                         return [b0, b1, b2]
                 },
+                h21: {
+                        active: function(){
+                                return player.j.puzzle.upgrades.includes(41)
+                        },
+                },
         },
         h21: {
                 name: "Hour",
@@ -2287,6 +2292,17 @@ var EXTRA_FREE_BUYABLE_DATA = {
                         name: "Rebirth II",
                 },
         },
+        h21: {
+                1: {
+                        active: function(){
+                                return player.j.puzzle.upgrades.includes(42)
+                        },
+                        amount: function(){
+                                return player.g.rebirths[4]
+                        },
+                        name: "Rebirth IV",
+                },
+        }
 }
 
 
