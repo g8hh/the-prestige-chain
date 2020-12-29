@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".5.8 Avalanche",
+	num: ".5.8.1 Avalanche",
 	name: "",
 }
 
@@ -439,6 +439,8 @@ function getChangeLogText(){
 	s5 = "- Added Rebirth IV and hotkey (4)"
 	s6 = "- Added two puzzle upgrades"
 	s7 = "- Removed 40+ instances of calculating things instead of just recalling them"
+	s8 = "v.5.8.1"
+	s9 = "- Fixed Larger Puzzle cost scaling"
 
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
@@ -458,7 +460,7 @@ function getChangeLogText(){
 	let part15= [p1, p2, p3, p4, p5, p6, "", p7, p8, ""]
 	let part16= [q1, q2, q3, q4, q5, q6, ""]
 	let part17= [r1, r2, r3, r4, r5, r6, ""]
-	let part18= [s1, s2, s3, s4, s5, s6, s7, ""]
+	let part18= [s1, s2, s3, s4, s5, s6, s7, "", s8, s9, ""]
 
 	let final1 = [part10, part9, part8, part7, part6, part5, part4, part3, part2, part1]
 	let final2 = [part18, part17, part16, part15, part14, part13, part12, part11]

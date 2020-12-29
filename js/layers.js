@@ -12448,7 +12448,7 @@ addLayer("j", {
                                 return true
                         },
                         cost(){
-                                return Decimal.pow(4, player.j.puzzle.repeatables[14].sqrt()).times(40).floor()
+                                return Decimal.pow(4, player.j.puzzle.repeatables[14].pow(.8)).times(40).floor()
                         },
                         canClick(){
                                 return player.j.puzzle.knowledge.gte(this.cost()) && (player.j.puzzle.currentX < 20 || player.j.puzzle.currentY < 20)
@@ -12905,7 +12905,7 @@ addLayer("j", {
                                 ["display-text", function(){
                                         if (player.tab != "j") return ""
                                         return `<h2>Puzzle mechanic:</h2><br>
-                                        You have a 10x10 puzzle (initially)<br>You can the following upgrades [more unlocked later], <br>
+                                        You have a 10x10 puzzle (initially)<br>You can buy the following upgrades [more unlocked later], <br>
                                         1. success chance, [50% base]<br>2. attempt speed, [1s base]<br><br>
                                         There are edge, corner, and center pieces<br>There are 4 settings you can be in<br>
                                         1. Filter<br>1a. It filters for pieces putting them into catagories<br>
