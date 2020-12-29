@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".5.8.1 Avalanche",
+	num: ".5.9 Avalanche",
 	name: "",
 }
 
@@ -170,6 +170,13 @@ PROGRESSION_MILESTONES = {
 	124:()=> player.j.puzzle.bestExp.gte(81)             || hasAchievement("ach",185),
 	125:()=> player.j.puzzle.bestExp.gte(243)            || hasAchievement("ach",186),
 	126:()=> player.j.puzzle.bestExp.gte(729)            || hasAchievement("ach",187),
+	127:()=> player.j.puzzle.finished >= 7                || hasAchievement("ach",191),
+	128:()=> player.j.puzzle.finished >= 8                || hasAchievement("ach",192),
+	129:()=> player.j.puzzle.finished >= 9                || hasAchievement("ach",193),
+	130:()=> player.j.puzzle.finished >= 10               || hasAchievement("ach",194),
+	131:()=> player.j.puzzle.finished >= 11               || hasAchievement("ach",195),
+	132:()=> player.j.puzzle.finished >= 12               || hasAchievement("ach",196),
+	133:()=> player.j.puzzle.finished >= 13               || hasAchievement("ach",197),
 }
 
 PROGRESSION_MILESTONES_TEXT = {
@@ -299,6 +306,13 @@ PROGRESSION_MILESTONES_TEXT = {
 	124:"81 exp",
 	125:"243 exp",
 	126:"729 exp",
+	127:"7 puzzle completions at once",
+	128:"8 puzzle completions at once",
+	129:"9 puzzle completions at once",
+	130:"10 puzzle completions at once",
+	131:"11 puzzle completions at once",
+	132:"12 puzzle completions at once",
+	133:"13 puzzle completions at once",
 }
 
 function progressReachedNum(){
@@ -441,6 +455,12 @@ function getChangeLogText(){
 	s7 = "- Removed 40+ instances of calculating things instead of just recalling them"
 	s8 = "v.5.8.1"
 	s9 = "- Fixed Larger Puzzle cost scaling"
+	t1 = "v.5.9"
+	t2 = "- Added 3 puzzle upgrades (one repeatable)"
+	t3 = "- Added 3 Idea upgrades" 
+	t4 = "- Added a H buyable"
+	t5 = "- Added a row of achievements"
+	t6 = "- Various other small QoL changes, typo fixes, display fixes"
 
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
@@ -461,9 +481,10 @@ function getChangeLogText(){
 	let part16= [q1, q2, q3, q4, q5, q6, ""]
 	let part17= [r1, r2, r3, r4, r5, r6, ""]
 	let part18= [s1, s2, s3, s4, s5, s6, s7, "", s8, s9, ""]
+	let part19= [t1, t2, t3, t4, t5, t6, ""]
 
-	let final1 = [part10, part9, part8, part7, part6, part5, part4, part3, part2, part1]
-	let final2 = [part18, part17, part16, part15, part14, part13, part12, part11]
+	let final1 = [part10,  part9,  part8,  part7,  part6,  part5,  part4,  part3,  part2,  part1]
+	let final2 = [part19, part18, part17, part16, part15, part14, part13, part12, part11]
 
 	return final2.concat(final1)
 }

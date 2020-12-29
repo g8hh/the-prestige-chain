@@ -2017,6 +2017,20 @@ var MAIN_BUYABLE_DATA = {
                         return [b0, b1, b2]
                 },
         },
+        h22: {
+                name: "Huge",
+                func: "lin",
+                effects: "<b>H</b> gain exponent",
+                base: {
+                        initial: new Decimal("1"),
+                },
+                bases(){
+                        let b0 = new Decimal("1e9876543")
+                        let b1 = new Decimal("1e210")
+                        let b2 = new Decimal("1e98")
+                        return [b0, b1, b2]
+                },
+        },
 }
 
 var EXTRA_FREE_BUYABLE_DATA = {
@@ -2694,8 +2708,9 @@ function isBuyableFree(layer){
         if (layer == "c") return hasUpgrade("e", 12) || hasMilestone("goalsii", 4)
         if (layer == "d") return hasMilestone("goalsii", 5)
         if (layer == "e") return hasMilestone("goalsii", 24)
-        if (layer == "f") return false
-        if (layer == "g") return false
+        if (layer == "f") return hasUpgrade("i", 13)
+        if (layer == "g") return hasUpgrade("i", 13)
+        if (layer == "h") return false
 
         return false
 }
