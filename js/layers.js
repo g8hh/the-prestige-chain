@@ -639,17 +639,17 @@ addLayer("a", {
                 22: {
                         title: "About",
                         description: "Unlock the second Amoeba buyable",
-                        cost: new Decimal(2e4),
+                        cost: new Decimal(1e4),
                         unlocked(){
-                                return getBuyableAmount("a", 11).gte(6) || hasUnlockedPast("a")
+                                return getBuyableAmount("a", 11).gte(5) || hasUnlockedPast("a")
                         }
                 },
                 23: {
                         title: "Also",
-                        description: "Remove the ability to prestige but gain 100% of Amoebas on prestige per second, also double Amoeba gain",
+                        description: "Double Amoeba gain and remove the ability to prestige but gain 100% of Amoebas on prestige per second",
                         cost: new Decimal(3e4),
                         unlocked(){
-                                return getBuyableAmount("a", 12).gte(2) || hasUnlockedPast("a")
+                                return getBuyableAmount("a", 12).gte(1) || hasUnlockedPast("a")
                         }
                 },
                 24: {
@@ -665,7 +665,7 @@ addLayer("a", {
                         description: "Each Amoeba upgrade adds .02 to the <b>A</b> base",
                         cost: new Decimal(5e5),
                         unlocked(){
-                                return getBuyableAmount("a", 11).gte(11) || hasUnlockedPast("a")
+                                return getBuyableAmount("a", 11).gte(10) || hasUnlockedPast("a")
                         }
                 },
                 31: {
@@ -695,7 +695,7 @@ addLayer("a", {
                 34: {
                         title: "Action",
                         description: "Each <b>After</b> gives a free level to <b>All</b> and adds .01 to the base",
-                        cost: new Decimal(3e50),
+                        cost: new Decimal(1e50),
                         unlocked(){
                                 return hasUpgrade("a", 33) || hasUnlockedPast("b")
                         }
@@ -711,22 +711,22 @@ addLayer("a", {
                 41: {
                         title: "Art",
                         description: "Get a free <b>Access</b> level",
-                        cost: new Decimal(1e88),
+                        cost: new Decimal(1e86),
                         unlocked(){
-                                return hasUpgrade("a", 35) || hasUnlockedPast("b")
+                                return hasUpgrade("b", 21) || hasUnlockedPast("b")
                         }
                 }, 
                 42: {
                         title: "Another",
                         description: "<b>Account</b> gives free <b>Access</b> levels",
-                        cost: new Decimal(1e195),
+                        cost: new Decimal(5e194),
                         unlocked(){
-                                return hasUpgrade("a", 41) || hasUnlockedPast("b")
+                                return hasUpgrade("b", 25) || hasUnlockedPast("b")
                         }
                 },
                 43: {
                         title: "Article",
-                        description: "<b>Account</b> adds .05 to the <b>Any</b> base",
+                        description: "Per <b>Account</b> add .05 to the <b>Any</b> base",
                         cost: new Decimal(1e284),
                         unlocked(){
                                 return hasUpgrade("a", 42) || hasUnlockedPast("b")
@@ -742,7 +742,7 @@ addLayer("a", {
                 },
                 45: {
                         title: "Around",
-                        description: "Each <b>Account</b> adds .01 to its base",
+                        description: "Each <b>Account</b> adds .01 to its base and double <b>B</b> gain",
                         cost: new Decimal("1e568"),
                         unlocked(){
                                 return hasUpgrade("a", 44) || hasUnlockedPast("b")
@@ -753,7 +753,7 @@ addLayer("a", {
                         description: "Each <b>Access</b> adds .01 to the <b>Any</b> base",
                         cost: new Decimal("5e1228"),
                         unlocked(){
-                                return hasUpgrade("a", 45) || hasUnlockedPast("c")
+                                return hasUpgrade("c", 11) || hasUnlockedPast("c")
                         }
                 },
                 52: {
@@ -1162,6 +1162,7 @@ addLayer("b", {
                 x = x.times(tmp.a.buyables[22].effect)
                 x = x.times(tmp.b.buyables[12].effect)
                 x = x.times(tmp.goalsii.effect)
+                if (hasUpgrade("a", 45)) x = x.times(2)
 
                 return x
         },
@@ -1259,7 +1260,7 @@ addLayer("b", {
                 15: {
                         title: "Been",
                         description: "<b>After</b> gives free levels to <b>Any</b>",
-                        cost: new Decimal(5000),
+                        cost: new Decimal(3000),
                         unlocked(){
                                 return hasUpgrade("b", 14) || hasUnlockedPast("b")
                         }
@@ -1267,7 +1268,7 @@ addLayer("b", {
                 21: {
                         title: "Back",
                         description: "<b>Business</b> can buy twice as much per this row upgrade and unlock a fourth Amoeba buyable",
-                        cost: new Decimal(25000),
+                        cost: new Decimal(15000),
                         unlocked(){
                                 return hasUpgrade("a", 35) || hasUnlockedPast("b")
                         }
@@ -1275,7 +1276,7 @@ addLayer("b", {
                 22: {
                         title: "Buy",
                         description: "Remove the ability to prestige but gain 100% of Bacteria on prestige per second",
-                        cost: new Decimal(5e4),
+                        cost: new Decimal(3e4),
                         unlocked(){
                                 return hasUpgrade("a", 41) || hasUnlockedPast("b")
                         }
@@ -1299,7 +1300,7 @@ addLayer("b", {
                 25: {
                         title: "Book",
                         description: "Access gives free After levels",
-                        cost: new Decimal(3e6),
+                        cost: new Decimal(2e6),
                         unlocked(){
                                 return hasUpgrade("b", 24) || hasUnlockedPast("b")
                         }
@@ -1948,7 +1949,7 @@ addLayer("c", {
                         }
                 },
         ],
-        layerShown(){return player.b.best.gt(5e10) || player.c.best.gt(0) || hasUnlockedPast("c")},
+        layerShown(){return player.b.best.gt(1e10) || player.c.best.gt(0) || hasUnlockedPast("c")},
         prestigeButtonText(){
                 if (hasUpgrade("c", 22)) return ""
                 return getGeneralizedPrestigeButtonText("c")
@@ -6328,7 +6329,7 @@ addLayer("ach", {
                         }, 
                         effectDescription: "You permanently keep all <b>A</b> upgrades",
                         done(){
-                                return player.ach.points.gte(tmp.ach.milestones.req)
+                                return player.ach.points.gte(tmp.ach.milestones[1].req)
                         },
                         req(){
                                 let a = 30
@@ -6345,7 +6346,7 @@ addLayer("ach", {
                         }, 
                         effectDescription: "You permanently keep all <b>B</b> upgrades",
                         done(){
-                                return player.ach.points.gte(tmp.ach.milestones.req)
+                                return player.ach.points.gte(tmp.ach.milestones[2].req)
                         },
                         req(){
                                 let a = 36
@@ -6362,7 +6363,7 @@ addLayer("ach", {
                         }, 
                         effectDescription: "You permanently keep all <b>C</b> upgrades",
                         done(){
-                                return player.ach.points.gte(tmp.ach.milestones.req)
+                                return player.ach.points.gte(tmp.ach.milestones[3].req)
                         },
                         req(){
                                 let a = 49
@@ -6379,7 +6380,7 @@ addLayer("ach", {
                         }, 
                         effectDescription: "All autobuyers buy 100x more",
                         done(){
-                                return player.ach.points.gte(tmp.ach.milestones.req)
+                                return player.ach.points.gte(tmp.ach.milestones[4].req)
                         },
                         req(){
                                 let a = 52
@@ -6396,7 +6397,7 @@ addLayer("ach", {
                         }, 
                         effectDescription: "You permanently keep all <b>D</b> upgrades",
                         done(){
-                                return player.ach.points.gte(tmp.ach.milestones.req)
+                                return player.ach.points.gte(tmp.ach.milestones[5].req)
                         },
                         req(){
                                 let a = 70
@@ -6413,7 +6414,7 @@ addLayer("ach", {
                         }, 
                         effectDescription: "You permanently keep all <b>E</b> upgrades and add 1.5 to the <b>F</b> gain exponent",
                         done(){
-                                return player.ach.points.gte(tmp.ach.milestones.req) && (getChallengeDepth(4) > 0 || hasAchievement("ach", 123))
+                                return player.ach.points.gte(tmp.ach.milestones[6].req) && (getChallengeDepth(4) > 0 || hasAchievement("ach", 123))
                         },
                         req(){
                                 let a = 69
@@ -6657,6 +6658,8 @@ addLayer("goalsii", {
                 return x
         },
         effect(){
+                if (inChallenge("h", 12)) return new Decimal(1)
+
                 let amt = player.goalsii.points
 
                 let ret = amt.times(3).plus(1)
@@ -11557,11 +11560,17 @@ addLayer("h", {
                                 return player.j.puzzle.repeatables[14].gte(10) || hasUnlockedPast("j")
                         }
                 }, // hasUpgrade("h", 52)
+                53: {
+                        title: "Hill",
+                        description: "Unlock a <b>H</b> challenge and best experience multiplies base <b>I</b> gain",
+                        cost: new Decimal("1e530e6"),
+                        unlocked(){
+                                return hasUpgrade("i", 41) || hasUnlockedPast("j")
+                        }
+                }, // hasUpgrade("h", 53)
 
 
                 /*
-                Hill
-                Hold
                 Happy
                 */
         },
@@ -11732,6 +11741,31 @@ addLayer("h", {
                                 return ret
                         },
                 },
+                12: {
+                        name: "Hold",
+                        challengeDescription: "<b>Hi</b> and Medal effect is nullified",
+                        rewardDescription: "Raise <b>I</b> effect to a power",
+                        rewardEffect(){
+                                let c = challengeCompletions("h", 12)
+                                return Decimal.pow(10, Math.sqrt(c))
+                        },
+                        goal(){
+                                let init = new Decimal("1e9525e18")
+                                let factor = getChallengeFactor(challengeCompletions("h", 12))
+                                if (factor.eq(1)) factor = new Decimal(0)
+                                return init.times(Decimal.pow("1e11e28", factor))
+                        },
+                        unlocked(){
+                                return hasUpgrade("h", 53) || hasUnlockedPast("j")
+                        },
+                        currencyInternalName: "points",
+                        completionLimit(){
+                                let ret = 20
+
+                                return ret
+                        },
+                        countsAs: [11],
+                },
         },
         tabFormat: {
                 "Upgrades": {
@@ -11885,6 +11919,7 @@ addLayer("i", {
                 if (hasUpgrade("i", 14)) x = x.times(Decimal.pow(1.1, player.i.upgrades.length))
                 if (hasUpgrade("i", 25)) x = x.times(Math.max(1, totalChallengeComps("f")))
                 if (hasMilestone("j", 2)) x = x.times(Decimal.pow(2, player.j.milestones.length))
+                if (hasUpgrade("h", 53)) x = x.times(player.j.puzzle.bestExp.max(1))
                 return x
         },
         getGainMultPost(){
@@ -11899,6 +11934,7 @@ addLayer("i", {
 
                 let exp = player.i.best.pow(.4).times(2).min(30)
                 if (hasUpgrade("i", 24)) exp = exp.times(tmp.f.challenges[21].rewardEffect)
+                exp = exp.times(tmp.h.challenges[12].rewardEffect)
 
                 let ret = amt.times(2).pow(2).plus(1).pow(exp)
 

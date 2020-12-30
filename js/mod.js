@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".5.12 Avalanche",
+	num: ".5.13 Avalanche",
 	name: "",
 }
 
@@ -497,6 +497,11 @@ function getChangeLogText(){
 	w4 = "- Added a puzzle upgrade"
 	w5 = "- Made the progress bar longer (550 -> 650)"
 	w6 = "- Added a Jigsaw milestone (it is qol)"
+	x1 = "v.5.13"
+	x2 = "- Font change!"
+	x3 = "- Added a Heart challenge"
+	x4 = "- Early game balancing"
+	x5 = "- Fixed bug where achievement milestones were being given too early"
 
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
@@ -521,10 +526,11 @@ function getChangeLogText(){
 	let part20= [u1, u2, u3, u4, u5, ""]
 	let part21= [v1, v2, v3, v4, v5, v6, "", v7, v8, v9, ""]
 	let part22= [w1, w2, w3, w4, w5, w6, ""]
+	let part23= [x1, x2, x3, x4, x5, ""]
 
 	let final1 = [part10,  part9,  part8,  part7,  part6,  part5,  part4,  part3,  part2,  part1]
 	let final2 = [part20, part19, part18, part17, part16, part15, part14, part13, part12, part11]
-	let final3 = [part22, part21]
+	let final3 = [part23, part22, part21]
 
 	return final3.concat(final2).concat(final1)
 }
