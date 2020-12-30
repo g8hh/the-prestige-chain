@@ -1974,6 +1974,11 @@ var MAIN_BUYABLE_DATA = {
                                 return hasUpgrade("h", 51)
                         },
                 },
+                h21: {
+                        active: function(){
+                                return player.j.puzzle.upgrades.includes(53)
+                        },
+                },
         },
         h13: {
                 name: "Hope",
@@ -2033,6 +2038,15 @@ var MAIN_BUYABLE_DATA = {
                 effects: "<b>H</b> gain exponent",
                 base: {
                         initial: new Decimal("1"),
+                        1: {
+                                active: function(){
+                                        return hasUpgrade("i", 35)
+                                },
+                                amount: function(){
+                                        return player.j.puzzle.repeatables[35].max(1)
+                                },
+                                type: "times",
+                        },
                 },
                 bases(){
                         let b0 = new Decimal("1e9876543")

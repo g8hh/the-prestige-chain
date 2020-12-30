@@ -8848,6 +8848,9 @@ addLayer("g", {
                         if (hasUpgrade("goalsii", 33)) {
                                                    exp *= Math.pow(1.1, player.goalsii.upgrades.length)
                         }
+                        if (player.j.puzzle.upgrades.includes(31)) {
+                                                   exp *= 50
+                        }
                         return exp
                 },
                 getChargesPerMinute(){
@@ -11687,7 +11690,7 @@ addLayer("h", {
                                 let init = new Decimal("1e1590e21")
                                 let factor = getChallengeFactor(challengeCompletions("h", 11))
                                 if (factor.eq(1)) factor = new Decimal(0)
-                                return init.times(Decimal.pow("1ee23", factor))
+                                return init.times(Decimal.pow("1e481e20", factor))
                         },
                         unlocked(){
                                 return player.j.puzzle.upgrades.includes(52) || hasUnlockedPast("j")
@@ -12145,11 +12148,19 @@ addLayer("i", {
                                 return player.j.puzzle.repeatables[14].gte(6) || hasUnlockedPast("j")
                         }
                 }, // hasUpgrade("i", 34)
+                35: {
+                        title: "Interest",
+                        description: "Levels of Japan multiply <b>Huge</b> base and base <b>J</b> gain",
+                        cost: new Decimal("1e54321"),
+                        unlocked(){
+                                return player.j.puzzle.repeatables[14].gte(8) || hasUnlockedPast("j")
+                        }
+                }, // hasUpgrade("i", 35)
 
                 
 
                 /*
-                interest
+                
                 images
                 includes
                 island
@@ -12276,6 +12287,8 @@ addLayer("j", {
                                 autotime: 0,
                                 time: 0,
                                 finished: 0,
+                                bartype: 0,
+                                currentPuzzleTime: 0,
                                 repeatables: {
                                         11: new Decimal(0),
                                         12: new Decimal(0),
@@ -12321,6 +12334,7 @@ addLayer("j", {
         },
         getGainMultPre(){
                 let x = Decimal.pow(11, -1)
+                if (hasUpgrade("i", 35)) x = x.times(player.j.puzzle.repeatables[35].max(1))
                 return x
         },
         getGainMultPost(){
@@ -12377,6 +12391,7 @@ addLayer("j", {
                 data2.bestKnowledge = data2.bestKnowledge.max(data2.knowledge)
                 data2.bestExp = data2.bestExp.max(data2.exp)
                 data2.time += diff / (player.devSpeed || 1)
+                data2.currentPuzzleTime += diff / (player.devSpeed || 1)
                 data2.autotime += diff * tmp.j.clickables.getAttemptSpeed.toNumber() / (player.devSpeed || 1)
                 let multiplier = tmp.j.clickables.getBulkAmount
 
@@ -12520,7 +12535,6 @@ addLayer("j", {
                 */
 
                 /*
-                johnson?
                 jones?
                 jim?
                 joint
@@ -12633,15 +12647,22 @@ addLayer("j", {
                                 }//centers
                                 else break
                         }
+                        if (!player.j.puzzle.upgrades.includes(53)) return
+                        data.mode = 4
+                        let k
+                        if (times > b) {
+                                k = this.attemptFinish()
+                        }
+                        if (k) this.doSearch(times - b - 1)
                 },
                 attemptFinish(){
                         let data = player.j.puzzle
                         let tot1 = (data.currentX - 2) * (data.currentY - 2)
                         let tot2 = (data.currentX - 2 + data.currentY - 2) * 2
                         let tot3 = 4
-                        if (tot1 != data.placed.centers) return 
-                        if (tot2 != data.placed.edges) return 
-                        if (tot3 != data.placed.corners) return 
+                        if (tot1 != data.placed.centers) return false
+                        if (tot2 != data.placed.edges) return false
+                        if (tot3 != data.placed.corners) return false
                         data.finished ++
                         data.exp = data.exp.plus(1)
                         data.bankedExp = data.bankedExp.plus(tmp.j.clickables.getBankedExpGainUF.times(data.finished).floor())
@@ -12656,7 +12677,9 @@ addLayer("j", {
                                 corners: 0,
                                 centers: 0,
                         }
+                        data.currentPuzzleTime = 0
                         if (player.j.puzzle.upgrades.includes(43)) data.mode = 1
+                        return true
                 },
                 getKnowledgeGainUF(){
                         let ret = new Decimal(1)
@@ -12864,6 +12887,29 @@ addLayer("j", {
                                 return //bulk needs to be done eventually
                         },
                 },
+                15: {
+                        title(){
+                                return "<h3 style='color: #FF3333'>Progress Bar</h3>"
+                        },
+                        display(){
+                                if (player.tab != "j") return ""
+                                let z = player.j.puzzle.bartype
+                                if (z == 1) return "Current mode:<br>Only placing"
+                                if (z == 0) return "Current mode:<br>Finding and placing"
+                                if (z == 2) return "Current mode:<br>Semi-linear (smart)"
+                                return "broke yeet"
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        canClick(){
+                                return true
+                        },
+                        onClick(){
+                                player.j.puzzle.bartype ++ 
+                                if (player.j.puzzle.bartype >= 3) player.j.puzzle.bartype -= 3
+                        },
+                },
                 21: {
                         title(){
                                 if (player.j.puzzle.mode == 1) return "<h3 style='color: #FFFFFF'>Filter</h3>(6)"
@@ -13002,7 +13048,7 @@ addLayer("j", {
                                 return "<b style='color: #003333'>Join</b>"
                         },
                         display(){
-                                let a = "Per upgrade in this row unlock an <b>H</b> buyable"
+                                let a = "Per upgrade in this row unlock an <b>H</b> buyable and raise charge gain ^50"
                                 let b = "<br><br>Cost: " + formatWhole(tmp.j.clickables[31].cost) + " Exp"
                                 return a + b
                         },
@@ -13365,6 +13411,120 @@ addLayer("j", {
                                 data.upgrades.push(52)
                         },
                 },
+                53: {
+                        title(){
+                                return "<b style='color: #003333'>Johnson</b>"
+                        },
+                        display(){
+                                let a = "<b>Hour</b> gives free <b>Held</b> levels and upon placing all pieces go to Finish"
+                                let b = "<br><br>Cost: " + formatWhole(tmp.j.clickables[53].cost) + " Exp"
+                                return a + b
+                        },
+                        unlocked(){
+                                return player.j.puzzle.upgrades.includes(52) || hasUnlockedPast("j")
+                        },
+                        canClick(){
+                                return player.j.puzzle.exp.gte(tmp.j.clickables[53].cost) && !player.j.puzzle.upgrades.includes(53)
+                        },
+                        cost(){
+                                return new Decimal(10240)
+                        },
+                        style(){
+                                return {
+                                        "background-color": player.j.puzzle.upgrades.includes(53) ? "#77bf5f" : tmp.j.clickables[53].canClick ? "#66CCFF" : "#bf8f8f"
+                                }
+                        },
+                        onClick(){
+                                if (!tmp.j.clickables[53].canClick) return
+                                let data = player.j.puzzle
+                                data.exp = data.exp.minus(tmp.j.clickables[53].cost)
+                                data.upgrades.push(53)
+                        },
+                },
+        },
+        bars: {
+                progressionBar: {
+                        direction: RIGHT,
+                        width: 550,
+                        height: 40,
+                        progress(){
+                                let data = player.j.puzzle
+                                let z = data.bartype
+                                if (z == 1){
+                                        return (data.placed.centers + data.placed.edges + data.placed.corners) / (data.currentX * data.currentY)
+                                }
+                                if (z == 0) {
+                                        let alltot = 2 * data.currentX * data.currentY
+                                        let sf = data.placed.centers + data.placed.edges + data.placed.corners + data.found.centers + data.found.edges + data.found.corners
+                                        return sf / alltot
+                                }
+                                if (z == 2){
+                                        let por = [4, 2 * (data.currentX + data.currentY) - 8, (data.currentX - 1) * (data.currentY - 1)]
+                                        let val = [data.placed.corners, data.placed.edges, data.placed.centers]
+                                        let c2 = function(x){
+                                                return x * (x + 1) /2
+                                        }
+                                        let todo = [c2(por[0]), c2(por[1]), c2(por[2])]
+                                        let done = [c2(por[0]) - c2(por[0] - val[0]),
+                                                        c2(por[1]) - c2(por[1] - val[1]),
+                                                        c2(por[2]) - c2(por[2] - val[2])]
+                                        let w1 = done[0]
+                                        //total number alr done
+                                        let w2 = done[1] / 10
+                                        let w3 = done[2] / 50
+                                        let tot = c2(por[0]) + c2(por[1]) / 10 + c2(por[2]) / 50
+                                        //total number needed to be done
+                                        let togo = tot - (w1 + w2 + w3)
+                                        let factor = 1 / tmp.j.clickables.getBulkAmount / tmp.j.clickables.getAttemptChance.toNumber() / tmp.j.clickables.getAttemptSpeed.toNumber()
+                                        let timePLACE = togo * factor //time needed to place the rest
+                                        let timePLACETOTAL = tot * factor
+                                        return 1 - timePLACE / timePLACETOTAL
+                                }
+                                //data.currentPuzzleTime
+                        },
+                        display(){
+                                let data = player.j.puzzle
+                                let por = [4, 2 * (data.currentX + data.currentY) - 8, (data.currentX - 1) * (data.currentY - 1)]
+                                let val = [data.placed.corners, data.placed.edges, data.placed.centers]
+                                let c2 = function(x){
+                                        return x * (x + 1) /2
+                                }
+                                let todo = [c2(por[0]), c2(por[1]), c2(por[2])]
+                                let done = [c2(por[0]) - c2(por[0] - val[0]),
+                                                c2(por[1]) - c2(por[1] - val[1]),
+                                                c2(por[2]) - c2(por[2] - val[2])]
+                                let w1 = done[0]
+                                //total number alr done
+                                let w2 = done[1] / 10
+                                let w3 = done[2] / 50
+                                let tot = c2(por[0]) + c2(por[1]) / 10 + c2(por[2]) / 50
+                                //total number needed to be done
+                                let togo = tot - (w1 + w2 + w3)
+                                let factor = 1 / tmp.j.clickables.getBulkAmount / tmp.j.clickables.getAttemptChance.toNumber() / tmp.j.clickables.getAttemptSpeed.toNumber()
+                                let timePLACE = togo * factor
+                                
+                                let remtofind = (data.currentX * data.currentY - data.found.edges - data.found.corners - data.found.centers)
+                                let timeFIND = remtofind / tmp.j.clickables.getBulkAmount / tmp.j.clickables.getAttemptSpeed.toNumber()
+
+                                let timeTICK = (1 - data.autotime) / tmp.j.clickables.getAttemptSpeed.toNumber()
+                                return "Percent complete with this puzzle (est time " + format(timePLACE + timeFIND) + "s)"
+                        },
+                        fillStyle(){
+                                return {
+                                        "background": "#66CCFF"
+                                }
+                        },
+                        textStyle(){
+                                return {
+                                        "color": "#990033"
+                                }
+                        },
+                        /*
+                        - baseStyle, fillStyle, borderStyle, textStyle: **Optional**, Apply CSS to the unfilled portion, filled portion, border, and 
+                        display text on the bar, in the form of an object where the keys are CSS attributes, and the values are the
+                        values for those attributes (both as strings). 
+                        */
+                },
         },
         tabFormat: {
                 "Upgrades": {
@@ -13441,6 +13601,7 @@ addLayer("j", {
                                         }
                                         return a + b + c
                                 }],
+                                ["bar", "progressionBar"],
                                 ["clickables", [3,6]],
                         ],
                         unlocked(){

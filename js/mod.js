@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".5.10 Avalanche",
+	num: ".5.11 Avalanche",
 	name: "",
 }
 
@@ -482,6 +482,12 @@ function getChangeLogText(){
 	u3 = "- Added an Idea upgrade" 
 	u4 = "- Added a H challenge"
 	u5 = "- Added a row of achievements"
+	v1 = "v.5.11"
+	v2 = "- Added a Puzzle upgrade"
+	v3 = "- Added an Idea upgrade"
+	v4 = "- Added a progress bar for puzzles"
+	v5 = "- Added three settings two of which are naive and one which is smart"
+	v6 = "- Added an estimated time remaining display on the progress bar"
 
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
@@ -504,11 +510,13 @@ function getChangeLogText(){
 	let part18= [s1, s2, s3, s4, s5, s6, s7, "", s8, s9, ""]
 	let part19= [t1, t2, t3, t4, t5, t6, "", t7, t8, ""]
 	let part20= [u1, u2, u3, u4, u5, ""]
+	let part21= [v1, v2, v3, v4, v5, v6, ""]
 
 	let final1 = [part10,  part9,  part8,  part7,  part6,  part5,  part4,  part3,  part2,  part1]
 	let final2 = [part20, part19, part18, part17, part16, part15, part14, part13, part12, part11]
+	let final3 = [part21]
 
-	return final2.concat(final1)
+	return final3.concat(final2).concat(final1)
 }
 
 var controlDown = false
