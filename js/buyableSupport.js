@@ -2002,6 +2002,11 @@ var MAIN_BUYABLE_DATA = {
                                 return player.j.puzzle.upgrades.includes(41)
                         },
                 },
+                h22: {
+                        active: function(){
+                                return player.j.puzzle.upgrades.includes(52)
+                        },
+                },
         },
         h21: {
                 name: "Hour",
@@ -2015,6 +2020,11 @@ var MAIN_BUYABLE_DATA = {
                         let b1 = new Decimal("1")
                         let b2 = new Decimal("1e25")
                         return [b0, b1, b2]
+                },
+                h22: {
+                        active: function(){
+                                return player.j.puzzle.upgrades.includes(52)
+                        },
                 },
         },
         h22: {
@@ -2316,7 +2326,17 @@ var EXTRA_FREE_BUYABLE_DATA = {
                         },
                         name: "Rebirth IV",
                 },
-        }
+        },
+        h22: {
+                1: {
+                        active: function(){
+                                return true
+                        },
+                        amount: function(){
+                                return tmp.h.challenges[11].rewardEffect
+                        }
+                }
+        },
 }
 
 

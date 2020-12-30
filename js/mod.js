@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".5.9.1 Avalanche",
+	num: ".5.10 Avalanche",
 	name: "",
 }
 
@@ -177,6 +177,13 @@ PROGRESSION_MILESTONES = {
 	131:()=> player.j.puzzle.finished >= 11               || hasAchievement("ach",195),
 	132:()=> player.j.puzzle.finished >= 12               || hasAchievement("ach",196),
 	133:()=> player.j.puzzle.finished >= 13               || hasAchievement("ach",197),
+	134:()=> totalChallengeComps("f") >= 153             || hasAchievement("ach",201),
+	135:()=> totalChallengeComps("f") >= 171             || hasAchievement("ach",202),
+	136:()=> totalChallengeComps("f") >= 190             || hasAchievement("ach",203),
+	137:()=> totalChallengeComps("f") >= 210             || hasAchievement("ach",204),
+	138:()=> totalChallengeComps("h") >= 1               || hasAchievement("ach",205),
+	139:()=> totalChallengeComps("h") >= 3               || hasAchievement("ach",206),
+	140:()=> totalChallengeComps("h") >= 6               || hasAchievement("ach",297),
 }
 
 PROGRESSION_MILESTONES_TEXT = {
@@ -313,6 +320,13 @@ PROGRESSION_MILESTONES_TEXT = {
 	131:"11 puzzle completions at once",
 	132:"12 puzzle completions at once",
 	133:"13 puzzle completions at once",
+	134:"153 Feature challenge completions",
+	135:"171 Feature challenge completions",
+	136:"190 Feature challenge completions",
+	137:"210 Feature challenge completions",
+	138:"1 Heart challenge completion",
+	139:"3 Heart challenge completions",
+	140:"6 Heart challenge completions",
 }
 
 function progressReachedNum(){
@@ -463,6 +477,11 @@ function getChangeLogText(){
 	t6 = "- Various other small QoL changes, typo fixes, display fixes"
 	t7 = "v.5.9.1"
 	t8 = "- Fixed a bug that killed the game"
+	u1 = "v.5.10"
+	u2 = "- Added 2 puzzle upgrades"
+	u3 = "- Added an Idea upgrade" 
+	u4 = "- Added a H challenge"
+	u5 = "- Added a row of achievements"
 
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
@@ -484,9 +503,10 @@ function getChangeLogText(){
 	let part17= [r1, r2, r3, r4, r5, r6, ""]
 	let part18= [s1, s2, s3, s4, s5, s6, s7, "", s8, s9, ""]
 	let part19= [t1, t2, t3, t4, t5, t6, "", t7, t8, ""]
+	let part20= [u1, u2, u3, u4, u5, ""]
 
 	let final1 = [part10,  part9,  part8,  part7,  part6,  part5,  part4,  part3,  part2,  part1]
-	let final2 = [part19, part18, part17, part16, part15, part14, part13, part12, part11]
+	let final2 = [part20, part19, part18, part17, part16, part15, part14, part13, part12, part11]
 
 	return final2.concat(final1)
 }

@@ -62,7 +62,7 @@ function format(decimal, precision=2,) {
 		if (slog.gte(1e4)) return Decimal.pow(10, slog.sub(slog.floor())).toStringWithDecimalPlaces(0) + "F" + commaFormat(slog.floor(), 0)
 		if (slog.gte(100)) return Decimal.pow(10, slog.sub(slog.floor())).toStringWithDecimalPlaces(2) + "F" + commaFormat(slog.floor(), 0)
 		else return Decimal.pow(10, slog.sub(slog.floor())).toStringWithDecimalPlaces(4) + "F" + commaFormat(slog.floor(), 0)
-	} else if (decimal.gte("ee20")) return "e" + format(decimal.log10(), precision)
+	} else if (decimal.gte("ee308")) return "e" + format(decimal.log10(), precision)
 	else if (decimal.gte("ee12")) return "e" + format(decimal.log10(), 4)
 	else if (decimal.gte(1e9)) return exponentialFormat(decimal, precision)
 	else if (decimal.gte(1e3)) return commaFormat(decimal, 0)
