@@ -1891,6 +1891,15 @@ var MAIN_BUYABLE_DATA = {
                                 },
                                 type: "plus",
                         },
+                        3: {
+                                active: function(){
+                                        return hasUpgrade("i", 41)
+                                },
+                                amount: function(){
+                                        return player.j.puzzle.bestKnowledge.plus(1).log10()
+                                },
+                                type: "plus",
+                        },
                 },
                 bases(){
                         let b0 = new Decimal("1e153e9")

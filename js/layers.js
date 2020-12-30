@@ -78,6 +78,7 @@ function getChallengeFactor(comps){
         if (b1.gt(1e10)) b1 = b1.tetrate(1.01) 
         if (b1.gt(1e16)) b1 = b1.tetrate(1.01) 
         if (b1.gt(1e200)) b1 = b1.tetrate(1.0001) 
+        if (b1.gt(1e250)) b1 = b1.tetrate(1.0011) 
         return b1
 }
 
@@ -528,7 +529,7 @@ addLayer("a", {
                                 player.subtabs[l].mainTabs = getUnlockedSubtabs(l)[0]
                         }
                 },
-                {key: "shift+>", description: "Shift+,: Move all the way to the right", 
+                {key: "shift+>", description: "Shift+.: Move all the way to the right", 
                         onPress(){
                                 let l = player.tab
                                 if (layers[l] == undefined) return
@@ -3909,7 +3910,7 @@ addLayer("e", {
                                 "challenges",
                         ],
                         unlocked(){
-                                return false || hasUnlockedPast("h")
+                                return false
                         },
                 },
         },
@@ -8553,6 +8554,28 @@ addLayer("g", {
                         }
                 }
 
+                if (hasUpgrade("h", 52)) {
+                        let diff = Math.floor(player.g.rebirths[2]/10) - player.g.rebirths[3]
+                        player.g.rebirths[3] += Math.max(diff, 0)
+                        if (diff > 0){
+                                for (i in data.clickableAmounts){
+                                        if (["11","12","13","14"].includes(i)) continue
+                                        data.clickableAmounts[i] = new Decimal(0)
+                                }
+                        }
+                }
+
+                if (false) {
+                        let diff = Math.floor(player.g.rebirths[3]/10) - player.g.rebirths[4]
+                        player.g.rebirths[4] += Math.max(diff, 0)
+                        if (diff > 0){
+                                for (i in data.clickableAmounts){
+                                        if (["11","12","13","14"].includes(i)) continue
+                                        data.clickableAmounts[i] = new Decimal(0)
+                                }
+                        }
+                }
+
                 data.time += diff
         },
         row: 6,
@@ -11526,10 +11549,17 @@ addLayer("h", {
                                 return player.j.puzzle.upgrades.includes(33) || hasUnlockedPast("j")
                         }
                 }, // hasUpgrade("h", 51)
+                52: {
+                        title: "Homes",
+                        description: "Best knowledge multiplues <b>J</b> gain and automatically bulk <b>Rebirth III</b>",
+                        cost: new Decimal("1e417e6"),
+                        unlocked(){
+                                return player.j.puzzle.repeatables[14].gte(10) || hasUnlockedPast("j")
+                        }
+                }, // hasUpgrade("h", 52)
 
 
                 /*
-                Homes
                 Hill
                 Hold
                 Happy
@@ -12159,12 +12189,18 @@ addLayer("i", {
                                 return player.j.puzzle.repeatables[14].gte(8) || hasUnlockedPast("j")
                         }
                 }, // hasUpgrade("i", 35)
+                41: {
+                        title: "Images",
+                        description: "Make the puzzle reset cooldown 20 seconds and log10([best knowledge]) adds to <b>Generated</b> base",
+                        cost: new Decimal("1e100000"),
+                        unlocked(){
+                                return player.j.puzzle.repeatables[14].gte(11) || hasUnlockedPast("j")
+                        }
+                }, // hasUpgrade("i", 41)
 
                 
 
                 /*
-                
-                images
                 includes
                 island
 
@@ -12275,6 +12311,7 @@ addLayer("j", {
                         times: 0,
                         autotimes: 0,
                         autodevtime: 0,
+                        autopuzzlereset: false,
                         puzzle: {
                                 exp: new Decimal(0),
                                 bestExp: new Decimal(0),
@@ -12343,6 +12380,8 @@ addLayer("j", {
         getGainMultPost(){
                 let x = getGeneralizedInitialPostMult("j")
 
+                if (hasUpgrade("h", 52)) x = x.times(player.j.puzzle.bestKnowledge.max(1))
+
                 return x
         },
         effect(){
@@ -12384,7 +12423,7 @@ addLayer("j", {
                 }
 
                 data.time += diff
-                data.autodevtime += diff
+                data.autodevtime += diff / Math.min(1, player.devSpeed)
 
                 //puzzle
                 let data2 = data.puzzle
@@ -12401,16 +12440,21 @@ addLayer("j", {
                 let finishedPEdges = tot2 == data2.placed.edges
                 let finishedPCorners = tot3 == data2.placed.corners
                 let finishedPCenters = tot1 == data2.placed.centers
+                let finishedFEdges = tot2 == data2.found.edges
+                let finishedFCorners = tot3 == data2.found.corners
+                let finishedFCenters = tot1 == data2.found.centers
+
+
                 if (data2.mode == 1) layers.j.clickables.doSearch(Math.floor(data2.autotime) * multiplier)
                 if (data2.mode == 2) {
-                        if (tot3 == data2.found.corners && tot2 == data2.found.edges) {
+                        if (finishedFCorners && finishedFEdges) {
                                 layers.j.clickables.doEdges(Math.floor(data2.autotime) * multiplier)
                         } else if (hasUpgrade("i", 34)) {
                                 data2.mode = 1
                         }
                 }
                 if (data2.mode == 3) {
-                        if (tot1 == data2.found.centers && finishedPEdges) {
+                        if (finishedFCenters && finishedPEdges) {
                                 layers.j.clickables.doCenters(Math.floor(data2.autotime) * multiplier)
                         } else if (hasUpgrade("i", 34)) {
                                 data2.mode = 1
@@ -12424,12 +12468,29 @@ addLayer("j", {
                         if (data2.autotime > 1) layers.j.clickables.attemptFinish()
                 }
 
+                if (!(finishedFEdges && finishedFCorners && finishedFCenters)){
+                        data2.placed.centers = 0
+                        data2.placed.corners = 0
+                        data2.placed.edges = 0
+                } //not found all pieces
+                if (!finishedPCorners){
+                        data2.placed.centers = 0
+                        data2.placed.edges = 0
+                } //not placed all corners
+                if (!finishedPEdges) {
+                        data2.placed.centers = 0
+                } //not placed all centers
+                
+
                 //do stuff for other settings
 
                 data2.autotime += -1 * Math.floor(data2.autotime)
                 
                 if (data.autodevtime < 1) return
                 data.autodevtime += -1
+                if (data.autopuzzlereset) {
+                        layers.j.clickables[25].onClick()
+                }
                 if (data.autodevtime > 10) data.autodevtime = 10
         },
         row: 9, // Row the layer is in on the tree (0 is the first row)
@@ -12522,6 +12583,17 @@ addLayer("j", {
                                 return hasMilestone("j", 3) || hasUnlockedPast("j")
                         }, // hasMilestone("j", 4)
                 },
+                5: {
+                        requirementDescription: "<b>Jones</b><br>Requires: 152,587,890,625 Jigsaws", 
+                        effectDescription: "Unlock the ability to automatically reset puzzles if possible",
+                        done(){
+                                return player.j.points.gte(5 ** 16)
+                        },
+                        unlocked(){
+                                return player.j.puzzle.upgrades.includes(51) || hasUnlockedPast("j")
+                        }, // hasMilestone("j", 5)
+                        toggles: [["j", "autopuzzlereset"]]
+                },
         },
         upgrades: {
                 rows: 5,
@@ -12538,7 +12610,7 @@ addLayer("j", {
                 */
 
                 /*
-                jones?
+                ?
                 jim?
                 joint
                 joe?
@@ -12695,12 +12767,26 @@ addLayer("j", {
                         ret = ret.times(tmp.j.clickables[14].effect)
                         return ret
                 },
+                getResetCD(){
+                        let ret = 60
+                        if (hasUpgrade("i", 41)) ret = Math.min(ret, 20)
+                        return ret
+                },
                 11: {
                         title(){
                                 return "<h3 style='color: #FF3333'>Success Chance</h3>"
                         },
                         display(){
                                 if (player.tab != "j") return ""
+                                if (shiftDown) {
+                                        end = ""
+                                        if (tmp.j.clickables[11].effeciency.lt(tmp.j.clickables[12].effeciency)) {
+                                                if (tmp.j.clickables[11].effeciency.lt(tmp.j.clickables[13].effeciency)) {
+                                                        end = "<br><h2 style='color: #CCFF66'>Best!</h2>"
+                                                }
+                                        }
+                                        return "Effeciency: " + format(tmp.j.clickables[11].effeciency) + end
+                                }
                                 let a = "<h3 style='color: #993300'>Cost</h3>: " + formatWhole(tmp.j.clickables[11].cost) + " Knowledge<br>"
                                 let b = "<h3 style='color: #339900'>Current</h3>: " + formatWhole(player.j.puzzle.repeatables[11]) + " levels<br>"
                                 let c = "<h3 style='color: #9933CC'>Effect</h3>: *" + format(tmp.j.clickables[11].effect) + " success chance<br>"
@@ -12716,9 +12802,12 @@ addLayer("j", {
                         canClick(){
                                 return player.j.puzzle.knowledge.gte(tmp.j.clickables[11].cost)
                         },
-                        effect(){
-                                let lvl = player.j.puzzle.repeatables[11]
-                                return Decimal.pow(lvl.plus(1), lvl.plus(1).log10().div(3))
+                        effect(delta = 0){
+                                let lvl = player.j.puzzle.repeatables[11].plus(delta)
+                                let ret = Decimal.pow(lvl.plus(1), lvl.plus(1).log10().div(3))
+                                if (ret.gt(1e4)) ret = ret.sqrt().times(100)
+                                if (ret.gt(1e5)) ret = ret.log10().plus(5).pow(5)
+                                return ret
                         },
                         totalSoFar(){
                                 let sf = Math.round(player.j.puzzle.repeatables[11].toNumber())
@@ -12757,6 +12846,11 @@ addLayer("j", {
                                 }
                                 return sum
                         },
+                        effeciency(){
+                                let c = tmp.j.clickables[11].cost
+                                let e = this.effect(1).div(tmp.j.clickables[11].effect)
+                                return e.ln().pow(-1).times(c)
+                        },
                         onClick(){
                                 let data = player.j.puzzle
 
@@ -12773,6 +12867,15 @@ addLayer("j", {
                         },
                         display(){
                                 if (player.tab != "j") return ""
+                                if (shiftDown) {
+                                        end = ""
+                                        if (tmp.j.clickables[12].effeciency.lt(tmp.j.clickables[11].effeciency)) {
+                                                if (tmp.j.clickables[12].effeciency.lt(tmp.j.clickables[13].effeciency)) {
+                                                        end = "<br><h2 style='color: #CCFF66'>Best!</h2>"
+                                                }
+                                        }
+                                        return "Effeciency: " + format(tmp.j.clickables[12].effeciency) + end
+                                }
                                 let a = "<h3 style='color: #993300'>Cost</h3>: " + formatWhole(tmp.j.clickables[12].cost) + " Knowledge<br>"
                                 let b = "<h3 style='color: #339900'>Current</h3>: " + formatWhole(player.j.puzzle.repeatables[12]) + " levels<br>"
                                 let c = "<h3 style='color: #9933CC'>Effect</h3>: *" + format(tmp.j.clickables[12].effect) + " Attempt Speed<br>"
@@ -12787,11 +12890,18 @@ addLayer("j", {
                         canClick(){
                                 return player.j.puzzle.knowledge.gte(tmp.j.clickables[12].cost)
                         },
-                        effect(){
-                                let lvl = player.j.puzzle.repeatables[12]
+                        effect(delta = 0){
+                                let lvl = player.j.puzzle.repeatables[12].plus(delta)
                                 let exp = new Decimal(2)
                                 if (player.j.puzzle.upgrades.includes(34)) exp = exp.times(2)
-                                return lvl.plus(10).log10().pow(exp)
+                                let ret = lvl.plus(10).log10().pow(exp)
+                                if (ret.gt(100)) ret = ret.sqrt().times(10)
+                                return ret
+                        },
+                        effeciency(){
+                                let c = tmp.j.clickables[12].cost
+                                let e = this.effect(1).div(tmp.j.clickables[12].effect)
+                                return e.ln().pow(-1).times(c)
                         },
                         onClick(){
                                 let data = player.j.puzzle
@@ -12810,6 +12920,15 @@ addLayer("j", {
                         },
                         display(){
                                 if (player.tab != "j") return ""
+                                if (shiftDown) {
+                                        end = ""
+                                        if (tmp.j.clickables[13].effeciency.lt(tmp.j.clickables[12].effeciency)) {
+                                                if (tmp.j.clickables[13].effeciency.lt(tmp.j.clickables[11].effeciency)) {
+                                                        end = "<br><h2 style='color: #CCFF66'>Best!</h2>"
+                                                }
+                                        }
+                                        return "Effeciency: " + format(tmp.j.clickables[13].effeciency) + end
+                                }
                                 let a = "<h3 style='color: #993300'>Cost</h3>: " + formatWhole(tmp.j.clickables[13].cost) + " Knowledge<br>"
                                 let b = "<h3 style='color: #339900'>Current</h3>: " + formatWhole(player.j.puzzle.repeatables[13]) + " levels<br>"
                                 let c = "<h3 style='color: #9933CC'>Effect</h3>: *" + format(tmp.j.clickables[13].effect) + " to Bulk amount<br>"
@@ -12826,6 +12945,11 @@ addLayer("j", {
                         },
                         effect(){
                                 return player.j.puzzle.repeatables[13].plus(1)
+                        },
+                        effeciency(){
+                                let c = tmp.j.clickables[13].cost
+                                let e = player.j.puzzle.repeatables[13].plus(1).pow(-1).plus(1)
+                                return e.ln().pow(-1).times(c)
                         },
                         onClick(){
                                 let data = player.j.puzzle
@@ -13018,13 +13142,13 @@ addLayer("j", {
                                 return "<h3 style='color: #FF3333'>Reset</h3>(0)"
                         },
                         display(){
-                                return "Reset puzzle progress to get Banked Experience (" + format(Math.max(0, 60 - player.j.puzzle.time)) + "s)" 
+                                return "Reset puzzle progress to get Banked Experience (" + format(Math.max(0, tmp.j.clickables.getResetCD - player.j.puzzle.time)) + "s)" 
                         },
                         unlocked(){
                                 return player.j.puzzle.bestExp.gt(2) || player.j.puzzle.bankedExp.gt(2) || hasUnlockedPast("j")
                         },
                         canClick(){
-                                return player.j.puzzle.bankedExp.gt(0) && player.j.puzzle.time >= 60
+                                return player.j.puzzle.bankedExp.gt(0) && player.j.puzzle.time >= tmp.j.clickables.getResetCD
                         },
                         onClick(){
                                 if (!this.canClick()) return
@@ -13448,7 +13572,7 @@ addLayer("j", {
         bars: {
                 progressionBar: {
                         direction: RIGHT,
-                        width: 550,
+                        width: 650,
                         height: 40,
                         progress(){
                                 let data = player.j.puzzle
@@ -13587,6 +13711,9 @@ addLayer("j", {
                                         if (player.tab != "j") return ""
                                         let data = player.j.puzzle
                                         let a = "You have " + formatWhole(player.j.points) + " jigsaws, causing a " + format(tmp.j.clickables.jigsawEffect, 4) + " speed multiplier<br>"
+                                        if (shiftDown) {
+                                                a = "You are holding shift down to bulk buy and see effeciencies (hint: smaller is better)<br>"
+                                        }
                                         let b = "You have " + formatWhole(data.exp) + " experience, " + formatWhole(data.bankedExp) + " banked experience, " + formatWhole(data.knowledge) + " knowledge<br>"
                                         let c = "You are currently working on a <h3>" + data.currentX + "</h3>x<h3>" + data.currentY + "</h3> puzzle (" + formatWhole(data.finished) + " completed)<br>"
                                         return a + b + c

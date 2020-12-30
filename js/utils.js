@@ -740,16 +740,31 @@ function addTime(diff, layer) {
 
 function getKeyDesc1(key){
 	if (key == undefined) console.log(key)
-	let a = key.description
-	let b = "<br /><br>Currently: " + (hotkeysOff[key.key] ? "Off" : "On" )
-	return a 
+	return key.description
 }
 
 function getKeyDesc2(key){
 	if (key == undefined) console.log(key)
-	let a = key.description
-	let b = "Currently: " + (hotkeysOff[key.key] ? "Off" : "On" )
-	return b 
+	return "Currently: " + (hotkeysOff[key.key] ? "Off" : "On" )
+}
+
+function fixHotkeyCode(s){
+	if (s.length == 1) return s.toLowerCase()
+	s = replaceString(s, "Shift", "shift")
+	s = replaceString(s, "]", "}")
+	s = replaceString(s, ",", "<")
+	s = replaceString(s, ".", ">")
+	return s
+}
+
+function dothingcooltoggle(s){
+	//<b style="color: rgb(204, 51, 51);">0: Puzzle Reset</b><br>Currently: On
+	antifront = s.slice(36)
+	idof = antifront.indexOf(":")
+	l = antifront.slice(0, idof)
+	l = fixHotkeyCode(l)
+	if (hotkeysOff[l] == undefined) hotkeysOff[l] = true
+	else hotkeysOff[l] = !hotkeysOff[l]
 }
 
 document.onkeydown = function(e) {

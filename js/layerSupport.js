@@ -29,6 +29,10 @@ function toggleHotkey(key){
         else hotkeysOff[key.key] = !hotkeysOff[key.key]
 }
 
+function newHotkeyLine(key){
+        return ["6", "a", "shift+>", "d", "shift+F", "h", "shift+J"].includes(key.key)
+}
+
 var hotkeysOff = {} 
 
 var ROW_LAYERS = {}

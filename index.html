@@ -87,7 +87,8 @@
 			Time Played: {{ formatTime(player.timePlayed) }}<br><br>
 			<h3>Hotkeys</h3><br>
 			<span v-for="key in hotkeys" v-if="player[key.layer].unlocked">
-				<button class="opt" id=key v-on:click=""><b style='color: #CC3333'>{{getKeyDesc1(key)}}</b><br>{{getKeyDesc2(key)}}</button>
+				<span v-if="newHotkeyLine(key)"><br><br></span>
+				<button class="opt2" id=key v-on:click="{dothingcooltoggle($event.path[0].innerHTML)}"><b style='color: #CC3333'>{{getKeyDesc1(key)}}</b><br>{{getKeyDesc2(key)}}</button>
 			</span>
 			<br>
 			<br>
