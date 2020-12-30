@@ -738,6 +738,20 @@ function addTime(diff, layer) {
 	else data.timePlayed = time
 }
 
+function getKeyDesc1(key){
+	if (key == undefined) console.log(key)
+	let a = key.description
+	let b = "<br /><br>Currently: " + (hotkeysOff[key.key] ? "Off" : "On" )
+	return a 
+}
+
+function getKeyDesc2(key){
+	if (key == undefined) console.log(key)
+	let a = key.description
+	let b = "Currently: " + (hotkeysOff[key.key] ? "Off" : "On" )
+	return b 
+}
+
 document.onkeydown = function(e) {
 	if (player===undefined) return;
 	if (gameEnded&&!player.keepGoing) return;
@@ -747,7 +761,9 @@ document.onkeydown = function(e) {
 	if (shiftDown) key = "shift+" + key
 	if (e.ctrlKey && hotkeys[key]) e.preventDefault()
 	if (hotkeys[key] != undefined){
-		if (player[hotkeys[key].layer].unlocked) hotkeys[key].onPress()
+		if (player[hotkeys[key].layer].unlocked) {
+			if (!hotkeysOff[key]) hotkeys[key].onPress()
+		}
 	}
 }
 

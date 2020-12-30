@@ -24,6 +24,13 @@ function updateHotkeys(){
         }
 }
 
+function toggleHotkey(key){
+        if (hotkeysOff[key.key] == undefined) hotkeysOff[key.key] = true
+        else hotkeysOff[key.key] = !hotkeysOff[key.key]
+}
+
+var hotkeysOff = {} 
+
 var ROW_LAYERS = {}
 var TREE_LAYERS = {}
 var OTHER_LAYERS = {}

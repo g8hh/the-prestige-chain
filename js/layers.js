@@ -11687,10 +11687,10 @@ addLayer("h", {
                                 return Math.floor(ret)
                         },
                         goal(){
-                                let init = new Decimal("1e1590e21")
+                                let init = new Decimal("1e3800e18")
                                 let factor = getChallengeFactor(challengeCompletions("h", 11))
                                 if (factor.eq(1)) factor = new Decimal(0)
-                                return init.times(Decimal.pow("1e481e20", factor))
+                                return init.times(Decimal.pow("1e11e18", factor))
                         },
                         unlocked(){
                                 return player.j.puzzle.upgrades.includes(52) || hasUnlockedPast("j")
@@ -11796,6 +11796,9 @@ addLayer("h", {
                 data.points = new Decimal(0)
                 data.total = new Decimal(0)
                 data.best = new Decimal(0)
+                player.goalsii.points = new Decimal(0)
+                player.goalsii.total = new Decimal(0)
+                player.goalsii.best = new Decimal(0)
 
                 //buyables
                 let resetBuyables = [11, 12, 13, 21, 22, 23, 31, 32, 33]
@@ -13478,7 +13481,12 @@ addLayer("j", {
                                         let factor = 1 / tmp.j.clickables.getBulkAmount / tmp.j.clickables.getAttemptChance.toNumber() / tmp.j.clickables.getAttemptSpeed.toNumber()
                                         let timePLACE = togo * factor //time needed to place the rest
                                         let timePLACETOTAL = tot * factor
-                                        return 1 - timePLACE / timePLACETOTAL
+
+                                        let remtofind = (data.currentX * data.currentY - data.found.edges - data.found.corners - data.found.centers)
+                                        let timeFIND = remtofind / tmp.j.clickables.getBulkAmount / tmp.j.clickables.getAttemptSpeed.toNumber()
+                                        let timeFINDTOTAL = data.currentX * data.currentY / tmp.j.clickables.getBulkAmount / tmp.j.clickables.getAttemptSpeed.toNumber()
+
+                                        return 1 - (timePLACE + timeFIND) / (timePLACETOTAL + timeFINDTOTAL)
                                 }
                                 //data.currentPuzzleTime
                         },
