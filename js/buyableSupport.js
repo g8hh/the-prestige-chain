@@ -1919,6 +1919,15 @@ var MAIN_BUYABLE_DATA = {
                 effects: "<b>Film</b> exponent",
                 base: {
                         initial: new Decimal(.001),
+                        1: {
+                                active: function(){
+                                        return hasUpgrade("h", 55)
+                                },
+                                amount: function(){
+                                        return CURRENT_BUYABLE_EFFECTS["h23"].plus(10).log10()
+                                },
+                                type: "times",
+                        },
                 },
                 bases(){
                         let b0 = new Decimal("1e498e9")
@@ -2028,6 +2037,15 @@ var MAIN_BUYABLE_DATA = {
                 effects: "all prior buyable limit",
                 base: {
                         initial: new Decimal("2"),
+                        1: {
+                                active: function(){
+                                        return hasUpgrade("i", 42)
+                                },
+                                amount: function(){
+                                        return .01 * player.i.upgrades.length
+                                },
+                                type: "plus",
+                        },
                 },
                 bases(){
                         let b0 = new Decimal("1e1623e3")
@@ -2038,6 +2056,11 @@ var MAIN_BUYABLE_DATA = {
                 h22: {
                         active: function(){
                                 return player.j.puzzle.upgrades.includes(52)
+                        },
+                },
+                h23: {
+                        active: function(){
+                                return hasUpgrade("h", 54)
                         },
                 },
         },
@@ -2056,11 +2079,53 @@ var MAIN_BUYABLE_DATA = {
                                 },
                                 type: "times",
                         },
+                        2: {
+                                active: function(){
+                                        return hasUpgrade("i", 45)
+                                },
+                                amount: function(){
+                                        return 2
+                                },
+                                type: "pow",
+                        },
                 },
                 bases(){
                         let b0 = new Decimal("1e9876543")
                         let b1 = new Decimal("1e210")
                         let b2 = new Decimal("1e98")
+                        return [b0, b1, b2]
+                },
+                h23: {
+                        active: function(){
+                                return hasUpgrade("h", 54)
+                        },
+                },
+        },
+        h23: {
+                name: "Happy",
+                func: "lin",
+                effects: "<b>I</b> effect exponent",
+                base: {
+                        initial: new Decimal("1"),
+                },
+                bases(){
+                        let b0 = new Decimal("1e716e6")
+                        let b1 = new Decimal("1e123e3")
+                        let b2 = new Decimal("1ee3")
+                        return [b0, b1, b2]
+                },
+        },
+        h31: {
+                name: "Hair",
+                func: "exp",
+                effects: "base <b>G</b> gain",
+                base: {
+                        initial: new Decimal("1e10"),
+                },
+                bases(){
+                        let b0 = new Decimal("1e51e9")
+                        let b1 = new Decimal("1e1e7")
+                        let b2 = new Decimal("1e1e4")
                         return [b0, b1, b2]
                 },
         },
