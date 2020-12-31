@@ -13519,7 +13519,7 @@ addLayer("j", {
                                 return "<b style='color: #003333'>Justice</b>"
                         },
                         display(){
-                                let a = "You can hold shift to max buy Success Chance and you can complete 5 more <b>F</b> challenges"
+                                let a = "You can hold shift to max buy Success Chance, you can complete 5 more <b>F</b> challenges, and unlock another milestone"
                                 let b = "<br><br>Cost: " + formatWhole(tmp.j.clickables[51].cost) + " Exp"
                                 return a + b
                         },
