@@ -13623,7 +13623,7 @@ addLayer("j", {
                                         return sf / alltot
                                 }
                                 if (z == 2){
-                                        let por = [4, 2 * (data.currentX + data.currentY) - 8, (data.currentX - 1) * (data.currentY - 1)]
+                                        let por = [4, 2 * (data.currentX + data.currentY) - 8, (data.currentX - 2) * (data.currentY - 2)]
                                         let val = [data.placed.corners, data.placed.edges, data.placed.centers]
                                         let c2 = function(x){
                                                 return x * (x + 1) /2
@@ -13653,7 +13653,7 @@ addLayer("j", {
                         },
                         display(){
                                 let data = player.j.puzzle
-                                let por = [4, 2 * (data.currentX + data.currentY) - 8, (data.currentX - 1) * (data.currentY - 1)]
+                                let por = [4, 2 * (data.currentX + data.currentY) - 8, (data.currentX - 2) * (data.currentY - 2)]
                                 let val = [data.placed.corners, data.placed.edges, data.placed.centers]
                                 let c2 = function(x){
                                         return x * (x + 1) /2
@@ -13676,6 +13676,7 @@ addLayer("j", {
                                 let timeFIND = remtofind / tmp.j.clickables.getBulkAmount / tmp.j.clickables.getAttemptSpeed.toNumber()
 
                                 let timeTICK = (1 - data.autotime) / tmp.j.clickables.getAttemptSpeed.toNumber()
+                                if (timePLACE != 0) timePLACE += timeTICK
                                 return "Percent complete with this puzzle (est time " + format(timePLACE + timeFIND) + "s)"
                         },
                         fillStyle(){
