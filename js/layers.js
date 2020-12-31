@@ -12565,7 +12565,7 @@ addLayer("j", {
                                 layers.j.clickables[24].onClick()
                         }
                 },
-                {key: "0", description: "0: Puzzle Reset", onPress(){
+                {key: "shift+0", description: "Shift+0: Puzzle Reset", onPress(){
                                 layers.j.clickables[25].onClick()
                         }
                 },
@@ -12665,7 +12665,8 @@ addLayer("j", {
                 rows: 6,
                 cols: 5, //only using 4 rn
                 jigsawEffect(){
-                        let ret = player.j.points.max(10).log10().log10()
+                        let ret = player.j.points.max(10).log10().sqrt()
+                        if (ret.gt(10)) ret = ret.log10().times(10)
                         return ret
                 },
                 nameOfModeV(){

@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".5.13.1 Avalanche",
+	num: ".5.13.2 Avalanche",
 	name: "",
 }
 
@@ -502,6 +502,8 @@ function getChangeLogText(){
 	x3 = "- Added a Heart challenge"
 	x4 = "- Early game balancing"
 	x5 = "- Fixed bug where achievement milestones were being given too early"
+	x6 = "v.5.13.2"
+	x7 = "- Buff Jigsaw -> Puzzle speed effect"
 
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
@@ -526,7 +528,7 @@ function getChangeLogText(){
 	let part20= [u1, u2, u3, u4, u5, ""]
 	let part21= [v1, v2, v3, v4, v5, v6, "", v7, v8, v9, ""]
 	let part22= [w1, w2, w3, w4, w5, w6, ""]
-	let part23= [x1, x2, x3, x4, x5, ""]
+	let part23= [x1, x2, x3, x4, x5, "", x6, x7, ""]
 
 	let final1 = [part10,  part9,  part8,  part7,  part6,  part5,  part4,  part3,  part2,  part1]
 	let final2 = [part20, part19, part18, part17, part16, part15, part14, part13, part12, part11]
