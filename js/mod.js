@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".5.14 Benzene",
+	num: ".5.14.1 Benzene",
 	name: "",
 }
 
@@ -525,6 +525,8 @@ function getChangeLogText(){
 	y3 = "- Added two Heart buyables"
 	y4 = "- Added two Heart upgrades and four Idea upgrades"
 	y5 = "- Added two Jigsaw upgrades and a Jigsaw milestone"
+	y6 = "v.5.14.1"
+	y7 = "- Fixed a bug"
 
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
@@ -550,7 +552,7 @@ function getChangeLogText(){
 	let part21= [v1, v2, v3, v4, v5, v6, "", v7, v8, v9, ""]
 	let part22= [w1, w2, w3, w4, w5, w6, ""]
 	let part23= [x1, x2, x3, x4, x5, "", x6, x7, "", x8, x9, ""]
-	let part24= [y1, y2, y3, y4, y5, ""]
+	let part24= [y1, y2, y3, y4, y5, "", y6, y7, ""]
 
 	let final1 = [part10,  part9,  part8,  part7,  part6,  part5,  part4,  part3,  part2,  part1]
 	let final2 = [part20, part19, part18, part17, part16, part15, part14, part13, part12, part11]

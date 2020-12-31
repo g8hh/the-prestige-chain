@@ -12102,7 +12102,7 @@ addLayer("i", {
 
                 let ret = amt.times(2).pow(2).plus(1).pow(exp)
 
-                let ret2 = amt.pow(exp2)
+                let ret2 = amt.pow(exp2).max(1)
 
                 //ret = softcap(ret, "h_eff")
 
