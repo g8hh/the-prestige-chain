@@ -1928,6 +1928,15 @@ var MAIN_BUYABLE_DATA = {
                                 },
                                 type: "times",
                         },
+                        2: {
+                                active: function(){
+                                        return true
+                                },
+                                amount: function(){
+                                        return CURRENT_BUYABLE_EFFECTS["h32"]
+                                },
+                                type: "plus",
+                        }
                 },
                 bases(){
                         let b0 = new Decimal("1e498e9")
@@ -2131,6 +2140,25 @@ var MAIN_BUYABLE_DATA = {
                         let b0 = new Decimal("1e51e9")
                         let b1 = new Decimal("1e1e7")
                         let b2 = new Decimal("1e1e4")
+                        return [b0, b1, b2]
+                },
+                h32: {
+                        active: function(){
+                                return hasUpgrade("j", 15)
+                        },
+                },
+        },
+        h32: {
+                name: "Horse",
+                func: "lin",
+                effects: "<b>Guys</b> base",
+                base: {
+                        initial: new Decimal(".001"),
+                },
+                bases(){
+                        let b0 = new Decimal("1e119e9")
+                        let b1 = new Decimal("1e5e7")
+                        let b2 = new Decimal("1e1e5")
                         return [b0, b1, b2]
                 },
         },

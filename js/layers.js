@@ -383,6 +383,65 @@ function getGeneralizedPrestigeButtonText(layer){
         return a + nextAt
 }
 
+function mergeSort(l, comp = function(a,b){return a<=b}){
+        let k = l.length
+        if (k == 1) return l
+        let d = Math.floor(k/2)
+        let a = mergeSort(l.slice(0,d)) 
+        let b = mergeSort(l.slice(d))
+        let apt = 0
+        let bpt = 0
+        let j = []
+        while (true){
+                if (comp(a[apt], b[bpt])) {
+                        j.push(a[apt])
+                        apt ++
+                } else {
+                        j.push(b[bpt])
+                        bpt ++
+                }
+                if (apt == d){
+                        return j.concat(b.slice(bpt))
+                }
+                if (bpt == k-d){
+                        return j.concat(a.slice(apt))
+                }
+        }
+}
+
+/*
+function tryRandListThang(n){
+        let l = []
+        for (let i = 0; i < n; i ++){
+                l.push(Math.random())
+        }
+        l = mergeSort(l)
+        let p = 1
+        let k1 = n
+        let k2 = 0
+        let c = 0
+        while (c < 100){
+                c ++ 
+                if (l[k2] < 1/k1) {
+                        p *= l[k2] * k1
+                        k1 --
+                        k2 ++
+                } else {
+                        return p
+                }
+        }
+        return "k"
+}
+
+function ranthingmult(n,k){
+        let sumsofar = 0
+        for (adasd = 0; adasd < k; adasd++){
+                sumsofar += 1/tryRandListThang(n)
+        }
+        return sumsofar/k
+}
+*/
+
 var devSpeedUp = false
 
 // upgrade names: https://github.com/first20hours/google-10000-english/blob/master/google-10000-english.txt
@@ -11757,7 +11816,6 @@ addLayer("h", {
 
 
                 /*
-                Horse
                 Housing
                 Hit
                 Host
@@ -11953,6 +12011,33 @@ addLayer("h", {
                         },
                         unlocked(){ 
                                 return hasUpgrade("j", 12) || hasUnlockedPast("j")
+                        },
+                },
+                32: {
+                        title: "Horse",
+                        display(){
+                                return getBuyableDisplay("h", 32)
+                        },
+                        effect(){
+                                return CURRENT_BUYABLE_EFFECTS["h32"]
+                        },
+                        canAfford(){
+                                return canAffordBuyable("h", 32)
+                        },
+                        total(){
+                                return getBuyableAmount("h", 32).plus(this.extra())
+                        },
+                        extra(){
+                                return calcBuyableExtra("h", 32)
+                        },
+                        buy(){
+                                buyManualBuyable("h", 32)
+                        },
+                        buyMax(maximum){
+                                buyMaximumBuyable("h", 32, maximum)
+                        },
+                        unlocked(){ 
+                                return hasMilestone("j", 7) || hasUnlockedPast("j")
                         },
                 },
         },
@@ -12165,6 +12250,7 @@ addLayer("i", {
                 if (hasUpgrade("h", 53)) x = x.times(player.j.puzzle.bestExp.max(1))
                 if (hasUpgrade("i", 43)) x = x.times(Decimal.pow(player.i.upgrades.length, player.i.upgrades.length).max(1))
                 if (hasUpgrade("i", 44)) x = x.times(Decimal.pow(totalChallengeComps("f"), totalChallengeComps("f")).max(1))
+                if (hasUpgrade("j", 14)) x = x.times(Decimal.pow(player.j.puzzle.bestExp.max(1), player.j.upgrades.length))
                 return x
         },
         getGainMultPost(){
@@ -12701,6 +12787,7 @@ addLayer("j", {
                 let x = Decimal.pow(11, -1)
                 if (hasUpgrade("i", 35)) x = x.times(player.j.puzzle.repeatables[35].max(1))
                 if (hasMilestone("j", 6)) x = x.times(tmp.j.clickables[35].effect)
+                x = x.times(tmp.j.clickables[55].effect)
                 return x
         },
         getGainMultPost(){
@@ -12796,6 +12883,12 @@ addLayer("j", {
                         if (data2.autotime > 1) layers.j.clickables.attemptFinish()
                 }
 
+                finishedPEdges = tot2 == data2.placed.edges
+                finishedPCorners = tot3 == data2.placed.corners
+                finishedFEdges = tot2 == data2.found.edges
+                finishedFCorners = tot3 == data2.found.corners
+                finishedFCenters = tot1 == data2.found.centers
+
                 if (!(finishedFEdges && finishedFCorners && finishedFCenters)){
                         data2.placed.centers = 0
                         data2.placed.corners = 0
@@ -12804,6 +12897,7 @@ addLayer("j", {
                 if (!finishedPCorners){
                         data2.placed.centers = 0
                         data2.placed.edges = 0
+                        console.log("x")
                 } //not placed all corners
                 if (!finishedPEdges) {
                         data2.placed.centers = 0
@@ -12926,7 +13020,7 @@ addLayer("j", {
                         requirementDescription: "<b>Jim</b><br>Requires: 2.98e17 Jigsaws", 
                         effectDescription: "Unlock a <b>H</b> buyable and <b>Japan</b> multiplies base <b>J</b> gain",
                         done(){
-                                return player.j.points.log(5).gte(25)
+                                return player.j.points.max(1).log(5).gte(25)
                         },
                         unlocked(){
                                 return hasMilestone("j", 5) || hasUnlockedPast("j")
@@ -12934,9 +13028,9 @@ addLayer("j", {
                 },
                 7: {
                         requirementDescription: "<b>Judge</b><br>Requires: 1.46e25 Jigsaws", 
-                        effectDescription: "Unlock a <b>H</b> buyable and <b>Hair</b> gives free <b>Happy</b> levels [no buy yet]",
+                        effectDescription: "Unlock a <b>H</b> buyable and <b>Hair</b> gives free <b>Happy</b> levels",
                         done(){
-                                return player.j.points.log(5).gte(36)
+                                return player.j.points.max(1).log(5).gte(36)
                         },
                         unlocked(){
                                 return hasUpgrade("j", 13) || hasUnlockedPast("j")
@@ -12970,14 +13064,25 @@ addLayer("j", {
                                 return hasUpgrade("j", 12) || hasUnlockedPast("j")
                         }
                 }, // hasUpgrade("j", 13)
-
-                //next is you can bulk attempt speed w shift, need to code the bulk buy func
+                14: {
+                        title: "Joseph",
+                        description: "Multiply knowlegde gain by the number of upgrades and each upgrade multiplies base <b>I</b> gain by best exp",
+                        cost: new Decimal(1e26),
+                        unlocked(){
+                                return hasUpgrade("j", 13) || hasUnlockedPast("j")
+                        }
+                }, // hasUpgrade("j", 14)
+                15: {
+                        title: "Jeff",
+                        description: "log(best knowledge) multiplies knowledge gain and <b>Horse</b> gives free <b>Hair</b> levels",
+                        cost: new Decimal(1e29),
+                        unlocked(){
+                                return hasUpgrade("j", 14) || hasUnlockedPast("j")
+                        }
+                }, // hasUpgrade("j", 15)
 
                 /*
-                joseph?
-                jazz
-                junior
-                jeff
+                
                 jordan
                 jean
                 */
@@ -13064,13 +13169,14 @@ addLayer("j", {
                         }
                         if (!hasUpgrade("i", 32)) return
                         data.mode = 3
-                        if (times == b) return
-                        this.doCenters(times - b)
+                        if (times >= b + 1) return
+                        this.doCenters(times - b - 1)
                 },
                 doCenters(times = 1){
                         let data = player.j.puzzle
                         let b = 0
                         let c = 0
+                        console.log(data.placed)
                         while (c < 1000){
                                 c ++ 
                                 if (data.placed.centers < (data.currentX - 2) * (data.currentY - 2)) {
@@ -13119,11 +13225,14 @@ addLayer("j", {
                         let ret = new Decimal(1)
                         ret = ret.times(tmp.j.clickables[14].effect)
                         if (hasUpgrade("i", 31)) ret = ret.times(player.i.upgrades.length)
+                        if (hasUpgrade("j", 14)) ret = ret.times(player.j.upgrades.length)
+                        if (hasUpgrade("j", 15)) ret = ret.times(player.j.puzzle.bestKnowledge.max(3).ln())
                         return ret
                 },
                 getBankedExpGainUF(){
                         let ret = new Decimal(1)
                         ret = ret.times(tmp.j.clickables[14].effect)
+                        if (player.j.puzzle.upgrades.includes(54)) ret = ret.times(Decimal.pow(2, player.j.upgrades.length))
                         return ret
                 },
                 getResetCD(){
@@ -13144,7 +13253,7 @@ addLayer("j", {
                                                         end = "<br><h2 style='color: #CCFF66'>Best!</h2>"
                                                 }
                                         }
-                                        return "Effeciency: " + format(tmp.j.clickables[11].effeciency) + end
+                                        return "Effeciency:<br>" + format(tmp.j.clickables[11].effeciency) + end
                                 }
                                 let a = "<h3 style='color: #993300'>Cost</h3>: " + formatWhole(tmp.j.clickables[11].cost) + " Knowledge<br>"
                                 let b = "<h3 style='color: #339900'>Current</h3>: " + formatWhole(player.j.puzzle.repeatables[11]) + " levels<br>"
@@ -13233,7 +13342,7 @@ addLayer("j", {
                                                         end = "<br><h2 style='color: #CCFF66'>Best!</h2>"
                                                 }
                                         }
-                                        return "Effeciency: " + format(tmp.j.clickables[12].effeciency) + end
+                                        return "Effeciency:<br>" + format(tmp.j.clickables[12].effeciency) + end
                                 }
                                 let a = "<h3 style='color: #993300'>Cost</h3>: " + formatWhole(tmp.j.clickables[12].cost) + " Knowledge<br>"
                                 let b = "<h3 style='color: #339900'>Current</h3>: " + formatWhole(player.j.puzzle.repeatables[12]) + " levels<br>"
@@ -13316,7 +13425,7 @@ addLayer("j", {
                                                         end = "<br><h2 style='color: #CCFF66'>Best!</h2>"
                                                 }
                                         }
-                                        return "Effeciency: " + format(tmp.j.clickables[13].effeciency) + end
+                                        return "Effeciency:<br>" + format(tmp.j.clickables[13].effeciency) + end
                                 }
                                 let a = "<h3 style='color: #993300'>Cost</h3>: " + formatWhole(tmp.j.clickables[13].cost) + " Knowledge<br>"
                                 let b = "<h3 style='color: #339900'>Current</h3>: " + formatWhole(player.j.puzzle.repeatables[13]) + " levels<br>"
@@ -13457,11 +13566,11 @@ addLayer("j", {
                                 if (data.found.edges < x) return "Requires: " + formatWhole(x) + " edges found"
                                 if (data.placed.corners < 4) {
                                         let left = 4 - data.placed.corners 
-                                        return "Chance " + format(tmp.j.clickables.getAttemptChance.div(left).min(1).times(100)) + "%"
+                                        return "Chance " + formatChances(tmp.j.clickables.getAttemptChance.div(left).min(1).times(100)) + "%"
                                 }
                                 if (data.placed.edges < x) {
                                         let left = x - data.placed.edges
-                                        return "Chance " + format(tmp.j.clickables.getAttemptChance.div(left).min(.1).times(1000)) + "%"
+                                        return "Chance " + formatChances(tmp.j.clickables.getAttemptChance.div(left).min(.1).times(1000)) + "%"
                                 }
                                 return ""
                         },
@@ -13488,7 +13597,7 @@ addLayer("j", {
                                 if (data.found.centers < b) return "Requires: " + formatWhole(b) + " centers found"
                                 if (data.placed.centers < b) {
                                         let left = b - data.placed.centers
-                                        return "Chance " + format(tmp.j.clickables.getAttemptChance.div(left).min(.02).times(5000)) + "%"
+                                        return "Chance " + formatChances(tmp.j.clickables.getAttemptChance.div(left).min(.02).times(5000)) + "%"
                                 }
                                 return ""
                         },
@@ -13956,6 +14065,70 @@ addLayer("j", {
                                 let data = player.j.puzzle
                                 data.exp = data.exp.minus(tmp.j.clickables[53].cost)
                                 data.upgrades.push(53)
+                        },
+                },
+                54: {
+                        title(){
+                                return "<b style='color: #003333'>Jazz</b>"
+                        },
+                        display(){
+                                let a = "Each <b>J</b> upgrade doubles banked exp gain"
+                                let b = "<br><br>Cost: " + formatWhole(tmp.j.clickables[54].cost) + " Exp"
+                                return a + b
+                        },
+                        unlocked(){
+                                return hasUpgrade("j", 14) || hasUnlockedPast("j")
+                        },
+                        canClick(){
+                                return player.j.puzzle.exp.gte(tmp.j.clickables[54].cost) && !player.j.puzzle.upgrades.includes(54)
+                        },
+                        cost(){
+                                return new Decimal(1e6)
+                        },
+                        style(){
+                                return {
+                                        "background-color": player.j.puzzle.upgrades.includes(54) ? "#77bf5f" : tmp.j.clickables[54].canClick ? "#66CCFF" : "#bf8f8f"
+                                }
+                        },
+                        onClick(){
+                                if (!tmp.j.clickables[54].canClick) return
+                                let data = player.j.puzzle
+                                data.exp = data.exp.minus(tmp.j.clickables[54].cost)
+                                data.upgrades.push(54)
+                        },
+                },
+                55: {
+                        title(){
+                                return "<b style='color: #003333'>Junior</b>"
+                        },
+                        display(){
+                                let a = "Double base <b>J</b> gain"
+                                let c = "<br>Currently: *" + format(tmp.j.clickables[55].effect)
+                                let b = "<br><br>Cost: " + formatWhole(tmp.j.clickables[55].cost) + " Exp"
+                                return a + c + b
+                        },
+                        unlocked(){
+                                return player.j.puzzle.upgrades.includes(54) || hasUnlockedPast("j")
+                        },
+                        canClick(){
+                                return player.j.puzzle.exp.gte(tmp.j.clickables[55].cost)
+                        },
+                        cost(){
+                                return Decimal.pow(3, player.j.puzzle.repeatables[55].pow(2)).times(3e6)
+                        },
+                        effect(){
+                                return Decimal.pow(2, player.j.puzzle.repeatables[55])
+                        },
+                        style(){
+                                return {
+                                        "background-color": tmp.j.clickables[55].canClick ? "#66CCFF" : "#bf8f8f"
+                                }
+                        },
+                        onClick(){
+                                if (!tmp.j.clickables[55].canClick) return
+                                let data = player.j.puzzle
+                                data.exp = data.exp.minus(tmp.j.clickables[55].cost)
+                                data.repeatables[55] = data.repeatables[55].plus(1)
                         },
                 },
         },
