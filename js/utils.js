@@ -752,6 +752,7 @@ function fixHotkeyCode(s){
 	if (s.length == 1) return s.toLowerCase()
 	s = replaceString(s, "Shift", "shift")
 	s = replaceString(s, "]", "}")
+	s = replaceString(s, "[", "{")
 	s = replaceString(s, ",", "<")
 	s = replaceString(s, ".", ">")
 	return s
@@ -767,6 +768,8 @@ function dothingcooltoggle(s){
 	else hotkeysOff[l] = !hotkeysOff[l]
 }
 
+var logHotkey = false
+
 document.onkeydown = function(e) {
 	if (player===undefined) return;
 	if (gameEnded&&!player.keepGoing) return;
@@ -780,6 +783,7 @@ document.onkeydown = function(e) {
 			if (!hotkeysOff[key]) hotkeys[key].onPress()
 		}
 	}
+	if (logHotkey) console.log(key)
 }
 
 var onFocused = false

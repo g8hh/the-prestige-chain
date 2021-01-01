@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".5.14.1 Benzene",
+	num: ".5.15 Cytoplasm",
 	name: "",
 }
 
@@ -191,6 +191,13 @@ PROGRESSION_MILESTONES = {
 	145:()=> player.j.puzzle.finished >= 29               || hasAchievement("ach",215),
 	146:()=> player.j.puzzle.finished >= 31               || hasAchievement("ach",216),
 	147:()=> player.j.puzzle.finished >= 33               || hasAchievement("ach",217),
+	148:()=> totalChallengeComps("h") >= 10              || hasAchievement("ach",221),
+	149:()=> totalChallengeComps("h") >= 15              || hasAchievement("ach",222),
+	150:()=> totalChallengeComps("h") >= 21              || hasAchievement("ach",223),
+	151:()=> totalChallengeComps("h") >= 28              || hasAchievement("ach",224),
+	152:()=> totalChallengeComps("h") >= 36              || hasAchievement("ach",225),
+	153:()=> totalChallengeComps("h") >= 45              || hasAchievement("ach",226),
+	154:()=> totalChallengeComps("h") >= 55              || hasAchievement("ach",227),
 }
 
 PROGRESSION_MILESTONES_TEXT = {
@@ -341,6 +348,13 @@ PROGRESSION_MILESTONES_TEXT = {
 	145:"29 puzzle completions at once",
 	146:"31 puzzle completions at once",
 	147:"33 puzzle completions at once",
+	148:"10 Heart challenge completion",
+	149:"15 Heart challenge completions",
+	150:"21 Heart challenge completions",
+	151:"28 Heart challenge completion",
+	152:"36 Heart challenge completions",
+	153:"45 Heart challenge completions",
+	154:"55 Heart challenge completion",
 }
 
 function progressReachedNum(){
@@ -364,8 +378,7 @@ function nextMilestone(){
 
 // Display extra things at the top of the page
 var displayThings = [
-	"Check the change log!",
-	"Endgame: Joe",
+	"Endgame: Judge",
 ]
 
 // Determines when the game "ends"
@@ -527,6 +540,11 @@ function getChangeLogText(){
 	y5 = "- Added two Jigsaw upgrades and a Jigsaw milestone"
 	y6 = "v.5.14.1"
 	y7 = "- Fixed a bug"
+	z1 = "v.5.15"
+	z2 = "- Added a row of achievements"
+	z3 = "- Added a Jigsaw milestone"
+	z4 = "- Fixed a bug with shift + [ hotkey"
+	z5 = "- Changed the bugged save display"
 
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]

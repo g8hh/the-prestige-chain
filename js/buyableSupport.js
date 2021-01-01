@@ -2114,6 +2114,11 @@ var MAIN_BUYABLE_DATA = {
                         let b2 = new Decimal("1ee3")
                         return [b0, b1, b2]
                 },
+                h31: {
+                        active: function(){
+                                return hasMilestone("j", 7)
+                        },
+                },
         },
         h31: {
                 name: "Hair",

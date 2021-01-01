@@ -6406,6 +6406,90 @@ addLayer("ach", {
                                 return hasUnlockedPast("i")
                         },
                 },
+                221: {
+                        name: "One Hundred and Forty-Eight",
+                        done(){
+                                return PROGRESSION_MILESTONES[148]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[148]
+                        },
+                        unlocked(){
+                                return hasUnlockedPast("i")
+                        },
+                },
+                222: {
+                        name: "One Hundred and Forty-Nine",
+                        done(){
+                                return PROGRESSION_MILESTONES[149]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[149]
+                        },
+                        unlocked(){
+                                return hasUnlockedPast("i")
+                        },
+                },
+                223: {
+                        name: "One Hundred and Fifty",
+                        done(){
+                                return PROGRESSION_MILESTONES[150]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[150]
+                        },
+                        unlocked(){
+                                return hasUnlockedPast("i")
+                        },
+                },
+                224: {
+                        name: "One Hundred and Fifty-One",
+                        done(){
+                                return PROGRESSION_MILESTONES[151]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[151]
+                        },
+                        unlocked(){
+                                return hasUnlockedPast("i")
+                        },
+                },
+                225: {
+                        name: "One Hundred and Fifty-Two",
+                        done(){
+                                return PROGRESSION_MILESTONES[152]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[152]
+                        },
+                        unlocked(){
+                                return hasUnlockedPast("i")
+                        },
+                },
+                226: {
+                        name: "One Hundred and Fifty-Three",
+                        done(){
+                                return PROGRESSION_MILESTONES[153]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[153]
+                        },
+                        unlocked(){
+                                return hasUnlockedPast("i")
+                        },
+                },
+                227: {
+                        name: "One Hundred and Fifty-Four",
+                        done(){
+                                return PROGRESSION_MILESTONES[154]()
+                        },
+                        tooltip() {
+                                return "Get " + PROGRESSION_MILESTONES_TEXT[154]
+                        },
+                        unlocked(){
+                                return hasUnlockedPast("i")
+                        },
+                },
         },
         milestones: {
                 1: {
@@ -6838,7 +6922,7 @@ addLayer("goalsii", {
         row: "side",
         hotkeys: [
                 {key: "[", description: "[: Reset for Medals", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
-                {key: "shift+[", description: "Shift+[: Go to Medals", onPress(){
+                {key: "shift+{", description: "Shift+[: Go to Medals", onPress(){
                                 showTab("goalsii")
                         }
                 },
@@ -12848,6 +12932,16 @@ addLayer("j", {
                                 return hasMilestone("j", 5) || hasUnlockedPast("j")
                         }, // hasMilestone("j", 6)
                 },
+                7: {
+                        requirementDescription: "<b>Judge</b><br>Requires: 1.46e25 Jigsaws", 
+                        effectDescription: "Unlock a <b>H</b> buyable and <b>Hair</b> gives free <b>Happy</b> levels [no buy yet]",
+                        done(){
+                                return player.j.points.log(5).gte(36)
+                        },
+                        unlocked(){
+                                return hasUpgrade("j", 13) || hasUnlockedPast("j")
+                        }, // hasMilestone("j", 7)
+                },
         },
         upgrades: {
                 rows: 5,
@@ -12870,7 +12964,7 @@ addLayer("j", {
                 }, // hasUpgrade("j", 12)
                 13: {
                         title: "Jackson",
-                        description: "You can bulk attempt speed while holding shift, log10(attempt speed levels) multiplies <b>J</b> gain, and unlock a milestone [not yet]",
+                        description: "You can bulk attempt speed while holding shift, log10(attempt speed levels) multiplies <b>J</b> gain, and unlock a milestone",
                         cost: new Decimal(2e23),
                         unlocked(){
                                 return hasUpgrade("j", 12) || hasUnlockedPast("j")
@@ -12880,8 +12974,6 @@ addLayer("j", {
                 //next is you can bulk attempt speed w shift, need to code the bulk buy func
 
                 /*
-                
-                judge
                 joseph?
                 jazz
                 junior
