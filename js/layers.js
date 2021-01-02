@@ -6876,7 +6876,7 @@ addLayer("goalsii", {
                 if (hasMilestone("g", 1)) x = x.times(2)
                 if (hasMilestone("g", 3)) x = x.times(Decimal.pow(1.5, player.g.milestones.length))
                 if (hasUpgrade("goalsii", 24)) x = x.times(Decimal.pow(1.1, player.goalsii.upgrades.length))
-                x = x.times(getBuyableEffect("e", 32))
+                x = x.times(CURRENT_BUYABLE_EFFECTS["e32"])
                 x = x.times(CURRENT_GAMES_EFFECTS["partial"]["Medals"][0])
                 x = x.times(CURRENT_GAMES_EFFECTS["rebirth"]["Medals"][0])
                 if (hasMilestone("g", 14)) {
@@ -7885,7 +7885,7 @@ addLayer("goalsii", {
                         requirementDescription: "<b>όμικρον (Omicron)</b><br>Requires: 20 31 Token", 
                         effectDescription(){
                                 let a = "log10(10+medals) boosts base <b>F</b> gain, currently: "
-                                return a + format(player.goalsii.points.plus(10).log10(), 4)
+                                return a + format(player.goalsii.points.max(10).log10(), 4)
                         },
                         done(){
                                 return player.goalsii.tokens.best["31"].gte(20)
@@ -13065,7 +13065,7 @@ addLayer("j", {
                 21: {
                         title: "Jordan",
                         description: "<b>Junior</b> effects <b>Held</b> and <b>Horse</b> gives free <b>Happy</b> levels",
-                        cost: new Decimal(1e31),
+                        cost: new Decimal(2e30),
                         unlocked(){
                                 return hasUpgrade("j", 15) || hasUnlockedPast("j")
                         }
@@ -13073,7 +13073,7 @@ addLayer("j", {
                 22: {
                         title: "Jean",
                         description: "Raise <b>Hope</b> base to the number of puzzle upgrades and add one to <b>Junior</b> base",
-                        cost: new Decimal(1e34),
+                        cost: new Decimal(5e33),
                         unlocked(){
                                 return (hasUpgrade("j", 21) && player.j.puzzle.repeatables[14].gte(20)) || hasUnlockedPast("j")
                         }
@@ -13340,7 +13340,8 @@ addLayer("j", {
                                         }
                                         return "Effeciency:<br>" + format(tmp.j.clickables[12].effeciency) + end
                                 }
-                                let a = "<h3 style='color: #993300'>Cost</h3>: " + formatWhole(tmp.j.clickables[12].cost) + " Knowledge<br>"
+                                let ktf = tmp.j.clickables[12].cost.lt(100) ? " Knowledge" : ""
+                                let a = "<h3 style='color: #993300'>Cost</h3>: " + formatWhole(tmp.j.clickables[12].cost) + ktf + "<br>"
                                 let b = "<h3 style='color: #339900'>Current</h3>: " + formatWhole(player.j.puzzle.repeatables[12]) + " levels<br>"
                                 let c = "<h3 style='color: #9933CC'>Effect</h3>: *" + format(tmp.j.clickables[12].effect) + " Attempt Speed<br>"
                                 return a + b + c
@@ -13464,6 +13465,7 @@ addLayer("j", {
                         display(){
                                 if (player.tab != "j") return ""
                                 let a = "<h3 style='color: #993300'>Cost</h3>: " + formatWhole(tmp.j.clickables[14].cost) + " Knowledge<br>"
+                                if (!(player.j.puzzle.currentX < 20 || player.j.puzzle.currentY < 20)) a = "<h3 style='color: #993300'>MAXED!</h3><br>"
                                 let c = "<h3 style='color: #9933CC'>Effect</h3>: *" + format(tmp.j.clickables[14].effect) + " Knowledge and Banked Exp gain<br>"
                                 return a + c
                         },
@@ -14310,7 +14312,7 @@ addLayer("j", {
                                 "main-display",
                                 ["display-text", function(){
                                         if (player.tab != "j") return ""
-                                        return `<h2>Puzzle mechanic:</h2><br>
+                                        let a = `<h2 style='color:#FF3366'>Puzzle mechanic:</h2><br>
                                         You have a 10x10 puzzle (initially)<br>You can buy the following upgrades [more unlocked later], <br>
                                         1. success chance, [50% base]<br>2. attempt speed, [1s base]<br><br>
                                         There are edge, corner, and center pieces<br>There are 4 settings you can be in<br>
@@ -14324,10 +14326,24 @@ addLayer("j", {
                                         You get things for finishing a puzzle:<br>Exp: 1<br>
                                         Banked Exp: [puzzles beaten so far] + 1<br>Knowledge: 1<br>Note gain is [base]*[multipliers], floored<br><br> 
                                         Exp is spent on upgrades that boost the rest of the game<br>
-                                        Knowledge is spent on the upgrades mentioned at the top<br><br><br>
-                                        Finishing at least one puzzle allows you to restart (requires 2 initially)<br>
-                                        Restarting makes you start at the first puzzle again and gives you your banked exp<br><br><br><br>
+                                        Knowledge is spent on the upgrades mentioned at the top<br><br>`
+                                        if (player.j.puzzle.bestExp.eq(0)) return a + "<br><br><br>"
+                                        let b = `<h2 style='color:#FF3366'>Reset:</h2><br>
+                                        Finishing at least one puzzle allows you to Reset (requires 2 initially)<br>
+                                        Restarting makes you start at the first puzzle again and gives you your banked exp<br>
+                                        It also resets your progress in the current puzzle, but is vital for progression<br>
+                                        Resetting has initially a 60 second cooldown, but this can be reduced later on<br><br>
                                         `
+                                        if (player.j.puzzle.repeatables[14].lt(20) || false /*has done a reset^2*/ ) return a + b + "<br><br><br>"
+                                        let c = `<h2 style='color:#FF3366'>Reset<sup>2</sup>:</h2><br>
+                                        You unlock reset<sup>2</sup> by having 149 achievements and maxing out Larger Puzzle<br>
+                                        You can reset<sup>2</sup> by maxing larger puzzle upgrades.<br>
+                                        Each reset allows you to make larger puzzles (by 5 in each dimension)<br>
+                                        Additionally, doing your first reset<sup>2</sup> allows you lets you keep all automation unlocked previously<br>
+                                        Furthermore, each reset<sup>2</sup> triples banked exp and knowledge gain<br>
+                                        However, doing a reset<sup>2</sup> resets all puzzle content except best exp and best knowledge<br>
+                                        Unlock resetting, there is no cooldown [atm]<br><br>`
+                                        return a + b + c + "<br><br><br>"
                                 }
                                 ]
                         ],
