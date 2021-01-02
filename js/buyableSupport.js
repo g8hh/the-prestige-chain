@@ -1989,6 +1989,15 @@ var MAIN_BUYABLE_DATA = {
                 effects: "<b>Growing</b> base",
                 base: {
                         initial: new Decimal(.002),
+                        1: {
+                                active: function(){
+                                        return hasUpgrade("j", 21)
+                                },
+                                amount: function(){
+                                        return tmp.j.clickables[55].effect
+                                },
+                                type: "mult",
+                        }
                 },
                 bases(){
                         let b0 = new Decimal("1e1165e3")
@@ -2019,6 +2028,15 @@ var MAIN_BUYABLE_DATA = {
                                 },
                                 amount: function(){
                                         return Decimal.sqrt(player.i.upgrades.length).max(1)
+                                },
+                                type: "pow",
+                        },
+                        2: {
+                                active: function(){
+                                        return hasUpgrade("j", 22)
+                                },
+                                amount: function(){
+                                        return player.j.puzzle.upgrades.length
                                 },
                                 type: "pow",
                         },
@@ -2126,6 +2144,11 @@ var MAIN_BUYABLE_DATA = {
                 h31: {
                         active: function(){
                                 return hasMilestone("j", 7)
+                        },
+                },
+                h32: {
+                        active: function(){
+                                return hasUpgrade("j", 21)
                         },
                 },
         },

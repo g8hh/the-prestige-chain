@@ -1312,7 +1312,7 @@ addLayer("b", {
                 14: {
                         title: "Business",
                         description: "Keep the third and fourth rows of Amoeba upgrades and buy each Amoeba buyable once per second",
-                        cost: new Decimal(1000),
+                        cost: new Decimal(500),
                         unlocked(){
                                 return hasUpgrade("b", 13) || hasUnlockedPast("b")
                         }
@@ -6094,7 +6094,7 @@ addLayer("ach", {
                         },
                 },
                 175: {
-                        name: "One Hundred and Ten",
+                        name: "One Hundred and Seventeen",
                         done(){
                                 return PROGRESSION_MILESTONES[117]()
                         },
@@ -9413,7 +9413,6 @@ addLayer("g", {
                                 if (!hasUpgrade("goalsii", 31)) {
                                         while (b < 1000){
                                                 b ++ 
-                                                if (b > 990) console.log(b)
                                                 if (!this.canClick()) break 
                                                 let chance = layers.g.clickables.succChance(data.clickableAmounts[id])
                                                 let cc = tmp.g.clickables.getChargeComsumption
@@ -9485,7 +9484,6 @@ addLayer("g", {
                                 if (!hasUpgrade("goalsii", 31)) {
                                         while (b < 1000){
                                                 b ++ 
-                                                if (b > 990) console.log(b)
                                                 if (!this.canClick()) break 
                                                 let chance = layers.g.clickables.succChance(data.clickableAmounts[id])
                                                 let cc = tmp.g.clickables.getChargeComsumption
@@ -9558,7 +9556,6 @@ addLayer("g", {
                                 if (!hasUpgrade("goalsii", 31)) {
                                         while (b < 1000){
                                                 b ++ 
-                                                if (b > 990) console.log(b)
                                                 if (!this.canClick()) break 
                                                 let chance = layers.g.clickables.succChance(data.clickableAmounts[id])
                                                 let cc = tmp.g.clickables.getChargeComsumption
@@ -9631,7 +9628,6 @@ addLayer("g", {
                                 if (!hasUpgrade("goalsii", 31)) {
                                         while (b < 1000){
                                                 b ++ 
-                                                if (b > 990) console.log(b)
                                                 if (!this.canClick()) break 
                                                 let chance = layers.g.clickables.succChance(data.clickableAmounts[id])
                                                 let cc = tmp.g.clickables.getChargeComsumption
@@ -9704,7 +9700,6 @@ addLayer("g", {
                                 if (!hasUpgrade("goalsii", 31)) {
                                         while (b < 1000){
                                                 b ++ 
-                                                if (b > 990) console.log(b)
                                                 if (!this.canClick()) break 
                                                 let chance = layers.g.clickables.succChance(data.clickableAmounts[id])
                                                 let cc = tmp.g.clickables.getChargeComsumption
@@ -9777,7 +9772,6 @@ addLayer("g", {
                                 if (!hasUpgrade("goalsii", 31)) {
                                         while (b < 1000){
                                                 b ++ 
-                                                if (b > 990) console.log(b)
                                                 if (!this.canClick()) break 
                                                 let chance = layers.g.clickables.succChance(data.clickableAmounts[id])
                                                 let cc = tmp.g.clickables.getChargeComsumption
@@ -9850,7 +9844,6 @@ addLayer("g", {
                                 if (!hasUpgrade("goalsii", 31)) {
                                         while (b < 1000){
                                                 b ++ 
-                                                if (b > 990) console.log(b)
                                                 if (!this.canClick()) break 
                                                 let chance = layers.g.clickables.succChance(data.clickableAmounts[id])
                                                 let cc = tmp.g.clickables.getChargeComsumption
@@ -9923,7 +9916,6 @@ addLayer("g", {
                                 if (!hasUpgrade("goalsii", 31)) {
                                         while (b < 1000){
                                                 b ++ 
-                                                if (b > 990) console.log(b)
                                                 if (!this.canClick()) break 
                                                 let chance = layers.g.clickables.succChance(data.clickableAmounts[id])
                                                 let cc = tmp.g.clickables.getChargeComsumption
@@ -9996,7 +9988,6 @@ addLayer("g", {
                                 if (!hasUpgrade("goalsii", 31)) {
                                         while (b < 1000){
                                                 b ++ 
-                                                if (b > 990) console.log(b)
                                                 if (!this.canClick()) break 
                                                 let chance = layers.g.clickables.succChance(data.clickableAmounts[id])
                                                 let cc = tmp.g.clickables.getChargeComsumption
@@ -10069,7 +10060,6 @@ addLayer("g", {
                                 if (!hasUpgrade("goalsii", 31)) {
                                         while (b < 1000){
                                                 b ++ 
-                                                if (b > 990) console.log(b)
                                                 if (!this.canClick()) break 
                                                 let chance = layers.g.clickables.succChance(data.clickableAmounts[id])
                                                 let cc = tmp.g.clickables.getChargeComsumption
@@ -10142,7 +10132,6 @@ addLayer("g", {
                                 if (!hasUpgrade("goalsii", 31)) {
                                         while (b < 1000){
                                                 b ++ 
-                                                if (b > 990) console.log(b)
                                                 if (!this.canClick()) break 
                                                 let chance = layers.g.clickables.succChance(data.clickableAmounts[id])
                                                 let cc = tmp.g.clickables.getChargeComsumption
@@ -10215,7 +10204,6 @@ addLayer("g", {
                                 if (!hasUpgrade("goalsii", 31)) {
                                         while (b < 1000){
                                                 b ++ 
-                                                if (b > 990) console.log(b)
                                                 if (!this.canClick()) break 
                                                 let chance = layers.g.clickables.succChance(data.clickableAmounts[id])
                                                 let cc = tmp.g.clickables.getChargeComsumption
@@ -10286,7 +10274,6 @@ addLayer("g", {
                                 if (!hasUpgrade("goalsii", 31)) {
                                         while (b < 1000){
                                                 b ++ 
-                                                if (b > 990) console.log(b)
                                                 if (!this.canClick()) break 
                                                 let chance = layers.g.clickables.succChance(data.clickableAmounts[id])
                                                 let cc = tmp.g.clickables.getChargeComsumption
@@ -10357,7 +10344,6 @@ addLayer("g", {
                                 if (!hasUpgrade("goalsii", 31)) {
                                         while (b < 1000){
                                                 b ++ 
-                                                if (b > 990) console.log(b)
                                                 if (!this.canClick()) break 
                                                 let chance = layers.g.clickables.succChance(data.clickableAmounts[id])
                                                 let cc = tmp.g.clickables.getChargeComsumption
@@ -10428,7 +10414,6 @@ addLayer("g", {
                                 if (!hasUpgrade("goalsii", 31)) {
                                         while (b < 1000){
                                                 b ++ 
-                                                if (b > 990) console.log(b)
                                                 if (!this.canClick()) break 
                                                 let chance = layers.g.clickables.succChance(data.clickableAmounts[id])
                                                 let cc = tmp.g.clickables.getChargeComsumption
@@ -10499,7 +10484,6 @@ addLayer("g", {
                                 if (!hasUpgrade("goalsii", 31)) {
                                         while (b < 1000){
                                                 b ++ 
-                                                if (b > 990) console.log(b)
                                                 if (!this.canClick()) break 
                                                 let chance = layers.g.clickables.succChance(data.clickableAmounts[id])
                                                 let cc = tmp.g.clickables.getChargeComsumption
@@ -12897,7 +12881,6 @@ addLayer("j", {
                 if (!finishedPCorners){
                         data2.placed.centers = 0
                         data2.placed.edges = 0
-                        console.log("x")
                 } //not placed all corners
                 if (!finishedPEdges) {
                         data2.placed.centers = 0
@@ -12922,7 +12905,6 @@ addLayer("j", {
                                         if (canReset(this.layer)) doReset(this.layer)
                                 } else {
                                         showTab("j")
-                                        console.log("1")
                                 }
                         }
                 },
@@ -13042,7 +13024,7 @@ addLayer("j", {
                 cols: 5,
                 11: {
                         title: "Joint",
-                        description: "Per upgrade multiply <b>J</b> gain by your bulk amount",
+                        description: "Per upgrade multiply <b>J</b> gain by your bulk amount and you can puzzle reset 3% faster for every upgrade",
                         cost: new Decimal(2e20),
                         unlocked(){
                                 return hasUpgrade("h", 45) || hasUnlockedPast("j")
@@ -13059,14 +13041,14 @@ addLayer("j", {
                 13: {
                         title: "Jackson",
                         description: "You can bulk attempt speed while holding shift, log10(attempt speed levels) multiplies <b>J</b> gain, and unlock a milestone",
-                        cost: new Decimal(2e23),
+                        cost: new Decimal(5e23),
                         unlocked(){
                                 return hasUpgrade("j", 12) || hasUnlockedPast("j")
                         }
                 }, // hasUpgrade("j", 13)
                 14: {
                         title: "Joseph",
-                        description: "Multiply knowlegde gain by the number of upgrades and each upgrade multiplies base <b>I</b> gain by best exp",
+                        description: "Multiply knowledge gain by the number of upgrades and each upgrade multiplies base <b>I</b> gain by best exp",
                         cost: new Decimal(1e26),
                         unlocked(){
                                 return hasUpgrade("j", 13) || hasUnlockedPast("j")
@@ -13075,16 +13057,30 @@ addLayer("j", {
                 15: {
                         title: "Jeff",
                         description: "log(best knowledge) multiplies knowledge gain and <b>Horse</b> gives free <b>Hair</b> levels",
-                        cost: new Decimal(1e29),
+                        cost: new Decimal(5e28),
                         unlocked(){
                                 return hasUpgrade("j", 14) || hasUnlockedPast("j")
                         }
                 }, // hasUpgrade("j", 15)
+                21: {
+                        title: "Jordan",
+                        description: "<b>Junior</b> effects <b>Held</b> and <b>Horse</b> gives free <b>Happy</b> levels",
+                        cost: new Decimal(1e31),
+                        unlocked(){
+                                return hasUpgrade("j", 15) || hasUnlockedPast("j")
+                        }
+                }, // hasUpgrade("j", 21)
+                22: {
+                        title: "Jean",
+                        description: "Raise <b>Hope</b> base to the number of puzzle upgrades and add one to <b>Junior</b> base",
+                        cost: new Decimal(1e34),
+                        unlocked(){
+                                return (hasUpgrade("j", 21) && player.j.puzzle.repeatables[14].gte(20)) || hasUnlockedPast("j")
+                        }
+                }, // hasUpgrade("j", 22)
 
                 /*
-                
-                jordan
-                jean
+                jean [used]
                 */
         },
         clickables: {
@@ -13176,7 +13172,6 @@ addLayer("j", {
                         let data = player.j.puzzle
                         let b = 0
                         let c = 0
-                        console.log(data.placed)
                         while (c < 1000){
                                 c ++ 
                                 if (data.placed.centers < (data.currentX - 2) * (data.currentY - 2)) {
@@ -13238,6 +13233,7 @@ addLayer("j", {
                 getResetCD(){
                         let ret = 60
                         if (hasUpgrade("i", 41)) ret = Math.min(ret, 20)
+                        if (hasUpgrade("j", 11)) ret *= Math.pow(.97, player.j.upgrades.length)
                         return ret
                 },
                 11: {
@@ -13319,12 +13315,12 @@ addLayer("j", {
                                 let e = this.effect(1).div(tmp.j.clickables[11].effect)
                                 return e.ln().pow(-1).times(c)
                         },
-                        onClick(){
+                        onClick(forceone = false){
                                 let data = player.j.puzzle
 
                                 let additional = new Decimal(tmp.j.clickables[11].getMaxCostTo)
                                 if (!player.j.puzzle.upgrades.includes(51)) additional = additional.min(1)
-                                if (!shiftDown) additional = additional.min(1)
+                                if (!shiftDown || forceone) additional = additional.min(1)
                                 data.knowledge = data.knowledge.minus(this.costTo(data.repeatables[11].plus(additional)))
                                 data.repeatables[11] = data.repeatables[11].plus(additional)
                         },
@@ -13402,12 +13398,12 @@ addLayer("j", {
                                 let e = this.effect(1).div(tmp.j.clickables[12].effect)
                                 return e.ln().pow(-1).times(c)
                         },
-                        onClick(){
+                        onClick(forceone = false){
                                 let data = player.j.puzzle
 
                                 let additional = new Decimal(tmp.j.clickables[12].getMaxCostTo)
                                 if (!hasUpgrade("j", 13)) additional = additional.min(1)
-                                if (!shiftDown) additional = additional.min(1)
+                                if (!shiftDown || forceone) additional = additional.min(1)
                                 data.knowledge = data.knowledge.minus(this.costTo(data.repeatables[12].plus(additional)))
                                 data.repeatables[12] = data.repeatables[12].plus(additional)
                         },
@@ -13817,7 +13813,7 @@ addLayer("j", {
                                 }
                         },
                         onClick(){
-                                if (!tmp.j.clickables[35].canClick) return
+                                if (!this.canClick()) return
                                 let data = player.j.puzzle
                                 data.exp = data.exp.minus(tmp.j.clickables[35].cost)
                                 data.repeatables[35] = data.repeatables[35].plus(1)
@@ -13971,7 +13967,7 @@ addLayer("j", {
                                 }
                         },
                         onClick(){
-                                if (!tmp.j.clickables[45].canClick) return
+                                if (!this.canClick()) return
                                 let data = player.j.puzzle
                                 data.exp = data.exp.minus(tmp.j.clickables[45].cost)
                                 data.repeatables[45] = data.repeatables[45].plus(1)
@@ -14117,7 +14113,9 @@ addLayer("j", {
                                 return Decimal.pow(3, player.j.puzzle.repeatables[55].pow(2)).times(3e6)
                         },
                         effect(){
-                                return Decimal.pow(2, player.j.puzzle.repeatables[55])
+                                let base = new Decimal(2)
+                                if (hasUpgrade("j", 22)) base = base.plus(1)
+                                return Decimal.pow(base, player.j.puzzle.repeatables[55])
                         },
                         style(){
                                 return {
@@ -14125,7 +14123,7 @@ addLayer("j", {
                                 }
                         },
                         onClick(){
-                                if (!tmp.j.clickables[55].canClick) return
+                                if (!this.canClick()) return
                                 let data = player.j.puzzle
                                 data.exp = data.exp.minus(tmp.j.clickables[55].cost)
                                 data.repeatables[55] = data.repeatables[55].plus(1)
