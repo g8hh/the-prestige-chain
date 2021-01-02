@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".5.17.1 Cytoplasm",
+	num: ".5.18 Cytoplasm",
 	name: "",
 }
 
@@ -554,10 +554,13 @@ function getChangeLogText(){
 	ab2= "- Added 2 Jigsaw upgrades"
 	ab3= "- Changed a Jigsaw upgrade [joint]"
 	ab4= "- Some small balance/formula changes"
-	ab5= "v.5.17"
+	ab5= "v.5.17.1"
 	ab6= "- Some small balance changes"
 	ab7= "- Added details for reset^2"
 	ab8= "- Small bugfixes"
+	ac1= "v.5.18"
+	ac2= "- Added Reset^2"
+	ac3= "- Readded Inconsolata if Optima isn't available"
 
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
@@ -586,11 +589,12 @@ function getChangeLogText(){
 	let part24= [y1, y2, y3, y4, y5, "", y6, y7, ""]
 	let part25= [z1, z2, z3, z4, z5, ""]
 	let part26= [aa1,aa2,aa3,aa4,aa5, ""]
-	let part27= [ab1,ab2,ab3,ab4, "",ab6,ab7,ab8, ""]
+	let part27= [ab1,ab2,ab3,ab4, "",ab5,ab6,ab7,ab8, ""]
+	let part28= [ac1,ac2,ac3, ""]
 
 	let final1 = [part10,  part9,  part8,  part7,  part6,  part5,  part4,  part3,  part2,  part1]
 	let final2 = [part20, part19, part18, part17, part16, part15, part14, part13, part12, part11]
-	let final3 = [part27, part26, part25, part24, part23, part22, part21]
+	let final3 = [part28, part27, part26, part25, part24, part23, part22, part21]
 
 	return final3.concat(final2).concat(final1)
 }

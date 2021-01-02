@@ -10647,7 +10647,7 @@ addLayer("g", {
                                         data1[i] = new Decimal(0)
                                 }
                                 data.charges = new Decimal(3)
-                                if (!player.j.puzzle.upgrades.includes(34)) data.rebirths[2] = layers.g.getStartingRebirth(2)
+                                if (!(player.j.puzzle.upgrades.includes(34) || player.j.puzzle.reset2.done)) data.rebirths[2] = layers.g.getStartingRebirth(2)
                                 if (!hasMilestone("i", 2)) data.rebirths[1] = layers.g.getStartingRebirth(1)
                         },
                 },
@@ -10662,7 +10662,7 @@ addLayer("g", {
                                 return a + b
                         },
                         unlocked(){
-                                return player.j.puzzle.upgrades.includes(41) || hasUnlockedPast("j")
+                                return player.j.puzzle.upgrades.includes(41) || player.j.puzzle.reset2.done || hasUnlockedPast("j")
                         },
                         cost(){
                                 return 10 + 10 * player.g.rebirths[4]
@@ -10692,8 +10692,8 @@ addLayer("g", {
                                         data1[i] = new Decimal(0)
                                 }
                                 data.charges = new Decimal(3)
-                                if (!player.j.puzzle.upgrades.includes(42)) data.rebirths[3] = layers.g.getStartingRebirth(3)
-                                if (!player.j.puzzle.upgrades.includes(34)) data.rebirths[2] = layers.g.getStartingRebirth(2)
+                                if (!(player.j.puzzle.upgrades.includes(42) || player.j.puzzle.reset2.done)) data.rebirths[3] = layers.g.getStartingRebirth(3)
+                                if (!(player.j.puzzle.upgrades.includes(34) || player.j.puzzle.reset2.done)) data.rebirths[2] = layers.g.getStartingRebirth(2)
                                 if (!hasMilestone("i", 2)) data.rebirths[1] = layers.g.getStartingRebirth(1)
                         },
                 },
@@ -11153,7 +11153,7 @@ addLayer("g", {
                                 buyMaximumBuyable("g", 33, maximum)
                         },
                         unlocked(){ 
-                                return player.j.puzzle.upgrades.includes(32) || hasUnlockedPast("j")
+                                return player.j.puzzle.upgrades.includes(32) || player.j.puzzle.reset2.done || hasUnlockedPast("j")
                         },
                 },
         },
@@ -11478,7 +11478,7 @@ addLayer("h", {
                                 data.times ++
                         }
                 }
-                if (player.j.puzzle.upgrades.includes(33)) {
+                if (player.j.puzzle.upgrades.includes(33) || player.j.puzzle.reset2.done) {
                         handleGeneralizedBuyableAutobuy(diff, "h")
                 } else {
                         data.abtime = 0
@@ -11762,7 +11762,7 @@ addLayer("h", {
                         description: "Raise <b>Hope</b> effect to the square root of the number of <b>I</b> upgrades and <b>Hope</b> give free <b>Held</b> buyables",
                         cost: new Decimal("1e1204e3"),
                         unlocked(){
-                                return player.j.puzzle.upgrades.includes(33) || hasUnlockedPast("j")
+                                return player.j.puzzle.upgrades.includes(33) || player.j.puzzle.reset2.done || hasUnlockedPast("j")
                         }
                 }, // hasUpgrade("h", 51)
                 52: {
@@ -11770,7 +11770,7 @@ addLayer("h", {
                         description: "Best knowledge multiplues <b>J</b> gain and automatically bulk <b>Rebirth III</b>",
                         cost: new Decimal("1e417e6"),
                         unlocked(){
-                                return player.j.puzzle.repeatables[14].gte(10) || hasUnlockedPast("j")
+                                return player.j.puzzle.repeatables[14].gte(10) || player.j.puzzle.reset2.done || hasUnlockedPast("j")
                         }
                 }, // hasUpgrade("h", 52)
                 53: {
@@ -11832,7 +11832,7 @@ addLayer("h", {
                                 buyMaximumBuyable("h", 11, maximum)
                         },
                         unlocked(){ 
-                                return player.j.puzzle.upgrades.includes(31) || hasUnlockedPast("j")
+                                return player.j.puzzle.upgrades.includes(31) || player.j.puzzle.reset2.done || hasUnlockedPast("j")
                         },
                 },
                 12: {
@@ -11859,7 +11859,7 @@ addLayer("h", {
                                 buyMaximumBuyable("h", 12, maximum)
                         },
                         unlocked(){ 
-                                return player.j.puzzle.upgrades.includes(32) || hasUnlockedPast("j")
+                                return player.j.puzzle.upgrades.includes(32) || player.j.puzzle.reset2.done || hasUnlockedPast("j")
                         },
                 },
                 13: {
@@ -11886,7 +11886,7 @@ addLayer("h", {
                                 buyMaximumBuyable("h", 13, maximum)
                         },
                         unlocked(){ 
-                                return player.j.puzzle.upgrades.includes(33) || hasUnlockedPast("j")
+                                return player.j.puzzle.upgrades.includes(33) || player.j.puzzle.reset2.done || hasUnlockedPast("j")
                         },
                 },
                 21: {
@@ -11913,7 +11913,7 @@ addLayer("h", {
                                 buyMaximumBuyable("h", 21, maximum)
                         },
                         unlocked(){ 
-                                return player.j.puzzle.upgrades.includes(34) || hasUnlockedPast("j")
+                                return player.j.puzzle.upgrades.includes(34) || player.j.puzzle.reset2.done || hasUnlockedPast("j")
                         },
                 },
                 22: {
@@ -11940,7 +11940,7 @@ addLayer("h", {
                                 buyMaximumBuyable("h", 22, maximum)
                         },
                         unlocked(){ 
-                                return player.j.puzzle.upgrades.includes(44) || hasUnlockedPast("j")
+                                return player.j.puzzle.upgrades.includes(44) || player.j.puzzle.reset2.done || hasUnlockedPast("j")
                         },
                 },
                 23: {
@@ -12044,7 +12044,7 @@ addLayer("h", {
                                 return init.times(Decimal.pow("1e11e18", factor))
                         },
                         unlocked(){
-                                return player.j.puzzle.upgrades.includes(52) || hasUnlockedPast("j")
+                                return player.j.puzzle.upgrades.includes(52) || player.j.puzzle.reset2.done || hasUnlockedPast("j")
                         },
                         currencyInternalName: "points",
                         completionLimit(){
@@ -12115,7 +12115,7 @@ addLayer("h", {
                                 "blank", 
                                 "buyables"],
                         unlocked(){
-                                return player.j.puzzle.upgrades.includes(31) || hasUnlockedPast("j")
+                                return player.j.puzzle.upgrades.includes(31) || player.j.puzzle.reset2.done || hasUnlockedPast("j")
                         },
                 },
                 "Milestones": {
@@ -12144,7 +12144,7 @@ addLayer("h", {
                                 "challenges",
                         ],
                         unlocked(){
-                                return player.j.puzzle.upgrades.includes(52) || hasUnlockedPast("j")
+                                return player.j.puzzle.upgrades.includes(52) || player.j.puzzle.reset2.done || hasUnlockedPast("j")
                         },
                 },
                 
@@ -12510,7 +12510,7 @@ addLayer("i", {
                         description: "Multiply knowledge gain by the number of <b>I</b> upgrades",
                         cost: new Decimal("1e8642"),
                         unlocked(){
-                                return player.j.puzzle.upgrades.includes(41) || hasUnlockedPast("j")
+                                return player.j.puzzle.upgrades.includes(41) || player.j.puzzle.reset2.done || hasUnlockedPast("j")
                         }
                 }, // hasUpgrade("i", 31)
                 32: {
@@ -12518,7 +12518,7 @@ addLayer("i", {
                         description: "Upon placing all corners and edges while building the edge automatically start buidling the center",
                         cost: new Decimal("1e40e3"),
                         unlocked(){
-                                return player.j.puzzle.repeatables[14].gte(3) || hasUnlockedPast("j")
+                                return player.j.puzzle.repeatables[14].gte(3) || player.j.puzzle.reset2.done || hasUnlockedPast("j")
                         }
                 }, // hasUpgrade("i", 32)
                 33: {
@@ -12526,7 +12526,7 @@ addLayer("i", {
                         description: "Remove the ability to prestige for Jigsaws but gain 100% of Jigsaws upon prestige per second",
                         cost: new Decimal("1e41e3"),
                         unlocked(){
-                                return player.j.puzzle.repeatables[14].gte(5) || hasUnlockedPast("j")
+                                return player.j.puzzle.repeatables[14].gte(5) || player.j.puzzle.reset2.done || hasUnlockedPast("j")
                         }
                 }, // hasUpgrade("i", 33)
                 34: {
@@ -12534,7 +12534,7 @@ addLayer("i", {
                         description: "If you do not have the requirements for the current puzzle mode then automatically start filtering",
                         cost: new Decimal("1e43210"),
                         unlocked(){
-                                return player.j.puzzle.repeatables[14].gte(6) || hasUnlockedPast("j")
+                                return player.j.puzzle.repeatables[14].gte(6) || player.j.puzzle.reset2.done || hasUnlockedPast("j")
                         }
                 }, // hasUpgrade("i", 34)
                 35: {
@@ -12542,7 +12542,7 @@ addLayer("i", {
                         description: "Levels of Japan multiply <b>Huge</b> base and base <b>J</b> gain",
                         cost: new Decimal("1e54321"),
                         unlocked(){
-                                return player.j.puzzle.repeatables[14].gte(8) || hasUnlockedPast("j")
+                                return player.j.puzzle.repeatables[14].gte(8) || player.j.puzzle.reset2.done || hasUnlockedPast("j")
                         }
                 }, // hasUpgrade("i", 35)
                 41: {
@@ -12550,7 +12550,7 @@ addLayer("i", {
                         description: "Make the puzzle reset cooldown 20 seconds and log10([best knowledge]) adds to <b>Generated</b> base",
                         cost: new Decimal("1e100000"),
                         unlocked(){
-                                return player.j.puzzle.repeatables[14].gte(11) || hasUnlockedPast("j")
+                                return player.j.puzzle.repeatables[14].gte(11) || player.j.puzzle.reset2.done || hasUnlockedPast("j")
                         }
                 }, // hasUpgrade("i", 41)
                 42: {
@@ -12558,7 +12558,7 @@ addLayer("i", {
                         description: "Per upgrade add .01 to the <b>Hour</b> base",
                         cost: new Decimal("1e118000"),
                         unlocked(){
-                                return player.j.puzzle.repeatables[14].gte(12) || hasUnlockedPast("j")
+                                return player.j.puzzle.repeatables[14].gte(12) || player.j.puzzle.reset2.done || hasUnlockedPast("j")
                         }
                 }, // hasUpgrade("i", 42)
                 43: {
@@ -12566,7 +12566,7 @@ addLayer("i", {
                         description: "Per upgrade multiply base <b>I</b> gain by the number of upgrades",
                         cost: new Decimal("1e120000"),
                         unlocked(){
-                                return hasUpgrade("h", 55) || hasUnlockedPast("j")
+                                return hasUpgrade("h", 55) || player.j.puzzle.reset2.done || hasUnlockedPast("j")
                         }
                 }, // hasUpgrade("i", 43)
                 44: {
@@ -12574,7 +12574,7 @@ addLayer("i", {
                         description: "Per <b>F</b> challenge completion multiply base <b>I</b> gain by the number of <b>F</b> challenge completions",
                         cost: new Decimal("1e140000"),
                         unlocked(){
-                                return hasUpgrade("i", 43) || hasUnlockedPast("j")
+                                return hasUpgrade("i", 43) || player.j.puzzle.reset2.done || hasUnlockedPast("j")
                         }
                 }, // hasUpgrade("i", 44)
                 45: {
@@ -12582,7 +12582,7 @@ addLayer("i", {
                         description: "Square <b>Huge</b> base and unlock <b>J</b> upgrades",
                         cost: new Decimal("1e477000"),
                         unlocked(){
-                                return hasUpgrade("i", 44) || hasUnlockedPast("j")
+                                return hasUpgrade("i", 44) || player.j.puzzle.reset2.done || hasUnlockedPast("j")
                         }
                 }, // hasUpgrade("i", 45)
 
@@ -12714,7 +12714,6 @@ addLayer("j", {
                                 knowledge: new Decimal(0),
                                 bestKnowledge: new Decimal(0),
                                 mode: 4,
-                                completed: new Decimal(0),
                                 currentX: 10,
                                 currentY: 10,
                                 maxSize: 20,
@@ -12722,7 +12721,7 @@ addLayer("j", {
                                 autotime: 0,
                                 time: 0,
                                 finished: 0,
-                                bartype: 0,
+                                bartype: 2,
                                 currentPuzzleTime: 0,
                                 repeatables: {
                                         11: new Decimal(0),
@@ -12744,6 +12743,10 @@ addLayer("j", {
                                         corners: 0,
                                         centers: 0,
                                 },
+                                reset2: {
+                                        times: 0,
+                                        done: false,
+                                }
                         },
                 }
         },
@@ -12994,7 +12997,7 @@ addLayer("j", {
                                 return player.j.points.gte(5 ** 16)
                         },
                         unlocked(){
-                                return player.j.puzzle.upgrades.includes(51) || hasUnlockedPast("j")
+                                return player.j.puzzle.upgrades.includes(51) || player.j.puzzle.reset2.done || hasUnlockedPast("j")
                         }, // hasMilestone("j", 5)
                         toggles: [["j", "autopuzzlereset"]]
                 },
@@ -13075,7 +13078,7 @@ addLayer("j", {
                         description: "Raise <b>Hope</b> base to the number of puzzle upgrades and add one to <b>Junior</b> base",
                         cost: new Decimal(5e33),
                         unlocked(){
-                                return (hasUpgrade("j", 21) && player.j.puzzle.repeatables[14].gte(20)) || hasUnlockedPast("j")
+                                return (hasUpgrade("j", 21) && player.j.puzzle.repeatables[14].gte(20)) || player.j.puzzle.reset2.done || hasUnlockedPast("j")
                         }
                 }, // hasUpgrade("j", 22)
 
@@ -13135,7 +13138,7 @@ addLayer("j", {
                                 else if (r < (rem1 + rem2)/remtot) data.found.edges ++
                                 else if (r < (rem1 + rem2 + rem3)/remtot) data.found.corners ++
                         }
-                        if (!player.j.puzzle.upgrades.includes(44)) return
+                        if (!(player.j.puzzle.upgrades.includes(44) || player.j.puzzle.reset2.done)) return
                         if (tot1 != data.found.centers) return
                         if (tot2 != data.found.edges) return
                         if (tot3 != data.found.corners) return
@@ -13182,7 +13185,7 @@ addLayer("j", {
                                 }//centers
                                 else break
                         }
-                        if (!player.j.puzzle.upgrades.includes(53)) return
+                        if (!(player.j.puzzle.upgrades.includes(53) || player.j.puzzle.reset2.done)) return
                         data.mode = 4
                         let k
                         if (times > b) {
@@ -13213,7 +13216,7 @@ addLayer("j", {
                                 centers: 0,
                         }
                         data.currentPuzzleTime = 0
-                        if (player.j.puzzle.upgrades.includes(43)) data.mode = 1
+                        if (player.j.puzzle.upgrades.includes(43) || player.j.puzzle.reset2.done) data.mode = 1
                         return true
                 },
                 getKnowledgeGainUF(){
@@ -13222,18 +13225,25 @@ addLayer("j", {
                         if (hasUpgrade("i", 31)) ret = ret.times(player.i.upgrades.length)
                         if (hasUpgrade("j", 14)) ret = ret.times(player.j.upgrades.length)
                         if (hasUpgrade("j", 15)) ret = ret.times(player.j.puzzle.bestKnowledge.max(3).ln())
+                        ret = ret.times(Decimal.pow(3, player.j.puzzle.reset2.times))
                         return ret
                 },
                 getBankedExpGainUF(){
                         let ret = new Decimal(1)
                         ret = ret.times(tmp.j.clickables[14].effect)
                         if (player.j.puzzle.upgrades.includes(54)) ret = ret.times(Decimal.pow(2, player.j.upgrades.length))
+                        ret = ret.times(Decimal.pow(3, player.j.puzzle.reset2.times))
                         return ret
                 },
                 getResetCD(){
                         let ret = 60
                         if (hasUpgrade("i", 41)) ret = Math.min(ret, 20)
                         if (hasUpgrade("j", 11)) ret *= Math.pow(.97, player.j.upgrades.length)
+                        return ret
+                },
+                getCurrentMaxSize(){
+                        let ret = 20
+                        ret += 5 * player.j.puzzle.reset2.times
                         return ret
                 },
                 11: {
@@ -13319,7 +13329,7 @@ addLayer("j", {
                                 let data = player.j.puzzle
 
                                 let additional = new Decimal(tmp.j.clickables[11].getMaxCostTo)
-                                if (!player.j.puzzle.upgrades.includes(51)) additional = additional.min(1)
+                                if (!player.j.puzzle.upgrades.includes(51) && !player.j.puzzle.reset2.done) additional = additional.min(1)
                                 if (!shiftDown || forceone) additional = additional.min(1)
                                 data.knowledge = data.knowledge.minus(this.costTo(data.repeatables[11].plus(additional)))
                                 data.repeatables[11] = data.repeatables[11].plus(additional)
@@ -13430,7 +13440,7 @@ addLayer("j", {
                                 return a + b + c
                         },
                         unlocked(){
-                                return player.j.puzzle.upgrades.includes(34) || hasUnlockedPast("j")
+                                return player.j.puzzle.upgrades.includes(34) || player.j.puzzle.reset2.done || hasUnlockedPast("j")
                         },
                         cost(){
                                 return Decimal.pow(1.5, player.j.puzzle.repeatables[13]).times(10).floor()
@@ -13465,7 +13475,8 @@ addLayer("j", {
                         display(){
                                 if (player.tab != "j") return ""
                                 let a = "<h3 style='color: #993300'>Cost</h3>: " + formatWhole(tmp.j.clickables[14].cost) + " Knowledge<br>"
-                                if (!(player.j.puzzle.currentX < 20 || player.j.puzzle.currentY < 20)) a = "<h3 style='color: #993300'>MAXED!</h3><br>"
+                                let x = tmp.j.clickables.getCurrentMaxSize
+                                if (Math.min(player.j.puzzle.currentX, player.j.puzzle.currentY) == x) a = "<h3 style='color: #993300'>MAXED!</h3><br>"
                                 let c = "<h3 style='color: #9933CC'>Effect</h3>: *" + format(tmp.j.clickables[14].effect) + " Knowledge and Banked Exp gain<br>"
                                 return a + c
                         },
@@ -13476,7 +13487,8 @@ addLayer("j", {
                                 return Decimal.pow(4, player.j.puzzle.repeatables[14].pow(.8)).times(40).floor()
                         },
                         canClick(){
-                                return player.j.puzzle.knowledge.gte(this.cost()) && (player.j.puzzle.currentX < 20 || player.j.puzzle.currentY < 20)
+                                let x = tmp.j.clickables.getCurrentMaxSize
+                                return player.j.puzzle.knowledge.gte(this.cost()) && (player.j.puzzle.currentX < x || player.j.puzzle.currentY < x)
                         },
                         effect(){
                                 let exp = player.j.puzzle.repeatables[14]
@@ -13490,9 +13502,10 @@ addLayer("j", {
                                 if (!this.canClick()) return 
                                 data.knowledge = data.knowledge.minus(cost)
                                 data.repeatables[14] = data.repeatables[14].plus(1)
-                                if (data.currentY == 20 ) {
+                                let x = tmp.j.clickables.getCurrentMaxSize
+                                if (data.currentY == x) {
                                         data.currentX ++
-                                } else if (data.currentX == 20) {
+                                } else if (data.currentX == x) {
                                         data.currentY ++
                                 } else if (Math.random() < .5) {
                                         data.currentY ++
@@ -13536,8 +13549,8 @@ addLayer("j", {
                 },
                 21: {
                         title(){
-                                if (player.j.puzzle.mode == 1) return "<h3 style='color: #FFFFFF'>Filter</h3>(6)"
-                                return "<h3 style='color: #FF3333'>Filter</h3>(6)"
+                                if (player.j.puzzle.mode == 1) return "<h3 style='color: #FFFFFF'>Filter</h3><br>(6)"
+                                return "<h3 style='color: #FF3333'>Filter</h3><br>(6)"
                         },
                         display(){
                                 return ""
@@ -13554,8 +13567,8 @@ addLayer("j", {
                 },
                 22: {
                         title(){
-                                if (player.j.puzzle.mode == 2) return "<h3 style='color: #FFFFFF'>Edges</h3>(7)"
-                                return "<h3 style='color: #FF3333'>Edges</h3>(7)"
+                                if (player.j.puzzle.mode == 2) return "<h3 style='color: #FFFFFF'>Edges</h3><br>(7)"
+                                return "<h3 style='color: #FF3333'>Edges</h3><br>(7)"
                         },
                         display(){
                                 let data = player.j.puzzle
@@ -13584,8 +13597,8 @@ addLayer("j", {
                 },
                 23: {
                         title(){
-                                if (player.j.puzzle.mode == 3) return "<h3 style='color: #FFFFFF'>Center</h3>(8)"
-                                return "<h3 style='color: #FF3333'>Center</h3>(8)"
+                                if (player.j.puzzle.mode == 3) return "<h3 style='color: #FFFFFF'>Center</h3><br>(8)"
+                                return "<h3 style='color: #FF3333'>Center</h3><br>(8)"
                         },
                         display(){
                                 let data = player.j.puzzle
@@ -13611,8 +13624,8 @@ addLayer("j", {
                 },
                 24: {
                         title(){
-                                if (player.j.puzzle.mode == 4) return "<h3 style='color: #FFFFFF'>Finish</h3>(9)"
-                                return "<h3 style='color: #FF3333'>Finish</h3>(9)"
+                                if (player.j.puzzle.mode == 4) return "<h3 style='color: #FFFFFF'>Finish</h3><br>(9)"
+                                return "<h3 style='color: #FF3333'>Finish</h3><br>(9)"
                         },
                         display(){
                                 let data = player.j.puzzle
@@ -13636,13 +13649,13 @@ addLayer("j", {
                 },
                 25: {
                         title(){
-                                return "<h3 style='color: #FF3333'>Reset</h3>(0)"
+                                return "<h3 style='color: #FF3333'>Reset</h3><br>(Shift+0)"
                         },
                         display(){
                                 return "Reset puzzle progress to get Banked Experience (" + format(Math.max(0, tmp.j.clickables.getResetCD - player.j.puzzle.time)) + "s)" 
                         },
                         unlocked(){
-                                return player.j.puzzle.bestExp.gt(2) || player.j.puzzle.bankedExp.gt(2) || hasUnlockedPast("j")
+                                return player.j.puzzle.bestExp.gt(2) || player.j.puzzle.reset2.done || player.j.puzzle.bankedExp.gt(2) || hasUnlockedPast("j")
                         },
                         canClick(){
                                 return player.j.puzzle.bankedExp.gt(0) && player.j.puzzle.time >= tmp.j.clickables.getResetCD
@@ -13664,7 +13677,7 @@ addLayer("j", {
                                 }
                                 data.finished = 0
                                 data.time = 0
-                                if (player.j.puzzle.upgrades.includes(43)) data.mode = 1
+                                if (player.j.puzzle.upgrades.includes(43) || player.j.puzzle.reset2.done) data.mode = 1
                         },
                 },
                 31: {
@@ -13677,7 +13690,7 @@ addLayer("j", {
                                 return a + b
                         },
                         unlocked(){
-                                return player.j.puzzle.bestExp.gt(2) || hasUnlockedPast("j")
+                                return player.j.puzzle.bestExp.gt(2) || player.j.puzzle.reset2.done || hasUnlockedPast("j")
                         },
                         canClick(){
                                 return player.j.puzzle.exp.gte(tmp.j.clickables[31].cost) && !player.j.puzzle.upgrades.includes(31)
@@ -13707,7 +13720,7 @@ addLayer("j", {
                                 return a + b
                         },
                         unlocked(){
-                                return player.j.puzzle.upgrades.includes(31) || hasUnlockedPast("j")
+                                return player.j.puzzle.upgrades.includes(31) || player.j.puzzle.reset2.done || hasUnlockedPast("j")
                         },
                         canClick(){
                                 return player.j.puzzle.exp.gte(tmp.j.clickables[32].cost) && !player.j.puzzle.upgrades.includes(32)
@@ -13737,7 +13750,7 @@ addLayer("j", {
                                 return a + b
                         },
                         unlocked(){
-                                return player.j.puzzle.upgrades.includes(32) || hasUnlockedPast("j")
+                                return player.j.puzzle.upgrades.includes(32) || player.j.puzzle.reset2.done || hasUnlockedPast("j")
                         },
                         canClick(){
                                 return player.j.puzzle.exp.gte(tmp.j.clickables[33].cost) && !player.j.puzzle.upgrades.includes(33)
@@ -13767,7 +13780,7 @@ addLayer("j", {
                                 return a + b
                         },
                         unlocked(){
-                                return player.j.puzzle.upgrades.includes(33) || hasUnlockedPast("j")
+                                return player.j.puzzle.upgrades.includes(33) || player.j.puzzle.reset2.done || hasUnlockedPast("j")
                         },
                         canClick(){
                                 return player.j.puzzle.exp.gte(tmp.j.clickables[34].cost) && !player.j.puzzle.upgrades.includes(34)
@@ -13798,7 +13811,7 @@ addLayer("j", {
                                 return a + c + b
                         },
                         unlocked(){
-                                return player.j.puzzle.upgrades.includes(34) || hasUnlockedPast("j")
+                                return player.j.puzzle.upgrades.includes(34) || player.j.puzzle.reset2.done || hasUnlockedPast("j")
                         },
                         canClick(){
                                 return player.j.puzzle.exp.gte(tmp.j.clickables[35].cost)
@@ -13831,7 +13844,7 @@ addLayer("j", {
                                 return a + b
                         },
                         unlocked(){
-                                return player.j.puzzle.bestKnowledge.gte(30) || hasUnlockedPast("j")
+                                return player.j.puzzle.bestKnowledge.gte(30) || player.j.puzzle.reset2.done || hasUnlockedPast("j")
                         },
                         canClick(){
                                 return player.j.puzzle.exp.gte(tmp.j.clickables[41].cost) && !player.j.puzzle.upgrades.includes(41)
@@ -13861,7 +13874,7 @@ addLayer("j", {
                                 return a + b
                         },
                         unlocked(){
-                                return player.j.puzzle.upgrades.includes(41) || hasUnlockedPast("j")
+                                return player.j.puzzle.upgrades.includes(41) || player.j.puzzle.reset2.done || hasUnlockedPast("j")
                         },
                         canClick(){
                                 return player.j.puzzle.exp.gte(tmp.j.clickables[42].cost) && !player.j.puzzle.upgrades.includes(42)
@@ -13891,7 +13904,7 @@ addLayer("j", {
                                 return a + b
                         },
                         unlocked(){
-                                return player.j.puzzle.upgrades.includes(42) || hasUnlockedPast("j")
+                                return player.j.puzzle.upgrades.includes(42) || player.j.puzzle.reset2.done || hasUnlockedPast("j")
                         },
                         canClick(){
                                 return player.j.puzzle.exp.gte(tmp.j.clickables[43].cost) && !player.j.puzzle.upgrades.includes(43)
@@ -13921,7 +13934,7 @@ addLayer("j", {
                                 return a + b
                         },
                         unlocked(){
-                                return player.j.puzzle.upgrades.includes(43) || hasUnlockedPast("j")
+                                return player.j.puzzle.upgrades.includes(43) || player.j.puzzle.reset2.done || hasUnlockedPast("j")
                         },
                         canClick(){
                                 return player.j.puzzle.exp.gte(tmp.j.clickables[44].cost) && !player.j.puzzle.upgrades.includes(44)
@@ -13952,7 +13965,7 @@ addLayer("j", {
                                 return a + c + b
                         },
                         unlocked(){
-                                return player.j.puzzle.upgrades.includes(44) || hasUnlockedPast("j")
+                                return player.j.puzzle.upgrades.includes(44) || player.j.puzzle.reset2.done || hasUnlockedPast("j")
                         },
                         canClick(){
                                 return player.j.puzzle.exp.gte(tmp.j.clickables[45].cost)
@@ -13985,7 +13998,7 @@ addLayer("j", {
                                 return a + b
                         },
                         unlocked(){
-                                return hasUpgrade("i", 34) || hasUnlockedPast("j")
+                                return hasUpgrade("i", 34) || player.j.puzzle.reset2.done || hasUnlockedPast("j")
                         },
                         canClick(){
                                 return player.j.puzzle.exp.gte(tmp.j.clickables[51].cost) && !player.j.puzzle.upgrades.includes(51)
@@ -14015,7 +14028,7 @@ addLayer("j", {
                                 return a + b
                         },
                         unlocked(){
-                                return player.j.puzzle.upgrades.includes(51) || hasUnlockedPast("j")
+                                return player.j.puzzle.upgrades.includes(51) || player.j.puzzle.reset2.done || hasUnlockedPast("j")
                         },
                         canClick(){
                                 return player.j.puzzle.exp.gte(tmp.j.clickables[52].cost) && !player.j.puzzle.upgrades.includes(52)
@@ -14045,7 +14058,7 @@ addLayer("j", {
                                 return a + b
                         },
                         unlocked(){
-                                return player.j.puzzle.upgrades.includes(52) || hasUnlockedPast("j")
+                                return player.j.puzzle.upgrades.includes(52) || player.j.puzzle.reset2.done || hasUnlockedPast("j")
                         },
                         canClick(){
                                 return player.j.puzzle.exp.gte(tmp.j.clickables[53].cost) && !player.j.puzzle.upgrades.includes(53)
@@ -14075,7 +14088,7 @@ addLayer("j", {
                                 return a + b
                         },
                         unlocked(){
-                                return hasUpgrade("j", 14) || hasUnlockedPast("j")
+                                return hasUpgrade("j", 14) || player.j.puzzle.reset2.done || hasUnlockedPast("j")
                         },
                         canClick(){
                                 return player.j.puzzle.exp.gte(tmp.j.clickables[54].cost) && !player.j.puzzle.upgrades.includes(54)
@@ -14100,13 +14113,13 @@ addLayer("j", {
                                 return "<b style='color: #003333'>Junior</b>"
                         },
                         display(){
-                                let a = "Double base <b>J</b> gain"
+                                let a = "Multiply base <b>J</b> gain by " + format(tmp.j.clickables[55].base)
                                 let c = "<br>Currently: *" + format(tmp.j.clickables[55].effect)
                                 let b = "<br><br>Cost: " + formatWhole(tmp.j.clickables[55].cost) + " Exp"
                                 return a + c + b
                         },
                         unlocked(){
-                                return player.j.puzzle.upgrades.includes(54) || hasUnlockedPast("j")
+                                return player.j.puzzle.upgrades.includes(54) || player.j.puzzle.reset2.done || hasUnlockedPast("j")
                         },
                         canClick(){
                                 return player.j.puzzle.exp.gte(tmp.j.clickables[55].cost)
@@ -14114,9 +14127,13 @@ addLayer("j", {
                         cost(){
                                 return Decimal.pow(3, player.j.puzzle.repeatables[55].pow(2)).times(3e6)
                         },
-                        effect(){
+                        base(){
                                 let base = new Decimal(2)
                                 if (hasUpgrade("j", 22)) base = base.plus(1)
+                                return base
+                        },
+                        effect(){
+                                let base = tmp.j.clickables[55].base
                                 return Decimal.pow(base, player.j.puzzle.repeatables[55])
                         },
                         style(){
@@ -14131,6 +14148,58 @@ addLayer("j", {
                                 data.repeatables[55] = data.repeatables[55].plus(1)
                         },
                 },
+                61: {
+                        title(){
+                                return "<b style='color: #003333'>Reset<sup>2</sup></b>"
+                        },
+                        display(){
+                                let a = "Requires: Maxed Larger Puzzle"
+                                let c = "<br>You have done: " + formatWhole(player.j.puzzle.reset2.times)
+                                return a + c
+                        },
+                        unlocked(){
+                                return player.j.puzzle.reset2.done || (player.j.puzzle.repeatables[14].gte(20) && player.ach.best.gte(149)) || hasUnlockedPast("j")
+                        },
+                        canClick(){
+                                return player.j.puzzle.repeatables[14].gte(20 + 10 * player.j.puzzle.reset2.times)
+                        },
+                        style(){
+                                return {
+                                        "background-color": tmp.j.clickables[61].canClick ? "#66CCFF" : "#bf8f8f"
+                                }
+                        },
+                        onClick(){
+                                if (!this.canClick()) return
+                                let data = player.j.puzzle
+                                data.reset2.times ++
+                                data.reset2.done = true
+                                data.exp = new Decimal(0)
+                                data.bankedExp = new Decimal(0)
+                                data.knowledge = new Decimal(0)
+                                data.repeatables[11] = new Decimal(0)
+                                data.repeatables[12] = new Decimal(0)
+                                data.repeatables[13] = new Decimal(0)
+                                data.repeatables[14] = new Decimal(0)
+                                data.repeatables[35] = new Decimal(0)
+                                data.repeatables[45] = new Decimal(0)
+                                data.repeatables[55] = new Decimal(0)
+                                data.upgrades = []
+                                data.placed = {
+                                        corners: 0,
+                                        edges: 0,
+                                        centers: 0,
+                                }
+                                data.found = {
+                                        corners: 0,
+                                        edges: 0,
+                                        centers: 0,
+                                }
+                                data.currentX = 10
+                                data.currentY = 10
+                                data.finished = 0
+                                data.mode = 1
+                        },
+                }
         },
         bars: {
                 progressionBar: {
@@ -14334,7 +14403,7 @@ addLayer("j", {
                                         It also resets your progress in the current puzzle, but is vital for progression<br>
                                         Resetting has initially a 60 second cooldown, but this can be reduced later on<br><br>
                                         `
-                                        if (player.j.puzzle.repeatables[14].lt(20) || false /*has done a reset^2*/ ) return a + b + "<br><br><br>"
+                                        if (player.j.puzzle.repeatables[14].lt(20) && !player.j.puzzle.reset2.done) return a + b + "<br><br><br>"
                                         let c = `<h2 style='color:#FF3366'>Reset<sup>2</sup>:</h2><br>
                                         You unlock reset<sup>2</sup> by having 149 achievements and maxing out Larger Puzzle<br>
                                         You can reset<sup>2</sup> by maxing larger puzzle upgrades.<br>
