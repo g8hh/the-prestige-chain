@@ -85,6 +85,7 @@ function getChallengeFactor(comps){
 }
 
 function isBuyableActive(layer, thang){
+        if (layer == "k") return true
         if (layer == "j") return true
         if (layer == "i") return true
         if (layer == "h") return true
@@ -106,6 +107,7 @@ function isBuyableActive(layer, thang){
 }
 
 function isPrestigeEffectActive(layer){
+        if (layer == "k") return true
         if (layer == "j") return true
         if (layer == "i") return true
         if (layer == "h") return true
@@ -317,6 +319,8 @@ function getGeneralizedPrestigeGain(layer){
 
         ret = doPrestigeGainChange(ret, layer)
 
+        if (player[layer].best.eq(0) && !hasUnlockedPast(layer)) ret = ret.min(1)
+
         return ret.floor()
 }
 
@@ -370,7 +374,7 @@ function getGeneralizedPrestigeButtonText(layer){
         let nextnum = gain.plus(1).div(pst).root(exp).div(pre).pow10().times(div).ceil()
 
         let nextAt = ""
-        if (gain.lt(1e6)) {
+        if (gain.lt(1e6) && !(player[layer].best.eq(0) && !hasUnlockedPast(layer))) {
                 nextAt = "<br>Next at " + format(nextnum) + " " + layers[layer].baseResource
                 let ps = gain.div(player[layer].time || 1)
 
@@ -4779,7 +4783,7 @@ addLayer("f", {
                 player.f.time = 0
                 player.f.times = 0
 
-                if (!hasMilestone("h", 7) && !hasMilestone("i", 5)) {
+                if (!hasMilestone("h", 7) && !hasMilestone("i", 5) && !hasMilestone("k", 1)) {
                         //upgrades
                         let keep = []
                         if (hasUpgrade("f", 11)) keep.push(11)
@@ -11350,7 +11354,7 @@ addLayer("g", {
                 player.g.time = 0
                 player.g.times = 0
 
-                if (!hasMilestone("h", 8) && !hasMilestone("i", 6)) {
+                if (!hasMilestone("h", 8) && !hasMilestone("i", 6) && !hasMilestone("k", 1)) {
                         //upgrades
                         let keep = []
                         if (hasMilestone("h", 1)) keep.push(14)
@@ -12672,7 +12676,7 @@ addLayer("i", {
                         data.upgrades = filter(data.upgrades, keep)
                 }
                 
-                if (!false) {
+                if (!hasMilestone("k", 2)) {
                         //milestones
                         let keep2 = []
                         for (i = 0; i < player.j.times; i++) {
@@ -12723,13 +12727,11 @@ addLayer("j", {
                                 mode: 4,
                                 currentX: 10,
                                 currentY: 10,
-                                maxSize: 20,
                                 upgrades: [],
                                 autotime: 0,
                                 time: 0,
                                 finished: 0,
                                 bartype: 2,
-                                currentPuzzleTime: 0,
                                 repeatables: {
                                         11: new Decimal(0),
                                         12: new Decimal(0),
@@ -12783,6 +12785,7 @@ addLayer("j", {
                 if (hasUpgrade("i", 35)) x = x.times(player.j.puzzle.repeatables[35].max(1))
                 if (hasMilestone("j", 6)) x = x.times(tmp.j.clickables[35].effect)
                 x = x.times(tmp.j.clickables[55].effect)
+                if (hasMilestone("k", 2)) x = x.times(Decimal.pow(player.k.milestones.length))
                 return x
         },
         getGainMultPost(){
@@ -12843,7 +12846,6 @@ addLayer("j", {
                 data2.bestKnowledge = data2.bestKnowledge.max(data2.knowledge)
                 data2.bestExp = data2.bestExp.max(data2.exp)
                 data2.time += diff / (player.devSpeed || 1)
-                data2.currentPuzzleTime += diff / (player.devSpeed || 1)
                 data2.autotime += diff * tmp.j.clickables.getAttemptSpeed.toNumber() / (player.devSpeed || 1)
                 let multiplier = tmp.j.clickables.getBulkAmount
 
@@ -13156,6 +13158,7 @@ addLayer("j", {
                 getBulkAmount(){
                         let ret = new Decimal(1)
                         ret = ret.times(tmp.j.clickables[13].effect)
+                        if (hasMilestone("k", 1)) ret = ret.times(2)
                         return Math.round(ret.toNumber())
                 },
                 doSearch(times = 1){
@@ -13255,7 +13258,6 @@ addLayer("j", {
                                 corners: 0,
                                 centers: 0,
                         }
-                        data.currentPuzzleTime = 0
                         if (player.j.puzzle.upgrades.includes(43) || player.j.puzzle.reset2.done) data.mode = 1
                         return true
                 },
@@ -14289,7 +14291,6 @@ addLayer("j", {
 
                                         return 1 - (timePLACE + timeFIND) / (timePLACETOTAL + timeFINDTOTAL)
                                 }
-                                //data.currentPuzzleTime
                         },
                         display(){
                                 let data = player.j.puzzle
@@ -14479,7 +14480,7 @@ addLayer("j", {
                         data.upgrades = filter(data.upgrades, keep)
                 }
                 
-                if (!false) {
+                if (!hasMilestone("k", 2)) {
                         //upgrades
                         let keep2 = []
                         data.milestones = filter(data.milestones, keep2)
@@ -14496,9 +14497,280 @@ addLayer("j", {
                         break //remove when buyables added
                         data.buyables[resetBuyables[j]] = new Decimal(0)
                 }
+
+                let data2 = data.puzzle
+                data2.exp = new Decimal(0)
+                data2.bankedExp = new Decimal(0)
+                data2.knowledge = new Decimal(0)
+                data2.bestKnowledge = new Decimal(0)
+                data2.bestExp = new Decimal(0)
+                data2.repeatables[11] = new Decimal(0)
+                data2.repeatables[12] = new Decimal(0)
+                data2.repeatables[13] = new Decimal(0)
+                data2.repeatables[14] = new Decimal(0)
+                data2.repeatables[35] = new Decimal(0)
+                data2.repeatables[45] = new Decimal(0)
+                data2.repeatables[55] = new Decimal(0)
+                data2.upgrades = []
+                data2.placed = {
+                        corners: 0,
+                        edges: 0,
+                        centers: 0,
+                }
+                data2.found = {
+                        corners: 0,
+                        edges: 0,
+                        centers: 0,
+                }
+                data2.currentX = 10
+                data2.currentY = 10
+                data2.finished = 0
+                data2.mode = 1
+                data2.reset2.times = 0
+                data2.time = 0
         },
 })
 
+addLayer("k", {
+        name: "Keys",
+        symbol: "K",
+        position: 0,
+        startData() { 
+                return {
+                        unlocked: true,
+                        points: new Decimal(0),
+                        best: new Decimal(0),
+                        total: new Decimal(0),
+                        abtime: 0,
+                        time: 0,
+                        times: 0,
+                        autotimes: 0,
+                        autodevtime: 0,
+                }
+        },
+        color: "#3333CC",
+        branches: ["j"],
+        requires: new Decimal(0),
+        resource: "Keys",
+        baseResource: "Jigsaws",
+        baseAmount() {
+                return player.j.best
+        },
+        type: "custom",
+        getResetGain() {
+                return getGeneralizedPrestigeGain("k")
+        },
+        getBaseDiv(){
+                let x = new Decimal("1e54")
+                return x
+        },
+        getGainExp(){
+                let x = new Decimal(2)
+                return x
+        },
+        getGainMultPre(){
+                let x = Decimal.pow(20, -1)
+                return x
+        },
+        getGainMultPost(){
+                let x = getGeneralizedInitialPostMult("k")
 
+                return x
+        },
+        effect(){
+                if (!isPrestigeEffectActive("k")) return new Decimal(1)
+
+                let amt = player.k.best
+
+                let exp = player.k.best.pow(.2).times(2).min(50)
+                
+                let exp2 = new Decimal(0)
+
+                let ret = amt.plus(1).pow(exp)
+
+                let ret2 = amt.pow(exp2).max(1)
+
+                //ret = softcap(ret, "h_eff")
+
+                return ret.times(ret2)
+        },
+        effectDescription(){
+                return getGeneralizedEffectDisplay("k")
+        },
+        update(diff){
+                let data = player.k
+
+                data.best = data.best.max(data.points)
+                if (false) {
+                        let gain = tmp.k.getResetGain
+                        data.points = data.points.plus(gain.times(diff))
+                        data.total = data.total.plus(gain.times(diff))
+                        data.autotimes += diff
+                        if (data.autotimes > 3) data.autotimes = 3
+                        if (data.autotimes > 1) {
+                                data.autotimes += -1
+                                data.times ++
+                        }
+                }
+                if (false) {
+                        handleGeneralizedBuyableAutobuy(diff, "k")
+                } else {
+                        data.abtime = 0
+                }
+
+                data.time += diff
+                data.autodevtime += diff
+                
+                if (data.autodevtime < 1) return
+                data.autodevtime += -1
+                if (data.autodevtime > 10) data.autodevtime = 10
+        },
+        row: 10, // Row the layer is in on the tree (0 is the first row)
+        hotkeys: [
+                {key: "k", description: "K: Reset for Keys", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+                {key: "shift+K", description: "Shift+K: Go to Keys", onPress(){
+                                showTab("k")
+                        }
+                },
+                {key: "5", description: "5: Rebirth V [not yet]", onPress(){
+                                return
+                                let data = layers.g.clickables[55]
+                                if (data.canClick()) data.onClick()
+                        }
+                },
+        ],
+        layerShown(){return player.j.best.gt(1e67) || player.k.best.gt(0) || hasUnlockedPast("k")},
+        prestigeButtonText(){
+                if (false) return ""
+                return getGeneralizedPrestigeButtonText("k")
+        },
+        canReset(){
+                return player.k.time >= 2 && !false && tmp.k.getResetGain.gt(0)
+        },
+        milestones: {
+                //sequence is 1, 2, then x -> x^2 each time
+                1: {
+                        requirementDescription: "<b>Know</b><br>Requires: 1 Key", 
+                        effectDescription: "Keep <b>F</b> and <b>G</b> upgrades and double bulk amount",
+                        done(){
+                                return player.k.points.gte(1)
+                        },
+                        unlocked(){
+                                return true
+                        }, // hasMilestone("k", 1)
+                },
+                2: {
+                        requirementDescription: "<b>Key</b><br>Requires: 2 Keys",
+                        effectDescription: "Keep <b>I</b> and <b>J</b> milestones and double base <b>J</b> gain per upgrade",
+                        done(){
+                                return player.k.points.gte(2)
+                        },
+                        unlocked(){
+                                return hasMilestone("k", 1)
+                        }, // hasMilestone("k", 2)
+                },
+        },
+        upgrades: {
+                rows: 5,
+                cols: 5,
+                /*
+                11: {
+                        title: "Info",
+                        description: "Unlock an <b>F</b> buyable and each upgrade in this row unlocks a <b>G</b> buyable",
+                        cost: new Decimal(3e6),
+                        unlocked(){
+                                return hasMilestone("i", 8) || hasUnlockedPast("i")
+                        }
+                }, // hasUpgrade("i", 11)
+                */
+                
+                /*
+                
+                */
+        },
+        tabFormat: {
+                "Upgrades": {
+                        content: [
+                                "main-display",
+                                ["prestige-button", "", function (){ return false ? {'display': 'none'} : {}}],
+                                ["display-text",
+                                        function() {
+                                                if (player.tab != "k") return ""
+                                                return shiftDown ? "Your best Ideas is " + format(player.k.best) : ""
+                                        }
+                                ],
+                                ["display-text",
+                                        function() {
+                                                if (player.tab != "k") return ""
+                                                if (hasUnlockedPast("k")) return ""
+                                                return "You have done " + formatWhole(player.k.times) + " Key resets"
+                                        }
+                                ],
+                                ["display-text",
+                                        function() {
+                                                if (player.tab != "k") return ""
+                                                if (false) return "You are gaining " + format(tmp.k.getResetGain) + " Keys per second"
+                                                return "There is a two second cooldown for prestiging (" + format(Math.max(0, 2-player.k.time)) + ")" 
+                                        },
+                                        //{"font-size": "20px"}
+                                ],
+                                "blank", 
+                                ["upgrades", [1,5]]
+                        ],
+                        unlocked(){
+                                return true
+                        },
+                },
+                "Buyables": {
+                        content: ["main-display",
+                                "blank", 
+                                "buyables"],
+                        unlocked(){
+                                return false
+                        },
+                },
+                "Milestones": {
+                        content: [
+                                "main-display",
+                                "milestones",
+                        ],
+                        unlocked(){
+                                return true
+                        },
+                },
+        },
+        doReset(layer){
+                let data = player.k
+                if (layer == "k") data.time = 0
+                if (!getsReset("k", layer)) return
+                data.time = 0
+                data.times = 0
+
+                if (!false) {
+                        //upgrades
+                        let keep = []
+                        data.upgrades = filter(data.upgrades, keep)
+                }
+                
+                if (!false) {
+                        //milestones
+                        let keep2 = []
+                        data.milestones = filter(data.milestones, keep2)
+                }
+
+
+                //resources
+                data.points = new Decimal(0)
+                data.total = new Decimal(0)
+                data.best = new Decimal(0)
+
+                //buyables
+                let resetBuyables = [11, 12, 13, 21, 22, 23, 31, 32, 33]
+                for (let j = 0; j < resetBuyables.length; j++) {
+                        break //remove when buyables added
+                        data.buyables[resetBuyables[j]] = new Decimal(0)
+                }
+        },
+})
 
 

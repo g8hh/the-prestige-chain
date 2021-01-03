@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".5.19 Cytoplasm",
+	num: ".6 Cytoplasm",
 	name: "",
 }
 
@@ -378,7 +378,7 @@ function nextMilestone(){
 
 // Display extra things at the top of the page
 var displayThings = [
-	"Endgame: 1e68 Jigsaws",
+	"Endgame: 4 Keys DO NOT GO PAST",
 ]
 
 // Determines when the game "ends"
@@ -564,6 +564,9 @@ function getChangeLogText(){
 	ad1= "v.5.19"
 	ad2= "- Made it possible to do 2 Reset^2's"
 	ad3= "- Added 3 Jigsaw upgrades"
+	ae1= "v.6"
+	ae2= "- Added Keys"
+	ae3= "- Added two key milestones"
 
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
@@ -595,10 +598,11 @@ function getChangeLogText(){
 	let part27= [ab1,ab2,ab3,ab4, "",ab5,ab6,ab7,ab8, ""]
 	let part28= [ac1,ac2,ac3, ""]
 	let part29= [ad1,ad2,ad3, ""]
+	let part30= [ae1,ae2,ae3, ""]
 
 	let final1 = [part10,  part9,  part8,  part7,  part6,  part5,  part4,  part3,  part2,  part1]
 	let final2 = [part20, part19, part18, part17, part16, part15, part14, part13, part12, part11]
-	let final3 = [part29, part28, part27, part26, part25, part24, part23, part22, part21]
+	let final3 = [part30, part29, part28, part27, part26, part25, part24, part23, part22, part21]
 
 	return final3.concat(final2).concat(final1)
 }
