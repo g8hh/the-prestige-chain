@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".6 Cytoplasm",
+	num: ".6.1 Cytoplasm",
 	name: "",
 }
 
@@ -378,7 +378,7 @@ function nextMilestone(){
 
 // Display extra things at the top of the page
 var displayThings = [
-	"Endgame: 4 Keys DO NOT GO PAST",
+	"Endgame: 4 Keys DO NOT GO FURTHER",
 ]
 
 // Determines when the game "ends"
@@ -567,6 +567,12 @@ function getChangeLogText(){
 	ae1= "v.6"
 	ae2= "- Added Keys"
 	ae3= "- Added two key milestones"
+	af1= "v.6.1"
+	af2= "- Buffed Know and Key"
+	af3= "- Fixed reset puzzle hotkey"
+	af4= "- Buffed the first reset^2, and added some QoL that I forgot"
+	af5= "- Added shift to see bulk amount"
+	af6= "- Small balance changes regarding Keys"
 
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
@@ -599,12 +605,14 @@ function getChangeLogText(){
 	let part28= [ac1,ac2,ac3, ""]
 	let part29= [ad1,ad2,ad3, ""]
 	let part30= [ae1,ae2,ae3, ""]
+	let part31= [af1,af2,af3,af4,af5,af6, ""]
 
 	let final1 = [part10,  part9,  part8,  part7,  part6,  part5,  part4,  part3,  part2,  part1]
 	let final2 = [part20, part19, part18, part17, part16, part15, part14, part13, part12, part11]
 	let final3 = [part30, part29, part28, part27, part26, part25, part24, part23, part22, part21]
+	let final4 = [part31, ]
 
-	return final3.concat(final2).concat(final1)
+	return final4.concat(final3).concat(final2).concat(final1)
 }
 
 var controlDown = false

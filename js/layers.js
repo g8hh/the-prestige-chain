@@ -12673,6 +12673,7 @@ addLayer("i", {
                 if (!hasMilestone("j", 3)) {
                         //upgrades
                         let keep = []
+                        if (hasMilestone("k", 2)) keep.push(33)
                         data.upgrades = filter(data.upgrades, keep)
                 }
                 
@@ -12792,7 +12793,7 @@ addLayer("j", {
                 let x = getGeneralizedInitialPostMult("j")
 
                 if (hasUpgrade("h", 52)) x = x.times(player.j.puzzle.bestKnowledge.max(1))
-                if (hasUpgrade("j", 11)) x = x.times(Decimal.pow(tmp.j.clickables.getBulkAmount, player.j.upgrades.length))
+                if (hasUpgrade("j", 11)) x = x.times(Decimal.pow(player.j.puzzle.repeatables[13].max(1), player.j.upgrades.length))
                 if (hasUpgrade("j", 13)) x = x.times(player.j.puzzle.repeatables[12].max(10).log10())
 
                 return x
@@ -12861,23 +12862,24 @@ addLayer("j", {
                 if (data2.mode == 2) {
                         if (finishedFCorners && finishedFEdges) {
                                 layers.j.clickables.doEdges(Math.floor(data2.autotime) * multiplier)
-                        } else if (hasUpgrade("i", 34)) {
+                        } else if (hasUpgrade("i", 34) || player.j.puzzle.reset2.done) {
                                 data2.mode = 1
                         }
                 }
                 if (data2.mode == 3) {
                         if (finishedFCenters && finishedPEdges) {
                                 layers.j.clickables.doCenters(Math.floor(data2.autotime) * multiplier)
-                        } else if (hasUpgrade("i", 34)) {
+                        } else if (hasUpgrade("i", 34) || player.j.puzzle.reset2.done) {
                                 data2.mode = 1
                         }
                 }
                 if (data2.mode == 4) {
-                        if (hasUpgrade("i", 34)) {
+                        if (hasUpgrade("i", 34) || player.j.puzzle.reset2.done) {
                                 if (finishedPEdges && finishedPCorners && finishedPCenters) {}
                                 else data2.mode = 1
                         }
-                        if (data2.autotime > 1) layers.j.clickables.attemptFinish()
+                        if (data2.autotime > 1 && data.mode == 4) layers.j.clickables.attemptFinish()
+                        //check again to make sure not aborted above, just small thing that does nothing except my sanity and cause i cant say cause 2020 cause its 2021 and yes im going mad ty bye         
                 }
 
                 finishedPEdges = tot2 == data2.placed.edges
@@ -12906,7 +12908,7 @@ addLayer("j", {
                 
                 if (data.autodevtime < 1) return
                 data.autodevtime += -1
-                if (data.autopuzzlereset) {
+                if (data.autopuzzlereset && hasMilestone("j", 5)) {
                         layers.j.clickables[25].onClick()
                 }
                 if (data.autodevtime > 10) data.autodevtime = 10
@@ -12946,7 +12948,7 @@ addLayer("j", {
                                 layers.j.clickables[24].onClick()
                         }
                 },
-                {key: "shift+0", description: "Shift+0: Puzzle Reset", onPress(){
+                {key: "shift+)", description: "Shift+0: Puzzle Reset", onPress(){
                                 layers.j.clickables[25].onClick()
                         }
                 },
@@ -13037,7 +13039,7 @@ addLayer("j", {
                 cols: 5,
                 11: {
                         title: "Joint",
-                        description: "Per upgrade multiply <b>J</b> gain by your bulk amount and you can puzzle reset 3% faster for every upgrade",
+                        description: "Per upgrade multiply <b>J</b> gain by your Bulk Amount levels and you can puzzle reset 3% faster for every upgrade",
                         cost: new Decimal(2e20),
                         unlocked(){
                                 return hasUpgrade("h", 45) || hasUnlockedPast("j")
@@ -13158,6 +13160,7 @@ addLayer("j", {
                 getBulkAmount(){
                         let ret = new Decimal(1)
                         ret = ret.times(tmp.j.clickables[13].effect)
+                        if (player.j.puzzle.reset2.done) ret = ret.times(2)
                         if (hasMilestone("k", 1)) ret = ret.times(2)
                         return Math.round(ret.toNumber())
                 },
@@ -13209,7 +13212,7 @@ addLayer("j", {
                                 }//edges
                                 else break
                         }
-                        if (!hasUpgrade("i", 32)) return
+                        if (!(hasUpgrade("i", 32) || player.j.puzzle.reset2.done)) return
                         data.mode = 3
                         if (times >= b + 1) return
                         this.doCenters(times - b - 1)
@@ -13456,7 +13459,7 @@ addLayer("j", {
                                 let data = player.j.puzzle
 
                                 let additional = new Decimal(tmp.j.clickables[12].getMaxCostTo)
-                                if (!hasUpgrade("j", 13)) additional = additional.min(1)
+                                if (!hasUpgrade("j", 13) && !player.j.puzzle.reset2.done) additional = additional.min(1)
                                 if (!shiftDown || forceone) additional = additional.min(1)
                                 data.knowledge = data.knowledge.minus(this.costTo(data.repeatables[12].plus(additional)))
                                 data.repeatables[12] = data.repeatables[12].plus(additional)
@@ -13493,6 +13496,7 @@ addLayer("j", {
                         },
                         effect(delta = 0){
                                 let ret = player.j.puzzle.repeatables[13].plus(delta).plus(1)
+                                if (hasMilestone("k", 1)) ret = ret.pow(2)
                                 return ret
                         },
                         effeciency(){
@@ -14395,6 +14399,9 @@ addLayer("j", {
                                         }
                                         let b = "You have " + formatWhole(data.exp) + " experience, " + formatWhole(data.bankedExp) + " banked experience, " + formatWhole(data.knowledge) + " knowledge<br>"
                                         let c = "You are currently working on a <h3>" + data.currentX + "</h3>x<h3>" + data.currentY + "</h3> puzzle (" + formatWhole(data.finished) + " completed)<br>"
+                                        if (shiftDown) {
+                                                c = "Your bulk amount is " + formatWhole(tmp.j.clickables.getBulkAmount) + "<br>"
+                                        }
                                         return a + b + c
                                 }],
                                 ["clickables", [1,2]],
@@ -14456,8 +14463,9 @@ addLayer("j", {
                                         Each reset allows you to make larger puzzles (by 5 in each dimension)<br>
                                         Additionally, doing your first reset<sup>2</sup> allows you lets you keep all automation unlocked previously<br>
                                         Furthermore, each reset<sup>2</sup> triples banked exp and knowledge gain<br>
+                                        The first reset<sup>2</sup> permanently doubles bulk amount<br>
                                         However, doing a reset<sup>2</sup> resets all puzzle content except best exp and best knowledge<br>
-                                        Unlock resetting, there is no cooldown [atm]<br><br>`
+                                        Unlike resetting, there is no cooldown [atm]<br><br>`
                                         return a + b + c + "<br><br><br>"
                                 }
                                 ]
@@ -14582,11 +14590,11 @@ addLayer("k", {
 
                 let amt = player.k.best
 
-                let exp = player.k.best.pow(.2).times(2).min(50)
+                let exp = player.k.best.pow(.2).times(3).min(100)
                 
                 let exp2 = new Decimal(0)
 
-                let ret = amt.plus(1).pow(exp)
+                let ret = amt.times(3).plus(1).pow(exp)
 
                 let ret2 = amt.pow(exp2).max(1)
 
@@ -14651,7 +14659,7 @@ addLayer("k", {
                 //sequence is 1, 2, then x -> x^2 each time
                 1: {
                         requirementDescription: "<b>Know</b><br>Requires: 1 Key", 
-                        effectDescription: "Keep <b>F</b> and <b>G</b> upgrades and double bulk amount",
+                        effectDescription: "Keep <b>F</b> and <b>G</b> upgrades, double bulk amount, and square Bulk Amount",
                         done(){
                                 return player.k.points.gte(1)
                         },
@@ -14661,7 +14669,7 @@ addLayer("k", {
                 },
                 2: {
                         requirementDescription: "<b>Key</b><br>Requires: 2 Keys",
-                        effectDescription: "Keep <b>I</b> and <b>J</b> milestones and double base <b>J</b> gain per upgrade",
+                        effectDescription: "Keep <b>I</b> and <b>J</b> milestones, double base <b>J</b> gain per milestone, and keep <b>Important</b>",
                         done(){
                                 return player.k.points.gte(2)
                         },

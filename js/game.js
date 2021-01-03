@@ -10,7 +10,7 @@ const TMT_VERSION = {
 }
 
 function finishedChallenges(layer, data){
-	return challengeCompletions(layer, data) == (tmp[layer].challenges[data].completionLimit || 1)
+	return challengeCompletions(layer, data) >= (tmp[layer].challenges[data].completionLimit || 1)
 }
 
 function getIntergerInterval(s,e){

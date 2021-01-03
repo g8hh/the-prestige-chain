@@ -755,6 +755,7 @@ function fixHotkeyCode(s){
 	s = replaceString(s, "[", "{")
 	s = replaceString(s, ",", "<")
 	s = replaceString(s, ".", ">")
+	s = replaceString(s, "0", ")")
 	return s
 }
 
