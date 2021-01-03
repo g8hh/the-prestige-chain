@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".5.18 Cytoplasm",
+	num: ".5.19 Cytoplasm",
 	name: "",
 }
 
@@ -378,7 +378,7 @@ function nextMilestone(){
 
 // Display extra things at the top of the page
 var displayThings = [
-	"Endgame: Jean",
+	"Endgame: 1e68 Jigsaws",
 ]
 
 // Determines when the game "ends"
@@ -561,6 +561,9 @@ function getChangeLogText(){
 	ac1= "v.5.18"
 	ac2= "- Added Reset^2"
 	ac3= "- Readded Inconsolata if Optima isn't available"
+	ad1= "v.5.19"
+	ad2= "- Made it possible to do 2 Reset^2's"
+	ad3= "- Added 3 Jigsaw upgrades"
 
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
@@ -591,10 +594,11 @@ function getChangeLogText(){
 	let part26= [aa1,aa2,aa3,aa4,aa5, ""]
 	let part27= [ab1,ab2,ab3,ab4, "",ab5,ab6,ab7,ab8, ""]
 	let part28= [ac1,ac2,ac3, ""]
+	let part29= [ad1,ad2,ad3, ""]
 
 	let final1 = [part10,  part9,  part8,  part7,  part6,  part5,  part4,  part3,  part2,  part1]
 	let final2 = [part20, part19, part18, part17, part16, part15, part14, part13, part12, part11]
-	let final3 = [part28, part27, part26, part25, part24, part23, part22, part21]
+	let final3 = [part29, part28, part27, part26, part25, part24, part23, part22, part21]
 
 	return final3.concat(final2).concat(final1)
 }

@@ -80,6 +80,7 @@ function getChallengeFactor(comps){
         if (b1.gt(1e200)) b1 = b1.tetrate(1.0001) 
         if (b1.gt(1e250)) b1 = b1.tetrate(1.0011) 
         if (b1.gt("1ee3")) b1 = b1.tetrate(1.0001) 
+        if (b1.gt("1e5e3")) b1 = b1.pow(b1.log10().log10())
         return b1
 }
 
@@ -4609,6 +4610,7 @@ addLayer("f", {
                                 if (hasUpgrade("g", 55)) ret += 5
                                 if (hasUpgrade("h", 34)) ret += player.i.upgrades.length
                                 if (player.j.puzzle.upgrades.includes(51)) ret += 5
+                                if (hasUpgrade("j", 24)) ret ++
 
                                 return ret
                         },
@@ -4640,6 +4642,7 @@ addLayer("f", {
                                 if (hasUpgrade("g", 55)) ret += 5
                                 if (hasUpgrade("h", 34)) ret += player.i.upgrades.length
                                 if (player.j.puzzle.upgrades.includes(51)) ret += 5
+                                if (hasUpgrade("j", 24)) ret ++
 
                                 return ret
                         },
@@ -4669,6 +4672,7 @@ addLayer("f", {
                                 if (hasUpgrade("g", 55)) ret += 5
                                 if (hasUpgrade("h", 34)) ret += player.i.upgrades.length
                                 if (player.j.puzzle.upgrades.includes(51)) ret += 5
+                                if (hasUpgrade("j", 24)) ret ++
 
                                 return ret
                         },
@@ -4702,6 +4706,7 @@ addLayer("f", {
                                 if (hasUpgrade("g", 55)) ret += 5
                                 if (hasUpgrade("h", 34)) ret += player.i.upgrades.length
                                 if (player.j.puzzle.upgrades.includes(51)) ret += 5
+                                if (hasUpgrade("j", 24)) ret ++
 
                                 return ret
                         },
@@ -10538,7 +10543,7 @@ addLayer("g", {
                                 rb = player.g.rebirths[1]
                                 let a = gdata.partialTally.gte(Decimal.times(160, (rb + 1) * (rb + 2) / 2))
                                 let b = gdata.charges.gte(layers.g.clickables.getChargeComsumption())
-                                return a && b && tmp.g.clickables.getChargesPerMinute.gt(0)
+                                return a && b && tmp.g.clickables.getChargesPerMinute.gt(0) && tmp.g.clickables[15].unlocked
                         },
                         onClick(force = false){
                                 let data = player.g
@@ -10582,7 +10587,7 @@ addLayer("g", {
                                 let gdata = player.g
                                 let a = new Decimal(gdata.rebirths[1]).gte(this.cost())
                                 let b = gdata.charges.gte(layers.g.clickables.getChargeComsumption())
-                                return a && b && tmp.g.clickables.getChargesPerMinute.gt(0)
+                                return a && b && tmp.g.clickables.getChargesPerMinute.gt(0) && tmp.g.clickables[25].unlocked
                         },
                         onClick(force = false){
                                 let data = player.g
@@ -10626,7 +10631,7 @@ addLayer("g", {
                                 let gdata = player.g
                                 let a = new Decimal(gdata.rebirths[2]).gte(this.cost())
                                 let b = gdata.charges.gte(layers.g.clickables.getChargeComsumption())
-                                return a && b && tmp.g.clickables.getChargesPerMinute.gt(0)
+                                return a && b && tmp.g.clickables.getChargesPerMinute.gt(0) && tmp.g.clickables[35].unlocked
                         },
                         onClick(force = false){
                                 let data = player.g
@@ -10671,7 +10676,7 @@ addLayer("g", {
                                 let gdata = player.g
                                 let a = new Decimal(gdata.rebirths[3]).gte(this.cost())
                                 let b = gdata.charges.gte(layers.g.clickables.getChargeComsumption())
-                                return a && b && tmp.g.clickables.getChargesPerMinute.gt(0)
+                                return a && b && tmp.g.clickables.getChargesPerMinute.gt(0) && tmp.g.clickables[45].unlocked
                         },
                         onClick(force = false){
                                 let data = player.g
@@ -12059,7 +12064,9 @@ addLayer("h", {
                         rewardDescription: "Raise <b>I</b> effect to a power",
                         rewardEffect(){
                                 let c = challengeCompletions("h", 12)
-                                return Decimal.pow(10, Math.sqrt(c))
+                                let base = 10
+                                if (hasUpgrade("j", 23)) base += player.j.upgrades.length
+                                return Decimal.pow(base, Math.sqrt(c))
                         },
                         goal(){
                                 let init = new Decimal("1e9525e18")
@@ -12768,6 +12775,7 @@ addLayer("j", {
         },
         getGainExp(){
                 let x = new Decimal(2)
+                if (hasUpgrade("j", 25)) x = x.plus(player.j.puzzle.reset2.times)
                 return x
         },
         getGainMultPre(){
@@ -13081,18 +13089,49 @@ addLayer("j", {
                                 return (hasUpgrade("j", 21) && player.j.puzzle.repeatables[14].gte(20)) || player.j.puzzle.reset2.done || hasUnlockedPast("j")
                         }
                 }, // hasUpgrade("j", 22)
+                23: {
+                        title: "Journals",
+                        description: "Each upgrade adds one to <b>Hold</b> effect base (it is initially 10)",
+                        cost: new Decimal(3e38),
+                        unlocked(){
+                                return (hasUpgrade("j", 22) && player.j.puzzle.reset2.done) || hasUnlockedPast("j")
+                        }
+                }, // hasUpgrade("j", 23)
+                24: {
+                        title: "Jennifer",
+                        description: "<b>Japan</b> effects <b>Junior</b> base and you can complete one more of each <b>F</b> challenge",
+                        cost: new Decimal(1e40),
+                        unlocked(){
+                                return hasUpgrade("j", 23) || hasUnlockedPast("j")
+                        }
+                }, // hasUpgrade("j", 24)
+                25: {
+                        title: "Jose",
+                        description: "Gain 5x attempt speed and knowledge gain and each <b>Reset<sup>2</sup></b> adds 1 to the <b>J</b> gain exponent",
+                        cost: new Decimal(1e46),
+                        unlocked(){
+                                return hasUpgrade("j", 24) || hasUnlockedPast("j")
+                        }
+                }, // hasUpgrade("j", 25)
 
                 /*
-                jean [used]
+                
+                Jane
+                Journey
+                jewellery
+                Jay
+                Jacket
                 */
         },
         clickables: {
                 rows: 6,
                 cols: 5, //only using 4 rn
                 jigsawEffect(){
-                        let ret = player.j.points.max(10).log10().sqrt()
-                        if (ret.gt(10)) ret = ret.log10().times(10)
-                        if (hasUpgrade("j", 12)) ret = ret.pow(Math.sqrt(player.j.upgrades.length))
+                        let base = player.j.points.max(10).log10()
+
+                        let exp = new Decimal(.5)
+                        if (hasUpgrade("j", 12)) exp = exp.times(Math.sqrt(player.j.upgrades.length))
+                        let ret = base.pow(exp)
                         return ret
                 },
                 nameOfModeV(){
@@ -13105,6 +13144,7 @@ addLayer("j", {
                 getAttemptSpeed(){
                         let ret = tmp.j.clickables.jigsawEffect
                         ret = ret.times(tmp.j.clickables[12].effect)
+                        if (hasUpgrade("j", 25)) ret = ret.times(5)
                         return ret
                 },
                 getAttemptChance(){
@@ -13226,6 +13266,7 @@ addLayer("j", {
                         if (hasUpgrade("j", 14)) ret = ret.times(player.j.upgrades.length)
                         if (hasUpgrade("j", 15)) ret = ret.times(player.j.puzzle.bestKnowledge.max(3).ln())
                         ret = ret.times(Decimal.pow(3, player.j.puzzle.reset2.times))
+                        if (hasUpgrade("j", 25)) ret = ret.times(5)
                         return ret
                 },
                 getBankedExpGainUF(){
@@ -13484,7 +13525,10 @@ addLayer("j", {
                                 return true
                         },
                         cost(){
-                                return Decimal.pow(4, player.j.puzzle.repeatables[14].pow(.8)).times(40).floor()
+                                let a = Decimal.pow(4, player.j.puzzle.repeatables[14].pow(.8)).times(40)
+                                let b = Decimal.pow(2.25, player.j.puzzle.repeatables[14])
+
+                                return a.max(b).floor()
                         },
                         canClick(){
                                 let x = tmp.j.clickables.getCurrentMaxSize
@@ -14130,6 +14174,7 @@ addLayer("j", {
                         base(){
                                 let base = new Decimal(2)
                                 if (hasUpgrade("j", 22)) base = base.plus(1)
+                                if (hasUpgrade("j", 24)) base = base.times(tmp.j.clickables[35].effect)
                                 return base
                         },
                         effect(){
