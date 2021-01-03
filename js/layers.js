@@ -12878,8 +12878,7 @@ addLayer("j", {
                                 if (finishedPEdges && finishedPCorners && finishedPCenters) {}
                                 else data2.mode = 1
                         }
-                        if (data2.autotime > 1 && data.mode == 4) layers.j.clickables.attemptFinish()
-                        //check again to make sure not aborted above, just small thing that does nothing except my sanity and cause i cant say cause 2020 cause its 2021 and yes im going mad ty bye         
+                        if (data2.autotime > 1) layers.j.clickables.attemptFinish()
                 }
 
                 finishedPEdges = tot2 == data2.placed.edges
@@ -13096,7 +13095,7 @@ addLayer("j", {
                 23: {
                         title: "Journals",
                         description: "Each upgrade adds one to <b>Hold</b> effect base (it is initially 10)",
-                        cost: new Decimal(3e38),
+                        cost: new Decimal(1e38),
                         unlocked(){
                                 return (hasUpgrade("j", 22) && player.j.puzzle.reset2.done) || hasUnlockedPast("j")
                         }
