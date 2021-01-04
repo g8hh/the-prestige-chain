@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".6.2 Cytoplasm",
+	num: ".6.3 Cytoplasm",
 	name: "",
 }
 
@@ -593,6 +593,12 @@ function getChangeLogText(){
 	ag4= "- Added a Heart buyable and Heart Challenge"
 	ag5= "- Added 2 Key milestones"
 	ag6= "- Small balance changes regarding Keys"
+	ah1= "v.6.3"
+	ah2= "- Added 4 Idea upgrades"
+	ah3= "- Added 3 Key milestones"
+	ah4= "- Added passive Key gain"
+	ah5= "- Added more QoL regarding puzzles"
+	ah6= "- Due to inaccuracies and irrelavence removed 'Best!' display of puzzle upgrades"
 
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
@@ -627,11 +633,12 @@ function getChangeLogText(){
 	let part30= [ae1,ae2,ae3, ""]
 	let part31= [af1,af2,af3,af4,af5,af6, ""]
 	let part32= [ag1,ag2,ag3,ag4,ag5,ag6, ""]
+	let part33= [ah1,ah2,ah3,ah4,ah5,ah6, ""]
 
 	let final1 = [part10,  part9,  part8,  part7,  part6,  part5,  part4,  part3,  part2,  part1]
 	let final2 = [part20, part19, part18, part17, part16, part15, part14, part13, part12, part11]
 	let final3 = [part30, part29, part28, part27, part26, part25, part24, part23, part22, part21]
-	let final4 = [part32, part31]
+	let final4 = [part33, part32, part31]
 
 	return final4.concat(final3).concat(final2).concat(final1)
 }

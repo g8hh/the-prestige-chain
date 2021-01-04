@@ -10974,15 +10974,44 @@ addLayer("i", {
                                 return hasMilestone("k", 4) || hasUnlockedPast("k")
                         }
                 }, // hasUpgrade("i", 51)
+                52: {
+                        title: "Income",
+                        description: "Keep success chance levels and unlock a <b>K</b> milestone",
+                        cost: new Decimal("1e1444444"),
+                        unlocked(){
+                                return hasUpgrade("i", 51) || hasUnlockedPast("k")
+                        }
+                }, // hasUpgrade("i", 52)
+                53: {
+                        title: "Institute",
+                        description: "Once per second get Attempt Speed levels as if you bought max but it doesn't cost Knowledge",
+                        cost: new Decimal("1e5500e3"),
+                        unlocked(){
+                                return hasUpgrade("i", 52) || hasUnlockedPast("k")
+                        }
+                }, // hasUpgrade("i", 53)
+                54: {
+                        title: "Inside",
+                        description: "Once per second get attempt to Reset<sup>2</sup> and per <b>J</b> upgrade multiply base <b>J</b> upgrade by bulk amount",
+                        cost: new Decimal("1e6000e3"),
+                        unlocked(){
+                                return hasUpgrade("i", 53) || hasUnlockedPast("k")
+                        }
+                }, // hasUpgrade("i", 54)
+                55: {
+                        title: "Islands",
+                        description: "Each Reset<sup>2</sup> doubles base <b>K</b> gain and multiplies Knowledge gain by 10",
+                        cost: new Decimal("1e7777e3"),
+                        unlocked(){
+                                return hasUpgrade("i", 54) || hasUnlockedPast("k")
+                        }
+                }, // hasUpgrade("i", 55)
 
                 
 
                 /*
                 
-                income
-                institute
-                inside
-                islands
+                
                 investment
                 ideas
                 inn
@@ -11167,6 +11196,7 @@ addLayer("j", {
                 x = x.times(tmp.j.clickables[55].effect)
                 if (hasMilestone("k", 2)) x = x.times(Decimal.pow(3, player.k.milestones.length))
                 x = x.times(tmp.h.challenges[21].rewardEffect)
+                if (hasUpgrade("i", 54)) x = x.times(Decimal.pow(tmp.j.clickables.getBulkAmount, player.j.upgrades.length))
                 return x
         },
         getGainMultPost(){
@@ -11291,6 +11321,15 @@ addLayer("j", {
                 data.autodevtime += -1
                 if (data.autopuzzlereset && hasMilestone("j", 5)) {
                         layers.j.clickables[25].onClick()
+                }
+                if (hasMilestone("k", 6)) {
+                        layers.j.clickables[11].onClick(forcemulti = true, nocost = true)
+                }
+                if (hasUpgrade("i", 53)) {
+                        layers.j.clickables[12].onClick(forcemulti = true, nocost = true)
+                }
+                if (hasUpgrade("i", 54)) {
+                        layers.j.clickables[61].onClick()
                 }
                 if (data.autodevtime > 10) data.autodevtime = 10
         },
@@ -11655,6 +11694,7 @@ addLayer("j", {
                         if (hasUpgrade("j", 25)) ret = ret.times(5)
                         if (hasMilestone("k", 3)) ret = ret.times(player.ach.best.max(1))
                         ret = ret.times(tmp.h.challenges[21].rewardEffect)
+                        if (hasUpgrade("i", 55)) ret = ret.times(Decimal.pow(10, player.j.puzzle.reset2.times))
                         return ret
                 },
                 getBankedExpGainUF(){
@@ -11663,6 +11703,7 @@ addLayer("j", {
                         if (player.j.puzzle.upgrades.includes(54)) ret = ret.times(Decimal.pow(2, player.j.upgrades.length))
                         ret = ret.times(Decimal.pow(3, player.j.puzzle.reset2.times))
                         if (hasMilestone("k", 2)) ret = ret.times(player.ach.best.max(1))
+                        if (hasMilestone("k", 7)) ret = ret.times(Decimal.pow(2, totalChallengeComps("h")))
                         return ret
                 },
                 getResetCD(){
@@ -11682,7 +11723,7 @@ addLayer("j", {
                         },
                         display(){
                                 if (player.tab != "j") return ""
-                                if (shiftDown) {
+                                if (shiftDown && !hasMilestone("k", 6)) {
                                         end = ""
                                         if (tmp.j.clickables[11].effeciency.lt(tmp.j.clickables[12].effeciency)) {
                                                 if (tmp.j.clickables[11].effeciency.lt(tmp.j.clickables[13].effeciency)) {
@@ -11694,6 +11735,7 @@ addLayer("j", {
                                 let a = "<h3 style='color: #993300'>Cost</h3>: " + formatWhole(tmp.j.clickables[11].cost) + " Knowledge<br>"
                                 let b = "<h3 style='color: #339900'>Current</h3>: " + formatWhole(player.j.puzzle.repeatables[11]) + " levels<br>"
                                 let c = "<h3 style='color: #9933CC'>Effect</h3>: *" + format(tmp.j.clickables[11].effect) + " success chance<br>"
+                                if (hasMilestone("k", 6)) return c
                                 return a + b + c
                         },
                         unlocked(){
@@ -11755,13 +11797,13 @@ addLayer("j", {
                                 let e = this.effect(1).div(tmp.j.clickables[11].effect)
                                 return e.ln().pow(-1).times(c)
                         },
-                        onClick(forceone = false){
+                        onClick(forcemulti = false, nocost = false){
                                 let data = player.j.puzzle
 
                                 let additional = new Decimal(tmp.j.clickables[11].getMaxCostTo)
                                 if (!player.j.puzzle.upgrades.includes(51) && !player.j.puzzle.reset2.done) additional = additional.min(1)
-                                if (!shiftDown || forceone) additional = additional.min(1)
-                                data.knowledge = data.knowledge.minus(this.costTo(data.repeatables[11].plus(additional)))
+                                if (!shiftDown && !forcemulti) additional = additional.min(1)
+                                if (!nocost) data.knowledge = data.knowledge.minus(this.costTo(data.repeatables[11].plus(additional)))
                                 data.repeatables[11] = data.repeatables[11].plus(additional)
                         },
                 },
@@ -11771,7 +11813,7 @@ addLayer("j", {
                         },
                         display(){
                                 if (player.tab != "j") return ""
-                                if (shiftDown) {
+                                if (shiftDown && !hasUpgrade("i", 53)) {
                                         end = ""
                                         if (tmp.j.clickables[12].effeciency.lt(tmp.j.clickables[11].effeciency)) {
                                                 if (tmp.j.clickables[12].effeciency.lt(tmp.j.clickables[13].effeciency)) {
@@ -11784,6 +11826,7 @@ addLayer("j", {
                                 let a = "<h3 style='color: #993300'>Cost</h3>: " + formatWhole(tmp.j.clickables[12].cost) + ktf + "<br>"
                                 let b = "<h3 style='color: #339900'>Current</h3>: " + formatWhole(player.j.puzzle.repeatables[12]) + " levels<br>"
                                 let c = "<h3 style='color: #9933CC'>Effect</h3>: *" + format(tmp.j.clickables[12].effect) + " Attempt Speed<br>"
+                                if (hasUpgrade("i", 53)) return c
                                 return a + b + c
                         },
                         unlocked(){
@@ -11835,17 +11878,18 @@ addLayer("j", {
                                 return sum
                         },
                         effeciency(){
+                                let diff = player.j.puzzle.repeatables[12].div(1e6).floor()
                                 let c = tmp.j.clickables[12].cost
-                                let e = this.effect(1).div(tmp.j.clickables[12].effect)
-                                return e.ln().pow(-1).times(c)
+                                let e = this.effect(diff).div(tmp.j.clickables[12].effect)
+                                return e.ln().pow(-1).times(c).div(diff)
                         },
-                        onClick(forceone = false){
+                        onClick(forcemulti = false, nocost = false){
                                 let data = player.j.puzzle
 
                                 let additional = new Decimal(tmp.j.clickables[12].getMaxCostTo)
                                 if (!hasUpgrade("j", 13) && !player.j.puzzle.reset2.done) additional = additional.min(1)
-                                if (!shiftDown || forceone) additional = additional.min(1)
-                                data.knowledge = data.knowledge.minus(this.costTo(data.repeatables[12].plus(additional)))
+                                if (!shiftDown && !forcemulti) additional = additional.min(1)
+                                if (!nocost) data.knowledge = data.knowledge.minus(this.costTo(data.repeatables[12].plus(additional)))
                                 data.repeatables[12] = data.repeatables[12].plus(additional)
                         },
                 },
@@ -11855,7 +11899,7 @@ addLayer("j", {
                         },
                         display(){
                                 if (player.tab != "j") return ""
-                                if (shiftDown) {
+                                if (shiftDown && (!hasUpgrade("i", 53) || !hasMilestone("k", 6))) {
                                         end = ""
                                         if (tmp.j.clickables[13].effeciency.lt(tmp.j.clickables[12].effeciency)) {
                                                 if (tmp.j.clickables[13].effeciency.lt(tmp.j.clickables[11].effeciency)) {
@@ -11866,6 +11910,7 @@ addLayer("j", {
                                 }
                                 let a = "<h3 style='color: #993300'>Cost</h3>: " + formatWhole(tmp.j.clickables[13].cost) + " Knowledge<br>"
                                 let b = "<h3 style='color: #339900'>Current</h3>: " + formatWhole(player.j.puzzle.repeatables[13]) + " levels<br>"
+                                if (player.j.puzzle.repeatables[13].gt(50)) b = ""
                                 let c = "<h3 style='color: #9933CC'>Effect</h3>: *" + format(tmp.j.clickables[13].effect) + " to Bulk amount<br>"
                                 return a + b + c
                         },
@@ -12787,7 +12832,7 @@ addLayer("j", {
                                         if (player.tab != "j") return ""
                                         let data = player.j.puzzle
                                         let a = "You have " + formatWhole(player.j.points) + " jigsaws, causing a " + format(tmp.j.clickables.jigsawEffect, 4) + " speed multiplier<br>"
-                                        if (shiftDown) {
+                                        if (shiftDown && (!hasUpgrade("i", 53) || !hasMilestone("k", 6))) {
                                                 a = "You are holding shift down to bulk buy and see effeciencies (hint: smaller is better)<br>"
                                         }
                                         let b = "You have " + formatWhole(data.exp) + " experience, " + formatWhole(data.bankedExp) + " banked experience, " + formatWhole(data.knowledge) + " knowledge<br>"
@@ -12905,9 +12950,9 @@ addLayer("j", {
                 data2.knowledge = new Decimal(0)
                 data2.bestKnowledge = new Decimal(0)
                 data2.bestExp = new Decimal(0)
-                data2.repeatables[11] = new Decimal(0)
+                if (!hasUpgrade("i", 52)) data2.repeatables[11] = new Decimal(0)
                 data2.repeatables[12] = new Decimal(0)
-                data2.repeatables[13] = new Decimal(0)
+                if (!hasMilestone("k", 6)) data2.repeatables[13] = new Decimal(0)
                 data2.repeatables[14] = new Decimal(0)
                 data2.repeatables[35] = new Decimal(0)
                 data2.repeatables[45] = new Decimal(0)
@@ -12972,10 +13017,13 @@ addLayer("k", {
         },
         getGainMultPre(){
                 let x = Decimal.pow(19, -1)
+                if (hasUpgrade("i", 55)) x = x.times(Decimal.pow(2, player.j.puzzle.reset2.times))
                 return x
         },
         getGainMultPost(){
                 let x = getGeneralizedInitialPostMult("k")
+
+                if (hasMilestone("k", 5)) x = x.times(Decimal.pow(2, player.k.milestones.length))
 
                 return x
         },
@@ -13003,7 +13051,7 @@ addLayer("k", {
                 let data = player.k
 
                 data.best = data.best.max(data.points)
-                if (false) {
+                if (hasMilestone("k", 5)) {
                         let gain = tmp.k.getResetGain
                         data.points = data.points.plus(gain.times(diff))
                         data.total = data.total.plus(gain.times(diff))
@@ -13043,11 +13091,11 @@ addLayer("k", {
         ],
         layerShown(){return player.j.best.gt(1e67) || player.k.best.gt(0) || hasUnlockedPast("k")},
         prestigeButtonText(){
-                if (false) return ""
+                if (hasMilestone("k", 5)) return ""
                 return getGeneralizedPrestigeButtonText("k")
         },
         canReset(){
-                return player.k.time >= 2 && !false && tmp.k.getResetGain.gt(0)
+                return player.k.time >= 2 && !hasMilestone("k", 5) && tmp.k.getResetGain.gt(0)
         },
         milestones: {
                 //sequence is 1, 2, then x -> x^2 each time
@@ -13082,7 +13130,7 @@ addLayer("k", {
                         }, // hasMilestone("k", 3)
                 },
                 4: {
-                        requirementDescription: "<b>Keep</b><br>Requires: 16 Keys",
+                        requirementDescription: "<b>Kids</b><br>Requires: 16 Keys",
                         effectDescription: "Reset<sup>2</sup> resets nothing and unlock a <b>H</b> challenge",
                         done(){
                                 return player.k.points.gte(16)
@@ -13090,6 +13138,36 @@ addLayer("k", {
                         unlocked(){
                                 return hasMilestone("k", 3) || hasUnlockedPast("k")
                         }, // hasMilestone("k", 4)
+                },
+                5: {
+                        requirementDescription: "<b>Knowledge</b><br>Requires: 256 Keys",
+                        effectDescription: "Remove the ability to prestige but gain 100% of Keys upon prestige per second, and each milestone doubles <b>K</b> gain",
+                        done(){
+                                return player.k.points.gte(256)
+                        },
+                        unlocked(){
+                                return hasUpgrade("i", 52) || hasUnlockedPast("k")
+                        }, // hasMilestone("k", 5)
+                },
+                6: {
+                        requirementDescription: "<b>Known</b><br>Requires: 65,536 Keys",
+                        effectDescription: "Keep Bulk Amount levels upon reset and once per second get Success Chance levels as if you bought max, but it doesn't cost Knowledge",
+                        done(){
+                                return player.k.points.gte(65536)
+                        },
+                        unlocked(){
+                                return hasMilestone("k", 5) || hasUnlockedPast("k")
+                        }, // hasMilestone("k", 6)
+                },
+                7: {
+                        requirementDescription: "<b>Kingdom</b><br>Requires: 4,294,967,296 Keys",
+                        effectDescription: "Each <b>H</b> challenge completion doubles banked exp gain",
+                        done(){
+                                return player.k.points.gte(4294967296)
+                        },
+                        unlocked(){
+                                return hasMilestone("k", 6) || hasUnlockedPast("k")
+                        }, // hasMilestone("k", 7)
                 },
         },
         upgrades: {
@@ -13107,16 +13185,17 @@ addLayer("k", {
                 */
                 
                 /*
-                kids
-                knowledge
-                known
+                
+                king
+                kind
+                kitchen
                 */
         },
         tabFormat: {
                 "Upgrades": {
                         content: [
                                 "main-display",
-                                ["prestige-button", "", function (){ return false ? {'display': 'none'} : {}}],
+                                ["prestige-button", "", function (){ return hasMilestone("k", 5) ? {'display': 'none'} : {}}],
                                 ["display-text",
                                         function() {
                                                 if (player.tab != "k") return ""
@@ -13133,7 +13212,7 @@ addLayer("k", {
                                 ["display-text",
                                         function() {
                                                 if (player.tab != "k") return ""
-                                                if (false) return "You are gaining " + format(tmp.k.getResetGain) + " Keys per second"
+                                                if (hasMilestone("k", 5)) return "You are gaining " + format(tmp.k.getResetGain) + " Keys per second"
                                                 return "There is a two second cooldown for prestiging (" + format(Math.max(0, 2-player.k.time)) + ")" 
                                         },
                                         //{"font-size": "20px"}
