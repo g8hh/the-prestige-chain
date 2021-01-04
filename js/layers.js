@@ -77,10 +77,10 @@ function getChallengeFactor(comps){
         if (b1.gt(10)) b1 = b1.div(10).pow10()
         if (b1.gt(1e10)) b1 = b1.tetrate(1.01) 
         if (b1.gt(1e16)) b1 = b1.tetrate(1.01) 
-        if (b1.gt(1e200)) b1 = b1.tetrate(1.0001) 
-        if (b1.gt(1e250)) b1 = b1.tetrate(1.0011) 
-        if (b1.gt("1ee3")) b1 = b1.tetrate(1.0001) 
-        if (b1.gt("1e5e3")) b1 = b1.pow(b1.log10().log10())
+        if (b1.gt(1e200)) b1 = b1.tetrate(1.0001)
+        if (b1.gt(1e250)) b1 = b1.tetrate(1.0011)
+        if (b1.gt("1ee3")) b1 = b1.tetrate(1.0001)
+        if (b1.gt("1e5e3")) b1 = b1.tetrate(1.0002)
         return b1
 }
 
@@ -113,7 +113,7 @@ function isPrestigeEffectActive(layer){
         if (layer == "h") return true
         if (layer == "g") return true
         if (layer == "f") return true
-        if (layer == "e") return true
+        if (layer == "e") return !inChallenge("h", 21)
         if (layer == "d") return true
         if (layer == "c") return true
         if (layer == "b") return true
@@ -296,13 +296,19 @@ function getPrestigeName(layer){
 }
 
 function getTimesRequired(chance){
-        if (chance >= 1) return 1
-        if (chance <= 0) return Infinity
+        chance = new Decimal(chance)
+        if (chance.gte(1)) return 1
+        if (chance.lte(0)) return Infinity
         let r1 = Math.random()
         //we want (1-chance)^n < r1
-        let n = Math.log(r1)/Math.log(1-chance) 
+        let n
+        if (chance > .0001){
+                n = Decimal.ln(r1).div(Math.log(1-chance))
+        } else {
+                n = Decimal.ln(1/r1).div(chance)
+        }
         //log(1-chance) of r2
-        return Math.floor(n) + 1
+        return Math.floor(n.toNumber()) + 1
 }
 
 function getGeneralizedPrestigeGain(layer){
@@ -381,6 +387,9 @@ function getGeneralizedPrestigeButtonText(layer){
                 if (ps.lt(1000/3600)) nextAt += "<br>" + format(ps.times(3600)) + "/h"
                 else if (ps.lt(1000/60)) nextAt += "<br>" + format(ps.times(60)) + "/m"
                 else nextAt += "<br>" + format(ps) + "/s"
+        }
+        if (player[layer].best.eq(0) && !hasUnlockedPast(layer) && gain.eq(0)){
+                nextAt = "<br>Get " + format(pre.pow10().times(div)) + " " + layers[layer].baseResource + " for the first " + layers[layer].resource.slice(0,-1)
         }
 
         let a = "Reset for " + formatWhole(gain) + " " + layers[layer].resource
@@ -3361,10 +3370,11 @@ addLayer("e", {
                 let amt = player.e.points
                 let exp = new Decimal(2)
                 exp = exp.plus(CURRENT_BUYABLE_EFFECTS["f33"])
+                exp = exp.times(CURRENT_BUYABLE_EFFECTS["h33"])
 
                 let ret = amt.times(24).plus(1).pow(exp)
 
-                ret = softcap(ret, "e_eff")
+                if (!hasMilestone("k", 3)) ret = softcap(ret, "e_eff")
 
                 return ret
         },
@@ -4866,1699 +4876,7 @@ addLayer("ach", {
         canReset(){
                 return false
         },
-        achievements: {
-                rows: 220,
-                cols: 7,
-                11: {
-                        name: "One",
-                        done(){
-                                return PROGRESSION_MILESTONES[1]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[1]
-                        },
-                },
-                12: {
-                        name: "Two",
-                        done(){
-                                return PROGRESSION_MILESTONES[2]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[2]
-                        },
-                },
-                13: {
-                        name: "Three",
-                        done(){
-                                return PROGRESSION_MILESTONES[3]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[3]
-                        },
-                },
-                14: {
-                        name: "Four",
-                        done(){
-                                return PROGRESSION_MILESTONES[4]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[4]
-                        },
-                },
-                15: {
-                        name: "Five",
-                        done(){
-                                return PROGRESSION_MILESTONES[5]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[5]
-                        },
-                },
-                16: {
-                        name: "Six",
-                        done(){
-                                return PROGRESSION_MILESTONES[6]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[6]
-                        },
-                },
-                17: {
-                        name: "Seven",
-                        done(){
-                                return PROGRESSION_MILESTONES[7]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[7]
-                        },
-                },
-                21: {
-                        name: "Eight",
-                        done(){
-                                return PROGRESSION_MILESTONES[8]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[8]
-                        },
-                },
-                22: {
-                        name: "Nine",
-                        done(){
-                                return PROGRESSION_MILESTONES[9]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[9]
-                        },
-                },
-                23: {
-                        name: "Ten",
-                        done(){
-                                return PROGRESSION_MILESTONES[10]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[10]
-                        },
-                },
-                24: {
-                        name: "Eleven",
-                        done(){
-                                return PROGRESSION_MILESTONES[11]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[11]
-                        },
-                },
-                25: {
-                        name: "Twelve",
-                        done(){
-                                return PROGRESSION_MILESTONES[12]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[12]
-                        },
-                },
-                26: {
-                        name: "Thirteen",
-                        done(){
-                                return PROGRESSION_MILESTONES[13]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[13]
-                        },
-                },
-                27: {
-                        name: "Fourteen",
-                        done(){
-                                return PROGRESSION_MILESTONES[14]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[14]
-                        },
-                },
-                31: {
-                        name: "Fifteen",
-                        done(){
-                                return PROGRESSION_MILESTONES[15]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[15]
-                        },
-                },
-                32: {
-                        name: "Sixteen",
-                        done(){
-                                return PROGRESSION_MILESTONES[16]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[16]
-                        },
-                },
-                33: {
-                        name: "Seventeen",
-                        done(){
-                                return PROGRESSION_MILESTONES[17]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[17]
-                        },
-                },
-                34: {
-                        name: "Eighteen",
-                        done(){
-                                return PROGRESSION_MILESTONES[18]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[18]
-                        },
-                },
-                35: {
-                        name: "Nineteen",
-                        done(){
-                                return PROGRESSION_MILESTONES[19]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[19]
-                        },
-                },
-                36: {
-                        name: "Twenty",
-                        done(){
-                                return PROGRESSION_MILESTONES[20]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[20]
-                        },
-                },
-                37: {
-                        name: "Twenty-one",
-                        done(){
-                                return PROGRESSION_MILESTONES[21]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[21]
-                        },
-                },
-                41: {
-                        name: "Twenty-two",
-                        done(){
-                                return PROGRESSION_MILESTONES[22]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[22]
-                        },
-                },
-                42: {
-                        name: "Twenty-three",
-                        done(){
-                                return PROGRESSION_MILESTONES[23]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[23]
-                        },
-                },
-                43: {
-                        name: "Twenty-four",
-                        done(){
-                                return PROGRESSION_MILESTONES[24]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[24]
-                        },
-                },
-                44: {
-                        name: "Twenty-five",
-                        done(){
-                                return PROGRESSION_MILESTONES[25]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[25]
-                        },
-                },
-                45: {
-                        name: "Twenty-six",
-                        done(){
-                                return PROGRESSION_MILESTONES[26]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[26]
-                        },
-                },
-                46: {
-                        name: "Twenty-seven",
-                        done(){
-                                return PROGRESSION_MILESTONES[27]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[27]
-                        },
-                },
-                47: {
-                        name: "Twenty-eight",
-                        done(){
-                                return PROGRESSION_MILESTONES[28]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[28]
-                        },
-                },
-                51: {
-                        name: "Twenty-nine",
-                        done(){
-                                return PROGRESSION_MILESTONES[29]()
-                        },
-                        tooltip() {
-                                return "Be able to get " + PROGRESSION_MILESTONES_TEXT[29]
-                        },
-                },
-                52: {
-                        name: "Thirty",
-                        done(){
-                                return PROGRESSION_MILESTONES[30]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[30]
-                        },
-                },
-                53: {
-                        name: "Thirty-one",
-                        done(){
-                                return PROGRESSION_MILESTONES[31]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[31]
-                        },
-                },
-                54: {
-                        name: "Thirty-two",
-                        done(){
-                                return PROGRESSION_MILESTONES[32]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[32]
-                        },
-                },
-                55: {
-                        name: "Thirty-three",
-                        done(){
-                                return PROGRESSION_MILESTONES[33]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[33]
-                        },
-                },
-                56: {
-                        name: "Thirty-four",
-                        done(){
-                                return PROGRESSION_MILESTONES[34]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[34]
-                        },
-                },
-                57: {
-                        name: "Thirty-five",
-                        done(){
-                                return PROGRESSION_MILESTONES[35]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[35]
-                        },
-                },
-                61: {
-                        name: "Thirty-six",
-                        done(){
-                                return PROGRESSION_MILESTONES[36]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[36]
-                        },
-                },
-                62: {
-                        name: "Thirty-seven",
-                        done(){
-                                return PROGRESSION_MILESTONES[37]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[37]
-                        },
-                },
-                63: {
-                        name: "Thirty-eight",
-                        done(){
-                                return PROGRESSION_MILESTONES[38]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[38]
-                        },
-                },
-                64: {
-                        name: "Thirty-nine",
-                        done(){
-                                return PROGRESSION_MILESTONES[39]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[39]
-                        },
-                },
-                65: {
-                        name: "Forty",
-                        done(){
-                                return PROGRESSION_MILESTONES[40]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[40]
-                        },
-                },
-                66: {
-                        name: "Forty-one",
-                        done(){
-                                return PROGRESSION_MILESTONES[41]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[41]
-                        },
-                },
-                67: {
-                        name: "Forty-two",
-                        done(){
-                                return PROGRESSION_MILESTONES[42]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[42]
-                        },
-                }, 
-                71: {
-                        name: "Forty-three",
-                        done(){
-                                return PROGRESSION_MILESTONES[43]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[43]
-                        },
-                },
-                72: {
-                        name: "Forty-four",
-                        done(){
-                                return PROGRESSION_MILESTONES[44]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[44]
-                        },
-                },
-                73: {
-                        name: "Forty-five",
-                        done(){
-                                return PROGRESSION_MILESTONES[45]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[45]
-                        },
-                },
-                74: {
-                        name: "Forty-six",
-                        done(){
-                                return PROGRESSION_MILESTONES[46]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[46]
-                        },
-                },
-                75: {
-                        name: "Forty-seven",
-                        done(){
-                                return PROGRESSION_MILESTONES[47]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[47]
-                        },
-                },
-                76: {
-                        name: "Forty-eight",
-                        done(){
-                                return PROGRESSION_MILESTONES[48]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[48]
-                        },
-                },
-                77: {
-                        name: "Forty-nine",
-                        done(){
-                                return PROGRESSION_MILESTONES[49]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[49]
-                        },
-                },
-                81: {
-                        name: "Fifty",
-                        done(){
-                                return PROGRESSION_MILESTONES[50]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[50]
-                        },
-                },
-                82: {
-                        name: "Fifty-one",
-                        done(){
-                                return PROGRESSION_MILESTONES[51]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[51]
-                        },
-                },
-                83: {
-                        name: "Fifty-two",
-                        done(){
-                                return PROGRESSION_MILESTONES[52]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[52]
-                        },
-                },
-                84: {
-                        name: "Fifty-three",
-                        done(){
-                                return PROGRESSION_MILESTONES[53]()
-                        },
-                        tooltip() {
-                                return PROGRESSION_MILESTONES_TEXT[53]
-                        },
-                },
-                85: {
-                        name: "Fifty-four",
-                        done(){
-                                return PROGRESSION_MILESTONES[54]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[54]
-                        },
-                        unlocked(){
-                                return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
-                        },
-                },
-                86: {
-                        name: "Fifty-five",
-                        done(){
-                                return PROGRESSION_MILESTONES[55]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[55]
-                        },
-                        unlocked(){
-                                return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
-                        },
-                },
-                87: {
-                        name: "Fifty-six",
-                        done(){
-                                return PROGRESSION_MILESTONES[56]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[56]
-                        },
-                        unlocked(){
-                                return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
-                        },
-                },
-                91: {
-                        name: "Fifty-seven",
-                        done(){
-                                return PROGRESSION_MILESTONES[57]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[57]
-                        },
-                        unlocked(){
-                                return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
-                        },
-                },
-                92: {
-                        name: "Fifty-eight",
-                        done(){
-                                return PROGRESSION_MILESTONES[58]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[58]
-                        },
-                        unlocked(){
-                                return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
-                        },
-                },
-                93: {
-                        name: "Fifty-nine",
-                        done(){
-                                return PROGRESSION_MILESTONES[59]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[59]
-                        },
-                        unlocked(){
-                                return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
-                        },
-                },
-                94: {
-                        name: "Sixty",
-                        done(){
-                                return PROGRESSION_MILESTONES[60]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[60]
-                        },
-                        unlocked(){
-                                return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
-                        },
-                },
-                95: {
-                        name: "Sixty-one",
-                        done(){
-                                return PROGRESSION_MILESTONES[61]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[61]
-                        },
-                        unlocked(){
-                                return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
-                        },
-                },
-                96: {
-                        name: "Sixty-two",
-                        done(){
-                                return PROGRESSION_MILESTONES[62]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[62]
-                        },
-                        unlocked(){
-                                return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
-                        },
-                },
-                97: {
-                        name: "Sixty-three",
-                        done(){
-                                return PROGRESSION_MILESTONES[63]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[63]
-                        },
-                        unlocked(){
-                                return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
-                        },
-                },
-                101: {
-                        name: "Sixty-four",
-                        done(){
-                                return PROGRESSION_MILESTONES[64]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[64]
-                        },
-                        unlocked(){
-                                return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
-                        },
-                },
-                102: {
-                        name: "Sixty-five",
-                        done(){
-                                return PROGRESSION_MILESTONES[65]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[65]
-                        },
-                        unlocked(){
-                                return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
-                        },
-                },
-                103: {
-                        name: "Sixty-six",
-                        done(){
-                                return PROGRESSION_MILESTONES[66]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[66]
-                        },
-                        unlocked(){
-                                return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
-                        },
-                },
-                104: {
-                        name: "Sixty-seven",
-                        done(){
-                                return PROGRESSION_MILESTONES[67]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[67]
-                        },
-                        unlocked(){
-                                return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
-                        },
-                },
-                105: {
-                        name: "Sixty-eight",
-                        done(){
-                                return PROGRESSION_MILESTONES[68]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[68]
-                        },
-                        unlocked(){
-                                return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
-                        },
-                },
-                106: {
-                        name: "Sixty-nine",
-                        done(){
-                                return PROGRESSION_MILESTONES[69]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[69]
-                        },
-                        unlocked(){
-                                return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
-                        },
-                },
-                107: {
-                        name: "Seventy",
-                        done(){
-                                return PROGRESSION_MILESTONES[70]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[70]
-                        },
-                        unlocked(){
-                                return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
-                        },
-                },
-                111: {
-                        name: "Seventy-one",
-                        done(){
-                                return PROGRESSION_MILESTONES[71]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[71]
-                        },
-                        unlocked(){
-                                return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
-                        },
-                },
-                112: {
-                        name: "Seventy-two",
-                        done(){
-                                return PROGRESSION_MILESTONES[72]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[72]
-                        },
-                        unlocked(){
-                                return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
-                        },
-                },
-                113: {
-                        name: "Seventy-three",
-                        done(){
-                                return PROGRESSION_MILESTONES[73]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[73]
-                        },
-                        unlocked(){
-                                return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
-                        },
-                },
-                114: {
-                        name: "Seventy-four",
-                        done(){
-                                return PROGRESSION_MILESTONES[74]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[74]
-                        },
-                        unlocked(){
-                                return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
-                        },
-                },
-                115: {
-                        name: "Seventy-five",
-                        done(){
-                                return PROGRESSION_MILESTONES[75]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[75]
-                        },
-                        unlocked(){
-                                return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
-                        },
-                },
-                116: {
-                        name: "Seventy-six",
-                        done(){
-                                return PROGRESSION_MILESTONES[76]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[76]
-                        },
-                        unlocked(){
-                                return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
-                        },
-                },
-                117: {
-                        name: "Seventy-seven",
-                        done(){
-                                return PROGRESSION_MILESTONES[77]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[77]
-                        },
-                        unlocked(){
-                                return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
-                        },
-                },
-                121: {
-                        name: "Seventy-eight",
-                        done(){
-                                return PROGRESSION_MILESTONES[78]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[78]
-                        },
-                        unlocked(){
-                                return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
-                        },
-                },
-                122: {
-                        name: "Seventy-nine",
-                        done(){
-                                return PROGRESSION_MILESTONES[79]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[79]
-                        },
-                        unlocked(){
-                                return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
-                        },
-                },
-                123: {
-                        name: "Eighty",
-                        done(){
-                                return PROGRESSION_MILESTONES[80]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[80]
-                        },
-                        unlocked(){
-                                return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
-                        },
-                },
-                124: {
-                        name: "Eighty-one",
-                        done(){
-                                return PROGRESSION_MILESTONES[81]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[81]
-                        },
-                        unlocked(){
-                                return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
-                        },
-                },
-                125: {
-                        name: "Eighty-two",
-                        done(){
-                                return PROGRESSION_MILESTONES[82]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[82]
-                        },
-                        unlocked(){
-                                return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
-                        },
-                },
-                126: {
-                        name: "Eighty-three",
-                        done(){
-                                return PROGRESSION_MILESTONES[83]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[83]
-                        },
-                        unlocked(){
-                                return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
-                        },
-                },
-                127: {
-                        name: "Eighty-four",
-                        done(){
-                                return PROGRESSION_MILESTONES[84]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[84]
-                        },
-                        unlocked(){
-                                return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
-                        },
-                },
-                131: {
-                        name: "Eighty-five",
-                        done(){
-                                return PROGRESSION_MILESTONES[85]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[85]
-                        },
-                        unlocked(){
-                                return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
-                        },
-                },
-                132: {
-                        name: "Eighty-six",
-                        done(){
-                                return PROGRESSION_MILESTONES[86]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[86]
-                        },
-                        unlocked(){
-                                return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
-                        },
-                },
-                133: {
-                        name: "Eighty-seven",
-                        done(){
-                                return PROGRESSION_MILESTONES[87]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[87]
-                        },
-                        unlocked(){
-                                return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
-                        },
-                },
-                134: {
-                        name: "Eighty-eight",
-                        done(){
-                                return PROGRESSION_MILESTONES[88]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[88]
-                        },
-                        unlocked(){
-                                return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
-                        },
-                },
-                135: {
-                        name: "Eighty-nine",
-                        done(){
-                                return PROGRESSION_MILESTONES[89]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[89]
-                        },
-                        unlocked(){
-                                return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
-                        },
-                },
-                136: {
-                        name: "Ninety",
-                        done(){
-                                return PROGRESSION_MILESTONES[90]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[90]
-                        },
-                        unlocked(){
-                                return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
-                        },
-                },
-                137: {
-                        name: "Ninety-one",
-                        done(){
-                                return PROGRESSION_MILESTONES[91]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[91]
-                        },
-                        unlocked(){
-                                return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
-                        },
-                },
-                141: {
-                        name: "Ninety-two",
-                        done(){
-                                return PROGRESSION_MILESTONES[92]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[92]
-                        },
-                        unlocked(){
-                                return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
-                        },
-                },
-                142: {
-                        name: "Ninety-three",
-                        done(){
-                                return PROGRESSION_MILESTONES[93]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[93]
-                        },
-                        unlocked(){
-                                return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
-                        },
-                },
-                143: {
-                        name: "Ninety-four",
-                        done(){
-                                return PROGRESSION_MILESTONES[94]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[94]
-                        },
-                        unlocked(){
-                                return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
-                        },
-                },
-                144: {
-                        name: "Ninety-five",
-                        done(){
-                                return PROGRESSION_MILESTONES[95]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[95]
-                        },
-                        unlocked(){
-                                return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
-                        },
-                },
-                145: {
-                        name: "Ninety-six",
-                        done(){
-                                return PROGRESSION_MILESTONES[96]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[96]
-                        },
-                        unlocked(){
-                                return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
-                        },
-                },
-                146: {
-                        name: "Ninety-seven",
-                        done(){
-                                return PROGRESSION_MILESTONES[97]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[97]
-                        },
-                        unlocked(){
-                                return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
-                        },
-                },
-                147: {
-                        name: "Ninety-eight",
-                        done(){
-                                return PROGRESSION_MILESTONES[98]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[98]
-                        },
-                        unlocked(){
-                                return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
-                        },
-                },
-                151: {
-                        name: "Ninety-nine",
-                        done(){
-                                return PROGRESSION_MILESTONES[99]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[99]
-                        },
-                        unlocked(){
-                                return hasUnlockedPast("g")
-                        },
-                },
-                152: {
-                        name: "One Hundred",
-                        done(){
-                                return PROGRESSION_MILESTONES[100]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[100]
-                        },
-                        unlocked(){
-                                return hasUnlockedPast("g")
-                        },
-                },
-                153: {
-                        name: "One Hundred and One",
-                        done(){
-                                return PROGRESSION_MILESTONES[101]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[101]
-                        },
-                        unlocked(){
-                                return hasUnlockedPast("g")
-                        },
-                },
-                154: {
-                        name: "One Hundred and Two",
-                        done(){
-                                return PROGRESSION_MILESTONES[102]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[102]
-                        },
-                        unlocked(){
-                                return hasUnlockedPast("g")
-                        },
-                },
-                155: {
-                        name: "One Hundred and Three",
-                        done(){
-                                return PROGRESSION_MILESTONES[103]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[103]
-                        },
-                        unlocked(){
-                                return hasUnlockedPast("g")
-                        },
-                },
-                156: {
-                        name: "One Hundred and Four",
-                        done(){
-                                return PROGRESSION_MILESTONES[104]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[104]
-                        },
-                        unlocked(){
-                                return hasUnlockedPast("g")
-                        },
-                },
-                157: {
-                        name: "One Hundred and Five",
-                        done(){
-                                return PROGRESSION_MILESTONES[105]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[105]
-                        },
-                        unlocked(){
-                                return hasUnlockedPast("g")
-                        },
-                },
-                161: {
-                        name: "One Hundred and Six",
-                        done(){
-                                return PROGRESSION_MILESTONES[106]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[106]
-                        },
-                        unlocked(){
-                                return hasUnlockedPast("g")
-                        },
-                },
-                162: {
-                        name: "One Hundred and Seven",
-                        done(){
-                                return PROGRESSION_MILESTONES[107]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[107]
-                        },
-                        unlocked(){
-                                return hasUnlockedPast("g")
-                        },
-                },
-                163: {
-                        name: "One Hundred and Eight",
-                        done(){
-                                return PROGRESSION_MILESTONES[108]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[108]
-                        },
-                        unlocked(){
-                                return hasUnlockedPast("g")
-                        },
-                },
-                164: {
-                        name: "One Hundred and Nine",
-                        done(){
-                                return PROGRESSION_MILESTONES[109]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[109]
-                        },
-                        unlocked(){
-                                return hasUnlockedPast("g")
-                        },
-                },
-                165: {
-                        name: "One Hundred and Ten",
-                        done(){
-                                return PROGRESSION_MILESTONES[110]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[110]
-                        },
-                        unlocked(){
-                                return hasUnlockedPast("g")
-                        },
-                },
-                166: {
-                        name: "One Hundred and Eleven",
-                        done(){
-                                return PROGRESSION_MILESTONES[111]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[111]
-                        },
-                        unlocked(){
-                                return hasUnlockedPast("g")
-                        },
-                },
-                167: {
-                        name: "One Hundred and Twelve",
-                        done(){
-                                return PROGRESSION_MILESTONES[112]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[112]
-                        },
-                        unlocked(){
-                                return hasUnlockedPast("g")
-                        },
-                },
-                171: {
-                        name: "One Hundred and Thirteen",
-                        done(){
-                                return PROGRESSION_MILESTONES[113]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[113]
-                        },
-                        unlocked(){
-                                return hasUnlockedPast("g")
-                        },
-                },
-                172: {
-                        name: "One Hundred and Fourteen",
-                        done(){
-                                return PROGRESSION_MILESTONES[114]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[114]
-                        },
-                        unlocked(){
-                                return hasUnlockedPast("g")
-                        },
-                },
-                173: {
-                        name: "One Hundred and Fifteen",
-                        done(){
-                                return PROGRESSION_MILESTONES[115]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[115]
-                        },
-                        unlocked(){
-                                return hasUnlockedPast("g")
-                        },
-                },
-                174: {
-                        name: "One Hundred and Sixteen",
-                        done(){
-                                return PROGRESSION_MILESTONES[116]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[116]
-                        },
-                        unlocked(){
-                                return hasUnlockedPast("g")
-                        },
-                },
-                175: {
-                        name: "One Hundred and Seventeen",
-                        done(){
-                                return PROGRESSION_MILESTONES[117]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[117]
-                        },
-                        unlocked(){
-                                return hasUnlockedPast("g")
-                        },
-                },
-                176: {
-                        name: "One Hundred and Eighteen",
-                        done(){
-                                return PROGRESSION_MILESTONES[118]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[118]
-                        },
-                        unlocked(){
-                                return hasUnlockedPast("g")
-                        },
-                },
-                177: {
-                        name: "One Hundred and Nineteen",
-                        done(){
-                                return PROGRESSION_MILESTONES[119]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[119]
-                        },
-                        unlocked(){
-                                return hasUnlockedPast("g")
-                        },
-                },
-                181: {
-                        name: "One Hundred and Twenty",
-                        done(){
-                                return PROGRESSION_MILESTONES[120]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[120]
-                        },
-                        unlocked(){
-                                return hasUnlockedPast("i")
-                        },
-                },
-                182: {
-                        name: "One Hundred and Twenty-One",
-                        done(){
-                                return PROGRESSION_MILESTONES[121]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[121]
-                        },
-                        unlocked(){
-                                return hasUnlockedPast("i")
-                        },
-                },
-                183: {
-                        name: "One Hundred and Twenty-Two",
-                        done(){
-                                return PROGRESSION_MILESTONES[122]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[122]
-                        },
-                        unlocked(){
-                                return hasUnlockedPast("i")
-                        },
-                },
-                184: {
-                        name: "One Hundred and Twenty-Three",
-                        done(){
-                                return PROGRESSION_MILESTONES[123]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[123]
-                        },
-                        unlocked(){
-                                return hasUnlockedPast("i")
-                        },
-                },
-                185: {
-                        name: "One Hundred and Twenty-Four",
-                        done(){
-                                return PROGRESSION_MILESTONES[124]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[124]
-                        },
-                        unlocked(){
-                                return hasUnlockedPast("i")
-                        },
-                },
-                186: {
-                        name: "One Hundred and Twenty-Five",
-                        done(){
-                                return PROGRESSION_MILESTONES[125]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[125]
-                        },
-                        unlocked(){
-                                return hasUnlockedPast("i")
-                        },
-                },
-                187: {
-                        name: "One Hundred and Twenty-Six",
-                        done(){
-                                return PROGRESSION_MILESTONES[126]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[126]
-                        },
-                        unlocked(){
-                                return hasUnlockedPast("i")
-                        },
-                },
-                191: {
-                        name: "One Hundred and Twenty-Seven",
-                        done(){
-                                return PROGRESSION_MILESTONES[127]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[127]
-                        },
-                        unlocked(){
-                                return hasUnlockedPast("i")
-                        },
-                },
-                192: {
-                        name: "One Hundred and Twenty-Eight",
-                        done(){
-                                return PROGRESSION_MILESTONES[128]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[128]
-                        },
-                        unlocked(){
-                                return hasUnlockedPast("i")
-                        },
-                },
-                193: {
-                        name: "One Hundred and Twenty-Nine",
-                        done(){
-                                return PROGRESSION_MILESTONES[129]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[129]
-                        },
-                        unlocked(){
-                                return hasUnlockedPast("i")
-                        },
-                },
-                194: {
-                        name: "One Hundred and Thirty",
-                        done(){
-                                return PROGRESSION_MILESTONES[130]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[130]
-                        },
-                        unlocked(){
-                                return hasUnlockedPast("i")
-                        },
-                },
-                195: {
-                        name: "One Hundred and Thirty-One",
-                        done(){
-                                return PROGRESSION_MILESTONES[131]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[131]
-                        },
-                        unlocked(){
-                                return hasUnlockedPast("i")
-                        },
-                },
-                196: {
-                        name: "One Hundred and Thirty-Two",
-                        done(){
-                                return PROGRESSION_MILESTONES[132]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[132]
-                        },
-                        unlocked(){
-                                return hasUnlockedPast("i")
-                        },
-                },
-                197: {
-                        name: "One Hundred and Thirty-Three",
-                        done(){
-                                return PROGRESSION_MILESTONES[133]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[133]
-                        },
-                        unlocked(){
-                                return hasUnlockedPast("i")
-                        },
-                },
-                201: {
-                        name: "One Hundred and Thirty-Four",
-                        done(){
-                                return PROGRESSION_MILESTONES[134]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[134]
-                        },
-                        unlocked(){
-                                return hasUnlockedPast("i")
-                        },
-                },
-                202: {
-                        name: "One Hundred and Thirty-Five",
-                        done(){
-                                return PROGRESSION_MILESTONES[135]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[135]
-                        },
-                        unlocked(){
-                                return hasUnlockedPast("i")
-                        },
-                },
-                203: {
-                        name: "One Hundred and Thirty-Six",
-                        done(){
-                                return PROGRESSION_MILESTONES[136]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[136]
-                        },
-                        unlocked(){
-                                return hasUnlockedPast("i")
-                        },
-                },
-                204: {
-                        name: "One Hundred and Thirty-Seven",
-                        done(){
-                                return PROGRESSION_MILESTONES[137]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[137]
-                        },
-                        unlocked(){
-                                return hasUnlockedPast("i")
-                        },
-                },
-                205: {
-                        name: "One Hundred and Thirty-Eight",
-                        done(){
-                                return PROGRESSION_MILESTONES[138]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[138]
-                        },
-                        unlocked(){
-                                return hasUnlockedPast("i")
-                        },
-                },
-                206: {
-                        name: "One Hundred and Thirty-Nine",
-                        done(){
-                                return PROGRESSION_MILESTONES[139]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[139]
-                        },
-                        unlocked(){
-                                return hasUnlockedPast("i")
-                        },
-                },
-                207: {
-                        name: "One Hundred and Forty",
-                        done(){
-                                return PROGRESSION_MILESTONES[140]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[140]
-                        },
-                        unlocked(){
-                                return hasUnlockedPast("i")
-                        },
-                },
-                211: {
-                        name: "One Hundred and Forty-One",
-                        done(){
-                                return PROGRESSION_MILESTONES[141]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[141]
-                        },
-                        unlocked(){
-                                return hasUnlockedPast("i")
-                        },
-                },
-                212: {
-                        name: "One Hundred and Forty-Two",
-                        done(){
-                                return PROGRESSION_MILESTONES[142]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[142]
-                        },
-                        unlocked(){
-                                return hasUnlockedPast("i")
-                        },
-                },
-                213: {
-                        name: "One Hundred and Forty-Three",
-                        done(){
-                                return PROGRESSION_MILESTONES[143]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[143]
-                        },
-                        unlocked(){
-                                return hasUnlockedPast("i")
-                        },
-                },
-                214: {
-                        name: "One Hundred and Forty-Four",
-                        done(){
-                                return PROGRESSION_MILESTONES[144]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[144]
-                        },
-                        unlocked(){
-                                return hasUnlockedPast("i")
-                        },
-                },
-                215: {
-                        name: "One Hundred and Forty-Five",
-                        done(){
-                                return PROGRESSION_MILESTONES[145]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[145]
-                        },
-                        unlocked(){
-                                return hasUnlockedPast("i")
-                        },
-                },
-                216: {
-                        name: "One Hundred and Forty-Six",
-                        done(){
-                                return PROGRESSION_MILESTONES[146]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[146]
-                        },
-                        unlocked(){
-                                return hasUnlockedPast("i")
-                        },
-                },
-                217: {
-                        name: "One Hundred and Forty-Seven",
-                        done(){
-                                return PROGRESSION_MILESTONES[147]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[147]
-                        },
-                        unlocked(){
-                                return hasUnlockedPast("i")
-                        },
-                },
-                221: {
-                        name: "One Hundred and Forty-Eight",
-                        done(){
-                                return PROGRESSION_MILESTONES[148]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[148]
-                        },
-                        unlocked(){
-                                return hasUnlockedPast("i")
-                        },
-                },
-                222: {
-                        name: "One Hundred and Forty-Nine",
-                        done(){
-                                return PROGRESSION_MILESTONES[149]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[149]
-                        },
-                        unlocked(){
-                                return hasUnlockedPast("i")
-                        },
-                },
-                223: {
-                        name: "One Hundred and Fifty",
-                        done(){
-                                return PROGRESSION_MILESTONES[150]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[150]
-                        },
-                        unlocked(){
-                                return hasUnlockedPast("i")
-                        },
-                },
-                224: {
-                        name: "One Hundred and Fifty-One",
-                        done(){
-                                return PROGRESSION_MILESTONES[151]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[151]
-                        },
-                        unlocked(){
-                                return hasUnlockedPast("i")
-                        },
-                },
-                225: {
-                        name: "One Hundred and Fifty-Two",
-                        done(){
-                                return PROGRESSION_MILESTONES[152]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[152]
-                        },
-                        unlocked(){
-                                return hasUnlockedPast("i")
-                        },
-                },
-                226: {
-                        name: "One Hundred and Fifty-Three",
-                        done(){
-                                return PROGRESSION_MILESTONES[153]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[153]
-                        },
-                        unlocked(){
-                                return hasUnlockedPast("i")
-                        },
-                },
-                227: {
-                        name: "One Hundred and Fifty-Four",
-                        done(){
-                                return PROGRESSION_MILESTONES[154]()
-                        },
-                        tooltip() {
-                                return "Get " + PROGRESSION_MILESTONES_TEXT[154]
-                        },
-                        unlocked(){
-                                return hasUnlockedPast("i")
-                        },
-                },
-        },
+        achievements: getFirstNAchData(161), //Object.keys(PROGRESSION_MILESTONES).length
         milestones: {
                 1: {
                         requirementDescription(){
@@ -11809,7 +10127,6 @@ addLayer("h", {
 
 
                 /*
-                Housing
                 Hit
                 Host
                 */
@@ -12033,6 +10350,33 @@ addLayer("h", {
                                 return hasMilestone("j", 7) || hasUnlockedPast("j")
                         },
                 },
+                33: {
+                        title: "Omnipotent VIII",
+                        display(){
+                                return getBuyableDisplay("h", 33)
+                        },
+                        effect(){
+                                return CURRENT_BUYABLE_EFFECTS["h33"]
+                        },
+                        canAfford(){
+                                return canAffordBuyable("h", 33)
+                        },
+                        total(){
+                                return getBuyableAmount("h", 33).plus(this.extra())
+                        },
+                        extra(){
+                                return calcBuyableExtra("h", 33)
+                        },
+                        buy(){
+                                buyManualBuyable("h", 33)
+                        },
+                        buyMax(maximum){
+                                buyMaximumBuyable("h", 33, maximum)
+                        },
+                        unlocked(){ 
+                                return hasMilestone("k", 3) || hasUnlockedPast("k")
+                        },
+                },
         },
         challenges: {
                 rows: 2,
@@ -12088,6 +10432,32 @@ addLayer("h", {
                                 return ret
                         },
                         countsAs: [11],
+                },
+                21: {
+                        name: "Housing",
+                        challengeDescription: "<b>Hold</b> and <b>Egg</b> effect is nullified",
+                        rewardDescription: "Multiply base <b>J</b> and knowledge gain",
+                        rewardEffect(){
+                                let c = challengeCompletions("h", 21)
+                                let base = 2
+                                return Decimal.pow(base, c)
+                        },
+                        goal(){
+                                let init = new Decimal("1e2362e21")
+                                let factor = getChallengeFactor(challengeCompletions("h", 21))
+                                if (factor.eq(1)) factor = new Decimal(0)
+                                return init.times(Decimal.pow("1e587e21", factor))
+                        },
+                        unlocked(){
+                                return hasMilestone("k", 4) || hasUnlockedPast("k")
+                        },
+                        currencyInternalName: "points",
+                        completionLimit(){
+                                let ret = 20
+
+                                return ret
+                        },
+                        countsAs: [11, 12],
                 },
         },
         tabFormat: {
@@ -12596,11 +10966,19 @@ addLayer("i", {
                                 return hasUpgrade("i", 44) || player.j.puzzle.reset2.done || hasUnlockedPast("j")
                         }
                 }, // hasUpgrade("i", 45)
+                51: {
+                        title: "India",
+                        description: "You start at 90% of your best puzzles finished this <b>K</b> and get resources as if you did them",
+                        cost: new Decimal("1e1234567"),
+                        unlocked(){
+                                return hasMilestone("k", 4) || hasUnlockedPast("k")
+                        }
+                }, // hasUpgrade("i", 51)
 
                 
 
                 /*
-                india
+                
                 income
                 institute
                 inside
@@ -12673,7 +11051,6 @@ addLayer("i", {
                 if (!hasMilestone("j", 3)) {
                         //upgrades
                         let keep = []
-                        if (hasMilestone("k", 2)) keep.push(33)
                         data.upgrades = filter(data.upgrades, keep)
                 }
                 
@@ -12733,6 +11110,8 @@ addLayer("j", {
                                 time: 0,
                                 finished: 0,
                                 bartype: 2,
+                                bestCompletedK: 0,
+                                bestCompletedAllTime: 0,
                                 repeatables: {
                                         11: new Decimal(0),
                                         12: new Decimal(0),
@@ -12786,7 +11165,8 @@ addLayer("j", {
                 if (hasUpgrade("i", 35)) x = x.times(player.j.puzzle.repeatables[35].max(1))
                 if (hasMilestone("j", 6)) x = x.times(tmp.j.clickables[35].effect)
                 x = x.times(tmp.j.clickables[55].effect)
-                if (hasMilestone("k", 2)) x = x.times(Decimal.pow(player.k.milestones.length))
+                if (hasMilestone("k", 2)) x = x.times(Decimal.pow(3, player.k.milestones.length))
+                x = x.times(tmp.h.challenges[21].rewardEffect)
                 return x
         },
         getGainMultPost(){
@@ -12846,6 +11226,8 @@ addLayer("j", {
                 let tot3 = 4
                 data2.bestKnowledge = data2.bestKnowledge.max(data2.knowledge)
                 data2.bestExp = data2.bestExp.max(data2.exp)
+                data2.bestCompletedK = Math.max(data2.bestCompletedK, data2.finished)
+                data2.bestCompletedAllTime = Math.max(data2.bestCompletedAllTime, data2.finished)
                 data2.time += diff / (player.devSpeed || 1)
                 data2.autotime += diff * tmp.j.clickables.getAttemptSpeed.toNumber() / (player.devSpeed || 1)
                 let multiplier = tmp.j.clickables.getBulkAmount
@@ -13130,7 +11512,7 @@ addLayer("j", {
                 rows: 6,
                 cols: 5, //only using 4 rn
                 jigsawEffect(){
-                        let base = player.j.points.max(10).log10()
+                        let base = player.j.points.plus(1e9).log10()
 
                         let exp = new Decimal(.5)
                         if (hasUpgrade("j", 12)) exp = exp.times(Math.sqrt(player.j.upgrades.length))
@@ -13271,6 +11653,8 @@ addLayer("j", {
                         if (hasUpgrade("j", 15)) ret = ret.times(player.j.puzzle.bestKnowledge.max(3).ln())
                         ret = ret.times(Decimal.pow(3, player.j.puzzle.reset2.times))
                         if (hasUpgrade("j", 25)) ret = ret.times(5)
+                        if (hasMilestone("k", 3)) ret = ret.times(player.ach.best.max(1))
+                        ret = ret.times(tmp.h.challenges[21].rewardEffect)
                         return ret
                 },
                 getBankedExpGainUF(){
@@ -13278,6 +11662,7 @@ addLayer("j", {
                         ret = ret.times(tmp.j.clickables[14].effect)
                         if (player.j.puzzle.upgrades.includes(54)) ret = ret.times(Decimal.pow(2, player.j.upgrades.length))
                         ret = ret.times(Decimal.pow(3, player.j.puzzle.reset2.times))
+                        if (hasMilestone("k", 2)) ret = ret.times(player.ach.best.max(1))
                         return ret
                 },
                 getResetCD(){
@@ -13727,6 +12112,14 @@ addLayer("j", {
                                 data.finished = 0
                                 data.time = 0
                                 if (player.j.puzzle.upgrades.includes(43) || player.j.puzzle.reset2.done) data.mode = 1
+                                if (!hasUpgrade("i", 51)) return
+
+                                let target = Math.floor(data.bestCompletedK * .9)
+                                data.finished = target
+                                let c2 = function(x){return x * (x + 1) / 2}
+
+                                data.bankedExp = data.bankedExp.plus(tmp.j.clickables.getBankedExpGainUF.times(c2(target)).floor())
+                                data.knowledge = data.knowledge.plus(tmp.j.clickables.getKnowledgeGainUF.times(target).floor())
                         },
                 },
                 31: {
@@ -14223,6 +12616,7 @@ addLayer("j", {
                                 let data = player.j.puzzle
                                 data.reset2.times ++
                                 data.reset2.done = true
+                                if (hasMilestone("k", 4)) return 
                                 data.exp = new Decimal(0)
                                 data.bankedExp = new Decimal(0)
                                 data.knowledge = new Decimal(0)
@@ -14535,6 +12929,7 @@ addLayer("j", {
                 data2.mode = 1
                 data2.reset2.times = 0
                 data2.time = 0
+                data2.bestCompletedK = 0
         },
 })
 
@@ -14568,7 +12963,7 @@ addLayer("k", {
                 return getGeneralizedPrestigeGain("k")
         },
         getBaseDiv(){
-                let x = new Decimal("1e54")
+                let x = new Decimal("1e55")
                 return x
         },
         getGainExp(){
@@ -14576,7 +12971,7 @@ addLayer("k", {
                 return x
         },
         getGainMultPre(){
-                let x = Decimal.pow(20, -1)
+                let x = Decimal.pow(19, -1)
                 return x
         },
         getGainMultPost(){
@@ -14589,9 +12984,9 @@ addLayer("k", {
 
                 let amt = player.k.best
 
-                let exp = player.k.best.pow(.2).times(3).min(100)
+                let exp = player.k.best.pow(.2).times(3).min(98)
                 
-                let exp2 = new Decimal(0)
+                let exp2 = new Decimal(2)
 
                 let ret = amt.times(3).plus(1).pow(exp)
 
@@ -14663,18 +13058,38 @@ addLayer("k", {
                                 return player.k.points.gte(1)
                         },
                         unlocked(){
-                                return true
+                                return true || hasUnlockedPast("k")
                         }, // hasMilestone("k", 1)
                 },
                 2: {
                         requirementDescription: "<b>Key</b><br>Requires: 2 Keys",
-                        effectDescription: "Keep <b>I</b> and <b>J</b> milestones, double base <b>J</b> gain per milestone, and keep <b>Important</b>",
+                        effectDescription: "Keep <b>I</b> and <b>J</b> milestones, triple base <b>J</b> gain per milestone, and achievements multiply banked exp gain",
                         done(){
                                 return player.k.points.gte(2)
                         },
                         unlocked(){
-                                return hasMilestone("k", 1)
+                                return hasMilestone("k", 1) || hasUnlockedPast("k")
                         }, // hasMilestone("k", 2)
+                },
+                3: {
+                        requirementDescription: "<b>Keep</b><br>Requires: 4 Keys",
+                        effectDescription: "Achievements multiply knowledge gain, unlock a <b>H</b> buyable, and remove <b>E</b> effect softcap",
+                        done(){
+                                return player.k.points.gte(4)
+                        },
+                        unlocked(){
+                                return hasMilestone("k", 2) || hasUnlockedPast("k")
+                        }, // hasMilestone("k", 3)
+                },
+                4: {
+                        requirementDescription: "<b>Keep</b><br>Requires: 16 Keys",
+                        effectDescription: "Reset<sup>2</sup> resets nothing and unlock a <b>H</b> challenge",
+                        done(){
+                                return player.k.points.gte(16)
+                        },
+                        unlocked(){
+                                return hasMilestone("k", 3) || hasUnlockedPast("k")
+                        }, // hasMilestone("k", 4)
                 },
         },
         upgrades: {
@@ -14692,7 +13107,9 @@ addLayer("k", {
                 */
                 
                 /*
-                
+                kids
+                knowledge
+                known
                 */
         },
         tabFormat: {

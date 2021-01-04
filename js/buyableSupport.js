@@ -2185,6 +2185,21 @@ var MAIN_BUYABLE_DATA = {
                         return [b0, b1, b2]
                 },
         },
+        h33: {
+                name: "Omnipotent VIII",
+                func: "exp_sqrt",
+                effects: "<b>E</b> effect exponent",
+                effectSymbol: "^",
+                base: {
+                        initial: new Decimal("1.1"),
+                },
+                bases(){
+                        let b0 = new Decimal("1e2380e9")
+                        let b1 = new Decimal("1e1e9")
+                        let b2 = new Decimal("1e1e6")
+                        return [b0, b1, b2]
+                },
+        },
 }
 
 var EXTRA_FREE_BUYABLE_DATA = {

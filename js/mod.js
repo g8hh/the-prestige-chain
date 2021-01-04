@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".6.1.1 Cytoplasm",
+	num: ".6.2 Cytoplasm",
 	name: "",
 }
 
@@ -198,6 +198,13 @@ PROGRESSION_MILESTONES = {
 	152:()=> totalChallengeComps("h") >= 36              || hasAchievement("ach",225),
 	153:()=> totalChallengeComps("h") >= 45              || hasAchievement("ach",226),
 	154:()=> totalChallengeComps("h") >= 55              || hasAchievement("ach",227),
+	155:()=> player.j.puzzle.finished >= 50               || hasAchievement("ach",231),
+	156:()=> player.j.puzzle.finished >= 55               || hasAchievement("ach",232),
+	157:()=> player.j.puzzle.finished >= 60               || hasAchievement("ach",233),
+	158:()=> player.j.puzzle.finished >= 65               || hasAchievement("ach",234),
+	159:()=> player.j.puzzle.finished >= 70               || hasAchievement("ach",235),
+	160:()=> player.j.puzzle.finished >= 75               || hasAchievement("ach",236),
+	161:()=> player.j.puzzle.finished >= 80               || hasAchievement("ach",237),
 }
 
 PROGRESSION_MILESTONES_TEXT = {
@@ -253,7 +260,7 @@ PROGRESSION_MILESTONES_TEXT = {
 	50: "19 Circle challenge completions",
 	51: "22 Circle challenge completions",
 	52: "34 Circle challenge completions",
-	53: "F reset once",
+	53: "one Feature",
 	54: "a 01 token",
 	55: "a 02 token",
 	56: "a 10 token",
@@ -355,6 +362,13 @@ PROGRESSION_MILESTONES_TEXT = {
 	152:"36 Heart challenge completions",
 	153:"45 Heart challenge completions",
 	154:"55 Heart challenge completion",
+	155:"50 puzzle completions at once",
+	156:"55 puzzle completions at once",
+	157:"60 puzzle completions at once",
+	158:"65 puzzle completions at once",
+	159:"70 puzzle completions at once",
+	160:"75 puzzle completions at once",
+	161:"80 puzzle completions at once",
 }
 
 function progressReachedNum(){
@@ -573,6 +587,12 @@ function getChangeLogText(){
 	af4= "- Buffed the first reset^2, and added some QoL that I forgot"
 	af5= "- Added shift to see bulk amount"
 	af6= "- Small balance changes regarding Keys"
+	ag1= "v.6.2"
+	ag2= "- Made the achievement handeling code a function [cut 1500 lines of code]"
+	ag3= "- Added a row of achievement"
+	ag4= "- Added a Heart buyable and Heart Challenge"
+	ag5= "- Added 2 Key milestones"
+	ag6= "- Small balance changes regarding Keys"
 
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
@@ -606,11 +626,12 @@ function getChangeLogText(){
 	let part29= [ad1,ad2,ad3, ""]
 	let part30= [ae1,ae2,ae3, ""]
 	let part31= [af1,af2,af3,af4,af5,af6, ""]
+	let part32= [ag1,ag2,ag3,ag4,ag5,ag6, ""]
 
 	let final1 = [part10,  part9,  part8,  part7,  part6,  part5,  part4,  part3,  part2,  part1]
 	let final2 = [part20, part19, part18, part17, part16, part15, part14, part13, part12, part11]
 	let final3 = [part30, part29, part28, part27, part26, part25, part24, part23, part22, part21]
-	let final4 = [part31, ]
+	let final4 = [part32, part31]
 
 	return final4.concat(final3).concat(final2).concat(final1)
 }
