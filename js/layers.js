@@ -11878,10 +11878,9 @@ addLayer("j", {
                                 return sum
                         },
                         effeciency(){
-                                let diff = player.j.puzzle.repeatables[12].div(1e6).floor()
                                 let c = tmp.j.clickables[12].cost
-                                let e = this.effect(diff).div(tmp.j.clickables[12].effect)
-                                return e.ln().pow(-1).times(c).div(diff)
+                                let e = this.effect(1).div(tmp.j.clickables[12].effect)
+                                return e.ln().pow(-1).times(c)
                         },
                         onClick(forcemulti = false, nocost = false){
                                 let data = player.j.puzzle

@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".6.3 Cytoplasm",
+	num: ".6.3.1 Cytoplasm",
 	name: "",
 }
 
@@ -599,6 +599,8 @@ function getChangeLogText(){
 	ah4= "- Added passive Key gain"
 	ah5= "- Added more QoL regarding puzzles"
 	ah6= "- Due to inaccuracies and irrelavence removed 'Best!' display of puzzle upgrades"
+	ah7= "v.6.3.1"
+	ah8= "- Fixed a bug when disping efficiency when you have less than 1e6 Attempt Speed levels"
 
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
