@@ -4981,7 +4981,7 @@ addLayer("ach", {
         canReset(){
                 return false
         },
-        achievements: getFirstNAchData(168), //Object.keys(PROGRESSION_MILESTONES).length
+        achievements: getFirstNAchData(175), //Object.keys(PROGRESSION_MILESTONES).length
         milestones: {
                 1: {
                         requirementDescription(){
@@ -11400,7 +11400,10 @@ addLayer("j", {
                 if (data2.mode == 4) {
                         if (hasUpgrade("i", 34) || player.j.puzzle.reset2.done) {
                                 if (finishedPEdges && finishedPCorners && finishedPCenters) {}
-                                else data2.mode = 1
+                                else {
+                                        data2.mode = 1
+                                }
+
                         }
                         if (data2.autotime > 1) layers.j.clickables.attemptFinish()
                 }
@@ -11444,6 +11447,9 @@ addLayer("j", {
                 }
                 if (hasUpgrade("j", 32)) {
                         layers.j.clickables[13].onClick(nocost = true)
+                }
+                if (hasMilestone("k", 9)) {
+                        layers.j.clickables[14].onClick(nocost = true)
                 }
                 if (data.autodevtime > 10) data.autodevtime = 10
         },
@@ -11656,7 +11662,7 @@ addLayer("j", {
                         description: "Raise <b>Jose</b> effect to the number of <b>Reset<sup>2</sup></b>'s and halve reset cooldown",
                         cost: new Decimal("1e1750"),
                         unlocked(){
-                                return hasMilestone("k", 7) || hasUnlockedPast("j")
+                                return hasMilestone("k", 7) || hasUnlockedPast("k")
                         }
                 }, // hasUpgrade("j", 31)
                 32: {
@@ -11664,7 +11670,7 @@ addLayer("j", {
                         description: "Add one to the <b>K</b> gain exponent and if you can buy a level of Bulk Amount you do so for free once per second",
                         cost: new Decimal("1e5432"),
                         unlocked(){
-                                return hasUpgrade("j", 31) || hasUnlockedPast("j")
+                                return hasUpgrade("j", 31) || hasUnlockedPast("k")
                         }
                 }, // hasUpgrade("j", 32)
                 33: {
@@ -11672,15 +11678,15 @@ addLayer("j", {
                         description: "Each upgrade adds .1 to the <b>Housing</b> base and you can complete one more <b>H</b> challenge",
                         cost: new Decimal("1e9876"),
                         unlocked(){
-                                return hasUpgrade("j", 32) || hasUnlockedPast("j")
+                                return hasUpgrade("j", 32) || hasUnlockedPast("k")
                         }
                 }, // hasUpgrade("j", 33)
                 34: {
                         title: "Jay",
-                        description: "Buff <b>India</b> to all but 3 and add .1 to the <b>Japan</b> base",
+                        description: "Buff <b>India</b> to all but 5 and add .1 to the <b>Japan</b> base",
                         cost: new Decimal("1e24680"),
                         unlocked(){
-                                return hasUpgrade("j", 33) || hasUnlockedPast("j")
+                                return hasUpgrade("j", 33) || hasUnlockedPast("k")
                         }
                 }, // hasUpgrade("j", 34)
                 35: {
@@ -11688,7 +11694,7 @@ addLayer("j", {
                         description: "Each <b>K</b> milestone adds .1 to the <b>K</b> gain exponent and .01 to the <b>Japan</b> base",
                         cost: new Decimal("1e27272"),
                         unlocked(){
-                                return hasUpgrade("j", 34) || hasUnlockedPast("j")
+                                return hasUpgrade("j", 34) || hasUnlockedPast("k")
                         }
                 }, // hasUpgrade("j", 35)
 
@@ -11784,6 +11790,7 @@ addLayer("j", {
                         data.placed.edges = total - x[0]
                         b = times - x[1]
 
+                        if (x[1] == 0) return 
                         if (!(hasUpgrade("i", 32) || player.j.puzzle.reset2.done)) return
                         data.mode = 3
                         if (times >= b + 1) return
@@ -11800,6 +11807,7 @@ addLayer("j", {
                         data.placed.centers = total - x[0]
                         b = times - x[1]
                         
+                        if (x[1] == 0) return 
                         if (!(player.j.puzzle.upgrades.includes(53) || player.j.puzzle.reset2.done)) return
                         data.mode = 4
                         let k
@@ -11845,6 +11853,9 @@ addLayer("j", {
                         if (hasMilestone("k", 3)) ret = ret.times(player.ach.best.max(1))
                         ret = ret.times(tmp.h.challenges[21].rewardEffect)
                         if (hasUpgrade("i", 55)) ret = ret.times(Decimal.pow(10, player.j.puzzle.reset2.times))
+                        if (hasUpgrade("k", 11)) ret = ret.times(tmp.j.clickables[35].effect)
+                        if (hasUpgrade("k", 12)) ret = ret.times(Decimal.pow(10, player.k.upgrades.length))
+                        if (hasUpgrade("k", 13)) ret = ret.times(player.j.puzzle.bestExp.max(1).pow(.1))
                         return ret
                 },
                 getBankedExpGainUF(){
@@ -11854,6 +11865,8 @@ addLayer("j", {
                         ret = ret.times(Decimal.pow(3, player.j.puzzle.reset2.times))
                         if (hasMilestone("k", 2)) ret = ret.times(player.ach.best.max(1))
                         if (hasMilestone("k", 7)) ret = ret.times(Decimal.pow(2, totalChallengeComps("h")))
+                        if (hasUpgrade("k", 11)) ret = ret.times(tmp.j.clickables[35].effect)
+                        if (hasUpgrade("k", 13)) ret = ret.times(player.j.puzzle.bestKnowledge.max(1).pow(.1))
                         return ret
                 },
                 getResetCD(){
@@ -12110,7 +12123,7 @@ addLayer("j", {
                         cost(){
                                 let a = Decimal.pow(4, player.j.puzzle.repeatables[14].pow(.8)).times(40)
                                 let b = Decimal.pow(2.25, player.j.puzzle.repeatables[14])
-                                let c = Decimal.pow(1.005, player.j.puzzle.repeatables[14].pow(2))
+                                let c = Decimal.pow(1.0046, player.j.puzzle.repeatables[14].pow(2))
 
                                 return a.max(b).max(c).floor()
                         },
@@ -12123,12 +12136,12 @@ addLayer("j", {
                                 if (exp.gt(4)) exp = exp.sqrt().times(2)
                                 return Decimal.pow(1.8, exp)
                         },
-                        onClick(){
+                        onClick(nocost = false){
                                 let data = player.j.puzzle
                                 let cost = this.cost()
 
                                 if (!this.canClick()) return 
-                                data.knowledge = data.knowledge.minus(cost)
+                                if (!nocost) data.knowledge = data.knowledge.minus(cost)
                                 data.repeatables[14] = data.repeatables[14].plus(1)
                                 let x = tmp.j.clickables.getCurrentMaxSize
                                 if (data.currentY == x) {
@@ -12310,6 +12323,7 @@ addLayer("j", {
 
                                 let target = Math.floor(data.bestCompletedK * .9)
                                 if (hasUpgrade("j", 34)) target = Math.max(target, data.bestCompletedK - 5)
+                                if (hasMilestone("k", 9)) target = Math.max(target, data.bestCompletedK - 1)
                                 data.finished = target
                                 let c2 = function(x){return x * (x + 1) / 2}
 
@@ -12460,6 +12474,7 @@ addLayer("j", {
                                 let ret = 1.2
                                 if (hasUpgrade("j", 34)) ret += .1
                                 if (hasUpgrade("j", 35)) ret += .01 * player.k.milestones.length
+                                if (hasUpgrade("k", 12)) ret += .01 * player.k.upgrades.length
                                 return ret
                         },
                         effect(){
@@ -13182,6 +13197,7 @@ addLayer("k", {
                 let x = getGeneralizedInitialPostMult("k")
 
                 if (hasMilestone("k", 5)) x = x.times(Decimal.pow(2, player.k.milestones.length))
+                if (hasUpgrade("k", 11)) x = x.times(tmp.j.clickables[35].effect)
 
                 return x
         },
@@ -13337,24 +13353,49 @@ addLayer("k", {
                                 return hasMilestone("k", 7) || hasUnlockedPast("k")
                         }, // hasMilestone("k", 8)
                 },
+                9: {
+                        requirementDescription: "<b>Kit</b><br>Requires: 3.40e38 Keys",
+                        effectDescription: "Buff India to all but one and attempt to buy Larger Puzzle without cost once per second",
+                        done(){
+                                return player.k.points.max(1).log(2).gte(128)
+                        },
+                        unlocked(){
+                                return hasMilestone("k", 8) || hasUnlockedPast("k")
+                        }, // hasMilestone("k", 9)
+                },
         },
         upgrades: {
                 rows: 5,
                 cols: 5,
-                /*
                 11: {
-                        title: "Info",
-                        description: "Unlock an <b>F</b> buyable and each upgrade in this row unlocks a <b>G</b> buyable",
-                        cost: new Decimal(3e6),
+                        title: "Kind",
+                        description: "<b>Japan</b> multiplies knowledge, <b>K</b> and banked exp gain",
+                        cost: new Decimal(1e32),
                         unlocked(){
-                                return hasMilestone("i", 8) || hasUnlockedPast("i")
+                                return hasUpgrade("j", 35) || hasUnlockedPast("k")
                         }
-                }, // hasUpgrade("i", 11)
-                */
+                }, // hasUpgrade("k", 11)
+                12: {
+                        title: "Kitchen",
+                        description: "Each upgrade gives 10x Knowledge gain and adds .01 to the <b>Japan</b> base",
+                        cost: new Decimal(2e36),
+                        unlocked(){
+                                return hasUpgrade("k", 11) || hasUnlockedPast("k")
+                        }
+                }, // hasUpgrade("k", 12)
+                13: {
+                        title: "Keywords",
+                        description: "Best knowledge<sup>.1</sup> multiplies banked exp gain and best exp<sup>.1</sup> multiplies knowledge gain",
+                        cost: new Decimal(2e40),
+                        unlocked(){
+                                return hasUpgrade("k", 12) || hasUnlockedPast("k")
+                        }
+                }, // hasUpgrade("k", 13)
                 
                 /*
-                kind
-                kitchen
+                kansas
+                keyword
+                kinds
                 */
         },
         tabFormat: {
