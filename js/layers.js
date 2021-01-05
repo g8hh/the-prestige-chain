@@ -326,7 +326,7 @@ function getNumFinished(chance, pleft, attempts, ptotal){
         return [the number of pieces unfinished, moves left]
         */
         chance = new Decimal(chance)
-        if (attmpts == 0) return [pleft, attempts]
+        if (attempts == 0) return [pleft, attempts]
         if (chance.gte(1)) {
                 if (attempts > pleft) return [0, attempts-pleft]
                 return [pleft-attempts, 0]
