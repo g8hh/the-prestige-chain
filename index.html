@@ -86,15 +86,7 @@
 			Note by pg132: You can mod my mod, just credit me lol :)
 			<br>
 			Time Played: {{ formatTime(player.timePlayed) }}<br><br>
-			<h3>Hotkeys</h3><br>
-			Current number of hotkeys: <span v-html="Object.keys(hotkeys || {}).length"></span><br>
-			<span v-for="key in hotkeys" v-if="player[key.layer].unlocked">
-				<span v-if="newHotkeyLine(key)"><br><br></span>
-				<button class="opt2" id=key v-on:click="{dothingcooltoggle($event.path[0].innerHTML)}"><b style='color: #CC3333'>{{getKeyDesc1(key)}}</b><br>{{getKeyDesc2(key)}}</button>
-			</span>
-			<br>
-			<br>
-			<br>
+			<h3 style='color: #CC3333'>IMPORTANT BUTTONS:</h3>
 			<table>
 				<tr>
 					<td><button class="opt" onclick="toggleShift()">Force toggle shift</button></td>
@@ -102,6 +94,13 @@
 					<td><button class="opt" onclick="fixSaveNaN()">Attempt to fix save</button></td>
 				</tr>
 			</table>
+			<br><br><br>
+			<h3>Hotkeys</h3><br>
+			Current number of hotkeys: <span v-html="Object.keys(hotkeys || {}).length"></span><br>
+			<span v-for="key in hotkeys" v-if="player[key.layer].unlocked">
+				<span v-if="newHotkeyLine(key)"><br></span>
+				<button class="opt2" id=key v-on:click="{dothingcooltoggle($event.path[0].innerHTML)}"><b style='color: #CC3333'>{{getKeyDesc1(key)}}</b><br>{{getKeyDesc2(key)}}</button>
+			</span>
 			<br><br>
 			<h3>Change log:</h3><br> 
 			MAY NOT BE CORRECT OR UP TO DATE <br>

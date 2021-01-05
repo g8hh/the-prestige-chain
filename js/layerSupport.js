@@ -30,7 +30,7 @@ function toggleHotkey(key){
 }
 
 function newHotkeyLine(key){
-        return ["5", "]", "shift+<", "shift+C", "f", "shift+G", "j"].includes(key.key)
+        return Object.keys(hotkeys).indexOf(key.key) % 5 == 0
 }
 
 var hotkeysOff = {} 
