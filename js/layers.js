@@ -295,20 +295,125 @@ function getPrestigeName(layer){
         }[layer]
 }
 
-function getTimesRequired(chance){
+function getTimesRequired(chance, r1){
         chance = new Decimal(chance)
         if (chance.gte(1)) return 1
         if (chance.lte(0)) return Infinity
-        let r1 = Math.random()
+        if (r1 == undefined) r1 = Math.random()
         //we want (1-chance)^n < r1
         let n
-        if (chance > .0001){
+        if (chance.log10().gt(-5)){
                 n = Decimal.ln(r1).div(Math.log(1-chance))
         } else {
                 n = Decimal.ln(1/r1).div(chance)
         }
         //log(1-chance) of r2
         return Math.floor(n.toNumber()) + 1
+}
+
+function changeDist(r1, t){
+        /*
+        x -> 1/2 + (x-1/2)^(2t-1) * 2 ^ (2t-2)
+        */
+        if (t > 400) return .5
+        return 1/2 + ((r1-1/2)**(2*t-1)) * (2**(2*t-2))
+}
+
+function getNumFinished(chance, pleft, attempts, ptotal){
+        /*
+        The chance with 1 left is chance
+        pleft is the number of pieces left, 
+        return [the number of pieces unfinished, moves left]
+        */
+        chance = new Decimal(chance)
+        if (chance.gte(1)) {
+                if (attempts > pleft) return [0, attempts-pleft]
+                return [pleft-attempts, 0]
+        }
+        if (chance.lte(0)) return [pleft, 0]
+        let r1 = Math.random()
+        r1 = changeDist(r1, ptotal) //because I say so
+        let c2 = function(x){return x * (x + 1) / 2}
+        /*
+        NEED: attemps < Decimal.ln(1/r1).div(chance)
+        attempts / ln(1/r1) < 1 / chance
+        ln(1/r1) / attempts > chance
+        -ln(r1) / attempts / [basechance] > 1/(c2(left) - c2(left-rem)) [RHS is steps done]
+        1/LHS < ll/2 + l/2 - (ll/2 - lm + mm/2 + l/2 - m/2) 
+        1/LHS < l/2 + lm - mm/2 - l/2 + m/2
+        1/LHS < -1/2 (m^2) + (l + 1/2) (m)
+            < (m)(l-m/2+1/2)
+        LHS > 1/(l - m/2 + 1/2)
+        l - m/2 + 1/2 > 1 / LHS
+        - m/2 = 1/LHS - l - 1/2
+        m = -2/LHS + 2l + 1
+
+        */
+        if (chance.div(attempts).log10().gt(-5)) {
+                /*
+                ln(1/r1) > total chance
+                LHS > 1-(1-basechance) ^ (1/runs)
+                if (runs) goes down then (1/runs) goes up then (1-e)^(1/runs) goes DOWN
+                so LHS needs to be larger
+                */
+                lhs = r1
+
+                target = Decimal.minus(1, lhs)
+                // (1-basechance) ^ (1/runs) > target
+                // Math.log(Math.E) = 1
+                target = Math.log(target.toNumber())
+                // (1/runs) * ln(1-basechance) > target (above)
+                target = target * Math.log(1-chance.toNumber()) 
+                // (1/runs) < target (above)
+                RUNS = 1/target
+
+                let STEPS = Math.floor(attempts/RUNS)
+
+                //RUNS is how many units it takes to do the final one i.e. div = 1
+                
+                if (STEPS >= c2(pleft)) {
+                        let unitsUsed = Math.ceil(RUNS * c2(pleft))
+                        return [0, attempts - unitsUsed]
+                }
+                let l = pleft
+                RET = -1/2 + Math.sqrt(1/4 - 2 * STEPS + l * l + l)
+                RET = Math.ceil(RET)
+                return [RET, 0]
+
+        } else {
+                lhs = Decimal.ln(r1).times(-1)
+                lhs = lhs.div(attempts)
+                lhs = lhs.div(chance)
+
+                maxSteps = Decimal.div(1, lhs)
+                if (maxSteps.gt(c2(pleft))){
+                        // below: lhs = -ln(r1) / attempts / chance
+                        let used = c2(pleft)
+                        // below: lhs = -ln(r1) / attempts
+                        used = chance.times(used)
+                        used = used.div(-Math.log(r1))
+                        // ^ is lhs = 1/attempts
+                        attemptUsedFinal = used.pow(-1).ceil()
+                        return [0, attempts - attemptUsedFinal]
+                } else {
+                        /*
+                        SOLVE: maxSteps = ll/2 + l/2 - RET*RET/2 - RET/2
+                        2maxsteps = ll + l - RET**2 - RET
+                        RET**2 + RET + (2*maxsteps - ll - l) = 0
+                        RET = -1 + sqrt(1-4(2*maxsteps - ll - l)) / 2
+                        -4ac = -4(1)(2*maxsteps - ll - l)
+                        RET is ceiled
+                        */
+                        maxSteps = maxSteps.toNumber()
+                        let l = pleft
+                        RET = -1/2 + Math.sqrt(1/4 - 2 * maxSteps + l * l + l)
+                        RET = Math.ceil(RET)
+                        return [RET, 0]
+                        
+                }
+        }
+
+
 }
 
 function getGeneralizedPrestigeGain(layer){
@@ -10402,6 +10507,7 @@ addLayer("h", {
                         currencyInternalName: "points",
                         completionLimit(){
                                 let ret = 20
+                                if (hasUpgrade("j", 33)) ret += player.j.upgrades.length
 
                                 return ret
                         },
@@ -10428,6 +10534,7 @@ addLayer("h", {
                         currencyInternalName: "points",
                         completionLimit(){
                                 let ret = 20
+                                if (hasUpgrade("j", 33)) ret += player.j.upgrades.length
 
                                 return ret
                         },
@@ -10440,6 +10547,7 @@ addLayer("h", {
                         rewardEffect(){
                                 let c = challengeCompletions("h", 21)
                                 let base = 2
+                                if (hasUpgrade("j", 33)) base += .1 * player.j.upgrades.length
                                 return Decimal.pow(base, c)
                         },
                         goal(){
@@ -10454,6 +10562,7 @@ addLayer("h", {
                         currencyInternalName: "points",
                         completionLimit(){
                                 let ret = 20
+                                if (hasUpgrade("j", 33)) ret += player.j.upgrades.length
 
                                 return ret
                         },
@@ -11558,17 +11667,38 @@ addLayer("j", {
                                 return hasUpgrade("j", 31) || hasUnlockedPast("j")
                         }
                 }, // hasUpgrade("j", 32)
+                33: {
+                        title: "Jewellery",
+                        description: "Each upgrade adds .1 to the <b>Housing</b> base and you can complete one more <b>H</b> challenge",
+                        cost: new Decimal("1e9876"),
+                        unlocked(){
+                                return hasUpgrade("j", 32) || hasUnlockedPast("j")
+                        }
+                }, // hasUpgrade("j", 33)
+                34: {
+                        title: "Jay",
+                        description: "Buff <b>India</b> to all but 3 and add .1 to the <b>Japan</b> base",
+                        cost: new Decimal("1e24680"),
+                        unlocked(){
+                                return hasUpgrade("j", 33) || hasUnlockedPast("j")
+                        }
+                }, // hasUpgrade("j", 34)
+                35: {
+                        title: "Jacket",
+                        description: "Each <b>K</b> milestone adds .1 to the <b>K</b> gain exponent and .01 to the <b>Japan</b> base",
+                        cost: new Decimal("1e27272"),
+                        unlocked(){
+                                return hasUpgrade("j", 34) || hasUnlockedPast("j")
+                        }
+                }, // hasUpgrade("j", 35)
 
                 /*
-                
-                jewellery
-                Jay
-                Jacket
+                Jacket [used]
                 */
         },
         clickables: {
                 rows: 6,
-                cols: 5, //only using 4 rn
+                cols: 5, 
                 jigsawEffect(){
                         let base = player.j.points.plus(1e9).log10()
 
@@ -11611,14 +11741,14 @@ addLayer("j", {
                         let tot1 = (data.currentX - 2) * (data.currentY - 2)
                         let tot2 = (data.currentX - 2 + data.currentY - 2) * 2
                         let tot3 = 4
-                        let b = times
+                        let b = 0
                         for (i = 0; i < times; i ++){
                                 let rem1 = tot1 - data.found.centers
                                 let rem2 = tot2 - data.found.edges
                                 let rem3 = tot3 - data.found.corners
                                 let remtot = rem1 + rem2 + rem3 
                                 if (remtot == 0) {
-                                        b = times - i - 1
+                                        b = i + 1
                                         break
                                 }
                                 let r = Math.random()
@@ -11632,28 +11762,28 @@ addLayer("j", {
                         if (tot3 != data.found.corners) return
                         data.mode = 2
                         if (times == b) return
-                        this.doCenters(times - b)
+                        this.doEdges(times - b)
                 },
                 doEdges(times = 1){
                         let data = player.j.puzzle
                         let b = 0
                         let c = 0
-                        while (c < 1000){
+                        while (c < 5){
                                 c ++ 
                                 if (data.placed.corners < 4) {
                                         let left = 4 - data.placed.corners 
                                         b += getTimesRequired(tmp.j.clickables.getAttemptChance.div(left))
                                         if (b > times) return 
                                         data.placed.corners ++ 
-                                } //corners
-                                else if (data.placed.edges < (data.currentX - 2 + data.currentY - 2) * 2) {
-                                        let left = (data.currentX - 2 + data.currentY - 2) * 2 - data.placed.edges
-                                        b += getTimesRequired(tmp.j.clickables.getAttemptChance.div(left).times(10))
-                                        if (b > times) return 
-                                        data.placed.edges ++
-                                }//edges
-                                else break
+                                } else break
                         }
+
+                        let left = (data.currentX - 2 + data.currentY - 2) * 2 - data.placed.edges
+                        let total = (data.currentX - 2 + data.currentY - 2) * 2
+                        let x = getNumFinished(tmp.j.clickables.getAttemptChance.times(10), left, times - b, total)
+                        data.placed.edges = total - x[0]
+                        b = times - x[1]
+
                         if (!(hasUpgrade("i", 32) || player.j.puzzle.reset2.done)) return
                         data.mode = 3
                         if (times >= b + 1) return
@@ -11663,22 +11793,17 @@ addLayer("j", {
                         let data = player.j.puzzle
                         let b = 0
                         let c = 0
-                        while (c < 1000){
-                                c ++ 
-                                if (data.placed.centers < (data.currentX - 2) * (data.currentY - 2)) {
-                                        let left = (data.currentX - 2) * (data.currentY - 2) - data.placed.centers
-                                        b += getTimesRequired(tmp.j.clickables.getAttemptChance.div(left).times(50))
-                                        if (b > times) return 
-                                        data.placed.centers ++
-                                }//centers
-                                else break
-                        }
+                        
+                        let left = (data.currentX - 2) * (data.currentY - 2) - data.placed.centers
+                        let total = (data.currentX - 2) * (data.currentY - 2)
+                        let x = getNumFinished(tmp.j.clickables.getAttemptChance.times(50), left, times, total)
+                        data.placed.centers = total - x[0]
+                        b = times - x[1]
+                        
                         if (!(player.j.puzzle.upgrades.includes(53) || player.j.puzzle.reset2.done)) return
                         data.mode = 4
                         let k
-                        if (times > b) {
-                                k = this.attemptFinish()
-                        }
+                        if (times > b) k = this.attemptFinish()
                         if (k) this.doSearch(times - b - 1)
                 },
                 attemptFinish(){
@@ -11985,8 +12110,9 @@ addLayer("j", {
                         cost(){
                                 let a = Decimal.pow(4, player.j.puzzle.repeatables[14].pow(.8)).times(40)
                                 let b = Decimal.pow(2.25, player.j.puzzle.repeatables[14])
+                                let c = Decimal.pow(1.005, player.j.puzzle.repeatables[14].pow(2))
 
-                                return a.max(b).floor()
+                                return a.max(b).max(c).floor()
                         },
                         canClick(){
                                 let x = tmp.j.clickables.getCurrentMaxSize
@@ -12183,6 +12309,7 @@ addLayer("j", {
                                 if (!hasUpgrade("i", 51)) return
 
                                 let target = Math.floor(data.bestCompletedK * .9)
+                                if (hasUpgrade("j", 34)) target = Math.max(target, data.bestCompletedK - 5)
                                 data.finished = target
                                 let c2 = function(x){return x * (x + 1) / 2}
 
@@ -12315,7 +12442,7 @@ addLayer("j", {
                                 return "<b style='color: #003333'>Japan</b>"
                         },
                         display(){
-                                let a = "Multiply success chance by 1.2"
+                                let a = "Multiply success chance by " + format(tmp.j.clickables[35].base)
                                 let c = "<br>Currently: *" + format(tmp.j.clickables[35].effect)
                                 let b = "<br><br>Cost: " + formatWhole(tmp.j.clickables[35].cost) + " Exp"
                                 return a + c + b
@@ -12329,8 +12456,14 @@ addLayer("j", {
                         cost(){
                                 return Decimal.pow(1.5, player.j.puzzle.repeatables[35].pow(2)).ceil()
                         },
+                        base(){
+                                let ret = 1.2
+                                if (hasUpgrade("j", 34)) ret += .1
+                                if (hasUpgrade("j", 35)) ret += .01 * player.k.milestones.length
+                                return ret
+                        },
                         effect(){
-                                return Decimal.pow(1.2, player.j.puzzle.repeatables[35])
+                                return Decimal.pow(tmp.j.clickables[35].base, player.j.puzzle.repeatables[35])
                         },
                         style(){
                                 return {
@@ -13037,6 +13170,7 @@ addLayer("k", {
         getGainExp(){
                 let x = new Decimal(2)
                 if (hasUpgrade("j", 32)) x = x.plus(1)
+                if (hasUpgrade("j", 35)) x = x.plus(.1 * player.k.milestones.length)
                 return x
         },
         getGainMultPre(){
