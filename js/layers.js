@@ -389,7 +389,7 @@ function getGeneralizedPrestigeButtonText(layer){
                 else nextAt += "<br>" + format(ps) + "/s"
         }
         if (player[layer].best.eq(0) && !hasUnlockedPast(layer) && gain.eq(0)){
-                nextAt = "<br>Get " + format(pre.pow10().times(div)) + " " + layers[layer].baseResource + " for the first " + layers[layer].resource.slice(0,-1)
+                nextAt = "<br>Get " + format(pre.pow(-1).pow10().times(div)) + " " + layers[layer].baseResource + " for the first " + layers[layer].resource.slice(0,-1)
         }
 
         let a = "Reset for " + formatWhole(gain) + " " + layers[layer].resource
@@ -4876,7 +4876,7 @@ addLayer("ach", {
         canReset(){
                 return false
         },
-        achievements: getFirstNAchData(161), //Object.keys(PROGRESSION_MILESTONES).length
+        achievements: getFirstNAchData(168), //Object.keys(PROGRESSION_MILESTONES).length
         milestones: {
                 1: {
                         requirementDescription(){
@@ -10605,6 +10605,7 @@ addLayer("i", {
                 if (hasUpgrade("h", 31)) x = x.plus(player.h.upgrades.length * .1)
                 if (hasUpgrade("h", 43)) x = x.plus(player.i.upgrades.length * .2)
                 if (hasMilestone("j", 4)) x = x.plus(123.456 * player.j.milestones.length)
+                if (hasMilestone("k", 8)) x = x.plus(tmp.h.challenges[11].rewardEffect)
                 return x
         },
         getGainMultPre(){
@@ -10992,7 +10993,7 @@ addLayer("i", {
                 }, // hasUpgrade("i", 53)
                 54: {
                         title: "Inside",
-                        description: "Once per second get attempt to Reset<sup>2</sup> and per <b>J</b> upgrade multiply base <b>J</b> upgrade by bulk amount",
+                        description: "Once per second get attempt to Reset<sup>2</sup> and per <b>J</b> upgrade multiply base <b>J</b> gain by bulk amount",
                         cost: new Decimal("1e6000e3"),
                         unlocked(){
                                 return hasUpgrade("i", 53) || hasUnlockedPast("k")
@@ -11010,8 +11011,6 @@ addLayer("i", {
                 
 
                 /*
-                
-                
                 investment
                 ideas
                 inn
@@ -11186,7 +11185,11 @@ addLayer("j", {
         },
         getGainExp(){
                 let x = new Decimal(2)
-                if (hasUpgrade("j", 25)) x = x.plus(player.j.puzzle.reset2.times)
+                if (hasUpgrade("j", 25)) {
+                        let a = player.j.puzzle.reset2.times 
+                        if (hasUpgrade("j", 31)) a = Decimal.times(a,a)
+                        x = x.plus(a)
+                }
                 return x
         },
         getGainMultPre(){
@@ -11314,7 +11317,6 @@ addLayer("j", {
                 
 
                 //do stuff for other settings
-
                 data2.autotime += -1 * Math.floor(data2.autotime)
                 
                 if (data.autodevtime < 1) return
@@ -11330,6 +11332,9 @@ addLayer("j", {
                 }
                 if (hasUpgrade("i", 54)) {
                         layers.j.clickables[61].onClick()
+                }
+                if (hasUpgrade("j", 32)) {
+                        layers.j.clickables[13].onClick(nocost = true)
                 }
                 if (data.autodevtime > 10) data.autodevtime = 10
         },
@@ -11537,11 +11542,25 @@ addLayer("j", {
                                 return hasUpgrade("j", 24) || hasUnlockedPast("j")
                         }
                 }, // hasUpgrade("j", 25)
+                31: {
+                        title: "Jane",
+                        description: "Raise <b>Jose</b> effect to the number of <b>Reset<sup>2</sup></b>'s and halve reset cooldown",
+                        cost: new Decimal("1e1750"),
+                        unlocked(){
+                                return hasMilestone("k", 7) || hasUnlockedPast("j")
+                        }
+                }, // hasUpgrade("j", 31)
+                32: {
+                        title: "Journey",
+                        description: "Add one to the <b>K</b> gain exponent and if you can buy a level of Bulk Amount you do so for free once per second",
+                        cost: new Decimal("1e5432"),
+                        unlocked(){
+                                return hasUpgrade("j", 31) || hasUnlockedPast("j")
+                        }
+                }, // hasUpgrade("j", 32)
 
                 /*
                 
-                Jane
-                Journey
                 jewellery
                 Jay
                 Jacket
@@ -11568,7 +11587,10 @@ addLayer("j", {
                 getAttemptSpeed(){
                         let ret = tmp.j.clickables.jigsawEffect
                         ret = ret.times(tmp.j.clickables[12].effect)
-                        if (hasUpgrade("j", 25)) ret = ret.times(5)
+                        if (hasUpgrade("j", 25)) {
+                                let e = hasUpgrade("j", 31) ? player.j.puzzle.reset2.times : 1
+                                ret = ret.times(Decimal.pow(5, e))
+                        }
                         return ret
                 },
                 getAttemptChance(){
@@ -11691,7 +11713,10 @@ addLayer("j", {
                         if (hasUpgrade("j", 14)) ret = ret.times(player.j.upgrades.length)
                         if (hasUpgrade("j", 15)) ret = ret.times(player.j.puzzle.bestKnowledge.max(3).ln())
                         ret = ret.times(Decimal.pow(3, player.j.puzzle.reset2.times))
-                        if (hasUpgrade("j", 25)) ret = ret.times(5)
+                        if (hasUpgrade("j", 25)) {
+                                let e = hasUpgrade("j", 31) ? player.j.puzzle.reset2.times : 1
+                                ret = ret.times(Decimal.pow(5, e))
+                        }
                         if (hasMilestone("k", 3)) ret = ret.times(player.ach.best.max(1))
                         ret = ret.times(tmp.h.challenges[21].rewardEffect)
                         if (hasUpgrade("i", 55)) ret = ret.times(Decimal.pow(10, player.j.puzzle.reset2.times))
@@ -11710,6 +11735,7 @@ addLayer("j", {
                         let ret = 60
                         if (hasUpgrade("i", 41)) ret = Math.min(ret, 20)
                         if (hasUpgrade("j", 11)) ret *= Math.pow(.97, player.j.upgrades.length)
+                        if (hasUpgrade("j", 31)) ret *= .5
                         return ret
                 },
                 getCurrentMaxSize(){
@@ -11932,15 +11958,13 @@ addLayer("j", {
                                 let e = this.effect(1).div(tmp.j.clickables[13].effect)
                                 return e.ln().pow(-1).times(c)
                         },
-                        onClick(){
+                        onClick(nocost = false){
                                 let data = player.j.puzzle
                                 let cost = this.cost()
 
                                 if (cost.gt(data.knowledge)) return 
-                                data.knowledge = data.knowledge.minus(cost)
+                                if (!nocost) data.knowledge = data.knowledge.minus(cost)
                                 data.repeatables[13] = data.repeatables[13].plus(1)
-
-                                return //bulk needs to be done eventually
                         },
                 },
                 14: {
@@ -13012,6 +13036,7 @@ addLayer("k", {
         },
         getGainExp(){
                 let x = new Decimal(2)
+                if (hasUpgrade("j", 32)) x = x.plus(1)
                 return x
         },
         getGainMultPre(){
@@ -13168,6 +13193,16 @@ addLayer("k", {
                                 return hasMilestone("k", 6) || hasUnlockedPast("k")
                         }, // hasMilestone("k", 7)
                 },
+                8: {
+                        requirementDescription: "<b>King</b><br>Requires: 1.84e19 Keys",
+                        effectDescription: "Square <b>Huge</b> and <b>Hi</b> effects <b>I</b> gain exponent",
+                        done(){
+                                return player.k.points.max(1).log(2).gte(64)
+                        },
+                        unlocked(){
+                                return hasMilestone("k", 7) || hasUnlockedPast("k")
+                        }, // hasMilestone("k", 8)
+                },
         },
         upgrades: {
                 rows: 5,
@@ -13184,8 +13219,6 @@ addLayer("k", {
                 */
                 
                 /*
-                
-                king
                 kind
                 kitchen
                 */

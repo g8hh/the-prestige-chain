@@ -2115,6 +2115,15 @@ var MAIN_BUYABLE_DATA = {
                                 },
                                 type: "pow",
                         },
+                        3: {
+                                active: function(){
+                                        return hasMilestone("k", 8)
+                                },
+                                amount: function(){
+                                        return 2
+                                },
+                                type: "pow",
+                        },
                 },
                 bases(){
                         let b0 = new Decimal("1e9876543")

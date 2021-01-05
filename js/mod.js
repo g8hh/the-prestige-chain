@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".6.3.1 Cytoplasm",
+	num: ".6.4 Cytoplasm",
 	name: "",
 }
 
@@ -205,6 +205,13 @@ PROGRESSION_MILESTONES = {
 	159:()=> player.j.puzzle.finished >= 70               || hasAchievement("ach",235),
 	160:()=> player.j.puzzle.finished >= 75               || hasAchievement("ach",236),
 	161:()=> player.j.puzzle.finished >= 80               || hasAchievement("ach",237),
+	162:()=> player.j.puzzle.finished >= 85               || hasAchievement("ach",241),
+	163:()=> player.j.puzzle.finished >= 90               || hasAchievement("ach",242),
+	164:()=> player.j.puzzle.finished >= 95               || hasAchievement("ach",243),
+	165:()=> player.j.puzzle.finished >= 100              || hasAchievement("ach",244),
+	166:()=> player.j.puzzle.finished >= 105              || hasAchievement("ach",245),
+	167:()=> player.j.puzzle.finished >= 110              || hasAchievement("ach",246),
+	168:()=> player.j.puzzle.finished >= 115              || hasAchievement("ach",247),
 }
 
 PROGRESSION_MILESTONES_TEXT = {
@@ -369,6 +376,13 @@ PROGRESSION_MILESTONES_TEXT = {
 	159:"70 puzzle completions at once",
 	160:"75 puzzle completions at once",
 	161:"80 puzzle completions at once",
+	162:"85 puzzle completions at once",
+	163:"90 puzzle completions at once",
+	164:"95 puzzle completions at once",
+	165:"100 puzzle completions at once",
+	166:"105 puzzle completions at once",
+	167:"110 puzzle completions at once",
+	168:"115 puzzle completions at once",
 }
 
 function progressReachedNum(){
@@ -392,7 +406,7 @@ function nextMilestone(){
 
 // Display extra things at the top of the page
 var displayThings = [
-	"Endgame: 4 Keys DO NOT GO FURTHER",
+	"Endgame: 4e20 Keys",
 ]
 
 // Determines when the game "ends"
@@ -601,7 +615,11 @@ function getChangeLogText(){
 	ah6= "- Due to inaccuracies and irrelavence removed 'Best!' display of puzzle upgrades"
 	ah7= "v.6.3.1"
 	ah8= "- Fixed a bug when disping efficiency when you have less than 1e6 Attempt Speed levels"
-
+	ai1= "v.6.4"
+	ai2= "- Added 2 Jigsaw upgrades"
+	ai3= "- Added a Key milestones"
+	ai4= "- Added an achievement row"
+	ai5= "- Fixed first resource of a layer display bug"
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
 	let part2 = [b1, b2, b3, b4, b5, "", b6, b7, "", b8, b9, b10, "", b11, b12, ""]
@@ -635,12 +653,13 @@ function getChangeLogText(){
 	let part30= [ae1,ae2,ae3, ""]
 	let part31= [af1,af2,af3,af4,af5,af6, ""]
 	let part32= [ag1,ag2,ag3,ag4,ag5,ag6, ""]
-	let part33= [ah1,ah2,ah3,ah4,ah5,ah6, ""]
+	let part33= [ah1,ah2,ah3,ah4,ah5,ah6, "",ah7,ah8, ""]
+	let part34= [ai1,ai2,ai3,ai4,ai5, ""]
 
 	let final1 = [part10,  part9,  part8,  part7,  part6,  part5,  part4,  part3,  part2,  part1]
 	let final2 = [part20, part19, part18, part17, part16, part15, part14, part13, part12, part11]
 	let final3 = [part30, part29, part28, part27, part26, part25, part24, part23, part22, part21]
-	let final4 = [part33, part32, part31]
+	let final4 = [part34, part33, part32, part31]
 
 	return final4.concat(final3).concat(final2).concat(final1)
 }
