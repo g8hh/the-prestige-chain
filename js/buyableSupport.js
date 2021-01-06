@@ -2143,6 +2143,15 @@ var MAIN_BUYABLE_DATA = {
                 effects: "<b>I</b> effect exponent",
                 base: {
                         initial: new Decimal("1"),
+                        1: {
+                                active: function(){
+                                        return true
+                                },
+                                amount: function(){
+                                        return CURRENT_BUYABLE_EFFECTS["i11"]
+                                },
+                                type: "plus",
+                        },
                 },
                 bases(){
                         let b0 = new Decimal("1e716e6")
@@ -2209,6 +2218,45 @@ var MAIN_BUYABLE_DATA = {
                         return [b0, b1, b2]
                 },
         },
+        i11: {
+                name: "Investment",
+                func: "lin",
+                effects: "<b>Happy</b> base",
+                base: {
+                        initial: new Decimal("1"),
+                        1: {
+                                active: function(){
+                                        return true
+                                },
+                                amount: function(){
+                                        return CURRENT_BUYABLE_EFFECTS["i12"]
+                                },
+                                type: "plus",
+                        },
+                },
+                bases(){
+                        let b0 = new Decimal("1e5050e6")
+                        let b1 = new Decimal("1e1e6")
+                        let b2 = new Decimal("1e1e2")
+                        return [b0, b1, b2]
+                },
+        },
+        /*
+        i12: {
+                name: "Ideas",
+                func: "lin",
+                effects: "<b>Investment</b> base",
+                base: {
+                        initial: new Decimal(".005"),
+                },
+                bases(){
+                        let b0 = new Decimal("1e6420e6")
+                        let b1 = new Decimal("1e2e6")
+                        let b2 = new Decimal("1e1e3")
+                        return [b0, b1, b2]
+                },
+        },
+        */
 }
 
 var EXTRA_FREE_BUYABLE_DATA = {

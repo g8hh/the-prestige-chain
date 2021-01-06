@@ -88,6 +88,7 @@ function updateTemp() {
 	updateCurrentGoalEffects()
 	updateCurrentDepthValues()
 	updateGamesRewards()
+	updateUnlockedPast()
 }
 
 function updateTempData(layerData, tmpData) {

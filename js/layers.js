@@ -59,17 +59,27 @@ function getsReset(layer, layerPrestiging) {
         return false
 }
 
+function getNextLayer(l){
+        x = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",]
+        return x[x.indexOf(l) + 1]
+}
+
+var HAS_UNLOCKED_PAST = {}
+
+function updateUnlockedPast(){
+        let l = filterout(Object.keys(layers).reverse(), ["ach", "ghostONE", "ghostTWO", "goalsii"])
+        for (asd in l){
+                i = l[asd]
+                j = getNextLayer(i)
+                if (layers[i].layer == "side") continue
+                HAS_UNLOCKED_PAST[i] = layers[j] != undefined && (layers[j].layerShown() || hasUnlockedPast(j))
+                if (i == "f") HAS_UNLOCKED_PAST[i] = HAS_UNLOCKED_PAST[i] || layers.goalsii.layerShown()
+        }
+}
+
 function hasUnlockedPast(layer){
-        if (["a", "b", "c", "d", "e", "f"].includes(layer)) {
-                if (layers.goalsii.layerShown()) return true
-        }
-        let on = false
-        for (let i = 0; i < LAYERS.length; i++) {
-                if (layers[LAYERS[i]].row == "side") continue
-                if (on && layers[LAYERS[i]].layerShown()) return true
-                if (layer == LAYERS[i]) on = true
-        }
-        return false
+        if (layers[layer] == undefined) return false
+        return HAS_UNLOCKED_PAST[layer]
 }
 
 function getChallengeFactor(comps){
@@ -110,7 +120,7 @@ function isPrestigeEffectActive(layer){
         if (layer == "k") return true
         if (layer == "j") return true
         if (layer == "i") return true
-        if (layer == "h") return true
+        if (layer == "h") return !inChallenge("h", 22)
         if (layer == "g") return true
         if (layer == "f") return true
         if (layer == "e") return !inChallenge("h", 21)
@@ -10233,12 +10243,6 @@ addLayer("h", {
                                 return hasUpgrade("h", 54) || hasUnlockedPast("j")
                         }
                 }, // hasUpgrade("h", 55)
-
-
-                /*
-                Hit
-                Host
-                */
         },
         buyables: {
                 rows: 3,
@@ -10578,6 +10582,39 @@ addLayer("h", {
                         },
                         countsAs: [11, 12],
                 },
+                22: {
+                        name: "Hit",
+                        challengeDescription: "<b>Housing</b> and <b>Heart</b> effect is nullified",
+                        rewardDescription: "Add to Larger Puzzle and <b>Japan</b> base",
+                        rewardEffect(){
+                                let c = challengeCompletions("h", 22)
+                                let exp = 1.5
+                                let init = Decimal.pow(c, exp)
+                                if (init.gt(10)) init = init.log10().times(10)
+                                return init.times(.02)
+                        },
+                        goal(){
+                                let init = new Decimal("1e1099e28")
+                                let c = challengeCompletions("h", 22)
+                                if (c > 3) c = c * c / 3
+                                let factor = getChallengeFactor(c)
+                                if (factor.eq(1)) factor = new Decimal(0)
+                                return init.times(Decimal.pow("1e191e28", factor))
+                        },
+                        unlocked(){
+                                return hasUpgrade("j", 41) || hasUnlockedPast("k")
+                        },
+                        currencyInternalName: "points",
+                        completionLimit(){
+                                let ret = 20
+                                if (hasUpgrade("j", 33)) ret += player.j.upgrades.length
+                                if (hasUpgrade("k", 21)) ret += 5
+                                if (hasMilestone("k", 10)) ret += player.k.milestones.length
+
+                                return ret
+                        },
+                        countsAs: [11, 12, 21],
+                },
         },
         tabFormat: {
                 "Upgrades": {
@@ -10781,7 +10818,7 @@ addLayer("i", {
                                 data.times ++
                         }
                 }
-                if (false) {
+                if (hasUpgrade("j", 42)) {
                         handleGeneralizedBuyableAutobuy(diff, "i")
                 } else {
                         data.abtime = 0
@@ -11130,11 +11167,68 @@ addLayer("i", {
                 
 
                 /*
-                investment
-                ideas
                 inn
                 industrial
-                
+                */
+        },
+        buyables: {
+                rows: 3,
+                cols: 3,
+                11: {
+                        title: "Investment",
+                        display(){
+                                return getBuyableDisplay("i", 11)
+                        },
+                        effect(){
+                                return CURRENT_BUYABLE_EFFECTS["i11"]
+                        },
+                        canAfford(){
+                                return canAffordBuyable("i", 11)
+                        },
+                        total(){
+                                return getBuyableAmount("i", 11).plus(this.extra())
+                        },
+                        extra(){
+                                return calcBuyableExtra("i", 11)
+                        },
+                        buy(){
+                                buyManualBuyable("i", 11)
+                        },
+                        buyMax(maximum){
+                                buyMaximumBuyable("i", 11, maximum)
+                        },
+                        unlocked(){ 
+                                return hasUpgrade("j", 41) || hasUnlockedPast("k")
+                        },
+                },
+                /*
+                12: {
+                        title: "Ideas",
+                        display(){
+                                return getBuyableDisplay("i", 12)
+                        },
+                        effect(){
+                                return CURRENT_BUYABLE_EFFECTS["i12"]
+                        },
+                        canAfford(){
+                                return canAffordBuyable("i", 12)
+                        },
+                        total(){
+                                return getBuyableAmount("i", 12).plus(this.extra())
+                        },
+                        extra(){
+                                return calcBuyableExtra("i", 12)
+                        },
+                        buy(){
+                                buyManualBuyable("i", 12)
+                        },
+                        buyMax(maximum){
+                                buyMaximumBuyable("i", 12, maximum)
+                        },
+                        unlocked(){ 
+                                return hasUpgrade("j", 42) || hasUnlockedPast("k")
+                        },
+                },
                 */
         },
         tabFormat: {
@@ -11175,7 +11269,7 @@ addLayer("i", {
                                 "blank", 
                                 "buyables"],
                         unlocked(){
-                                return false
+                                return hasUpgrade("j", 41) || hasUnlockedPast("k")
                         },
                 },
                 "Milestones": {
@@ -11370,6 +11464,8 @@ addLayer("j", {
 
                 data.time += diff
                 data.autodevtime += diff / Math.min(1, player.devSpeed)
+
+                if (!hasUnlockedPast("i")) return //should help w lag
 
                 //puzzle
                 let data2 = data.puzzle
@@ -11707,6 +11803,22 @@ addLayer("j", {
                                 return hasUpgrade("j", 34) || hasUnlockedPast("k")
                         }
                 }, // hasUpgrade("j", 35)
+                41: {
+                        title: "J-idk1",
+                        description: "Per upgrade in this row unlock an <b>I</b> buyable and unlock the final <b>H</b> challenge",
+                        cost: new Decimal("1e389e3"),
+                        unlocked(){
+                                return hasUpgrade("k", 22) || hasUnlockedPast("k")
+                        }
+                }, // hasUpgrade("j", 41)
+                42: {
+                        title: "J-idk2",
+                        description: "Automatically buy <b>I</b> buyables and each upgrade doubles base <b>K</b> gain [no buy yet]",
+                        cost: new Decimal("1e483e3"),
+                        unlocked(){
+                                return hasUpgrade("j", 41) || hasUnlockedPast("k")
+                        }
+                }, // hasUpgrade("j", 42)
 
                 /*
                 Jacket [used]
@@ -12143,11 +12255,16 @@ addLayer("j", {
                                 let x = tmp.j.clickables.getCurrentMaxSize
                                 return player.j.puzzle.knowledge.gte(this.cost()) && (player.j.puzzle.currentX < x || player.j.puzzle.currentY < x)
                         },
+                        base(){
+                                let base = new Decimal(1.8)
+                                if (hasUpgrade("k", 15)) base = base.plus(.02 * player.k.upgrades.length)
+                                base = base.plus(tmp.h.challenges[22].rewardEffect)
+                                return base
+                        },
                         effect(){
                                 let exp = player.j.puzzle.repeatables[14]
                                 if (exp.gt(4) && !hasUpgrade("k", 14)) exp = exp.sqrt().times(2)
-                                let base = 1.8
-                                if (hasUpgrade("k", 15)) base += .02 * player.k.upgrades.length
+                                let base = tmp.j.clickables[14].base
                                 return Decimal.pow(base, exp)
                         },
                         onClick(nocost = false){
@@ -12485,10 +12602,11 @@ addLayer("j", {
                                 return Decimal.pow(1.5, player.j.puzzle.repeatables[35].pow(2)).ceil()
                         },
                         base(){
-                                let ret = 1.2
-                                if (hasUpgrade("j", 34)) ret += .1
-                                if (hasUpgrade("j", 35)) ret += .01 * player.k.milestones.length
-                                if (hasUpgrade("k", 12)) ret += .01 * player.k.upgrades.length
+                                let ret = new Decimal(1.2)
+                                if (hasUpgrade("j", 34)) ret = ret.plus(.1)
+                                if (hasUpgrade("j", 35)) ret = ret.plus(.01 * player.k.milestones.length)
+                                if (hasUpgrade("k", 12)) ret = ret.plus(.01 * player.k.upgrades.length)
+                                ret = ret.plus(tmp.h.challenges[22].rewardEffect)
                                 return ret
                         },
                         effect(){
@@ -13206,6 +13324,7 @@ addLayer("k", {
         getGainMultPre(){
                 let x = Decimal.pow(19, -1)
                 if (hasUpgrade("i", 55)) x = x.times(Decimal.pow(2, player.j.puzzle.reset2.times))
+                if (hasUpgrade("j", 42)) x = x.times(Decimal.pow(2, player.j.upgrades.length))
                 return x
         },
         getGainMultPost(){
