@@ -2241,22 +2241,20 @@ var MAIN_BUYABLE_DATA = {
                         return [b0, b1, b2]
                 },
         },
-        /*
         i12: {
                 name: "Ideas",
                 func: "lin",
                 effects: "<b>Investment</b> base",
                 base: {
-                        initial: new Decimal(".005"),
+                        initial: new Decimal(".01"),
                 },
                 bases(){
-                        let b0 = new Decimal("1e6420e6")
-                        let b1 = new Decimal("1e2e6")
+                        let b0 = new Decimal("1e8100e6")
+                        let b1 = new Decimal("1e5e6")
                         let b2 = new Decimal("1e1e3")
                         return [b0, b1, b2]
                 },
         },
-        */
 }
 
 var EXTRA_FREE_BUYABLE_DATA = {

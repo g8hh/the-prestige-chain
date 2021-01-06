@@ -11201,7 +11201,6 @@ addLayer("i", {
                                 return hasUpgrade("j", 41) || hasUnlockedPast("k")
                         },
                 },
-                /*
                 12: {
                         title: "Ideas",
                         display(){
@@ -11229,7 +11228,6 @@ addLayer("i", {
                                 return hasUpgrade("j", 42) || hasUnlockedPast("k")
                         },
                 },
-                */
         },
         tabFormat: {
                 "Upgrades": {
@@ -11804,24 +11802,31 @@ addLayer("j", {
                         }
                 }, // hasUpgrade("j", 35)
                 41: {
-                        title: "J-idk1",
+                        title: "Jet",
                         description: "Per upgrade in this row unlock an <b>I</b> buyable and unlock the final <b>H</b> challenge",
-                        cost: new Decimal("1e389e3"),
+                        cost: new Decimal("1e357e3"),
                         unlocked(){
                                 return hasUpgrade("k", 22) || hasUnlockedPast("k")
                         }
                 }, // hasUpgrade("j", 41)
                 42: {
-                        title: "J-idk2",
-                        description: "Automatically buy <b>I</b> buyables and each upgrade doubles base <b>K</b> gain [no buy yet]",
-                        cost: new Decimal("1e483e3"),
+                        title: "Joy",
+                        description: "Automatically buy <b>I</b> buyables, each upgrade doubles base <b>K</b> gain, and you buy 10x Bulk Amount levels",
+                        cost: new Decimal("1e458e3"),
                         unlocked(){
                                 return hasUpgrade("j", 41) || hasUnlockedPast("k")
                         }
                 }, // hasUpgrade("j", 42)
 
                 /*
-                Jacket [used]
+                Jon
+                judgment
+                jokes
+                jonathan
+                jessica
+                jerry
+                johnny
+                jimmy
                 */
         },
         clickables: {
@@ -12044,39 +12049,41 @@ addLayer("j", {
                                 return ret
                         },
                         totalSoFar(){
-                                let sf = Math.round(player.j.puzzle.repeatables[11].toNumber())
-                                let norm = Math.floor(Math.sqrt(sf + 1)) - 1
-                                let normCost = norm * (norm + 1) * (4 * norm + 5) / 6
-                                let extra = (sf - (norm + 1) * (norm + 1) + 1) * (norm + 1)
-                                return normCost + extra
+                                let sf = player.j.puzzle.repeatables[11]
+                                let norm = sf.plus(1).sqrt().floor().minus(1)
+                                let normCost = norm.times(norm.plus(1)).times(norm.times(4).plus(5)).div(6)
+                                let extra = sf.minus(norm.plus(1).pow(2)).plus(1).times(norm.plus(1))
+                                return normCost.plus(extra)
                         },
                         totalTarget(target = new Decimal(0)){
-                                let sf = Math.round(target.toNumber())
-                                let norm = Math.floor(Math.sqrt(sf + 1)) - 1
-                                let normCost = norm * (norm + 1) * (4 * norm + 5) / 6
-                                let extra = (sf - (norm + 1) * (norm + 1) + 1) * (norm + 1)
-                                return normCost + extra
+                                let sf = target.round()
+                                let norm = sf.plus(1).sqrt().floor().minus(1)
+                                let normCost = norm.times(norm.plus(1)).times(norm.times(4).plus(5)).div(6)
+                                let extra = sf.minus(norm.plus(1).pow(2)).plus(1).times(norm.plus(1))
+                                return normCost.plus(extra)
                         },
                         costTo(target = new Decimal(0)) {
                                 let sf = tmp.j.clickables[11].totalSoFar
                                 let tr = layers.j.clickables[11].totalTarget(target)
-                                return Math.max(0, tr-sf)
+                                return tr.minus(sf).max(0)
                         },
                         getMaxCostTo(){
                                 let z = player.j.puzzle.repeatables[11]
                                 let a = .5
                                 let run = true
-                                let amt = player.j.puzzle.knowledge.toNumber()
+                                let amt = player.j.puzzle.knowledge
                                 while (run){
                                         a *= 2
-                                        if (amt < this.costTo(z.plus(a))) run = false
+                                        if (amt.lt(this.costTo(z.plus(a)))) run = false
                                 }
                                 a /= 2
                                 let sum = a
                                 if (sum < 1) return 0
-                                while (a >= 1){
+                                let c = 0
+                                while (a >= 1 && c < 100){
+                                        c ++
                                         a /= 2
-                                        if (amt >= this.costTo(z.plus(sum).plus(a))) sum += a
+                                        if (amt.gte(this.costTo(z.plus(sum).plus(a)))) sum += a
                                 }
                                 return sum
                         },
@@ -12135,33 +12142,34 @@ addLayer("j", {
                                 return ret
                         },
                         totalSoFar(){
-                                let sf = Math.round(player.j.puzzle.repeatables[12].toNumber())
-                                return sf * (sf + 1) / 2
+                                let sf = player.j.puzzle.repeatables[12]
+                                return sf.times(sf.plus(1)).div(2)
                         },
                         totalTarget(target = new Decimal(0)){
-                                target = target.toNumber()
-                                return target * (target + 1) / 2
+                                return target.times(target.plus(1)).div(2)
                         },
                         costTo(target = new Decimal(0)) {
                                 let sf = tmp.j.clickables[12].totalSoFar
                                 let tr = layers.j.clickables[12].totalTarget(target)
-                                return Math.max(0, tr-sf)
+                                return tr.minus(sf).max(0)
                         },
                         getMaxCostTo(){
                                 let z = player.j.puzzle.repeatables[12]
                                 let a = .5
                                 let run = true
-                                let amt = player.j.puzzle.knowledge.toNumber()
+                                let amt = player.j.puzzle.knowledge
                                 while (run){
                                         a *= 2
-                                        if (amt < this.costTo(z.plus(a))) run = false
+                                        if (amt.lt(this.costTo(z.plus(a)))) run = false
                                 }
                                 a /= 2
                                 let sum = a
                                 if (sum < 1) return 0
-                                while (a > 1){
+                                let c = 0
+                                while (a > 1 && c < 100){
+                                        c ++
                                         a /= 2
-                                        if (amt >= this.costTo(z.plus(sum).plus(a))) sum += a
+                                        if (amt.gte(this.costTo(z.plus(sum).plus(a)))) sum += a
                                 }
                                 return sum
                         },
@@ -12220,13 +12228,15 @@ addLayer("j", {
                                 let e = this.effect(1).div(tmp.j.clickables[13].effect)
                                 return e.ln().pow(-1).times(c)
                         },
-                        onClick(nocost = false){
+                        onClick(nocost = false, times = 1){
                                 let data = player.j.puzzle
-                                let cost = this.cost()
-
-                                if (cost.gt(data.knowledge)) return 
-                                if (!nocost) data.knowledge = data.knowledge.minus(cost)
-                                data.repeatables[13] = data.repeatables[13].plus(1)
+                                if (hasUpgrade("j", 42)) times *= 10
+                                for (i = 0; i < times; i++) {
+                                        let cost = this.cost()
+                                        if (cost.gt(data.knowledge)) return 
+                                        if (!nocost) data.knowledge = data.knowledge.minus(cost)
+                                        data.repeatables[13] = data.repeatables[13].plus(1)
+                                }
                         },
                 },
                 14: {
