@@ -6318,6 +6318,7 @@ addLayer("goalsii", {
                 14: {
                         requirementDescription: "<b>όμικρον (Omicron)</b><br>Requires: 20 31 Token", 
                         effectDescription(){
+                                if (player.tab != "goalsii") return ""
                                 let a = "log10(10+medals) boosts base <b>F</b> gain, currently: "
                                 return a + format(player.goalsii.points.max(10).log10(), 4)
                         },
@@ -6351,6 +6352,7 @@ addLayer("goalsii", {
                 18: {
                         requirementDescription: "<b>σίγμα (Sigma)</b><br>Requires: 10 33 Tokens", 
                         effectDescription(){
+                                if (player.tab != "goalsii") return ""
                                 let a = "Once per second, automatically complete <b>B</b> and <b>C</b> challenges if you have enough points and Goals^Goals multiply <b>E</b> gain, currently: "
                                 let b = Math.max(1, player.ach.achievements.length)
                                 return a + format(Decimal.pow(b, b))
@@ -10510,6 +10512,8 @@ addLayer("h", {
                         completionLimit(){
                                 let ret = 20
                                 if (hasUpgrade("j", 33)) ret += player.j.upgrades.length
+                                if (hasUpgrade("k", 21)) ret += 5
+                                if (hasMilestone("k", 10)) ret += player.k.milestones.length
 
                                 return ret
                         },
@@ -10537,6 +10541,8 @@ addLayer("h", {
                         completionLimit(){
                                 let ret = 20
                                 if (hasUpgrade("j", 33)) ret += player.j.upgrades.length
+                                if (hasUpgrade("k", 21)) ret += 5
+                                if (hasMilestone("k", 10)) ret += player.k.milestones.length
 
                                 return ret
                         },
@@ -10565,6 +10571,8 @@ addLayer("h", {
                         completionLimit(){
                                 let ret = 20
                                 if (hasUpgrade("j", 33)) ret += player.j.upgrades.length
+                                if (hasUpgrade("k", 21)) ret += 5
+                                if (hasMilestone("k", 10)) ret += player.k.milestones.length
 
                                 return ret
                         },
@@ -11858,6 +11866,7 @@ addLayer("j", {
                         if (hasUpgrade("k", 11)) ret = ret.times(tmp.j.clickables[35].effect)
                         if (hasUpgrade("k", 12)) ret = ret.times(Decimal.pow(10, player.k.upgrades.length))
                         if (hasUpgrade("k", 13)) ret = ret.times(player.j.puzzle.bestExp.max(1).pow(.1))
+                        if (hasUpgrade("k", 21) && hasMilestone("k", 7)) ret = ret.times(Decimal.pow(2, totalChallengeComps("h")))
                         return ret
                 },
                 getBankedExpGainUF(){
@@ -11869,6 +11878,7 @@ addLayer("j", {
                         if (hasMilestone("k", 7)) ret = ret.times(Decimal.pow(2, totalChallengeComps("h")))
                         if (hasUpgrade("k", 11)) ret = ret.times(tmp.j.clickables[35].effect)
                         if (hasUpgrade("k", 13)) ret = ret.times(player.j.puzzle.bestKnowledge.max(1).pow(.1))
+                        if (hasUpgrade("k", 22)) ret = ret.times(Decimal.pow(tmp.j.clickables[35].effect, player.k.upgrades.length))
                         return ret
                 },
                 getResetCD(){
@@ -12135,8 +12145,10 @@ addLayer("j", {
                         },
                         effect(){
                                 let exp = player.j.puzzle.repeatables[14]
-                                if (exp.gt(4)) exp = exp.sqrt().times(2)
-                                return Decimal.pow(1.8, exp)
+                                if (exp.gt(4) && !hasUpgrade("k", 14)) exp = exp.sqrt().times(2)
+                                let base = 1.8
+                                if (hasUpgrade("k", 15)) base += .02 * player.k.upgrades.length
+                                return Decimal.pow(base, exp)
                         },
                         onClick(nocost = false){
                                 let data = player.j.puzzle
@@ -13188,6 +13200,7 @@ addLayer("k", {
                 let x = new Decimal(2)
                 if (hasUpgrade("j", 32)) x = x.plus(1)
                 if (hasUpgrade("j", 35)) x = x.plus(.1 * player.k.milestones.length)
+                if (hasUpgrade("k", 22)) x = x.plus(.08 * player.k.upgrades.length)
                 return x
         },
         getGainMultPre(){
@@ -13365,6 +13378,16 @@ addLayer("k", {
                                 return hasMilestone("k", 8) || hasUnlockedPast("k")
                         }, // hasMilestone("k", 9)
                 },
+                10: {
+                        requirementDescription: "<b>Korea</b><br>Requires: 1.16e77 Keys",
+                        effectDescription: "Per milestone you can complete one more <b>H</b> challenge",
+                        done(){
+                                return player.k.points.max(1).log(2).gte(256)
+                        },
+                        unlocked(){
+                                return hasUpgrade("k", 22) || hasUnlockedPast("k")
+                        }, // hasMilestone("k", 10)
+                },
         },
         upgrades: {
                 rows: 5,
@@ -13393,11 +13416,43 @@ addLayer("k", {
                                 return hasUpgrade("k", 12) || hasUnlockedPast("k")
                         }
                 }, // hasUpgrade("k", 13)
+                14: {
+                        title: "Kansas",
+                        description: "Remove the softcap on the Larger Puzzle effect",
+                        cost: new Decimal(1e42),
+                        unlocked(){
+                                return hasUpgrade("k", 13) || hasUnlockedPast("k")
+                        }
+                }, // hasUpgrade("k", 14)
+                15: {
+                        title: "Keyword",
+                        description: "Per upgrade add .02 to the Larger Puzzle effect base",
+                        cost: new Decimal(1e59),
+                        unlocked(){
+                                return hasUpgrade("k", 14) || hasUnlockedPast("k")
+                        }
+                }, // hasUpgrade("k", 15)
+                21: {
+                        title: "Kinds",
+                        description: "<b>Kingdom</b> effects knowledge and you can complete 5 more of each <b>H</b> challenge",
+                        cost: new Decimal(2e60),
+                        unlocked(){
+                                return hasUpgrade("k", 15) || hasUnlockedPast("k")
+                        }
+                }, // hasUpgrade("k", 21)
+                22: {
+                        title: "Knew",
+                        description: "Per upgrade add .08 to the <b>K</b> gain exponent and <b>Japan</b> multiplies experience gain",
+                        cost: new Decimal(1e66),
+                        unlocked(){
+                                return hasUpgrade("k", 21) || hasUnlockedPast("k")
+                        }
+                }, // hasUpgrade("k", 22)
                 
                 /*
-                kansas
-                keyword
-                kinds
+                Kelly
+                Kept
+                Kentucky
                 */
         },
         tabFormat: {

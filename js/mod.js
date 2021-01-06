@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".6.6.2 Cytoplasm",
+	num: ".6.7 Cytoplasm",
 	name: "",
 }
 
@@ -420,7 +420,7 @@ function nextMilestone(){
 
 // Display extra things at the top of the page
 var displayThings = [
-	"Endgame: 2e40 Keys",
+	"Endgame: 1e80 Keys",
 ]
 
 // Determines when the game "ends"
@@ -649,6 +649,9 @@ function getChangeLogText(){
 	ak8= "v.6.6.1"
 	ak9= "- Fixed+cleaned up info page"
 	ak10="- Fixed a bug when doing 0 attempts"
+	al1= "v.6.7"
+	al2= "- Added four Key upgrades"
+	al3= "- Added a Key milestone"
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
 	let part2 = [b1, b2, b3, b4, b5, "", b6, b7, "", b8, b9, b10, "", b11, b12, ""]
