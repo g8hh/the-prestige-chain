@@ -4993,7 +4993,7 @@ addLayer("ach", {
         canReset(){
                 return false
         },
-        achievements: getFirstNAchData(175), //Object.keys(PROGRESSION_MILESTONES).length
+        achievements: getFirstNAchData(189), //Object.keys(PROGRESSION_MILESTONES).length
         milestones: {
                 1: {
                         requirementDescription(){
@@ -9883,6 +9883,7 @@ addLayer("h", {
                 if (hasUpgrade("h", 35)) x = x.times(Decimal.max(1, totalChallengeComps("f")))
                 if (hasUpgrade("i", 23)) x = x.times(Decimal.pow(10, player.i.upgrades.length))
                 x = x.times(tmp.j.clickables[45].effect)
+                x = x.times(CURRENT_BUYABLE_EFFECTS["i13"])
                 return x
         },
         getGainMultPost(){
@@ -10590,7 +10591,7 @@ addLayer("h", {
                                 let c = challengeCompletions("h", 22)
                                 let exp = 1.5
                                 let init = Decimal.pow(c, exp)
-                                if (init.gt(10)) init = init.log10().times(10)
+                                if (init.gt(10) && !hasUpgrade("j", 43)) init = init.log10().times(10)
                                 return init.times(.02)
                         },
                         goal(){
@@ -11164,10 +11165,7 @@ addLayer("i", {
                         }
                 }, // hasUpgrade("i", 55)
 
-                
-
                 /*
-                inn
                 industrial
                 */
         },
@@ -11226,6 +11224,33 @@ addLayer("i", {
                         },
                         unlocked(){ 
                                 return hasUpgrade("j", 42) || hasUnlockedPast("k")
+                        },
+                },
+                13: {
+                        title: "Inn",
+                        display(){
+                                return getBuyableDisplay("i", 13)
+                        },
+                        effect(){
+                                return CURRENT_BUYABLE_EFFECTS["i13"]
+                        },
+                        canAfford(){
+                                return canAffordBuyable("i", 13)
+                        },
+                        total(){
+                                return getBuyableAmount("i", 13).plus(this.extra())
+                        },
+                        extra(){
+                                return calcBuyableExtra("i", 13)
+                        },
+                        buy(){
+                                buyManualBuyable("i", 13)
+                        },
+                        buyMax(maximum){
+                                buyMaximumBuyable("i", 13, maximum)
+                        },
+                        unlocked(){ 
+                                return hasUpgrade("j", 43) || hasUnlockedPast("k")
                         },
                 },
         },
@@ -11555,6 +11580,11 @@ addLayer("j", {
                 if (hasMilestone("k", 9)) {
                         layers.j.clickables[14].onClick(nocost = true)
                 }
+                if (hasUpgrade("j", 44)){
+                        layers.j.clickables[35].onClick()
+                        layers.j.clickables[45].onClick()
+                        layers.j.clickables[55].onClick()
+                }
                 if (data.autodevtime > 10) data.autodevtime = 10
         },
         row: 9, // Row the layer is in on the tree (0 is the first row)
@@ -11817,10 +11847,24 @@ addLayer("j", {
                                 return hasUpgrade("j", 41) || hasUnlockedPast("k")
                         }
                 }, // hasUpgrade("j", 42)
+                43: {
+                        title: "Jon",
+                        description: "Remove <b>Hit</b> effect softcap and <b>Housing</b> effects <b>K</b> gain",
+                        cost: new Decimal("1e701e3"),
+                        unlocked(){
+                                return hasUpgrade("j", 42) || hasUnlockedPast("k")
+                        }
+                }, // hasUpgrade("j", 43)
+                44: {
+                        title: "Judgment",
+                        description: "Autobuy <b>Japan</b>, <b>Jack</b>, and <b>Junior</b> once per second and add one to <b>K</b> gain exponent [no buy]",
+                        cost: new Decimal("1e897e3"),
+                        unlocked(){
+                                return hasUpgrade("j", 43) || hasUnlockedPast("k")
+                        }
+                }, // hasUpgrade("j", 44)
 
                 /*
-                Jon
-                judgment
                 jokes
                 jonathan
                 jessica
@@ -12027,7 +12071,7 @@ addLayer("j", {
                                 }
                                 let a = "<h3 style='color: #993300'>Cost</h3>: " + formatWhole(tmp.j.clickables[11].cost) + " Knowledge<br>"
                                 let b = "<h3 style='color: #339900'>Current</h3>: " + formatWhole(player.j.puzzle.repeatables[11]) + " levels<br>"
-                                let c = "<h3 style='color: #9933CC'>Effect</h3>: *" + format(tmp.j.clickables[11].effect) + " success chance<br>"
+                                let c = "<h3 style='color: #9933CC'>Effect</h3>: *" + format(tmp.j.clickables[11].effect, 4) + " success chance<br>"
                                 if (hasMilestone("k", 6)) return c
                                 return a + b + c
                         },
@@ -12049,11 +12093,7 @@ addLayer("j", {
                                 return ret
                         },
                         totalSoFar(){
-                                let sf = player.j.puzzle.repeatables[11]
-                                let norm = sf.plus(1).sqrt().floor().minus(1)
-                                let normCost = norm.times(norm.plus(1)).times(norm.times(4).plus(5)).div(6)
-                                let extra = sf.minus(norm.plus(1).pow(2)).plus(1).times(norm.plus(1))
-                                return normCost.plus(extra)
+                                return this.totalTarget(player.j.puzzle.repeatables[11])
                         },
                         totalTarget(target = new Decimal(0)){
                                 let sf = target.round()
@@ -12072,20 +12112,27 @@ addLayer("j", {
                                 let a = .5
                                 let run = true
                                 let amt = player.j.puzzle.knowledge
-                                while (run){
-                                        a *= 2
-                                        if (amt.lt(this.costTo(z.plus(a)))) run = false
-                                }
-                                a /= 2
-                                let sum = a
-                                if (sum < 1) return 0
-                                let c = 0
-                                while (a >= 1 && c < 100){
-                                        c ++
+                                let amt2 = player.j.puzzle.knowledge.plus(tmp.j.clickables[11].totalSoFar)
+                                if (amt2.gt(1e40)) {
+                                        while (run){
+                                                a *= 2
+                                                if (amt.lt(this.costTo(z.plus(a)))) run = false
+                                        }
                                         a /= 2
-                                        if (amt.gte(this.costTo(z.plus(sum).plus(a)))) sum += a
+                                        let sum = a
+                                        if (sum < 1) return 0
+                                        let c = 0
+                                        while (a >= 1 && c < 100){
+                                                c ++
+                                                a /= 2
+                                                if (amt.gte(this.costTo(z.plus(sum).plus(a)))) sum += a
+                                        }
+                                        return sum
+                                } else {
+                                        let ncInverse = amt2.times(3/2).cbrt() 
+                                        //gives us norm
+                                        return ncInverse.pow(2).sub(z).max(0)
                                 }
-                                return sum
                         },
                         effeciency(){
                                 let c = tmp.j.clickables[11].cost
@@ -12157,21 +12204,13 @@ addLayer("j", {
                                 let z = player.j.puzzle.repeatables[12]
                                 let a = .5
                                 let run = true
-                                let amt = player.j.puzzle.knowledge
-                                while (run){
-                                        a *= 2
-                                        if (amt.lt(this.costTo(z.plus(a)))) run = false
-                                }
-                                a /= 2
-                                let sum = a
-                                if (sum < 1) return 0
-                                let c = 0
-                                while (a > 1 && c < 100){
-                                        c ++
-                                        a /= 2
-                                        if (amt.gte(this.costTo(z.plus(sum).plus(a)))) sum += a
-                                }
-                                return sum
+                                let amt = player.j.puzzle.knowledge.plus(tmp.j.clickables[12].totalSoFar)
+                                /*
+                                x^2 + x < 2*amt (ROUND DOWN x)
+                                x = -1 + sqrt(1+8*amt) / 2
+                                */
+                                let x = amt.times(8).plus(1).sqrt().minus(1).div(2).floor()
+                                return x.minus(z)
                         },
                         effeciency(){
                                 let c = tmp.j.clickables[12].cost
@@ -13009,6 +13048,7 @@ addLayer("j", {
                         width: 650,
                         height: 40,
                         progress(){
+                                if (player.tab != "j") return 0
                                 let data = player.j.puzzle
                                 let z = data.bartype
                                 if (z == 1){
@@ -13085,6 +13125,23 @@ addLayer("j", {
                                         "color": "#990033"
                                 }
                         },
+                        /*
+                        borderStyle(){
+                                return {
+                                        "color": "#99CC33"
+                                }
+                                let data = player.j.puzzle
+                                let tot1 = (data.currentX - 2) * (data.currentY - 2)
+                                let tot2 = (data.currentX - 2 + data.currentY - 2) * 2
+                                let tot3 = 4
+                                if (tot1 != data.placed.centers) return {}
+                                if (tot2 != data.placed.edges) return {}
+                                if (tot3 != data.placed.corners) return {}
+                                return {
+                                        "color": "#99CC33"
+                                }
+                        },
+                        */
                         /*
                         - baseStyle, fillStyle, borderStyle, textStyle: **Optional**, Apply CSS to the unfilled portion, filled portion, border, and 
                         display text on the bar, in the form of an object where the keys are CSS attributes, and the values are the
@@ -13329,6 +13386,7 @@ addLayer("k", {
                 if (hasUpgrade("j", 32)) x = x.plus(1)
                 if (hasUpgrade("j", 35)) x = x.plus(.1 * player.k.milestones.length)
                 if (hasUpgrade("k", 22)) x = x.plus(.08 * player.k.upgrades.length)
+                if (hasUpgrade("j", 44)) x = x.plus(1)
                 return x
         },
         getGainMultPre(){
@@ -13342,6 +13400,7 @@ addLayer("k", {
 
                 if (hasMilestone("k", 5)) x = x.times(Decimal.pow(2, player.k.milestones.length))
                 if (hasUpgrade("k", 11)) x = x.times(tmp.j.clickables[35].effect)
+                if (hasUpgrade("j", 43)) x = x.times(tmp.h.challenges[21].rewardEffect)
 
                 return x
         },

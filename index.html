@@ -22,7 +22,7 @@
 
 </head>
 <body onload="load()">
-	<div id="app">
+	<div id="app" onscroll="resizeCanvas()">
 		<div v-if="false" id="loadingSection" class="fullWidth">
 			<h1>Loading... (If this takes too long it means there was a serious error!)</h1>
 		</div>
@@ -193,8 +193,8 @@
 			</span>
 			<canvas id="treeCanvas" class="canvas"></canvas>
 		</div>
-		<div v-for="layer in LAYERS" >
-			<div v-if="player.tab==layer" v-bind:class="'col right fast tab'"  v-bind:style="[tmp[layer].style ? tmp[layer].style : {}, (tmp[layer].tabFormat && !Array.isArray(tmp[layer].tabFormat)) ? tmp[layer].tabFormat[player.subtabs[layer].mainTabs].style : {}]">
+		<div v-for="layer in LAYERS">
+			<div v-if="player.tab==layer" onscroll="resizeCanvas()" v-bind:class="'col right fast tab'" v-bind:style="[tmp[layer].style ? tmp[layer].style : {}, (tmp[layer].tabFormat && !Array.isArray(tmp[layer].tabFormat)) ? tmp[layer].tabFormat[player.subtabs[layer].mainTabs].style : {}]">
 				<button class="back" onclick="showTab('tree')">←</button><br><br><br>
 				<div v-if="!tmp[layer].tabFormat">
 					<info-box v-if="tmp[layer].infoboxes" :layer="layer" :data="Object.keys(tmp[layer].infoboxes)[0]"></info-box>

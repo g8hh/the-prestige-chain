@@ -2255,6 +2255,20 @@ var MAIN_BUYABLE_DATA = {
                         return [b0, b1, b2]
                 },
         },
+        i13: {
+                name: "Inn",
+                func: "exp",
+                effects: "base <b>H</b> base",
+                base: {
+                        initial: new Decimal("1ee5"),
+                },
+                bases(){
+                        let b0 = new Decimal("1e11200e6")
+                        let b1 = new Decimal("1e1e7")
+                        let b2 = new Decimal("1e1e4")
+                        return [b0, b1, b2]
+                },
+        },
 }
 
 var EXTRA_FREE_BUYABLE_DATA = {

@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".6.8.1 Cytoplasm",
+	num: ".6.9 Nice",
 	name: "",
 }
 
@@ -219,6 +219,20 @@ PROGRESSION_MILESTONES = {
 	173:()=> player.j.puzzle.finished >= 160              || hasAchievement("ach",255),
 	174:()=> player.j.puzzle.finished >= 170              || hasAchievement("ach",256),
 	175:()=> player.j.puzzle.finished >= 180              || hasAchievement("ach",257),
+	176:()=> totalChallengeComps("h") >= 66              || hasAchievement("ach",261),
+	177:()=> totalChallengeComps("h") >= 78              || hasAchievement("ach",262),
+	178:()=> totalChallengeComps("h") >= 91              || hasAchievement("ach",263),
+	179:()=> totalChallengeComps("h") >= 105             || hasAchievement("ach",264),
+	180:()=> totalChallengeComps("h") >= 120             || hasAchievement("ach",265),
+	181:()=> totalChallengeComps("h") >= 136             || hasAchievement("ach",266),
+	182:()=> totalChallengeComps("h") >= 153             || hasAchievement("ach",267),
+	183:()=> player.j.puzzle.finished >= 250              || hasAchievement("ach",271),
+	184:()=> player.j.puzzle.finished >= 260              || hasAchievement("ach",272),
+	185:()=> player.j.puzzle.finished >= 270              || hasAchievement("ach",273),
+	186:()=> player.j.puzzle.finished >= 280              || hasAchievement("ach",274),
+	187:()=> player.j.puzzle.finished >= 290              || hasAchievement("ach",275),
+	188:()=> player.j.puzzle.finished >= 300              || hasAchievement("ach",276),
+	189:()=> player.j.puzzle.finished >= 310              || hasAchievement("ach",277),
 }
 
 PROGRESSION_MILESTONES_TEXT = {
@@ -397,6 +411,20 @@ PROGRESSION_MILESTONES_TEXT = {
 	173:"160 puzzle completions at once",
 	174:"170 puzzle completions at once",
 	175:"180 puzzle completions at once",
+	176:"66 Heart challenge completion",
+	177:"78 Heart challenge completions",
+	178:"91 Heart challenge completions",
+	179:"105 Heart challenge completion",
+	180:"120 Heart challenge completions",
+	181:"136 Heart challenge completions",
+	182:"153 Heart challenge completion",
+	183:"250 puzzle completions at once",
+	184:"260 puzzle completions at once",
+	185:"270 puzzle completions at once",
+	186:"280 puzzle completions at once",
+	187:"290 puzzle completions at once",
+	188:"300 puzzle completions at once",
+	189:"310 puzzle completions at once",
 }
 
 function progressReachedNum(){
@@ -658,6 +686,12 @@ function getChangeLogText(){
 	am4= "- MASSIVE code optimization for layers being unlocked [160ms/t -> .3ms/t]"
 	am5= "v.6.8.1"
 	am6= "- Fixed a bug with above e300 knowledge"
+	an1= "v.6.9"
+	an2= "- Added a Idea buyable"
+	an3= "- Added two Jigsaw upgrades"
+	an4= "- Added two achievement rows [26 and 27]"
+	an5= "- Possible fixed a bug with scrolling?"
+	an6= "- Made Success Chance and Attempt Speed bulk buying fast for larger numbers"
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
 	let part2 = [b1, b2, b3, b4, b5, "", b6, b7, "", b8, b9, b10, "", b11, b12, ""]
@@ -697,12 +731,13 @@ function getChangeLogText(){
 	let part36= [ak1,ak2,ak3,ak4,ak5,ak6,ak7, "",ak8,ak9,ak10, ""]
 	let part37= [al1,al2,al3, ""]
 	let part38= [am1,am2,am3,am4, "",am5,am6,""]
+	let part39= [an1,an2,an3,an4,an5,an6, ""]
 	// MAKE SURE TO ADD THEM
 
 	let final1 = [part10,  part9,  part8,  part7,  part6,  part5,  part4,  part3,  part2,  part1]
 	let final2 = [part20, part19, part18, part17, part16, part15, part14, part13, part12, part11]
 	let final3 = [part30, part29, part28, part27, part26, part25, part24, part23, part22, part21]
-	let final4 = [part38, part37, part36, part35, part34, part33, part32, part31]
+	let final4 = [part39, part38, part37, part36, part35, part34, part33, part32, part31]
 
 	return final4.concat(final3).concat(final2).concat(final1)
 }
