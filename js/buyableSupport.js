@@ -2124,6 +2124,15 @@ var MAIN_BUYABLE_DATA = {
                                 },
                                 type: "pow",
                         },
+                        4: {
+                                active: function(){
+                                        return true
+                                },
+                                amount: function(){
+                                        return CURRENT_BUYABLE_EFFECTS["i21"]
+                                },
+                                type: "plus",
+                        },
                 },
                 bases(){
                         let b0 = new Decimal("1e9876543")
@@ -2240,6 +2249,11 @@ var MAIN_BUYABLE_DATA = {
                         let b2 = new Decimal("1e1e2")
                         return [b0, b1, b2]
                 },
+                i13: {
+                        active: function(){
+                                return hasUpgrade("j", 45)
+                        },
+                },
         },
         i12: {
                 name: "Ideas",
@@ -2254,11 +2268,21 @@ var MAIN_BUYABLE_DATA = {
                         let b2 = new Decimal("1e1e3")
                         return [b0, b1, b2]
                 },
+                i21: {
+                        active: function(){
+                                return hasUpgrade("j", 45)
+                        },
+                },
+                i13: {
+                        active: function(){
+                                return hasUpgrade("j", 45)
+                        },
+                },
         },
         i13: {
                 name: "Inn",
                 func: "exp",
-                effects: "base <b>H</b> base",
+                effects: "base <b>H</b> gain",
                 base: {
                         initial: new Decimal("1ee5"),
                 },
@@ -2266,6 +2290,25 @@ var MAIN_BUYABLE_DATA = {
                         let b0 = new Decimal("1e11200e6")
                         let b1 = new Decimal("1e1e7")
                         let b2 = new Decimal("1e1e4")
+                        return [b0, b1, b2]
+                },
+                i21: {
+                        active: function(){
+                                return hasUpgrade("j", 45)
+                        },
+                },
+        },
+        i21: {
+                name: "Industrial",
+                func: "lin",
+                effects: "<b>Huge</b> base",
+                base: {
+                        initial: new Decimal("1e5"),
+                },
+                bases(){
+                        let b0 = new Decimal("1e11600e6")
+                        let b1 = new Decimal("1e2e7")
+                        let b2 = new Decimal("1e2e4")
                         return [b0, b1, b2]
                 },
         },
@@ -2564,6 +2607,16 @@ var EXTRA_FREE_BUYABLE_DATA = {
                                 return tmp.h.challenges[11].rewardEffect
                         }
                 }
+        },
+        i13: {
+                1: {
+                        active: function(){
+                                return hasMilestone("k", 11)
+                        },
+                        amount: function(){
+                                return 10 * player.k.milestones.length
+                        },
+                },
         },
 }
 

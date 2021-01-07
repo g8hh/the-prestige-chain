@@ -11166,7 +11166,11 @@ addLayer("i", {
                 }, // hasUpgrade("i", 55)
 
                 /*
-                industrial
+                idea
+                independent
+                improve
+                Impact
+                introduction
                 */
         },
         buyables: {
@@ -11251,6 +11255,33 @@ addLayer("i", {
                         },
                         unlocked(){ 
                                 return hasUpgrade("j", 43) || hasUnlockedPast("k")
+                        },
+                },
+                21: {
+                        title: "Industrial",
+                        display(){
+                                return getBuyableDisplay("i", 21)
+                        },
+                        effect(){
+                                return CURRENT_BUYABLE_EFFECTS["i21"]
+                        },
+                        canAfford(){
+                                return canAffordBuyable("i", 21)
+                        },
+                        total(){
+                                return getBuyableAmount("i", 21).plus(this.extra())
+                        },
+                        extra(){
+                                return calcBuyableExtra("i", 21)
+                        },
+                        buy(){
+                                buyManualBuyable("i", 21)
+                        },
+                        buyMax(maximum){
+                                buyMaximumBuyable("i", 21, maximum)
+                        },
+                        unlocked(){ 
+                                return hasUpgrade("j", 44) || hasUnlockedPast("k")
                         },
                 },
         },
@@ -11426,6 +11457,7 @@ addLayer("j", {
                         if (hasUpgrade("j", 31)) a = Decimal.times(a,a)
                         x = x.plus(a)
                 }
+                if (player.j.puzzle.upgrades.includes(61)) x = x.plus(player.j.puzzle.repeatables[35])
                 return x
         },
         getGainMultPre(){
@@ -11572,7 +11604,7 @@ addLayer("j", {
                         layers.j.clickables[12].onClick(forcemulti = true, nocost = true)
                 }
                 if (hasUpgrade("i", 54)) {
-                        layers.j.clickables[61].onClick()
+                        layers.j.clickables[65].onClick()
                 }
                 if (hasUpgrade("j", 32)) {
                         layers.j.clickables[13].onClick(nocost = true)
@@ -11857,16 +11889,22 @@ addLayer("j", {
                 }, // hasUpgrade("j", 43)
                 44: {
                         title: "Judgment",
-                        description: "Autobuy <b>Japan</b>, <b>Jack</b>, and <b>Junior</b> once per second and add one to <b>K</b> gain exponent [no buy]",
+                        description: "Autobuy <b>Japan</b>, <b>Jack</b>, and <b>Junior</b> once per second and add one to <b>K</b> gain exponent",
                         cost: new Decimal("1e897e3"),
                         unlocked(){
                                 return hasUpgrade("j", 43) || hasUnlockedPast("k")
                         }
                 }, // hasUpgrade("j", 44)
+                45: {
+                        title: "Jokes",
+                        description: "<b>Industrial</b> gives free <b>Inn</b> and <b>Ideas</b> levels and <b>Inn</b> gives free <b>Ideas</b> and <b>Investment</b> levels",
+                        cost: new Decimal("1e912e3"),
+                        unlocked(){
+                                return hasUpgrade("j", 44) || hasUnlockedPast("k")
+                        }
+                }, // hasUpgrade("j", 45)
 
                 /*
-                jokes
-                jonathan
                 jessica
                 jerry
                 johnny
@@ -12636,7 +12674,7 @@ addLayer("j", {
                                 return "<b style='color: #003333'>Japan</b>"
                         },
                         display(){
-                                let a = "Multiply success chance by " + format(tmp.j.clickables[35].base)
+                                let a = "Multiply success chance by " + format(tmp.j.clickables[35].base, 4)
                                 let c = "<br>Currently: *" + format(tmp.j.clickables[35].effect)
                                 let b = "<br><br>Cost: " + formatWhole(tmp.j.clickables[35].cost) + " Exp"
                                 return a + c + b
@@ -12656,6 +12694,7 @@ addLayer("j", {
                                 if (hasUpgrade("j", 35)) ret = ret.plus(.01 * player.k.milestones.length)
                                 if (hasUpgrade("k", 12)) ret = ret.plus(.01 * player.k.upgrades.length)
                                 ret = ret.plus(tmp.h.challenges[22].rewardEffect)
+                                if (player.j.puzzle.upgrades.includes(61)) ret = ret.plus(player.j.puzzle.repeatables[35].times(.005))
                                 return ret
                         },
                         effect(){
@@ -12988,7 +13027,7 @@ addLayer("j", {
                                 data.repeatables[55] = data.repeatables[55].plus(1)
                         },
                 },
-                61: {
+                65: {
                         title(){
                                 return "<b style='color: #003333'>Reset<sup>2</sup></b>"
                         },
@@ -13005,7 +13044,7 @@ addLayer("j", {
                         },
                         style(){
                                 return {
-                                        "background-color": tmp.j.clickables[61].canClick ? "#66CCFF" : "#bf8f8f"
+                                        "background-color": tmp.j.clickables[65].canClick ? "#66CCFF" : "#bf8f8f"
                                 }
                         },
                         onClick(){
@@ -13040,7 +13079,37 @@ addLayer("j", {
                                 data.finished = 0
                                 data.mode = 1
                         },
-                }
+                },
+                61: {
+                        title(){
+                                return "<b style='color: #003333'>Jonathan</b>"
+                        },
+                        display(){
+                                let a = "Each <b>Japan</b> adds .005 to the <b>Japan</b> base and adds one to the <b>J</b> gain exponent"
+                                let b = "<br><br>Cost: " + formatWhole(tmp.j.clickables[61].cost) + " Exp"
+                                return a + b
+                        },
+                        unlocked(){
+                                return hasUpgrade("j", 45) || hasUnlockedPast("k")
+                        },
+                        canClick(){
+                                return player.j.puzzle.exp.gte(tmp.j.clickables[61].cost) && !player.j.puzzle.upgrades.includes(61)
+                        },
+                        cost(){
+                                return new Decimal("2e385")
+                        },
+                        style(){
+                                return {
+                                        "background-color": player.j.puzzle.upgrades.includes(61) ? "#77bf5f" : tmp.j.clickables[61].canClick ? "#66CCFF" : "#bf8f8f"
+                                }
+                        },
+                        onClick(){
+                                if (!tmp.j.clickables[61].canClick) return
+                                let data = player.j.puzzle
+                                data.exp = data.exp.minus(tmp.j.clickables[61].cost)
+                                data.upgrades.push(61)
+                        },
+                },
         },
         bars: {
                 progressionBar: {
@@ -13576,6 +13645,16 @@ addLayer("k", {
                                 return hasUpgrade("k", 22) || hasUnlockedPast("k")
                         }, // hasMilestone("k", 10)
                 },
+                11: {
+                        requirementDescription: "<b>Kelly</b><br>Requires: 1.34e154 Keys",
+                        effectDescription: "Per milestone you get ten <b>Inn</b> levels",
+                        done(){
+                                return player.k.points.max(1).log(2).gte(512)
+                        },
+                        unlocked(){
+                                return hasUpgrade("j", 45) || hasUnlockedPast("k")
+                        }, // hasMilestone("k", 11)
+                },
         },
         upgrades: {
                 rows: 5,
@@ -13638,7 +13717,6 @@ addLayer("k", {
                 }, // hasUpgrade("k", 22)
                 
                 /*
-                Kelly
                 Kept
                 Kentucky
                 */

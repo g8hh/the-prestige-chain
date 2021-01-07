@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".6.9 Nice",
+	num: ".6.10 Locks",
 	name: "",
 }
 
@@ -692,6 +692,11 @@ function getChangeLogText(){
 	an4= "- Added two achievement rows [26 and 27]"
 	an5= "- Possible fixed a bug with scrolling?"
 	an6= "- Made Success Chance and Attempt Speed bulk buying fast for larger numbers"
+	ao1= "v.6.10"
+	ao2= "- Added an Idea buyable"
+	ao3= "- Added a Jigsaw upgrades"
+	ao4= "- Added a Puzzle upgrade"
+	ao5= "- Added a Key milestone"
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
 	let part2 = [b1, b2, b3, b4, b5, "", b6, b7, "", b8, b9, b10, "", b11, b12, ""]
@@ -732,14 +737,16 @@ function getChangeLogText(){
 	let part37= [al1,al2,al3, ""]
 	let part38= [am1,am2,am3,am4, "",am5,am6,""]
 	let part39= [an1,an2,an3,an4,an5,an6, ""]
+	let part40= [ao1,ao2,ao3,ao4,ao5, ""]
 	// MAKE SURE TO ADD THEM
 
 	let final1 = [part10,  part9,  part8,  part7,  part6,  part5,  part4,  part3,  part2,  part1]
 	let final2 = [part20, part19, part18, part17, part16, part15, part14, part13, part12, part11]
 	let final3 = [part30, part29, part28, part27, part26, part25, part24, part23, part22, part21]
-	let final4 = [part39, part38, part37, part36, part35, part34, part33, part32, part31]
+	let final4 = [part40, part39, part38, part37, part36, part35, part34, part33, part32, part31]
+	let final5 = []
 
-	return final4.concat(final3).concat(final2).concat(final1)
+	return final5.concat(final4).concat(final3).concat(final2).concat(final1)
 }
 
 var controlDown = false
