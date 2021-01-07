@@ -13432,7 +13432,64 @@ addLayer("k", {
                         times: 0,
                         autotimes: 0,
                         autodevtime: 0,
-                }
+                        lock: {
+                                mines: { //extra
+                                        11: new Decimal(0),
+                                        12: new Decimal(0),
+                                        13: new Decimal(0),
+                                        14: new Decimal(0),
+                                        15: new Decimal(0),
+                                        21: new Decimal(0),
+                                        22: new Decimal(0),
+                                        23: new Decimal(0),
+                                        24: new Decimal(0),
+                                        25: new Decimal(0),
+                                },
+                                repeatables: {
+                                        11: new Decimal(0),
+                                        12: new Decimal(0),
+                                        13: new Decimal(0),
+                                        14: new Decimal(0),
+                                        15: new Decimal(0),
+                                        21: new Decimal(0),
+                                        22: new Decimal(0),
+                                        23: new Decimal(0),
+                                        24: new Decimal(0),
+                                        25: new Decimal(0),
+                                        31: new Decimal(0),
+                                        32: new Decimal(0),
+                                        33: new Decimal(0),
+                                        34: new Decimal(0),
+                                        35: new Decimal(0),
+                                        41: new Decimal(0),
+                                        42: new Decimal(0),
+                                        43: new Decimal(0),
+                                        44: new Decimal(0),
+                                        45: new Decimal(0),
+                                        51: new Decimal(0),
+                                        52: new Decimal(0),
+                                        53: new Decimal(0),
+                                        54: new Decimal(0),
+                                        55: new Decimal(0),
+                                        61: new Decimal(0),
+                                        62: new Decimal(0),
+                                        63: new Decimal(0),
+                                        64: new Decimal(0),
+                                        65: new Decimal(0),
+                                        71: new Decimal(0),
+                                        72: new Decimal(0),
+                                        73: new Decimal(0),
+                                        74: new Decimal(0),
+                                        75: new Decimal(0),
+                                        81: new Decimal(0),
+                                        82: new Decimal(0),
+                                        83: new Decimal(0),
+                                        84: new Decimal(0),
+                                        85: new Decimal(0),
+                                },
+                                autotime: 0,
+                        },
+                } //no comma here
         },
         color: "#3333CC",
         branches: ["j"],
@@ -13721,6 +13778,70 @@ addLayer("k", {
                 Kentucky
                 */
         },
+        clickables: {
+                rows: 5,
+                cols: 5,
+                11: {
+                        title(){
+                                return "<h3 style='color: #C03000'>Iron Mine</h3>"
+                        },
+                        display(){
+                                if (player.tab != "k") return ""
+                                let a 
+                                let b 
+                                let c 
+                                if (shiftDown) {
+                                        let extra = tmp.k.clickables[11].cost.lt("1e900") ? " <b>Keys</b>" : ""
+                                        a = "<h3 style='color: #AC4600'>Cost</h3>: " + formatWhole(tmp.k.clickables[11].cost) + extra + "<br>"
+                                        b = "<h3 style='color: #FF33CC; font-size: 70%'>Mine Production/mine/s</h3>:<br>" + format(tmp.k.clickables[11].mineProductionPer, 4) + "<br>"
+                                        c = "<h3 style='color: #FF33CC; font-size: 70%'>Metal Production/mine/s</h3>:<br>" + format(tmp.k.clickables[11].metalProductionPer, 4) + "<br>"
+                                } else {
+                                        a = "<h3 style='color: #AC4600'>Mines</h3>: " + formatWhole(player.k.lock.repeatables[11]) + "+" + formatWhole(player.k.lock.mines[11]) + "<br>"
+                                        b = "<h3 style='color: #FF33CC; font-size: 80%'>Mine Production/s</h3>:<br>" + format(tmp.k.clickables[11].mineProductionPerSecond, 4) + "<br>"
+                                        c = "<h3 style='color: #FF33CC; font-size: 80%'>Metal Production/s</h3>:<br>" + format(tmp.k.clickables[11].metalProductionPerSecond, 4) + "<br>"
+                                }
+                                return a + b + c
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        metalProductionPer(){
+                                return new Decimal(1)
+                        },
+                        metalProductionPerSecond(){
+                                return tmp.k.clickables[11].metalProductionPer.times(tmp.k.clickables[11].total)
+                        },
+                        mineProductionPer(){
+                                return new Decimal(1)
+                        },
+                        total(){
+                                let data = player.k.lock
+                                return data.mines[11].plus(data.repeatables[11])
+                        },
+                        bases(){
+                                return [new Decimal("1e171"), new Decimal(10)]
+                        },
+                        cost(){
+                                let bases = tmp.k.clickables[11].bases
+                                let a = bases[0]
+                                let b = bases[1]
+                                return a.times(Decimal.pow(b, player.k.lock.repeatables[11].pow(2)))
+                        },
+                        mineProductionPerSecond(){
+                                return tmp.k.clickables[11].mineProductionPer.times(tmp.k.clickables[11].total)
+                        },
+                        canClick(){
+                                if (player.tab != "k") return false
+                                return player.k.points.gte(this.cost())
+                        },
+                        onClick(nocost = false){
+                                if (!this.canClick()) return 
+                                let cost = this.cost()
+                                if (!nocost) player.k.points = player.k.points.minus(cost)
+                                player.k.lock.repeatables[11] = player.k.lock.repeatables[11].plus(1)
+                        },
+                },
+        },
         tabFormat: {
                 "Upgrades": {
                         content: [
@@ -13769,6 +13890,40 @@ addLayer("k", {
                         ],
                         unlocked(){
                                 return true
+                        },
+                },
+                "Lock": {
+                        content: [
+                                "main-display",
+                                ["clickables", [1,2]], //mines
+                                "blank", 
+                                /* text, */
+                                ["clickables", [3,5]], //locks
+                                ["clickables", [6,8]], //keys
+                        ],
+                        unlocked(){
+                                return player.j.puzzle.upgrades.includes(61) || hasUnlockedPast("k")
+                        },
+                },
+                "Details": {
+                        content: [
+                                ["display-text", function(){
+                                        let a = `tbd
+                                        there are 10 mines which produce previous mines<br>
+                                        Each mine also produced its own metal:<br>
+                                        Iron, Silver, Gold, Bronze, Copper, <br>
+                                        Tin, Titanium, Tungsten, Alumnium, Osmium<br>
+                                        Each metal has its own lock + key that it makes<br>
+                                        Each time you open a lock you get a boost to things idk lol<br>
+                                        <br>
+                                        the 3rd row of keys/locks is tbd<br> 
+                                        Please dont click things ty<br>
+                                        `
+                                        return a
+                                }],
+                        ],
+                        unlocked(){
+                                return player.j.puzzle.upgrades.includes(61) || hasUnlockedPast("k")
                         },
                 },
         },
