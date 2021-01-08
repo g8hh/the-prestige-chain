@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".6.12 Locks",
+	num: ".6.13 Locks",
 	name: "",
 }
 
@@ -41,6 +41,7 @@ function canGenPoints(){
 
 // You can add non-layer related variables that should to into "player" and be saved here, along with default values
 function addedPlayerData() { return {
+	undulating: true,
 }}
 
 PROGRESSION_MILESTONES = {
@@ -448,7 +449,7 @@ function nextMilestone(){
 
 // Display extra things at the top of the page
 var displayThings = [
-	"Endgame: 500 Iron",
+	"Endgame: One Gold Mine",
 	function(){
 		return player.autosave ? "" : "Warning: autosave is off"
 	}
@@ -704,6 +705,15 @@ function getChangeLogText(){
 	ap2= "- Started locks"
 	aq1= "v.6.12"
 	aq2= "- Continued locks"
+	ar1= "v.6.13"
+	ar2= "- Continued locks"
+	ar3= "- Fixed a bug with how bulk success chance was calculated [speed from 50ms to 3ms at endgame]"
+	ar4= "- Fixes some issues with Success Chance being unpurchaseable at low levels of knowldege"
+	ar5= "- Game still running at 70ms on my computer, ideal is <50ms"
+	ar6= "- Added an undulating color feature [added a way to disable it in info]"
+	ar7= "- Applied an undulating color feature to Locks [nothing before yet, or probably ever]"
+	ar8= "- Added a Save hotkey [control + s]"
+	ar9= "- Added two locks"
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
 	let part2 = [b1, b2, b3, b4, b5, "", b6, b7, "", b8, b9, b10, "", b11, b12, ""]
@@ -747,13 +757,14 @@ function getChangeLogText(){
 	let part40= [ao1,ao2,ao3,ao4,ao5, ""]
 	let part41= [ap1,ap2, ""]
 	let part42= [aq1,aq2, ""]
+	let part43= [ar1,ar2,ar3,ar4,ar5,ar6,ar7,ar8,ar9, ""]
 	// MAKE SURE TO ADD THEM
 
 	let final1 = [part10,  part9,  part8,  part7,  part6,  part5,  part4,  part3,  part2,  part1]
 	let final2 = [part20, part19, part18, part17, part16, part15, part14, part13, part12, part11]
 	let final3 = [part30, part29, part28, part27, part26, part25, part24, part23, part22, part21]
 	let final4 = [part40, part39, part38, part37, part36, part35, part34, part33, part32, part31]
-	let final5 = [part42, part41]
+	let final5 = [part43, part42, part41]
 
 	return final5.concat(final4).concat(final3).concat(final2).concat(final1)
 }

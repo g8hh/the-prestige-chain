@@ -98,9 +98,10 @@ function formatChances(v) {
 }
 
 function formatTime(s) {
-	if (s<60) return format(s)+"s"
-	else if (s<3600) return formatWhole(Math.floor(s/60))+"m "+format(s%60)+"s"
-	else return formatWhole(Math.floor(s/3600))+"h "+formatWhole(Math.floor(s/60)%60)+"m "+format(s%60)+"s"
+	if (s < 60) return format(s) + "s"
+	else if (s < 3600) return formatWhole(Math.floor(s/60)) + "m " + format(s%60) + "s"
+	else if (s < 86400) return formatWhole(Math.floor(s/3600)) + "h " + formatWhole(Math.floor(s/60)%60)+"m "+format(s%60)+"s"
+	else return formatWhole(Math.floor(s/86400)) + "d " + formatWhole(Math.floor(s/3600)%24)+"h "+formatWhole(Math.floor(s/60)%60)+"m "+format(s%60)+"s"
 }
 
 function toPlaces(x, precision, maxAccepted) {
@@ -712,7 +713,8 @@ function addTime(diff, layer) {
 
 function getKeyDesc1(key){
 	if (key == undefined) console.log(key)
-	return key.description
+	let s = key.description
+	return s
 }
 
 function getKeyDesc2(key){
@@ -748,7 +750,7 @@ document.onkeydown = function(e) {
 	if (gameEnded&&!player.keepGoing) return;
 	if (onFocused) return
 	let key = e.key
-	if (controlDown) key = "ctrl+" + key
+	if (controlDown) key = "Control+" + key.toUpperCase()
 	if (shiftDown) key = "shift+" + key
 	if (e.ctrlKey && hotkeys[key]) e.preventDefault()
 	if (hotkeys[key] != undefined){
