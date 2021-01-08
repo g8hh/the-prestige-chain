@@ -12066,6 +12066,7 @@ addLayer("j", {
                         if (hasUpgrade("k", 12)) ret = ret.times(Decimal.pow(10, player.k.upgrades.length))
                         if (hasUpgrade("k", 13)) ret = ret.times(player.j.puzzle.bestExp.max(1).pow(.1))
                         if (hasUpgrade("k", 21) && hasMilestone("k", 7)) ret = ret.times(Decimal.pow(2, totalChallengeComps("h")))
+                        ret = ret.times(tmp.k.clickables[12].effect)
                         return ret
                 },
                 getBankedExpGainUF(){
@@ -13445,6 +13446,18 @@ addLayer("k", {
                                         24: new Decimal(0),
                                         25: new Decimal(0),
                                 },
+                                resources: { //extra
+                                        11: new Decimal(0),
+                                        12: new Decimal(0),
+                                        13: new Decimal(0),
+                                        14: new Decimal(0),
+                                        15: new Decimal(0),
+                                        21: new Decimal(0),
+                                        22: new Decimal(0),
+                                        23: new Decimal(0),
+                                        24: new Decimal(0),
+                                        25: new Decimal(0),
+                                },
                                 repeatables: {
                                         11: new Decimal(0),
                                         12: new Decimal(0),
@@ -13527,6 +13540,7 @@ addLayer("k", {
                 if (hasMilestone("k", 5)) x = x.times(Decimal.pow(2, player.k.milestones.length))
                 if (hasUpgrade("k", 11)) x = x.times(tmp.j.clickables[35].effect)
                 if (hasUpgrade("j", 43)) x = x.times(tmp.h.challenges[21].rewardEffect)
+                x = x.times(tmp.k.clickables[11].effect)
 
                 return x
         },
@@ -13573,6 +13587,23 @@ addLayer("k", {
 
                 data.time += diff
                 data.autodevtime += diff
+
+                data2 = data.lock
+                data3 = data2.mines
+                data4 = data2.resources
+
+                let minesOrder = [11,12,13,14,15]
+                for (let i = 0; i < minesOrder.length - 1; i++){
+                        id1 = minesOrder[i]
+                        id2 = minesOrder[i + 1]
+                        let a = tmp.k.clickables[id2].mineProductionPerSecond.times(diff)
+                        let b = tmp.k.clickables[id1].metalProductionPerSecond.times(diff)
+                        data3[id1] = data3[id1].plus(a)
+                        data4[id1] = data4[id1].plus(b)
+                }
+                let last = minesOrder[minesOrder.length - 1]
+                let lastMetalProd = tmp.k.clickables[last].metalProductionPerSecond.times(diff)
+                data4[last] = data4[last].plus(lastMetalProd)
                 
                 if (data.autodevtime < 1) return
                 data.autodevtime += -1
@@ -13783,24 +13814,29 @@ addLayer("k", {
                 cols: 5,
                 11: {
                         title(){
-                                return "<h3 style='color: #C03000'>Iron Mine</h3>"
+                                return "<h3 style='color: #C03000'>Iron<br>Mine</h3>"
                         },
                         display(){
                                 if (player.tab != "k") return ""
                                 let a 
                                 let b 
                                 let c 
+                                let id = 11
                                 if (shiftDown) {
-                                        let extra = tmp.k.clickables[11].cost.lt("1e900") ? " <b>Keys</b>" : ""
-                                        a = "<h3 style='color: #AC4600'>Cost</h3>: " + formatWhole(tmp.k.clickables[11].cost) + extra + "<br>"
-                                        b = "<h3 style='color: #FF33CC; font-size: 70%'>Mine Production/mine/s</h3>:<br>" + format(tmp.k.clickables[11].mineProductionPer, 4) + "<br>"
-                                        c = "<h3 style='color: #FF33CC; font-size: 70%'>Metal Production/mine/s</h3>:<br>" + format(tmp.k.clickables[11].metalProductionPer, 4) + "<br>"
+                                        let extra = tmp.k.clickables[id].cost.lt("1e900") ? " <b>Keys</b>" : ""
+                                        a = "<h3 style='color: #AC4600'>Cost</h3>: " + formatWhole(tmp.k.clickables[id].cost) + extra + "<br>"
+                                        //b = "<h3 style='color: #FF33CC; font-size: 70%'>Mine Production/mine/s</h3>:<br>" + format(tmp.k.clickables[id].mineProductionPer, 4) + "<br>"
+                                        c = "<h3 style='color: #FF33CC; font-size: 70%'>Metal Production/mine/s</h3>:<br>" + format(tmp.k.clickables[id].metalProductionPer, 4) + "<br>"
+                                } else if (controlDown){
+                                        a = "<h3 style='color: #AC4600'>Iron</h3>: " + format(player.k.lock.resources[id]) + "<br>"
+                                        //b = ""
+                                        c = ""
                                 } else {
-                                        a = "<h3 style='color: #AC4600'>Mines</h3>: " + formatWhole(player.k.lock.repeatables[11]) + "+" + formatWhole(player.k.lock.mines[11]) + "<br>"
-                                        b = "<h3 style='color: #FF33CC; font-size: 80%'>Mine Production/s</h3>:<br>" + format(tmp.k.clickables[11].mineProductionPerSecond, 4) + "<br>"
-                                        c = "<h3 style='color: #FF33CC; font-size: 80%'>Metal Production/s</h3>:<br>" + format(tmp.k.clickables[11].metalProductionPerSecond, 4) + "<br>"
+                                        a = "<h3 style='color: #AC4600'>Mines</h3>: " + formatWhole(player.k.lock.repeatables[id]) + "+" + formatWhole(player.k.lock.mines[id]) + "<br>"
+                                        //b = "<h3 style='color: #FF33CC; font-size: 80%'>Mine Production/s</h3>:<br>" + format(tmp.k.clickables[id].mineProductionPerSecond, 4) + "<br>"
+                                        c = "<h3 style='color: #FF33CC; font-size: 80%'>Metal Production/s</h3>:<br>" + format(tmp.k.clickables[id].metalProductionPerSecond, 4) + "<br>"
                                 }
-                                return a + b + c
+                                return a + /*b +*/ c
                         },
                         unlocked(){
                                 return true
@@ -13827,6 +13863,15 @@ addLayer("k", {
                                 let b = bases[1]
                                 return a.times(Decimal.pow(b, player.k.lock.repeatables[11].pow(2)))
                         },
+                        effect(){
+                                let amt = player.k.lock.resources[11]
+                                let ret = amt.plus(1).sqrt()
+                                return ret
+                        },
+                        effectDescription(){
+                                let eff = tmp.k.clickables[11].effect 
+                                return "*" + format(eff) + " to Keys"
+                        },
                         mineProductionPerSecond(){
                                 return tmp.k.clickables[11].mineProductionPer.times(tmp.k.clickables[11].total)
                         },
@@ -13839,6 +13884,672 @@ addLayer("k", {
                                 let cost = this.cost()
                                 if (!nocost) player.k.points = player.k.points.minus(cost)
                                 player.k.lock.repeatables[11] = player.k.lock.repeatables[11].plus(1)
+                        },
+                },
+                12: {
+                        title(){
+                                return "<h3 style='color: #C03000'>Silver<br>Mine</h3>"
+                        },
+                        display(){
+                                if (player.tab != "k") return ""
+                                let a 
+                                let b 
+                                let c 
+                                let id = 12
+                                if (shiftDown) {
+                                        let extra = tmp.k.clickables[id].cost.lt("1e900") ? " <b>Keys</b>" : ""
+                                        a = "<h3 style='color: #AC4600'>Cost</h3>: " + formatWhole(tmp.k.clickables[id].cost) + extra + "<br>"
+                                        b = "<h3 style='color: #FF33CC; font-size: 70%'>Mine Production/mine/s</h3>:<br>" + format(tmp.k.clickables[id].mineProductionPer, 4) + "<br>"
+                                        c = "<h3 style='color: #FF33CC; font-size: 70%'>Metal Production/mine/s</h3>:<br>" + format(tmp.k.clickables[id].metalProductionPer, 4) + "<br>"
+                                } else if (controlDown){
+                                        a = "<h3 style='color: #AC4600'>Iron</h3>: " + format(player.k.lock.resources[id]) + "<br>"
+                                        b = ""
+                                        c = ""
+                                } else {
+                                        a = "<h3 style='color: #AC4600'>Mines</h3>: " + formatWhole(player.k.lock.repeatables[id]) + "+" + formatWhole(player.k.lock.mines[id]) + "<br>"
+                                        b = "<h3 style='color: #FF33CC; font-size: 80%'>Mine Production/s</h3>:<br>" + format(tmp.k.clickables[id].mineProductionPerSecond, 4) + "<br>"
+                                        c = "<h3 style='color: #FF33CC; font-size: 80%'>Metal Production/s</h3>:<br>" + format(tmp.k.clickables[id].metalProductionPerSecond, 4) + "<br>"
+                                }
+                                return a + b + c
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        metalProductionPer(){
+                                return new Decimal(1)
+                        },
+                        metalProductionPerSecond(){
+                                return tmp.k.clickables[12].metalProductionPer.times(tmp.k.clickables[12].total)
+                        },
+                        mineProductionPer(){
+                                return new Decimal(.1)
+                        },
+                        total(){
+                                let data = player.k.lock
+                                return data.mines[12].plus(data.repeatables[12])
+                        },
+                        bases(){
+                                return [new Decimal("1e172"), new Decimal(100)]
+                        },
+                        cost(){
+                                let bases = tmp.k.clickables[12].bases
+                                let a = bases[0]
+                                let b = bases[1]
+                                return a.times(Decimal.pow(b, player.k.lock.repeatables[12].pow(2)))
+                        },
+                        effect(){
+                                let amt = player.k.lock.resources[12]
+                                let ret = amt.plus(10).log10().pow(5)
+                                return ret
+                        },
+                        effectDescription(){
+                                let eff = tmp.k.clickables[12].effect 
+                                return "*" + format(eff) + " to Knowledge"
+                        },
+                        mineProductionPerSecond(){
+                                return tmp.k.clickables[12].mineProductionPer.times(tmp.k.clickables[12].total)
+                        },
+                        canClick(){
+                                if (player.tab != "k") return false
+                                return player.k.points.gte(this.cost())
+                        },
+                        onClick(nocost = false){
+                                if (!this.canClick()) return 
+                                let cost = this.cost()
+                                if (!nocost) player.k.points = player.k.points.minus(cost)
+                                player.k.lock.repeatables[12] = player.k.lock.repeatables[12].plus(1)
+                        },
+                },
+                13: {
+                        title(){
+                                return "<h3 style='color: #C03000'>Gold<br>Mine</h3>"
+                        },
+                        display(){
+                                if (player.tab != "k") return ""
+                                let a 
+                                let b 
+                                let c 
+                                let id = 13
+                                if (shiftDown) {
+                                        let extra = tmp.k.clickables[id].cost.lt("1e900") ? " <b>Keys</b>" : ""
+                                        a = "<h3 style='color: #AC4600'>Cost</h3>: " + formatWhole(tmp.k.clickables[id].cost) + extra + "<br>"
+                                        b = "<h3 style='color: #FF33CC; font-size: 70%'>Mine Production/mine/s</h3>:<br>" + format(tmp.k.clickables[id].mineProductionPer, 4) + "<br>"
+                                        c = "<h3 style='color: #FF33CC; font-size: 70%'>Metal Production/mine/s</h3>:<br>" + format(tmp.k.clickables[id].metalProductionPer, 4) + "<br>"
+                                } else if (controlDown){
+                                        a = "<h3 style='color: #AC4600'>Iron</h3>: " + format(player.k.lock.resources[id]) + "<br>"
+                                        b = ""
+                                        c = ""
+                                } else {
+                                        a = "<h3 style='color: #AC4600'>Mines</h3>: " + formatWhole(player.k.lock.repeatables[id]) + "+" + formatWhole(player.k.lock.mines[id]) + "<br>"
+                                        b = "<h3 style='color: #FF33CC; font-size: 80%'>Mine Production/s</h3>:<br>" + format(tmp.k.clickables[id].mineProductionPerSecond, 4) + "<br>"
+                                        c = "<h3 style='color: #FF33CC; font-size: 80%'>Metal Production/s</h3>:<br>" + format(tmp.k.clickables[id].metalProductionPerSecond, 4) + "<br>"
+                                }
+                                return a + b + c
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        metalProductionPer(){
+                                return new Decimal(1)
+                        },
+                        metalProductionPerSecond(){
+                                return tmp.k.clickables[13].metalProductionPer.times(tmp.k.clickables[13].total)
+                        },
+                        mineProductionPer(){
+                                return new Decimal(1)
+                        },
+                        total(){
+                                let data = player.k.lock
+                                return data.mines[13].plus(data.repeatables[13])
+                        },
+                        bases(){
+                                return [new Decimal("1e180"), new Decimal(1000)]
+                        },
+                        cost(){
+                                let bases = tmp.k.clickables[13].bases
+                                let a = bases[0]
+                                let b = bases[1]
+                                return a.times(Decimal.pow(b, player.k.lock.repeatables[13].pow(2)))
+                        },
+                        effect(){
+                                let amt = player.k.lock.resources[13]
+                                let ret = new Decimal(1)
+                                return ret
+                        },
+                        effectDescription(){
+                                let eff = tmp.k.clickables[13].effect 
+                                return "*" + format(eff) + " to idk"
+                        },
+                        mineProductionPerSecond(){
+                                return tmp.k.clickables[13].mineProductionPer.times(tmp.k.clickables[13].total)
+                        },
+                        canClick(){
+                                if (player.tab != "k") return false
+                                return player.k.points.gte(this.cost())
+                        },
+                        onClick(nocost = false){
+                                if (!this.canClick()) return 
+                                let cost = this.cost()
+                                if (!nocost) player.k.points = player.k.points.minus(cost)
+                                player.k.lock.repeatables[13] = player.k.lock.repeatables[13].plus(1)
+                        },
+                },
+                14: {
+                        title(){
+                                return "<h3 style='color: #C03000'>Bronze<br>Mine</h3>"
+                        },
+                        display(){
+                                if (player.tab != "k") return ""
+                                let a 
+                                let b 
+                                let c 
+                                let id = 14
+                                if (shiftDown) {
+                                        let extra = tmp.k.clickables[id].cost.lt("1e900") ? " <b>Keys</b>" : ""
+                                        a = "<h3 style='color: #AC4600'>Cost</h3>: " + formatWhole(tmp.k.clickables[id].cost) + extra + "<br>"
+                                        b = "<h3 style='color: #FF33CC; font-size: 70%'>Mine Production/mine/s</h3>:<br>" + format(tmp.k.clickables[id].mineProductionPer, 4) + "<br>"
+                                        c = "<h3 style='color: #FF33CC; font-size: 70%'>Metal Production/mine/s</h3>:<br>" + format(tmp.k.clickables[id].metalProductionPer, 4) + "<br>"
+                                } else if (controlDown){
+                                        a = "<h3 style='color: #AC4600'>Iron</h3>: " + format(player.k.lock.resources[id]) + "<br>"
+                                        b = ""
+                                        c = ""
+                                } else {
+                                        a = "<h3 style='color: #AC4600'>Mines</h3>: " + formatWhole(player.k.lock.repeatables[id]) + "+" + formatWhole(player.k.lock.mines[id]) + "<br>"
+                                        b = "<h3 style='color: #FF33CC; font-size: 80%'>Mine Production/s</h3>:<br>" + format(tmp.k.clickables[id].mineProductionPerSecond, 4) + "<br>"
+                                        c = "<h3 style='color: #FF33CC; font-size: 80%'>Metal Production/s</h3>:<br>" + format(tmp.k.clickables[id].metalProductionPerSecond, 4) + "<br>"
+                                }
+                                return a + b + c
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        metalProductionPer(){
+                                return new Decimal(1)
+                        },
+                        metalProductionPerSecond(){
+                                return tmp.k.clickables[14].metalProductionPer.times(tmp.k.clickables[14].total)
+                        },
+                        mineProductionPer(){
+                                return new Decimal(1)
+                        },
+                        total(){
+                                let data = player.k.lock
+                                return data.mines[14].plus(data.repeatables[14])
+                        },
+                        bases(){
+                                return [new Decimal("1e190"), new Decimal("1e5")]
+                        },
+                        cost(){
+                                let bases = tmp.k.clickables[14].bases
+                                let a = bases[0]
+                                let b = bases[1]
+                                return a.times(Decimal.pow(b, player.k.lock.repeatables[14].pow(2)))
+                        },
+                        effect(){
+                                let amt = player.k.lock.resources[14]
+                                let ret = new Decimal(1)
+                                return ret
+                        },
+                        effectDescription(){
+                                let eff = tmp.k.clickables[14].effect 
+                                return "*" + format(eff) + " to idk"
+                        },
+                        mineProductionPerSecond(){
+                                return tmp.k.clickables[14].mineProductionPer.times(tmp.k.clickables[14].total)
+                        },
+                        canClick(){
+                                if (player.tab != "k") return false
+                                return player.k.points.gte(this.cost())
+                        },
+                        onClick(nocost = false){
+                                if (!this.canClick()) return 
+                                let cost = this.cost()
+                                if (!nocost) player.k.points = player.k.points.minus(cost)
+                                player.k.lock.repeatables[14] = player.k.lock.repeatables[14].plus(1)
+                        },
+                },
+                15: {
+                        title(){
+                                return "<h3 style='color: #C03000'>Copper<br>Mine</h3>"
+                        },
+                        display(){
+                                if (player.tab != "k") return ""
+                                let a 
+                                let b 
+                                let c 
+                                let id = 15
+                                if (shiftDown) {
+                                        let extra = tmp.k.clickables[id].cost.lt("1e900") ? " <b>Keys</b>" : ""
+                                        a = "<h3 style='color: #AC4600'>Cost</h3>: " + formatWhole(tmp.k.clickables[id].cost) + extra + "<br>"
+                                        b = "<h3 style='color: #FF33CC; font-size: 70%'>Mine Production/mine/s</h3>:<br>" + format(tmp.k.clickables[id].mineProductionPer, 4) + "<br>"
+                                        c = "<h3 style='color: #FF33CC; font-size: 70%'>Metal Production/mine/s</h3>:<br>" + format(tmp.k.clickables[id].metalProductionPer, 4) + "<br>"
+                                } else if (controlDown){
+                                        a = "<h3 style='color: #AC4600'>Iron</h3>: " + format(player.k.lock.resources[id]) + "<br>"
+                                        b = ""
+                                        c = ""
+                                } else {
+                                        a = "<h3 style='color: #AC4600'>Mines</h3>: " + formatWhole(player.k.lock.repeatables[id]) + "+" + formatWhole(player.k.lock.mines[id]) + "<br>"
+                                        b = "<h3 style='color: #FF33CC; font-size: 80%'>Mine Production/s</h3>:<br>" + format(tmp.k.clickables[id].mineProductionPerSecond, 4) + "<br>"
+                                        c = "<h3 style='color: #FF33CC; font-size: 80%'>Metal Production/s</h3>:<br>" + format(tmp.k.clickables[id].metalProductionPerSecond, 4) + "<br>"
+                                }
+                                return a + b + c
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        metalProductionPer(){
+                                return new Decimal(1)
+                        },
+                        metalProductionPerSecond(){
+                                return tmp.k.clickables[15].metalProductionPer.times(tmp.k.clickables[15].total)
+                        },
+                        mineProductionPer(){
+                                return new Decimal(1)
+                        },
+                        total(){
+                                let data = player.k.lock
+                                return data.mines[15].plus(data.repeatables[15])
+                        },
+                        bases(){
+                                return [new Decimal("1e210"), new Decimal("1e8")]
+                        },
+                        cost(){
+                                let bases = tmp.k.clickables[15].bases
+                                let a = bases[0]
+                                let b = bases[1]
+                                return a.times(Decimal.pow(b, player.k.lock.repeatables[15].pow(2)))
+                        },
+                        effect(){
+                                let amt = player.k.lock.resources[15]
+                                let ret = new Decimal(1)
+                                return ret
+                        },
+                        effectDescription(){
+                                let eff = tmp.k.clickables[15].effect 
+                                return "*" + format(eff) + " to idk"
+                        },
+                        mineProductionPerSecond(){
+                                return tmp.k.clickables[14].mineProductionPer.times(tmp.k.clickables[15].total)
+                        },
+                        canClick(){
+                                if (player.tab != "k") return false
+                                return player.k.points.gte(this.cost())
+                        },
+                        onClick(nocost = false){
+                                if (!this.canClick()) return 
+                                let cost = this.cost()
+                                if (!nocost) player.k.points = player.k.points.minus(cost)
+                                player.k.lock.repeatables[15] = player.k.lock.repeatables[15].plus(1)
+                        },
+                },
+                21: {
+                        title(){
+                                return "<h3 style='color: #C03000'>Tin<br>Mine</h3>"
+                        },
+                        display(){
+                                if (player.tab != "k") return ""
+                                let a 
+                                let b 
+                                let c 
+                                let id = 21
+                                if (shiftDown) {
+                                        let extra = tmp.k.clickables[id].cost.lt("1e900") ? " <b>Keys</b>" : ""
+                                        a = "<h3 style='color: #AC4600'>Cost</h3>: " + formatWhole(tmp.k.clickables[id].cost) + extra + "<br>"
+                                        b = "<h3 style='color: #FF33CC; font-size: 70%'>Mine Production/mine/s</h3>:<br>" + format(tmp.k.clickables[id].mineProductionPer, 4) + "<br>"
+                                        c = "<h3 style='color: #FF33CC; font-size: 70%'>Metal Production/mine/s</h3>:<br>" + format(tmp.k.clickables[id].metalProductionPer, 4) + "<br>"
+                                } else if (controlDown){
+                                        a = "<h3 style='color: #AC4600'>Iron</h3>: " + format(player.k.lock.resources[id]) + "<br>"
+                                        b = ""
+                                        c = ""
+                                } else {
+                                        a = "<h3 style='color: #AC4600'>Mines</h3>: " + formatWhole(player.k.lock.repeatables[id]) + "+" + formatWhole(player.k.lock.mines[id]) + "<br>"
+                                        b = "<h3 style='color: #FF33CC; font-size: 80%'>Mine Production/s</h3>:<br>" + format(tmp.k.clickables[id].mineProductionPerSecond, 4) + "<br>"
+                                        c = "<h3 style='color: #FF33CC; font-size: 80%'>Metal Production/s</h3>:<br>" + format(tmp.k.clickables[id].metalProductionPerSecond, 4) + "<br>"
+                                }
+                                return a + b + c
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        metalProductionPer(){
+                                return new Decimal(1)
+                        },
+                        metalProductionPerSecond(){
+                                return tmp.k.clickables[21].metalProductionPer.times(tmp.k.clickables[21].total)
+                        },
+                        mineProductionPer(){
+                                return new Decimal(1)
+                        },
+                        total(){
+                                let data = player.k.lock
+                                return data.mines[21].plus(data.repeatables[21])
+                        },
+                        bases(){
+                                return [new Decimal("1e250"), new Decimal("1e13")]
+                        },
+                        cost(){
+                                let bases = tmp.k.clickables[21].bases
+                                let a = bases[0]
+                                let b = bases[1]
+                                return a.times(Decimal.pow(b, player.k.lock.repeatables[21].pow(2)))
+                        },
+                        effect(){
+                                let amt = player.k.lock.resources[21]
+                                let ret = new Decimal(1)
+                                return ret
+                        },
+                        effectDescription(){
+                                let eff = tmp.k.clickables[21].effect 
+                                return "*" + format(eff) + " to idk"
+                        },
+                        mineProductionPerSecond(){
+                                return tmp.k.clickables[21].mineProductionPer.times(tmp.k.clickables[21].total)
+                        },
+                        canClick(){
+                                if (player.tab != "k") return false
+                                return player.k.points.gte(this.cost())
+                        },
+                        onClick(nocost = false){
+                                if (!this.canClick()) return 
+                                let cost = this.cost()
+                                if (!nocost) player.k.points = player.k.points.minus(cost)
+                                player.k.lock.repeatables[21] = player.k.lock.repeatables[21].plus(1)
+                        },
+                },
+                22: {
+                        title(){
+                                return "<h3 style='color: #C03000'>Titanium<br>Mine</h3>"
+                        },
+                        display(){
+                                if (player.tab != "k") return ""
+                                let a 
+                                let b 
+                                let c 
+                                let id = 22
+                                if (shiftDown) {
+                                        let extra = tmp.k.clickables[id].cost.lt("1e900") ? " <b>Keys</b>" : ""
+                                        a = "<h3 style='color: #AC4600'>Cost</h3>: " + formatWhole(tmp.k.clickables[id].cost) + extra + "<br>"
+                                        b = "<h3 style='color: #FF33CC; font-size: 70%'>Mine Production/mine/s</h3>:<br>" + format(tmp.k.clickables[id].mineProductionPer, 4) + "<br>"
+                                        c = "<h3 style='color: #FF33CC; font-size: 70%'>Metal Production/mine/s</h3>:<br>" + format(tmp.k.clickables[id].metalProductionPer, 4) + "<br>"
+                                } else if (controlDown){
+                                        a = "<h3 style='color: #AC4600'>Iron</h3>: " + format(player.k.lock.resources[id]) + "<br>"
+                                        b = ""
+                                        c = ""
+                                } else {
+                                        a = "<h3 style='color: #AC4600'>Mines</h3>: " + formatWhole(player.k.lock.repeatables[id]) + "+" + formatWhole(player.k.lock.mines[id]) + "<br>"
+                                        b = "<h3 style='color: #FF33CC; font-size: 80%'>Mine Production/s</h3>:<br>" + format(tmp.k.clickables[id].mineProductionPerSecond, 4) + "<br>"
+                                        c = "<h3 style='color: #FF33CC; font-size: 80%'>Metal Production/s</h3>:<br>" + format(tmp.k.clickables[id].metalProductionPerSecond, 4) + "<br>"
+                                }
+                                return a + b + c
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        metalProductionPer(){
+                                return new Decimal(1)
+                        },
+                        metalProductionPerSecond(){
+                                return tmp.k.clickables[22].metalProductionPer.times(tmp.k.clickables[22].total)
+                        },
+                        mineProductionPer(){
+                                return new Decimal(1)
+                        },
+                        total(){
+                                let data = player.k.lock
+                                return data.mines[22].plus(data.repeatables[22])
+                        },
+                        bases(){
+                                return [new Decimal("1e300"), new Decimal("1e21")]
+                        },
+                        cost(){
+                                let bases = tmp.k.clickables[22].bases
+                                let a = bases[0]
+                                let b = bases[1]
+                                return a.times(Decimal.pow(b, player.k.lock.repeatables[22].pow(2)))
+                        },
+                        effect(){
+                                let amt = player.k.lock.resources[22]
+                                let ret = new Decimal(1)
+                                return ret
+                        },
+                        effectDescription(){
+                                let eff = tmp.k.clickables[22].effect 
+                                return "*" + format(eff) + " to idk"
+                        },
+                        mineProductionPerSecond(){
+                                return tmp.k.clickables[22].mineProductionPer.times(tmp.k.clickables[22].total)
+                        },
+                        canClick(){
+                                if (player.tab != "k") return false
+                                return player.k.points.gte(this.cost())
+                        },
+                        onClick(nocost = false){
+                                if (!this.canClick()) return 
+                                let cost = this.cost()
+                                if (!nocost) player.k.points = player.k.points.minus(cost)
+                                player.k.lock.repeatables[22] = player.k.lock.repeatables[22].plus(1)
+                        },
+                },
+                23: {
+                        title(){
+                                return "<h3 style='color: #C03000'>Tungsten<br>Mine</h3>"
+                        },
+                        display(){
+                                if (player.tab != "k") return ""
+                                let a 
+                                let b 
+                                let c 
+                                let id = 23
+                                if (shiftDown) {
+                                        let extra = tmp.k.clickables[id].cost.lt("1e900") ? " <b>Keys</b>" : ""
+                                        a = "<h3 style='color: #AC4600'>Cost</h3>: " + formatWhole(tmp.k.clickables[id].cost) + extra + "<br>"
+                                        b = "<h3 style='color: #FF33CC; font-size: 70%'>Mine Production/mine/s</h3>:<br>" + format(tmp.k.clickables[id].mineProductionPer, 4) + "<br>"
+                                        c = "<h3 style='color: #FF33CC; font-size: 70%'>Metal Production/mine/s</h3>:<br>" + format(tmp.k.clickables[id].metalProductionPer, 4) + "<br>"
+                                } else if (controlDown){
+                                        a = "<h3 style='color: #AC4600'>Iron</h3>: " + format(player.k.lock.resources[id]) + "<br>"
+                                        b = ""
+                                        c = ""
+                                } else {
+                                        a = "<h3 style='color: #AC4600'>Mines</h3>: " + formatWhole(player.k.lock.repeatables[id]) + "+" + formatWhole(player.k.lock.mines[id]) + "<br>"
+                                        b = "<h3 style='color: #FF33CC; font-size: 80%'>Mine Production/s</h3>:<br>" + format(tmp.k.clickables[id].mineProductionPerSecond, 4) + "<br>"
+                                        c = "<h3 style='color: #FF33CC; font-size: 80%'>Metal Production/s</h3>:<br>" + format(tmp.k.clickables[id].metalProductionPerSecond, 4) + "<br>"
+                                }
+                                return a + b + c
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        metalProductionPer(){
+                                return new Decimal(1)
+                        },
+                        metalProductionPerSecond(){
+                                return tmp.k.clickables[23].metalProductionPer.times(tmp.k.clickables[23].total)
+                        },
+                        mineProductionPer(){
+                                return new Decimal(1)
+                        },
+                        total(){
+                                let data = player.k.lock
+                                return data.mines[23].plus(data.repeatables[23])
+                        },
+                        bases(){
+                                return [new Decimal("1e360"), new Decimal("1e34")]
+                        },
+                        cost(){
+                                let bases = tmp.k.clickables[23].bases
+                                let a = bases[0]
+                                let b = bases[1]
+                                return a.times(Decimal.pow(b, player.k.lock.repeatables[23].pow(2)))
+                        },
+                        effect(){
+                                let amt = player.k.lock.resources[23]
+                                let ret = new Decimal(1)
+                                return ret
+                        },
+                        effectDescription(){
+                                let eff = tmp.k.clickables[23].effect 
+                                return "*" + format(eff) + " to idk"
+                        },
+                        mineProductionPerSecond(){
+                                return tmp.k.clickables[23].mineProductionPer.times(tmp.k.clickables[23].total)
+                        },
+                        canClick(){
+                                if (player.tab != "k") return false
+                                return player.k.points.gte(this.cost())
+                        },
+                        onClick(nocost = false){
+                                if (!this.canClick()) return 
+                                let cost = this.cost()
+                                if (!nocost) player.k.points = player.k.points.minus(cost)
+                                player.k.lock.repeatables[23] = player.k.lock.repeatables[23].plus(1)
+                        },
+                },
+                24: {
+                        title(){
+                                return "<h3 style='color: #C03000'>Aluminum<br>Mine</h3>"
+                        },
+                        display(){
+                                if (player.tab != "k") return ""
+                                let a 
+                                let b 
+                                let c 
+                                let id = 24
+                                if (shiftDown) {
+                                        let extra = tmp.k.clickables[id].cost.lt("1e900") ? " <b>Keys</b>" : ""
+                                        a = "<h3 style='color: #AC4600'>Cost</h3>: " + formatWhole(tmp.k.clickables[id].cost) + extra + "<br>"
+                                        b = "<h3 style='color: #FF33CC; font-size: 70%'>Mine Production/mine/s</h3>:<br>" + format(tmp.k.clickables[id].mineProductionPer, 4) + "<br>"
+                                        c = "<h3 style='color: #FF33CC; font-size: 70%'>Metal Production/mine/s</h3>:<br>" + format(tmp.k.clickables[id].metalProductionPer, 4) + "<br>"
+                                } else if (controlDown){
+                                        a = "<h3 style='color: #AC4600'>Iron</h3>: " + format(player.k.lock.resources[id]) + "<br>"
+                                        b = ""
+                                        c = ""
+                                } else {
+                                        a = "<h3 style='color: #AC4600'>Mines</h3>: " + formatWhole(player.k.lock.repeatables[id]) + "+" + formatWhole(player.k.lock.mines[id]) + "<br>"
+                                        b = "<h3 style='color: #FF33CC; font-size: 80%'>Mine Production/s</h3>:<br>" + format(tmp.k.clickables[id].mineProductionPerSecond, 4) + "<br>"
+                                        c = "<h3 style='color: #FF33CC; font-size: 80%'>Metal Production/s</h3>:<br>" + format(tmp.k.clickables[id].metalProductionPerSecond, 4) + "<br>"
+                                }
+                                return a + b + c
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        metalProductionPer(){
+                                return new Decimal(1)
+                        },
+                        metalProductionPerSecond(){
+                                return tmp.k.clickables[24].metalProductionPer.times(tmp.k.clickables[24].total)
+                        },
+                        mineProductionPer(){
+                                return new Decimal(1)
+                        },
+                        total(){
+                                let data = player.k.lock
+                                return data.mines[24].plus(data.repeatables[24])
+                        },
+                        bases(){
+                                return [new Decimal("1e440"), new Decimal("1e55")]
+                        },
+                        cost(){
+                                let bases = tmp.k.clickables[24].bases
+                                let a = bases[0]
+                                let b = bases[1]
+                                return a.times(Decimal.pow(b, player.k.lock.repeatables[24].pow(2)))
+                        },
+                        effect(){
+                                let amt = player.k.lock.resources[24]
+                                let ret = new Decimal(1)
+                                return ret
+                        },
+                        effectDescription(){
+                                let eff = tmp.k.clickables[24].effect 
+                                return "*" + format(eff) + " to idk"
+                        },
+                        mineProductionPerSecond(){
+                                return tmp.k.clickables[24].mineProductionPer.times(tmp.k.clickables[24].total)
+                        },
+                        canClick(){
+                                if (player.tab != "k") return false
+                                return player.k.points.gte(this.cost())
+                        },
+                        onClick(nocost = false){
+                                if (!this.canClick()) return 
+                                let cost = this.cost()
+                                if (!nocost) player.k.points = player.k.points.minus(cost)
+                                player.k.lock.repeatables[24] = player.k.lock.repeatables[24].plus(1)
+                        },
+                },
+                25: {
+                        title(){
+                                return "<h3 style='color: #C03000'>Osmium<br>Mine</h3>"
+                        },
+                        display(){
+                                if (player.tab != "k") return ""
+                                let a 
+                                let b 
+                                let c 
+                                let id = 25
+                                if (shiftDown) {
+                                        let extra = tmp.k.clickables[id].cost.lt("1e900") ? " <b>Keys</b>" : ""
+                                        a = "<h3 style='color: #AC4600'>Cost</h3>: " + formatWhole(tmp.k.clickables[id].cost) + extra + "<br>"
+                                        b = "<h3 style='color: #FF33CC; font-size: 70%'>Mine Production/mine/s</h3>:<br>" + format(tmp.k.clickables[id].mineProductionPer, 4) + "<br>"
+                                        c = "<h3 style='color: #FF33CC; font-size: 70%'>Metal Production/mine/s</h3>:<br>" + format(tmp.k.clickables[id].metalProductionPer, 4) + "<br>"
+                                } else if (controlDown){
+                                        a = "<h3 style='color: #AC4600'>Iron</h3>: " + format(player.k.lock.resources[id]) + "<br>"
+                                        b = ""
+                                        c = ""
+                                } else {
+                                        a = "<h3 style='color: #AC4600'>Mines</h3>: " + formatWhole(player.k.lock.repeatables[id]) + "+" + formatWhole(player.k.lock.mines[id]) + "<br>"
+                                        b = "<h3 style='color: #FF33CC; font-size: 80%'>Mine Production/s</h3>:<br>" + format(tmp.k.clickables[id].mineProductionPerSecond, 4) + "<br>"
+                                        c = "<h3 style='color: #FF33CC; font-size: 80%'>Metal Production/s</h3>:<br>" + format(tmp.k.clickables[id].metalProductionPerSecond, 4) + "<br>"
+                                }
+                                return a + b + c
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        metalProductionPer(){
+                                return new Decimal(1)
+                        },
+                        metalProductionPerSecond(){
+                                return tmp.k.clickables[25].metalProductionPer.times(tmp.k.clickables[25].total)
+                        },
+                        mineProductionPer(){
+                                return new Decimal(1)
+                        },
+                        total(){
+                                let data = player.k.lock
+                                return data.mines[25].plus(data.repeatables[25])
+                        },
+                        bases(){
+                                return [new Decimal("1e550"), new Decimal("1e89")]
+                        },
+                        cost(){
+                                let bases = tmp.k.clickables[25].bases
+                                let a = bases[0]
+                                let b = bases[1]
+                                return a.times(Decimal.pow(b, player.k.lock.repeatables[25].pow(2)))
+                        },
+                        effect(){
+                                let amt = player.k.lock.resources[25]
+                                let ret = new Decimal(1)
+                                return ret
+                        },
+                        effectDescription(){
+                                let eff = tmp.k.clickables[25].effect 
+                                return "*" + format(eff) + " to idk"
+                        },
+                        mineProductionPerSecond(){
+                                return tmp.k.clickables[25].mineProductionPer.times(tmp.k.clickables[25].total)
+                        },
+                        canClick(){
+                                if (player.tab != "k") return false
+                                return player.k.points.gte(this.cost())
+                        },
+                        onClick(nocost = false){
+                                if (!this.canClick()) return 
+                                let cost = this.cost()
+                                if (!nocost) player.k.points = player.k.points.minus(cost)
+                                player.k.lock.repeatables[25] = player.k.lock.repeatables[25].plus(1)
                         },
                 },
         },
@@ -13897,7 +14608,33 @@ addLayer("k", {
                                 "main-display",
                                 ["clickables", [1,2]], //mines
                                 "blank", 
-                                /* text, */
+                                ["display-text", function(){
+                                        if (player.tab != "k") return ""
+                                        let data1 = player.k.lock.resources
+                                        let a = "You have " + format(data1[11]) + " Iron"
+                                        let b = ", " + format(data1[12]) + " Silver"
+                                        let c = ", " + format(data1[13]) + " Gold"
+                                        let d = ", " + format(data1[14]) + " Bronze"
+                                        let e = " and, " + format(data1[15]) + " Copper."
+                                        let f = "You have " + format(data1[21]) + " Tin"
+                                        let g = ", " + format(data1[22]) + " Titanium"
+                                        let h = ", " + format(data1[23]) + " Tungsten"
+                                        let i = ", " + format(data1[24]) + " Alumnium"
+                                        let j = " and, " + format(data1[25]) + " Osmium."
+                                        let amts = a + b + c + d + e + "<br>" + f + g + h + i + j + "<br>"
+                                        let k = "You get " + tmp.k.clickables[11].effectDescription + ", "
+                                        let l = tmp.k.clickables[12].effectDescription + ", "
+                                        let m = tmp.k.clickables[13].effectDescription + ", "
+                                        let n = tmp.k.clickables[14].effectDescription + ",<br>"
+                                        let o = tmp.k.clickables[15].effectDescription + ", "
+                                        let p = tmp.k.clickables[21].effectDescription + ", "
+                                        let q = tmp.k.clickables[22].effectDescription + ", "
+                                        let r = tmp.k.clickables[23].effectDescription + ",<br>"
+                                        let s = tmp.k.clickables[24].effectDescription + " and, "
+                                        let t = tmp.k.clickables[25].effectDescription + " due to your metals.<br>"
+                                        let effs = k + l + m + n + o + p + q + r + s + t
+                                        return amts + effs
+                                }],
                                 ["clickables", [3,5]], //locks
                                 ["clickables", [6,8]], //keys
                         ],
