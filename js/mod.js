@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".6.13 Locks",
+	num: ".6.14 Locked",
 	name: "",
 }
 
@@ -42,6 +42,7 @@ function canGenPoints(){
 // You can add non-layer related variables that should to into "player" and be saved here, along with default values
 function addedPlayerData() { return {
 	undulating: true,
+	lastSave: new Date().getTime(),
 }}
 
 PROGRESSION_MILESTONES = {
@@ -449,9 +450,12 @@ function nextMilestone(){
 
 // Display extra things at the top of the page
 var displayThings = [
-	"Endgame: One Gold Mine",
 	function(){
-		return player.autosave ? "" : "Warning: autosave is off"
+		return player.autosave ? "Endgame: e356 Keys" : "Endgame: e356 Keys. Warning: autosave is off"
+	},
+	function(){
+		let a = new Date().getTime() - player.lastSave
+		return "Last save was " + formatTime(a/1000) + " ago"
 	}
 ]
 
@@ -714,6 +718,13 @@ function getChangeLogText(){
 	ar7= "- Applied an undulating color feature to Locks [nothing before yet, or probably ever]"
 	ar8= "- Added a Save hotkey [control + s]"
 	ar9= "- Added two locks"
+	as1= "v.6.14"
+	as2= "- Added two Puzzle upgrades"
+	as3= "- Added a Key milestone"
+	as4= "- Added a save button in the info tab"
+	as5= "- Added three locks"
+	as6= "- Removed the ctrl display for Locks"
+	as7= "- Now the game notifies you when you can buy a puzzle upgrade/repeatable"
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
 	let part2 = [b1, b2, b3, b4, b5, "", b6, b7, "", b8, b9, b10, "", b11, b12, ""]
@@ -758,13 +769,14 @@ function getChangeLogText(){
 	let part41= [ap1,ap2, ""]
 	let part42= [aq1,aq2, ""]
 	let part43= [ar1,ar2,ar3,ar4,ar5,ar6,ar7,ar8,ar9, ""]
+	let part44= [as1,as2,as3,as4,as5,as6,as7, ""]
 	// MAKE SURE TO ADD THEM
 
 	let final1 = [part10,  part9,  part8,  part7,  part6,  part5,  part4,  part3,  part2,  part1]
 	let final2 = [part20, part19, part18, part17, part16, part15, part14, part13, part12, part11]
 	let final3 = [part30, part29, part28, part27, part26, part25, part24, part23, part22, part21]
 	let final4 = [part40, part39, part38, part37, part36, part35, part34, part33, part32, part31]
-	let final5 = [part43, part42, part41]
+	let final5 = [part44, part43, part42, part41]
 
 	return final5.concat(final4).concat(final3).concat(final2).concat(final1)
 }
