@@ -2312,6 +2312,29 @@ var MAIN_BUYABLE_DATA = {
                         return [b0, b1, b2]
                 },
         },
+        i22: {
+                name: "Idea",
+                func: "exp",
+                effects: "base <b>Idea</b> gain",
+                base: {
+                        initial: new Decimal("1e111"),
+                        1: {
+                                active: function(){
+                                        return hasMilestone("k", 13)
+                                },
+                                amount: function(){
+                                        return player.k.lock.resources[23].max(1)
+                                },
+                                type: "times",
+                        },
+                },
+                bases(){
+                        let b0 = new Decimal("1e37e9")
+                        let b1 = new Decimal("1ee8")
+                        let b2 = new Decimal("1e5e4")
+                        return [b0, b1, b2]
+                },
+        },
 }
 
 var EXTRA_FREE_BUYABLE_DATA = {

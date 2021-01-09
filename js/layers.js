@@ -682,7 +682,7 @@ addLayer("a", {
 
                 let ret = amt.plus(1).pow(exp)
 
-                ret = softcap(ret, "a_eff")
+                if (!player.j.puzzle.upgrades.includes(64)) ret = softcap(ret, "a_eff")
 
                 return ret
         },
@@ -1408,7 +1408,7 @@ addLayer("b", {
 
                 let ret = amt.times(3).plus(1).sqrt()
 
-                ret = softcap(ret, "b_eff")
+                if (!player.j.puzzle.upgrades.includes(64)) ret = softcap(ret, "b_eff")
 
                 return ret
         },
@@ -2146,7 +2146,7 @@ addLayer("c", {
 
                 let ret = amt.times(8).plus(1).sqrt()
 
-                ret = softcap(ret, "c_eff")
+                if (!player.j.puzzle.upgrades.includes(64)) ret = softcap(ret, "c_eff")
 
                 ret = ret.times(tmp.c.buyables[12].effect)
 
@@ -10641,7 +10641,7 @@ addLayer("h", {
                         goal(){
                                 let init = new Decimal("1e1099e28")
                                 let c = challengeCompletions("h", 22)
-                                if (c > 3) c = c * c / 3
+                                if (c > 3 && !player.j.puzzle.upgrades.includes(64)) c = c * c / 3
                                 let factor = getChallengeFactor(c)
                                 if (factor.eq(1)) factor = new Decimal(0)
                                 return init.times(Decimal.pow("1e191e28", factor))
@@ -10807,6 +10807,7 @@ addLayer("i", {
                 if (hasUpgrade("h", 43)) x = x.plus(player.i.upgrades.length * .2)
                 if (hasMilestone("j", 4)) x = x.plus(123.456 * player.j.milestones.length)
                 if (hasMilestone("k", 8)) x = x.plus(tmp.h.challenges[11].rewardEffect)
+                x = x.plus(tmp.k.clickables[21].effect)
                 return x
         },
         getGainMultPre(){
@@ -10818,6 +10819,7 @@ addLayer("i", {
                 if (hasUpgrade("i", 43)) x = x.times(Decimal.pow(player.i.upgrades.length, player.i.upgrades.length).max(1))
                 if (hasUpgrade("i", 44)) x = x.times(Decimal.pow(totalChallengeComps("f"), totalChallengeComps("f")).max(1))
                 if (hasUpgrade("j", 14)) x = x.times(Decimal.pow(player.j.puzzle.bestExp.max(1), player.j.upgrades.length))
+                x = x.times(CURRENT_BUYABLE_EFFECTS["i22"])
                 return x
         },
         getGainMultPost(){
@@ -11210,7 +11212,6 @@ addLayer("i", {
                 }, // hasUpgrade("i", 55)
 
                 /*
-                idea
                 independent
                 improve
                 Impact
@@ -11326,6 +11327,33 @@ addLayer("i", {
                         },
                         unlocked(){ 
                                 return hasUpgrade("j", 44) || hasUnlockedPast("k")
+                        },
+                },
+                22: {
+                        title: "Idea",
+                        display(){
+                                return getBuyableDisplay("i", 22)
+                        },
+                        effect(){
+                                return CURRENT_BUYABLE_EFFECTS["i22"]
+                        },
+                        canAfford(){
+                                return canAffordBuyable("i", 22)
+                        },
+                        total(){
+                                return getBuyableAmount("i", 22).plus(this.extra())
+                        },
+                        extra(){
+                                return calcBuyableExtra("i", 22)
+                        },
+                        buy(){
+                                buyManualBuyable("i", 22)
+                        },
+                        buyMax(maximum){
+                                buyMaximumBuyable("i", 22, maximum)
+                        },
+                        unlocked(){ 
+                                return hasUpgrade("j", 45) || hasUnlockedPast("k")
                         },
                 },
         },
@@ -11949,7 +11977,6 @@ addLayer("j", {
                 }, // hasUpgrade("j", 45)
 
                 /*
-                johnny
                 jimmy
                 */
         },
@@ -12111,6 +12138,7 @@ addLayer("j", {
                         ret = ret.times(tmp.k.clickables[12].effect)
                         ret = ret.times(tmp.k.clickables[35].effect)
                         if (hasMilestone("k", 12)) ret = ret.times(Decimal.pow(1.1, tmp.k.clickables.totalMines))
+                        ret = ret.times(tmp.k.clickables[24].effect)
                         return ret
                 },
                 getBankedExpGainUF(){
@@ -12357,6 +12385,7 @@ addLayer("j", {
                         onClick(nocost = false, times = 1){
                                 let data = player.j.puzzle
                                 if (hasUpgrade("j", 42)) times *= 10
+                                if (player.j.puzzle.upgrades.includes(63)) times *= 10
                                 for (i = 0; i < times; i++) {
                                         let cost = this.cost()
                                         if (cost.gt(data.knowledge)) return 
@@ -12407,30 +12436,33 @@ addLayer("j", {
                         onClick(nocost = false){
                                 let data = player.j.puzzle
                                 let cost = this.cost()
+                                let times = 1
 
-                                if (!this.canClick()) return 
-                                if (!nocost) data.knowledge = data.knowledge.minus(cost)
-                                data.repeatables[14] = data.repeatables[14].plus(1)
-                                let x = tmp.j.clickables.getCurrentMaxSize
-                                if (data.currentY == x) {
-                                        data.currentX ++
-                                } else if (data.currentX == x) {
-                                        data.currentY ++
-                                } else if (Math.random() < .5) {
-                                        data.currentY ++
-                                } else data.currentX ++
-                                data.placed = {
-                                        edges: 0,
-                                        corners: 0,
-                                        centers: 0,
-                                }
-                                data.found = {
-                                        edges: 0,
-                                        corners: 0,
-                                        centers: 0,
-                                }
+                                if (hasMilestone("k", 14)) times *= 10
 
-                                return //bulk needs to be done eventually
+                                for (i = 0; i < times; i++){
+                                        if (!this.canClick()) return 
+                                        if (!nocost) data.knowledge = data.knowledge.minus(cost)
+                                        data.repeatables[14] = data.repeatables[14].plus(1)
+                                        let x = tmp.j.clickables.getCurrentMaxSize
+                                        if (data.currentY == x) {
+                                                data.currentX ++
+                                        } else if (data.currentX == x) {
+                                                data.currentY ++
+                                        } else if (Math.random() < .5) {
+                                                data.currentY ++
+                                        } else data.currentX ++
+                                        data.placed = {
+                                                edges: 0,
+                                                corners: 0,
+                                                centers: 0,
+                                        }
+                                        data.found = {
+                                                edges: 0,
+                                                corners: 0,
+                                                centers: 0,
+                                        }
+                                }
                         },
                 },
                 15: {
@@ -12766,6 +12798,7 @@ addLayer("j", {
                                 ret = ret.plus(tmp.h.challenges[22].rewardEffect)
                                 if (player.j.puzzle.upgrades.includes(61)) ret = ret.plus(player.j.puzzle.repeatables[35].times(.005))
                                 ret = ret.plus(tmp.k.clickables[14].effect)
+                                ret = ret.plus(tmp.k.clickables[41].effect)
                                 return ret
                         },
                         effect(){
@@ -13178,7 +13211,7 @@ addLayer("j", {
                                 return "<b style='color: #003333'>Jonathan</b>"
                         },
                         display(){
-                                let a = "Each <b>Japan</b> adds .005 to the <b>Japan</b> base and adds one to the <b>J</b> gain exponent"
+                                let a = "Each <b>Japan</b> adds .005 to the <b>Japan</b> base and adds one to the <b>J</b> gain exponent and unlock <b>Lock</b>"
                                 let b = "<br><br>Cost: " + formatWhole(tmp.j.clickables[61].cost) + " Exp"
                                 return a + b
                         },
@@ -13238,7 +13271,7 @@ addLayer("j", {
                                 return "<b style='color: #003333'>Jerry</b>"
                         },
                         display(){
-                                let a = "Jack levels multiply first row metal gain"
+                                let a = "Jack levels multiply first row metal gain and you can bulk amount 10x more"
                                 let b = "<br><br>Cost: " + formatWhole(tmp.j.clickables[63].cost) + " Exp"
                                 return a + b
                         },
@@ -13263,12 +13296,43 @@ addLayer("j", {
                                 data.upgrades.push(63)
                         },
                 },
+                64: {
+                        title(){
+                                return "<b style='color: #003333'>Johnny</b>"
+                        },
+                        display(){
+                                let a = "Make <b>Hit</b> goal scaling much weaker and remove the <b>A</b>, <b>B</b> and, <b>C</b> effect softcaps"
+                                let b = "<br><br>Cost: " + formatWhole(tmp.j.clickables[64].cost) + " Exp"
+                                return a + b
+                        },
+                        unlocked(){
+                                return player.k.lock.repeatables[14].gt(7) || hasUnlockedPast("k")
+                        },
+                        canClick(){
+                                return player.j.puzzle.exp.gte(tmp.j.clickables[64].cost) && !player.j.puzzle.upgrades.includes(64)
+                        },
+                        cost(){
+                                return new Decimal("1e686")
+                        },
+                        style(){
+                                return {
+                                        "background-color": player.j.puzzle.upgrades.includes(64) ? "#77bf5f" : tmp.j.clickables[64].canClick ? "#66CCFF" : "#bf8f8f"
+                                }
+                        },
+                        onClick(){
+                                if (!tmp.j.clickables[64].canClick) return
+                                let data = player.j.puzzle
+                                data.exp = data.exp.minus(tmp.j.clickables[64].cost)
+                                data.upgrades.push(64)
+                        },
+                },
         },
         shouldNotify(){
                 for (id in tmp.j.clickables){
                         id = Number(id)
                         if (typeof id != "number") continue
                         if (isNaN(id)) continue
+                        if ([11,12,13,21,22,23,24,15].includes(id)) continue
                         if (tmp.j.clickables[id].canClick && !player.j.upgrades.includes(id) && tmp.j.clickables[id].unlocked){
                                 return true
                         }
@@ -13689,6 +13753,7 @@ addLayer("k", {
                 if (hasUpgrade("j", 35)) x = x.plus(.1 * player.k.milestones.length)
                 if (hasUpgrade("k", 22)) x = x.plus(.08 * player.k.upgrades.length)
                 if (hasUpgrade("j", 44)) x = x.plus(1)
+                x = x.plus(tmp.k.clickables[43].effect.times(tmp.k.clickables.totalKeys))
                 return x
         },
         getGainMultPre(){
@@ -13919,6 +13984,26 @@ addLayer("k", {
                                 return player.k.lock.resources[21].gt(0) || hasUnlockedPast("k")
                         }, // hasMilestone("k", 12)
                 },
+                13: {
+                        requirementDescription: "<b>Kentucky</b><br>Requires: 3.23e616 Keys",
+                        effectDescription: "Tungsten multiplies <b>Idea</b> base",
+                        done(){
+                                return player.k.points.max(1).log(2).gte(2048)
+                        },
+                        unlocked(){
+                                return hasMilestone("k", 12) || hasUnlockedPast("k")
+                        }, // hasMilestone("k", 13)
+                },
+                14: {
+                        requirementDescription: "<b>Keeping</b><br>Requires: 1.04e1,233 Keys",
+                        effectDescription: "You can buy 10 levels of <b>Larger</b> puzzle at a time",
+                        done(){
+                                return player.k.points.max(1).log(2).gte(4096)
+                        },
+                        unlocked(){
+                                return hasMilestone("k", 13) || hasUnlockedPast("k")
+                        }, // hasMilestone("k", 14)
+                },
         },
         upgrades: {
                 rows: 5,
@@ -13981,7 +14066,9 @@ addLayer("k", {
                 }, // hasUpgrade("k", 22)
                 
                 /*
-                Kentucky
+                Kill
+                Knows
+                Kevin
                 */
         },
         clickables: {
@@ -14002,6 +14089,18 @@ addLayer("k", {
                                 a = a.plus(player.k.lock.repeatables[sum[i]])
                         }
                         return a  
+                },
+                getGlobalMetalGainMult(){
+                        let ret = new Decimal(1)
+                        ret = ret.times(tmp.k.clickables[22].effect)
+                        ret = ret.times(Decimal.pow(player.k.points.max(Math.E).ln(), tmp.k.clickables[42].effect))
+                        return ret
+                },
+                getGlobalMineGainMult(){
+                        let ret = new Decimal(1)
+                        ret = ret.times(tmp.k.clickables[15].effect)
+                        ret = ret.times(tmp.k.clickables[23].effect)
+                        return ret
                 },
                 11: {
                         title(){
@@ -14033,6 +14132,7 @@ addLayer("k", {
                                 ret = ret.times(Decimal.pow(player.k.lock.resources[11].plus(Math.E).ln(), tmp.k.clickables[33].effect))
                                 ret = ret.times(Decimal.pow(tmp.k.clickables[34].effect, player.k.lock.repeatables[31]))
                                 if (player.j.puzzle.upgrades.includes(63)) ret = ret.times(player.j.puzzle.repeatables[45].max(1))
+                                ret = ret.times(tmp.k.clickables.getGlobalMetalGainMult)
                                 return ret
                         },
                         metalProductionPerSecond(){
@@ -14041,6 +14141,7 @@ addLayer("k", {
                         mineProductionPer(){
                                 let ret = new Decimal(.1)
                                 ret = ret.times(tmp.k.clickables[15].effect)
+                                ret = ret.times(Decimal.pow(tmp.k.clickables[44].effect, player.k.lock.repeatables[11]))
                                 return ret
                         },
                         total(){
@@ -14063,7 +14164,7 @@ addLayer("k", {
                         },
                         effectDescription(){
                                 let eff = tmp.k.clickables[11].effect 
-                                return "*" + format(eff) + " to Keys"
+                                return "*" + format(eff) + " Keys"
                         },
                         mineProductionPerSecond(){
                                 return tmp.k.clickables[11].mineProductionPer.times(tmp.k.clickables[11].total)
@@ -14111,6 +14212,7 @@ addLayer("k", {
                                 ret = ret.times(Decimal.pow(player.k.lock.resources[12].plus(Math.E).ln(), tmp.k.clickables[33].effect))
                                 ret = ret.times(Decimal.pow(tmp.k.clickables[34].effect, player.k.lock.repeatables[32]))
                                 if (player.j.puzzle.upgrades.includes(63)) ret = ret.times(player.j.puzzle.repeatables[45].max(1))
+                                ret = ret.times(tmp.k.clickables.getGlobalMetalGainMult)
                                 return ret
                         },
                         metalProductionPerSecond(){
@@ -14118,7 +14220,8 @@ addLayer("k", {
                         },
                         mineProductionPer(){
                                 let ret = new Decimal(.1)
-                                ret = ret.times(tmp.k.clickables[15].effect)
+                                ret = ret.times(tmp.k.clickables.getGlobalMineGainMult)
+                                ret = ret.times(Decimal.pow(tmp.k.clickables[44].effect, player.k.lock.repeatables[12]))
                                 return ret
                         },
                         total(){
@@ -14141,7 +14244,7 @@ addLayer("k", {
                         },
                         effectDescription(){
                                 let eff = tmp.k.clickables[12].effect 
-                                return "*" + format(eff) + " to Knowledge"
+                                return "*" + format(eff) + " Knowledge"
                         },
                         mineProductionPerSecond(){
                                 return tmp.k.clickables[12].mineProductionPer.times(tmp.k.clickables[12].total)
@@ -14189,6 +14292,7 @@ addLayer("k", {
                                 ret = ret.times(Decimal.pow(player.k.lock.resources[13].plus(Math.E).ln(), tmp.k.clickables[33].effect))
                                 ret = ret.times(Decimal.pow(tmp.k.clickables[34].effect, player.k.lock.repeatables[33]))
                                 if (player.j.puzzle.upgrades.includes(63)) ret = ret.times(player.j.puzzle.repeatables[45].max(1))
+                                ret = ret.times(tmp.k.clickables.getGlobalMetalGainMult)
                                 return ret
                         },
                         metalProductionPerSecond(){
@@ -14196,7 +14300,8 @@ addLayer("k", {
                         },
                         mineProductionPer(){
                                 let ret = new Decimal(.1)
-                                ret = ret.times(tmp.k.clickables[15].effect)
+                                ret = ret.times(tmp.k.clickables.getGlobalMineGainMult)
+                                ret = ret.times(Decimal.pow(tmp.k.clickables[44].effect, player.k.lock.repeatables[13]))
                                 return ret
                         },
                         total(){
@@ -14220,7 +14325,7 @@ addLayer("k", {
                         },
                         effectDescription(){
                                 let eff = tmp.k.clickables[13].effect 
-                                return "*" + format(eff) + " to Banked Exp gain"
+                                return "*" + format(eff) + " Banked Exp gain"
                         },
                         mineProductionPerSecond(){
                                 return tmp.k.clickables[13].mineProductionPer.times(tmp.k.clickables[13].total)
@@ -14268,6 +14373,7 @@ addLayer("k", {
                                 ret = ret.times(Decimal.pow(player.k.lock.resources[14].plus(Math.E).ln(), tmp.k.clickables[33].effect))
                                 ret = ret.times(Decimal.pow(tmp.k.clickables[34].effect, player.k.lock.repeatables[34]))
                                 if (player.j.puzzle.upgrades.includes(63)) ret = ret.times(player.j.puzzle.repeatables[45].max(1))
+                                ret = ret.times(tmp.k.clickables.getGlobalMetalGainMult)
                                 return ret
                         },
                         metalProductionPerSecond(){
@@ -14275,7 +14381,8 @@ addLayer("k", {
                         },
                         mineProductionPer(){
                                 let ret = new Decimal(.1)
-                                ret = ret.times(tmp.k.clickables[15].effect)
+                                ret = ret.times(tmp.k.clickables.getGlobalMineGainMult)
+                                ret = ret.times(Decimal.pow(tmp.k.clickables[44].effect, player.k.lock.repeatables[14]))
                                 return ret
                         },
                         total(){
@@ -14298,7 +14405,7 @@ addLayer("k", {
                         },
                         effectDescription(){
                                 let eff = tmp.k.clickables[14].effect 
-                                return "+" + format(eff, 4) + " to <b>Japan</b> base"
+                                return "+" + format(eff, 4) + " <b>Japan</b> base"
                         },
                         mineProductionPerSecond(){
                                 return tmp.k.clickables[14].mineProductionPer.times(tmp.k.clickables[14].total)
@@ -14346,6 +14453,7 @@ addLayer("k", {
                                 ret = ret.times(Decimal.pow(player.k.lock.resources[15].plus(Math.E).ln(), tmp.k.clickables[33].effect))
                                 ret = ret.times(Decimal.pow(tmp.k.clickables[34].effect, player.k.lock.repeatables[35]))
                                 if (player.j.puzzle.upgrades.includes(63)) ret = ret.times(player.j.puzzle.repeatables[45].max(1))
+                                ret = ret.times(tmp.k.clickables.getGlobalMetalGainMult)
                                 return ret
                         },
                         metalProductionPerSecond(){
@@ -14353,7 +14461,8 @@ addLayer("k", {
                         },
                         mineProductionPer(){
                                 let ret = new Decimal(.1)
-                                ret = ret.times(tmp.k.clickables[15].effect)
+                                ret = ret.times(tmp.k.clickables.getGlobalMineGainMult)
+                                ret = ret.times(Decimal.pow(tmp.k.clickables[44].effect, player.k.lock.repeatables[15]))
                                 return ret
                         },
                         total(){
@@ -14376,7 +14485,7 @@ addLayer("k", {
                         },
                         effectDescription(){
                                 let eff = tmp.k.clickables[15].effect 
-                                return "*" + format(eff) + " to Mine production"
+                                return "*" + format(eff) + " Mine production"
                         },
                         mineProductionPerSecond(){
                                 return tmp.k.clickables[15].mineProductionPer.times(tmp.k.clickables[15].total)
@@ -14423,6 +14532,7 @@ addLayer("k", {
                                 ret = ret.times(Decimal.pow(tmp.k.clickables[31].effect, player.k.lock.repeatables[21].sqrt()))
                                 ret = ret.times(Decimal.pow(player.k.lock.resources[21].plus(Math.E).ln(), tmp.k.clickables[33].effect))
                                 ret = ret.times(Decimal.pow(tmp.k.clickables[34].effect, player.k.lock.repeatables[41]))
+                                ret = ret.times(tmp.k.clickables.getGlobalMetalGainMult)
                                 return ret
                         },
                         metalProductionPerSecond(){
@@ -14430,7 +14540,8 @@ addLayer("k", {
                         },
                         mineProductionPer(){
                                 let ret = new Decimal(.1)
-                                ret = ret.times(tmp.k.clickables[15].effect)
+                                ret = ret.times(tmp.k.clickables.getGlobalMineGainMult)
+                                ret = ret.times(Decimal.pow(tmp.k.clickables[44].effect, player.k.lock.repeatables[21]))
                                 return ret
                         },
                         total(){
@@ -14448,12 +14559,13 @@ addLayer("k", {
                         },
                         effect(){
                                 let amt = player.k.lock.resources[21]
-                                let ret = new Decimal(1)
+                                let ret = amt.div(3e8).max(1).log10().times(1e5)
+                                if (ret.gt(1e6)) ret = ret.sqrt().times(1e3)
                                 return ret
                         },
                         effectDescription(){
                                 let eff = tmp.k.clickables[21].effect 
-                                return "*" + format(eff) + " to idk"
+                                return "+" + format(eff) + " <b>I</b> gain exponent"
                         },
                         mineProductionPerSecond(){
                                 return tmp.k.clickables[21].mineProductionPer.times(tmp.k.clickables[21].total)
@@ -14500,6 +14612,7 @@ addLayer("k", {
                                 ret = ret.times(Decimal.pow(tmp.k.clickables[31].effect, player.k.lock.repeatables[22].sqrt()))
                                 ret = ret.times(Decimal.pow(player.k.lock.resources[22].plus(Math.E).ln(), tmp.k.clickables[33].effect))
                                 ret = ret.times(Decimal.pow(tmp.k.clickables[34].effect, player.k.lock.repeatables[42]))
+                                ret = ret.times(tmp.k.clickables.getGlobalMetalGainMult)
                                 return ret
                         },
                         metalProductionPerSecond(){
@@ -14507,7 +14620,8 @@ addLayer("k", {
                         },
                         mineProductionPer(){
                                 let ret = new Decimal(.1)
-                                ret = ret.times(tmp.k.clickables[15].effect)
+                                ret = ret.times(tmp.k.clickables.getGlobalMineGainMult)
+                                ret = ret.times(Decimal.pow(tmp.k.clickables[44].effect, player.k.lock.repeatables[22]))
                                 return ret
                         },
                         total(){
@@ -14515,7 +14629,7 @@ addLayer("k", {
                                 return data.mines[22].plus(data.repeatables[22])
                         },
                         bases(){
-                                return [new Decimal("1e400"), new Decimal("1e13")]
+                                return [new Decimal("1e449"), new Decimal("1e13")]
                         },
                         cost(){
                                 let bases = tmp.k.clickables[22].bases
@@ -14525,12 +14639,13 @@ addLayer("k", {
                         },
                         effect(){
                                 let amt = player.k.lock.resources[22]
-                                let ret = new Decimal(1)
+                                let ret = amt.div(5e6).max(10).log10().pow(5)
+
                                 return ret
                         },
                         effectDescription(){
                                 let eff = tmp.k.clickables[22].effect 
-                                return "*" + format(eff) + " to idk"
+                                return "*" + format(eff) + " all Metal gain"
                         },
                         mineProductionPerSecond(){
                                 return tmp.k.clickables[22].mineProductionPer.times(tmp.k.clickables[22].total)
@@ -14577,6 +14692,7 @@ addLayer("k", {
                                 ret = ret.times(Decimal.pow(tmp.k.clickables[31].effect, player.k.lock.repeatables[23].sqrt()))
                                 ret = ret.times(Decimal.pow(player.k.lock.resources[23].plus(Math.E).ln(), tmp.k.clickables[33].effect))
                                 ret = ret.times(Decimal.pow(tmp.k.clickables[34].effect, player.k.lock.repeatables[43]))
+                                ret = ret.times(tmp.k.clickables.getGlobalMetalGainMult)
                                 return ret
                         },
                         metalProductionPerSecond(){
@@ -14584,7 +14700,8 @@ addLayer("k", {
                         },
                         mineProductionPer(){
                                 let ret = new Decimal(.1)
-                                ret = ret.times(tmp.k.clickables[15].effect)
+                                ret = ret.times(tmp.k.clickables.getGlobalMineGainMult)
+                                ret = ret.times(Decimal.pow(tmp.k.clickables[44].effect, player.k.lock.repeatables[23]))
                                 return ret
                         },
                         total(){
@@ -14592,7 +14709,7 @@ addLayer("k", {
                                 return data.mines[23].plus(data.repeatables[23])
                         },
                         bases(){
-                                return [new Decimal("1e560"), new Decimal("1e21")]
+                                return [new Decimal("1e584"), new Decimal("1e21")]
                         },
                         cost(){
                                 let bases = tmp.k.clickables[23].bases
@@ -14602,12 +14719,12 @@ addLayer("k", {
                         },
                         effect(){
                                 let amt = player.k.lock.resources[23]
-                                let ret = new Decimal(1)
+                                let ret = amt.plus(1e18).log10().div(3).pow(2).sub(35)
                                 return ret
                         },
                         effectDescription(){
                                 let eff = tmp.k.clickables[23].effect 
-                                return "*" + format(eff) + " to idk"
+                                return "*" + format(eff) + " Mine production"
                         },
                         mineProductionPerSecond(){
                                 return tmp.k.clickables[23].mineProductionPer.times(tmp.k.clickables[23].total)
@@ -14654,6 +14771,7 @@ addLayer("k", {
                                 ret = ret.times(Decimal.pow(tmp.k.clickables[31].effect, player.k.lock.repeatables[24].sqrt()))
                                 ret = ret.times(Decimal.pow(player.k.lock.resources[24].plus(Math.E).ln(), tmp.k.clickables[33].effect))
                                 ret = ret.times(Decimal.pow(tmp.k.clickables[34].effect, player.k.lock.repeatables[44]))
+                                ret = ret.times(tmp.k.clickables.getGlobalMetalGainMult)
                                 return ret
                         },
                         metalProductionPerSecond(){
@@ -14661,7 +14779,8 @@ addLayer("k", {
                         },
                         mineProductionPer(){
                                 let ret = new Decimal(.1)
-                                ret = ret.times(tmp.k.clickables[15].effect)
+                                ret = ret.times(tmp.k.clickables.getGlobalMineGainMult)
+                                ret = ret.times(Decimal.pow(tmp.k.clickables[44].effect, player.k.lock.repeatables[24]))
                                 return ret
                         },
                         total(){
@@ -14669,7 +14788,7 @@ addLayer("k", {
                                 return data.mines[24].plus(data.repeatables[24])
                         },
                         bases(){
-                                return [new Decimal("1e740"), new Decimal("1e34")]
+                                return [new Decimal("1e681"), new Decimal("1e34")]
                         },
                         cost(){
                                 let bases = tmp.k.clickables[24].bases
@@ -14679,12 +14798,18 @@ addLayer("k", {
                         },
                         effect(){
                                 let amt = player.k.lock.resources[24]
-                                let ret = new Decimal(1)
+                                let arg = amt.div(1e20).max(1)
+                                let exp = arg.sqrt()
+                                if (exp.gt(100)) exp = exp.log10().times(50)
+                                let ret = Decimal.pow(arg, exp)
+
+                                if (ret.gt(1e100)) ret = ret.log10().pow(50)
+
                                 return ret
                         },
                         effectDescription(){
                                 let eff = tmp.k.clickables[24].effect 
-                                return "*" + format(eff) + " to idk"
+                                return "*" + format(eff) + " Knowledge"
                         },
                         mineProductionPerSecond(){
                                 return tmp.k.clickables[24].mineProductionPer.times(tmp.k.clickables[24].total)
@@ -14731,6 +14856,7 @@ addLayer("k", {
                                 ret = ret.times(Decimal.pow(tmp.k.clickables[31].effect, player.k.lock.repeatables[25].sqrt()))
                                 ret = ret.times(Decimal.pow(player.k.lock.resources[25].plus(Math.E).ln(), tmp.k.clickables[33].effect))
                                 ret = ret.times(Decimal.pow(tmp.k.clickables[34].effect, player.k.lock.repeatables[45]))
+                                ret = ret.times(tmp.k.clickables.getGlobalMetalGainMult)
                                 return ret
                         },
                         metalProductionPerSecond(){
@@ -14738,7 +14864,8 @@ addLayer("k", {
                         },
                         mineProductionPer(){
                                 let ret = new Decimal(.1)
-                                ret = ret.times(tmp.k.clickables[15].effect)
+                                ret = ret.times(tmp.k.clickables.getGlobalMineGainMult)
+                                ret = ret.times(Decimal.pow(tmp.k.clickables[44].effect, player.k.lock.repeatables[25]))
                                 return ret
                         },
                         total(){
@@ -14746,7 +14873,7 @@ addLayer("k", {
                                 return data.mines[25].plus(data.repeatables[25])
                         },
                         bases(){
-                                return [new Decimal("1e950"), new Decimal("1e55")]
+                                return [new Decimal("1e993"), new Decimal("1e55")]
                         },
                         cost(){
                                 let bases = tmp.k.clickables[25].bases
@@ -14761,7 +14888,7 @@ addLayer("k", {
                         },
                         effectDescription(){
                                 let eff = tmp.k.clickables[25].effect 
-                                return "*" + format(eff) + " to idk"
+                                return "*" + format(eff) + " idk"
                         },
                         mineProductionPerSecond(){
                                 return tmp.k.clickables[25].mineProductionPer.times(tmp.k.clickables[25].total)
@@ -15028,6 +15155,206 @@ addLayer("k", {
                                 data.repeatables[35] = data.repeatables[35].plus(1)
                         },
                 },
+                41: {
+                        title(){
+                                if (player.tab != "k") return ""
+                                return "<h3 style='color: #" + getUndulatingColor(6) + "'>Tin<br>Lock</h3>"
+                        },
+                        display(){
+                                if (player.tab != "k") return ""
+                                let a 
+                                let b 
+                                let c 
+                                let id = 41
+                                let extra = tmp.k.clickables[id].cost.lt("1e900") ? " <b>Tin</b>" : ""
+                                a = "<h3 style='color: #AC4600'>Cost</h3>: " + formatWhole(tmp.k.clickables[id].cost) + extra + "<br>"
+                                c = "<h3 style='color: #FF33CC'>Effect</h3>: (" + formatWhole(player.k.lock.repeatables[id]) +")<br>" + tmp.k.clickables[id].effectDescription + "<br>"
+                                
+                                return a + c
+                        },
+                        unlocked(){
+                                return player.k.lock.repeatables[35].gt(1) || hasUnlockedPast("k")
+                        },
+                        bases(){
+                                return [new Decimal("1e17"), new Decimal(4)]
+                        },
+                        cost(){
+                                let bases = tmp.k.clickables[41].bases
+                                let a = bases[0]
+                                let b = bases[1]
+                                return a.times(Decimal.pow(b, player.k.lock.repeatables[41].pow(2)))
+                        },
+                        effect(){
+                                let amt = player.k.lock.repeatables[41]
+                                let ret = amt
+                                return ret
+                        },
+                        effectDescription(){
+                                let eff = tmp.k.clickables[41].effect
+                                return "+" + format(eff) + " to <b>Japan</b> base"
+                        },
+                        canClick(){
+                                if (player.tab != "k") return false
+                                return player.k.lock.resources[21].gte(this.cost())
+                        },
+                        onClick(nocost = false){
+                                if (!this.canClick()) return 
+                                let cost = this.cost()
+                                let data = player.k.lock 
+                                if (!nocost) data.resources[21] = data.resources[21].minus(cost)
+                                data.repeatables[41] = data.repeatables[41].plus(1)
+                        },
+                },
+                42: {
+                        title(){
+                                if (player.tab != "k") return ""
+                                return "<h3 style='color: #" + getUndulatingColor(6.4) + "'>Titanium<br>Lock</h3>"
+                        },
+                        display(){
+                                if (player.tab != "k") return ""
+                                let a 
+                                let b 
+                                let c 
+                                let id = 42
+                                let extra = tmp.k.clickables[id].cost.lt("1e900") ? " <b>Titanium</b>" : ""
+                                a = "<h3 style='color: #AC4600'>Cost</h3>: " + formatWhole(tmp.k.clickables[id].cost) + extra + "<br>"
+                                c = "<h3 style='color: #FF33CC'>Effect</h3>: (" + formatWhole(player.k.lock.repeatables[id]) +")<br>" + tmp.k.clickables[id].effectDescription + "<br>"
+                                
+                                return a + c
+                        },
+                        unlocked(){
+                                return player.k.lock.repeatables[41].gt(1) || hasUnlockedPast("k")
+                        },
+                        bases(){
+                                return [new Decimal("1e13"), new Decimal(5)]
+                        },
+                        cost(){
+                                let bases = tmp.k.clickables[42].bases
+                                let a = bases[0]
+                                let b = bases[1]
+                                return a.times(Decimal.pow(b, player.k.lock.repeatables[42].pow(2)))
+                        },
+                        effect(){
+                                let amt = player.k.lock.repeatables[42]
+                                let ret = amt.sqrt().div(4)
+                                return ret
+                        },
+                        effectDescription(){
+                                let eff = tmp.k.clickables[42].effect
+                                return "*ln(keys)^" + format(eff) + " global Metal gain"
+                        },
+                        canClick(){
+                                if (player.tab != "k") return false
+                                return player.k.lock.resources[22].gte(this.cost())
+                        },
+                        onClick(nocost = false){
+                                if (!this.canClick()) return 
+                                let cost = this.cost()
+                                let data = player.k.lock 
+                                if (!nocost) data.resources[22] = data.resources[22].minus(cost)
+                                data.repeatables[42] = data.repeatables[42].plus(1)
+                        },
+                },
+                43: {
+                        title(){
+                                if (player.tab != "k") return ""
+                                return "<h3 style='color: #" + getUndulatingColor(6.8) + "'>Tungsten<br>Lock</h3>"
+                        },
+                        display(){
+                                if (player.tab != "k") return ""
+                                let a 
+                                let b 
+                                let c 
+                                let id = 43
+                                let extra = tmp.k.clickables[id].cost.lt("1e900") ? " <b>Tungsten</b>" : ""
+                                a = "<h3 style='color: #AC4600'>Cost</h3>: " + formatWhole(tmp.k.clickables[id].cost) + extra + "<br>"
+                                c = "<h3 style='color: #FF33CC'>Effect</h3>: (" + formatWhole(player.k.lock.repeatables[id]) +")<br>" + tmp.k.clickables[id].effectDescription + "<br>"
+                                
+                                return a + c
+                        },
+                        unlocked(){
+                                return player.k.lock.repeatables[42].gt(1) || hasUnlockedPast("k")
+                        },
+                        bases(){
+                                return [new Decimal("1e19"), new Decimal(6)]
+                        },
+                        cost(){
+                                let bases = tmp.k.clickables[43].bases
+                                let a = bases[0]
+                                let b = bases[1]
+                                return a.times(Decimal.pow(b, player.k.lock.repeatables[43].pow(2)))
+                        },
+                        effect(){
+                                let amt = player.k.lock.repeatables[43]
+                                let ret = amt.div(500).plus(1).ln()
+                                return ret
+                        },
+                        effectDescription(){
+                                let eff = tmp.k.clickables[43].effect
+                                return "+[total locks]*" + format(eff, 4) + " <b>K</b> gain exponent"
+                        },
+                        canClick(){
+                                if (player.tab != "k") return false
+                                return player.k.lock.resources[23].gte(this.cost())
+                        },
+                        onClick(nocost = false){
+                                if (!this.canClick()) return 
+                                let cost = this.cost()
+                                let data = player.k.lock 
+                                if (!nocost) data.resources[23] = data.resources[23].minus(cost)
+                                data.repeatables[43] = data.repeatables[43].plus(1)
+                        },
+                },
+                44: {
+                        title(){
+                                if (player.tab != "k") return ""
+                                return "<h3 style='color: #" + getUndulatingColor(7.2) + "'>Aluminum<br>Lock</h3>"
+                        },
+                        display(){
+                                if (player.tab != "k") return ""
+                                let a 
+                                let b 
+                                let c 
+                                let id = 44
+                                let extra = tmp.k.clickables[id].cost.lt("1e900") ? " <b>Aluminum</b>" : ""
+                                a = "<h3 style='color: #AC4600'>Cost</h3>: " + formatWhole(tmp.k.clickables[id].cost) + extra + "<br>"
+                                c = "<h3 style='color: #FF33CC'>Effect</h3>: (" + formatWhole(player.k.lock.repeatables[id]) +")<br>" + tmp.k.clickables[id].effectDescription + "<br>"
+                                
+                                return a + c
+                        },
+                        unlocked(){
+                                return player.k.lock.repeatables[43].gt(1) || hasUnlockedPast("k")
+                        },
+                        bases(){
+                                return [new Decimal("1e22"), new Decimal(8)]
+                        },
+                        cost(){
+                                let bases = tmp.k.clickables[44].bases
+                                let a = bases[0]
+                                let b = bases[1]
+                                return a.times(Decimal.pow(b, player.k.lock.repeatables[44].pow(2)))
+                        },
+                        effect(){
+                                let amt = player.k.lock.repeatables[44]
+                                let ret = amt.div(10).plus(1).ln().times(10).plus(1)
+                                return ret
+                        },
+                        effectDescription(){
+                                let eff = tmp.k.clickables[44].effect
+                                return "per resource *" + format(eff) + "^[bought mines] mine production"
+                        },
+                        canClick(){
+                                if (player.tab != "k") return false
+                                return player.k.lock.resources[24].gte(this.cost())
+                        },
+                        onClick(nocost = false){
+                                if (!this.canClick()) return 
+                                let cost = this.cost()
+                                let data = player.k.lock 
+                                if (!nocost) data.resources[24] = data.resources[24].minus(cost)
+                                data.repeatables[44] = data.repeatables[44].plus(1)
+                        },
+                },
         },
         tabFormat: {
                 "Upgrades": {
@@ -15129,7 +15456,7 @@ addLayer("k", {
                                         there are 10 mines which produce previous mines<br>
                                         Each mine also produced its own metal:<br>
                                         Iron, Silver, Gold, Bronze, Copper, <br>
-                                        Tin, Titanium, Tungsten, Alumnium, Osmium<br>
+                                        Tin, Titanium, Tungsten, Aluminum, Osmium<br>
                                         Each metal has its own lock + key that it makes<br>
                                         Each time you open a lock you get a boost to things idk lol<br>
                                         <br>

@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".6.14 Locked",
+	num: ".6.15 Locking",
 	name: "",
 }
 
@@ -451,7 +451,8 @@ function nextMilestone(){
 // Display extra things at the top of the page
 var displayThings = [
 	function(){
-		return player.autosave ? "Endgame: e356 Keys" : "Endgame: e356 Keys. Warning: autosave is off"
+		let a = "Endgame: Osmium Mine"
+		return player.autosave ? a : a + ". Warning: autosave is off"
 	},
 	function(){
 		let a = new Date().getTime() - player.lastSave
@@ -725,6 +726,11 @@ function getChangeLogText(){
 	as5= "- Added three locks"
 	as6= "- Removed the ctrl display for Locks"
 	as7= "- Now the game notifies you when you can buy a puzzle upgrade/repeatable"
+	at1= "v.6.15"
+	at2= "- Added an Idea buyable"
+	at3= "- Added four locks"
+	at4= "- Added a puzzle upgrade"
+	at5= "- Balancing, next up is Osmium effect and Osmium Lock"
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
 	let part2 = [b1, b2, b3, b4, b5, "", b6, b7, "", b8, b9, b10, "", b11, b12, ""]
