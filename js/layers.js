@@ -5037,7 +5037,7 @@ addLayer("ach", {
         canReset(){
                 return false
         },
-        achievements: getFirstNAchData(189), //Object.keys(PROGRESSION_MILESTONES).length
+        achievements: getFirstNAchData(210), //Object.keys(PROGRESSION_MILESTONES).length
         milestones: {
                 1: {
                         requirementDescription(){
@@ -11590,7 +11590,9 @@ addLayer("j", {
                 }
 
                 data.time += diff
-                data.autodevtime += diff / Math.min(1, player.devSpeed)
+                let autoDevFactor = 1
+                if (player.j.puzzle.upgrades.includes(62)) autoDevFactor *= 4
+                data.autodevtime += diff * autoDevFactor
 
                 if (!hasUnlockedPast("i")) return //should help w lag
 
@@ -11603,8 +11605,8 @@ addLayer("j", {
                 data2.bestExp = data2.bestExp.max(data2.exp)
                 data2.bestCompletedK = Math.max(data2.bestCompletedK, data2.finished)
                 data2.bestCompletedAllTime = Math.max(data2.bestCompletedAllTime, data2.finished)
-                data2.time += diff / (player.devSpeed || 1)
-                data2.autotime += diff * tmp.j.clickables.getAttemptSpeed.toNumber() / (player.devSpeed || 1)
+                data2.time += diff
+                data2.autotime += diff * tmp.j.clickables.getAttemptSpeed.toNumber()
                 let multiplier = tmp.j.clickables.getBulkAmount
 
                 let finishedPEdges = tot2 == data2.placed.edges
@@ -12139,6 +12141,7 @@ addLayer("j", {
                         ret = ret.times(tmp.k.clickables[35].effect)
                         if (hasMilestone("k", 12)) ret = ret.times(Decimal.pow(1.1, tmp.k.clickables.totalMines))
                         ret = ret.times(tmp.k.clickables[24].effect)
+                        if (hasUpgrade("k", 23)) ret = ret.times(Decimal.pow(100, player.k.lock.repeatables[45]))
                         return ret
                 },
                 getBankedExpGainUF(){
@@ -13241,7 +13244,7 @@ addLayer("j", {
                                 return "<b style='color: #003333'>Jessica</b>"
                         },
                         display(){
-                                let a = "Square Silver Lock effect and each lock doubles <b>K</b> gain"
+                                let a = "Square Silver Lock effect, each lock doubles <b>K</b> gain, and Puzzle autobuyers trigger 4x as often"
                                 let b = "<br><br>Cost: " + formatWhole(tmp.j.clickables[62].cost) + " Exp"
                                 return a + b
                         },
@@ -13271,7 +13274,7 @@ addLayer("j", {
                                 return "<b style='color: #003333'>Jerry</b>"
                         },
                         display(){
-                                let a = "Jack levels multiply first row metal gain and you can bulk amount 10x more"
+                                let a = "Jack levels multiply first row metal gain and you can buy 10x more Bulk Amount at once"
                                 let b = "<br><br>Cost: " + formatWhole(tmp.j.clickables[63].cost) + " Exp"
                                 return a + b
                         },
@@ -13754,6 +13757,7 @@ addLayer("k", {
                 if (hasUpgrade("k", 22)) x = x.plus(.08 * player.k.upgrades.length)
                 if (hasUpgrade("j", 44)) x = x.plus(1)
                 x = x.plus(tmp.k.clickables[43].effect.times(tmp.k.clickables.totalKeys))
+                x = x.plus(tmp.k.clickables[25].effect)
                 return x
         },
         getGainMultPre(){
@@ -13772,6 +13776,7 @@ addLayer("k", {
                 x = x.times(Decimal.pow(tmp.k.clickables[32].effect, tmp.k.clickables.totalMines))
                 if (player.j.puzzle.upgrades.includes(62)) x = x.times(Decimal.pow(2, tmp.k.clickables.totalKeys))
                 x = x.times(tmp.k.clickables[35].effect)
+                if (hasUpgrade("k", 23)) x = x.times(Decimal.pow(100, player.k.lock.repeatables[45]))
 
                 return x
         },
@@ -13996,7 +14001,7 @@ addLayer("k", {
                 },
                 14: {
                         requirementDescription: "<b>Keeping</b><br>Requires: 1.04e1,233 Keys",
-                        effectDescription: "You can buy 10 levels of <b>Larger</b> puzzle at a time",
+                        effectDescription: "You can buy 10 levels of <b>Larger Puzzle</b> at a time and square <b>Bronze Lock</b> base",
                         done(){
                                 return player.k.points.max(1).log(2).gte(4096)
                         },
@@ -14064,10 +14069,24 @@ addLayer("k", {
                                 return hasUpgrade("k", 21) || hasUnlockedPast("k")
                         }
                 }, // hasUpgrade("k", 22)
+                23: {
+                        title: "Kill",
+                        description: "Each <b>Osmium Lock</b> gives 100x <b>K</b> and Knowledge",
+                        cost: new Decimal("1e1216"),
+                        unlocked(){
+                                return player.k.lock.repeatables[45].gt(0) || hasUnlockedPast("k")
+                        }
+                }, // hasUpgrade("k", 23)
+                24: {
+                        title: "Knows",
+                        description: "Each upgrade multiplies mine gain by 10",
+                        cost: new Decimal("1e1382"),
+                        unlocked(){
+                                return hasUpgrade("k", 23) || hasUnlockedPast("k")
+                        }
+                }, // hasUpgrade("k", 24)
                 
                 /*
-                Kill
-                Knows
                 Kevin
                 */
         },
@@ -14100,6 +14119,8 @@ addLayer("k", {
                         let ret = new Decimal(1)
                         ret = ret.times(tmp.k.clickables[15].effect)
                         ret = ret.times(tmp.k.clickables[23].effect)
+                        ret = ret.times(Decimal.pow(player.k.points.plus(3).ln(), tmp.k.clickables[45].effect))
+                        if (hasUpgrade("k", 24)) ret = ret.times(Decimal.pow(10, player.k.upgrades.length))
                         return ret
                 },
                 11: {
@@ -14873,7 +14894,7 @@ addLayer("k", {
                                 return data.mines[25].plus(data.repeatables[25])
                         },
                         bases(){
-                                return [new Decimal("1e993"), new Decimal("1e55")]
+                                return [new Decimal("1e939"), new Decimal("1e55")]
                         },
                         cost(){
                                 let bases = tmp.k.clickables[25].bases
@@ -14883,12 +14904,12 @@ addLayer("k", {
                         },
                         effect(){
                                 let amt = player.k.lock.resources[25]
-                                let ret = new Decimal(1)
+                                let ret = amt.div(1e24).plus(10).log10().log10()
                                 return ret
                         },
                         effectDescription(){
                                 let eff = tmp.k.clickables[25].effect 
-                                return "*" + format(eff) + " idk"
+                                return "+" + format(eff, 4) + " <b>K</b> gain exponent"
                         },
                         mineProductionPerSecond(){
                                 return tmp.k.clickables[25].mineProductionPer.times(tmp.k.clickables[25].total)
@@ -15087,6 +15108,8 @@ addLayer("k", {
                         effect(){
                                 let amt = player.k.lock.repeatables[34]
                                 let ret = amt.div(2.5).plus(1).sqrt()
+                                if (hasMilestone("k", 14)) ret = ret.pow(2)
+
                                 return ret
                         },
                         effectDescription(){
@@ -15355,6 +15378,56 @@ addLayer("k", {
                                 data.repeatables[44] = data.repeatables[44].plus(1)
                         },
                 },
+                45: {
+                        title(){
+                                if (player.tab != "k") return ""
+                                return "<h3 style='color: #" + getUndulatingColor(7.6) + "'>Osmium<br>Lock</h3>"
+                        },
+                        display(){
+                                if (player.tab != "k") return ""
+                                let a 
+                                let b 
+                                let c 
+                                let id = 45
+                                let extra = tmp.k.clickables[id].cost.lt("1e900") ? " <b>Osmium</b>" : ""
+                                a = "<h3 style='color: #AC4600'>Cost</h3>: " + formatWhole(tmp.k.clickables[id].cost) + extra + "<br>"
+                                c = "<h3 style='color: #FF33CC'>Effect</h3>: (" + formatWhole(player.k.lock.repeatables[id]) +")<br>" + tmp.k.clickables[id].effectDescription + "<br>"
+                                
+                                return a + c
+                        },
+                        unlocked(){
+                                return player.k.lock.repeatables[44].gt(1) || hasUnlockedPast("k")
+                        },
+                        bases(){
+                                return [new Decimal("2e25"), new Decimal(11)]
+                        },
+                        cost(){
+                                let bases = tmp.k.clickables[45].bases
+                                let a = bases[0]
+                                let b = bases[1]
+                                return a.times(Decimal.pow(b, player.k.lock.repeatables[45].pow(2)))
+                        },
+                        effect(){
+                                let amt = player.k.lock.repeatables[45]
+                                let ret = amt.div(20).plus(1).ln().times(10)
+                                return ret
+                        },
+                        effectDescription(){
+                                let eff = tmp.k.clickables[45].effect
+                                return "*ln(keys)^" + format(eff) + " global mine production"
+                        },
+                        canClick(){
+                                if (player.tab != "k") return false
+                                return player.k.lock.resources[25].gte(this.cost())
+                        },
+                        onClick(nocost = false){
+                                if (!this.canClick()) return 
+                                let cost = this.cost()
+                                let data = player.k.lock 
+                                if (!nocost) data.resources[25] = data.resources[25].minus(cost)
+                                data.repeatables[45] = data.repeatables[45].plus(1)
+                        },
+                },
         },
         tabFormat: {
                 "Upgrades": {
@@ -15422,8 +15495,8 @@ addLayer("k", {
                                         let b = ", <bdi style='color: #" + getUndulatingColor(0.4) + "'>" + format(data1[12]) + " Silver</bdi>"
                                         let c = ", <bdi style='color: #" + getUndulatingColor(0.8) + "'>" + format(data1[13]) + " Gold</bdi>"
                                         let d = ", <bdi style='color: #" + getUndulatingColor(1.2) + "'>" + format(data1[14]) + " Bronze</bdi>"
-                                        let e = " and, <bdi style='color: #" + getUndulatingColor(1.6) + "'>" + format(data1[15]) + " Copper</bdi>."
-                                        let f = "You have <bdi style='color: #" + getUndulatingColor(2) + "'>" + format(data1[21]) + " Tin</bdi>"
+                                        let e = ", <bdi style='color: #" + getUndulatingColor(1.6) + "'>" + format(data1[15]) + " Copper</bdi>,"
+                                        let f = "<bdi style='color: #" + getUndulatingColor(2) + "'>" + format(data1[21]) + " Tin</bdi>"
                                         let g = ", <bdi style='color: #" + getUndulatingColor(2.4) + "'>" + format(data1[22]) + " Titanium</bdi>"
                                         let h = ", <bdi style='color: #" + getUndulatingColor(2.8) + "'>" + format(data1[23]) + " Tungsten</bdi>"
                                         let i = ", <bdi style='color: #" + getUndulatingColor(3.2) + "'>" + format(data1[24]) + " Aluminum</bdi>"
@@ -15467,7 +15540,8 @@ addLayer("k", {
                                 }],
                         ],
                         unlocked(){
-                                return player.j.puzzle.upgrades.includes(61) || hasUnlockedPast("k")
+                                return false
+                                //player.j.puzzle.upgrades.includes(61) || hasUnlockedPast("k")
                         },
                 },
         },

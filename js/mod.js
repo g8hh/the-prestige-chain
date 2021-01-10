@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".6.15 Locking",
+	num: ".6.16 Unlocking",
 	name: "",
 }
 
@@ -235,6 +235,27 @@ PROGRESSION_MILESTONES = {
 	187:()=> player.j.puzzle.finished >= 290              || hasAchievement("ach",275),
 	188:()=> player.j.puzzle.finished >= 300              || hasAchievement("ach",276),
 	189:()=> player.j.puzzle.finished >= 310              || hasAchievement("ach",277),
+	190:()=> player.j.puzzle.finished >= 400              || hasAchievement("ach",281),
+	191:()=> player.j.puzzle.finished >= 500              || hasAchievement("ach",282),
+	192:()=> player.j.puzzle.finished >= 700              || hasAchievement("ach",283),
+	193:()=> player.j.puzzle.finished >= 1000             || hasAchievement("ach",284),
+	194:()=> player.k.lock.resources[11].gt(0)           || hasAchievement("ach",285),
+	195:()=> player.k.lock.resources[12].gt(0)           || hasAchievement("ach",286),
+	196:()=> player.k.lock.resources[13].gt(0)           || hasAchievement("ach",287),
+	197:()=> player.k.lock.resources[14].gt(0)           || hasAchievement("ach",291),
+	198:()=> player.k.lock.resources[15].gt(0)           || hasAchievement("ach",292),
+	199:()=> player.k.lock.resources[21].gt(0)           || hasAchievement("ach",293),
+	200:()=> player.k.lock.resources[22].gt(0)           || hasAchievement("ach",294),
+	201:()=> player.k.lock.resources[23].gt(0)           || hasAchievement("ach",295),
+	202:()=> player.k.lock.resources[24].gt(0)           || hasAchievement("ach",296),
+	203:()=> player.k.lock.resources[25].gt(0)           || hasAchievement("ach",297),
+	204:()=> player.j.puzzle.finished >= 1500             || hasAchievement("ach",301),
+	205:()=> player.j.puzzle.finished >= 2000             || hasAchievement("ach",302),
+	206:()=> player.j.puzzle.finished >= 2500             || hasAchievement("ach",303),
+	207:()=> player.j.puzzle.finished >= 3000             || hasAchievement("ach",304),
+	208:()=> player.j.puzzle.finished >= 3500             || hasAchievement("ach",305),
+	209:()=> player.j.puzzle.finished >= 4000             || hasAchievement("ach",306),
+	210:()=> player.j.puzzle.finished >= 4500             || hasAchievement("ach",307),
 }
 
 PROGRESSION_MILESTONES_TEXT = {
@@ -427,6 +448,27 @@ PROGRESSION_MILESTONES_TEXT = {
 	187:"290 puzzle completions at once",
 	188:"300 puzzle completions at once",
 	189:"310 puzzle completions at once",
+	190:"400 puzzle completions at once",
+	191:"500 puzzle completions at once",
+	192:"700 puzzle completions at once",
+	193:"1000 puzzle completions at once",
+	194:"one Iron",
+	195:"one Silver",
+	196:"one Gold",
+	197:"one Bronze",
+	198:"one Copper",
+	199:"one Tin",
+	200:"one Titanium",
+	201:"one Tungsten",
+	202:"one Aluminum",
+	203:"one Osmium",
+	204:"1500 puzzle completions at once",
+	205:"2000 puzzle completions at once",
+	206:"2500 puzzle completions at once",
+	207:"3000 puzzle completions at once",
+	208:"3500 puzzle completions at once",
+	209:"4000 puzzle completions at once",
+	210:"4500 puzzle completions at once",
 }
 
 function progressReachedNum(){
@@ -451,7 +493,7 @@ function nextMilestone(){
 // Display extra things at the top of the page
 var displayThings = [
 	function(){
-		let a = "Endgame: Osmium Mine"
+		let a = "Endgame: 1e1674 Keys"
 		return player.autosave ? a : a + ". Warning: autosave is off"
 	},
 	function(){
@@ -731,6 +773,10 @@ function getChangeLogText(){
 	at3= "- Added four locks"
 	at4= "- Added a puzzle upgrade"
 	at5= "- Balancing, next up is Osmium effect and Osmium Lock"
+	au1= "v.6.16"
+	au2= "- Added three rows of achievements"
+	au3= "- Added a lock"
+	au4= "- Added two Key upgrades"
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
 	let part2 = [b1, b2, b3, b4, b5, "", b6, b7, "", b8, b9, b10, "", b11, b12, ""]
@@ -776,13 +822,15 @@ function getChangeLogText(){
 	let part42= [aq1,aq2, ""]
 	let part43= [ar1,ar2,ar3,ar4,ar5,ar6,ar7,ar8,ar9, ""]
 	let part44= [as1,as2,as3,as4,as5,as6,as7, ""]
+	let part45= [at1,at2,at3,at4,at5, ""]
+	let part46= [au1,au2,au3,au4, ""]
 	// MAKE SURE TO ADD THEM
 
 	let final1 = [part10,  part9,  part8,  part7,  part6,  part5,  part4,  part3,  part2,  part1]
 	let final2 = [part20, part19, part18, part17, part16, part15, part14, part13, part12, part11]
 	let final3 = [part30, part29, part28, part27, part26, part25, part24, part23, part22, part21]
 	let final4 = [part40, part39, part38, part37, part36, part35, part34, part33, part32, part31]
-	let final5 = [part44, part43, part42, part41]
+	let final5 = [part46, part45, part44, part43, part42, part41]
 
 	return final5.concat(final4).concat(final3).concat(final2).concat(final1)
 }
