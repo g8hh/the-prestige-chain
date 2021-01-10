@@ -101,7 +101,7 @@
 			Current number of hotkeys: <span v-html="Object.keys(hotkeys || {}).length"></span><br>
 			<span v-for="key in hotkeys" v-if="player[key.layer].unlocked">
 				<span v-if="newHotkeyLine(key)"><br></span>
-				<button class="opt2" id=key v-on:click="{dothingcooltoggle($event.path[0].innerHTML)}"><b style='color: #CC3333'>{{getKeyDesc1(key)}}</b><br>{{getKeyDesc2(key)}}</button>
+				<button class="opt2" id=key><br><b style='color: #CC3333'>{{getKeyDesc1(key)}}</b></button>
 			</span>
 			<br><br>
 			<h3>Change log:</h3><br> 

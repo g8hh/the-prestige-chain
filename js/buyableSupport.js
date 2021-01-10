@@ -2285,6 +2285,15 @@ var MAIN_BUYABLE_DATA = {
                 effects: "base <b>H</b> gain",
                 base: {
                         initial: new Decimal("1ee5"),
+                        1: {
+                                active: function(){
+                                        return true
+                                },
+                                amount: function(){
+                                        return CURRENT_BUYABLE_EFFECTS["i23"]
+                                },
+                                type: "times",
+                        },
                 },
                 bases(){
                         let b0 = new Decimal("1e11200e6")
@@ -2335,6 +2344,20 @@ var MAIN_BUYABLE_DATA = {
                         return [b0, b1, b2]
                 },
         },
+        i23: {
+                name: "Independent",
+                func: "exp",
+                effects: "<b>Inn</b> base",
+                base: {
+                        initial: new Decimal("1e1000"),
+                },
+                bases(){
+                        let b0 = new Decimal("1e40e12")
+                        let b1 = new Decimal("1e1e10")
+                        let b2 = new Decimal("1e1e7")
+                        return [b0, b1, b2]
+                },
+        }
 }
 
 var EXTRA_FREE_BUYABLE_DATA = {

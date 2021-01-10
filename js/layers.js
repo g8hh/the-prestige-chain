@@ -134,6 +134,7 @@ function getChallengeFactor(comps){
 }
 
 function isBuyableActive(layer, thang){
+        if (layer == "l") return true
         if (layer == "k") return true
         if (layer == "j") return true
         if (layer == "i") return true
@@ -156,6 +157,7 @@ function isBuyableActive(layer, thang){
 }
 
 function isPrestigeEffectActive(layer){
+        if (layer == "l") return true
         if (layer == "k") return true
         if (layer == "j") return true
         if (layer == "i") return true
@@ -341,6 +343,7 @@ function getPrestigeName(layer){
                 h: "Hearts",
                 i: "Ideas",
                 j: "Jigsaws",
+                k: "Keys",
         }[layer]
 }
 
@@ -526,6 +529,7 @@ function getGeneralizedEffectDisplay(layer){
 
 function getGeneralizedPrestigeButtonText(layer){
         if (player.tab != layer) return ""
+        if (player.subtabs[layer].mainTabs != "Upgrades") return ""
         let gain= tmp[layer].getResetGain
         let pts = tmp[layer].baseAmount
         let pre = tmp[layer].getGainMultPre
@@ -800,6 +804,11 @@ addLayer("a", {
                                 let ret = player.a.points.times(10).plus(20).log10().pow(exp)
                                 return ret
                         },
+                        effectDisplay(){
+                                if (player.tab != "a") return ""
+                                if (player.subtabs.a.mainTabs != "Upgrades") return ""
+                                return format(tmp.a.upgrades[11].effect)
+                        },
                         unlocked(){
                                 return player.a.best.gt(0) || hasUnlockedPast("a")
                         }
@@ -817,6 +826,11 @@ addLayer("a", {
                                 
                                 return Decimal.pow(base, exp)
                         },
+                        effectDisplay(){
+                                if (player.tab != "a") return ""
+                                if (player.subtabs.a.mainTabs != "Upgrades") return ""
+                                return format(tmp.a.upgrades[12].effect)
+                        },
                         unlocked(){
                                 return hasUpgrade("a", 11) || hasUnlockedPast("a")
                         }
@@ -829,6 +843,11 @@ addLayer("a", {
                                 let exp = new Decimal(player.a.upgrades.length)
                                 exp = exp.times(tmp.a.buyables[13].effect)
                                 return Decimal.pow(1.2, exp)
+                        },
+                        effectDisplay(){
+                                if (player.tab != "a") return ""
+                                if (player.subtabs.a.mainTabs != "Upgrades") return ""
+                                return format(tmp.a.upgrades[13].effect)
                         },
                         unlocked(){
                                 return hasUpgrade("a", 12) || hasUnlockedPast("a")
@@ -843,6 +862,11 @@ addLayer("a", {
                                 if (hasUpgrade("a", 35)) exp = exp.times(3)
                                 if (hasUpgrade("c", 12)) exp = exp.times(player.b.upgrades.length).max(exp)
                                 return player.a.points.plus(10).log10().pow(exp)
+                        },
+                        effectDisplay(){
+                                if (player.tab != "a") return ""
+                                if (player.subtabs.a.mainTabs != "Upgrades") return ""
+                                return format(tmp.a.upgrades[14].effect)
                         },
                         unlocked(){
                                 return hasUpgrade("a", 13) || hasUnlockedPast("a")
@@ -860,13 +884,6 @@ addLayer("a", {
                         title: "An",
                         description: "Each Amoeba upgrade adds .5 to the <b>And</b> exponent",
                         cost: new Decimal(2500),
-                        effect(){
-                                return 3 + player.a.upgrades.length
-                        },
-                        effectDisplay(){
-                                if (player.tab != "a") return ""
-                                return "3 -> " + format(3 + player.a.upgrades.length * .5, 1)
-                        },
                         unlocked(){
                                 return getBuyableAmount("a", 11).gte(3) || hasUnlockedPast("a")
                         }
@@ -1023,10 +1040,6 @@ addLayer("a", {
                                 return hasUpgrade("a", 53) || hasUnlockedPast("c")
                         }
                 },
-                /*
-                august
-                america
-                */
         },
         buyables: {
                 rows: 3,
@@ -1282,6 +1295,7 @@ addLayer("a", {
                                 ["display-text",
                                         function() {
                                                 if (player.tab != "a") return ""
+                                                if (player.subtabs.a.mainTabs != "Upgrades") return ""
                                                 return shiftDown ? "Your best Amoebas is " + format(player.a.best) : ""
                                         }
                                 ],
@@ -1289,12 +1303,14 @@ addLayer("a", {
                                         function() {
                                                 if (player.tab != "a") return ""
                                                 if (hasUnlockedPast("a")) return ""
+                                                if (player.subtabs.a.mainTabs != "Upgrades") return ""
                                                 return "You have done " + formatWhole(player.a.times) + " Amoeba resets"
                                         }
                                 ],
                                 ["display-text",
                                         function() {
                                                 if (player.tab != "a") return ""
+                                                if (player.subtabs.a.mainTabs != "Upgrades") return ""
                                                 if (hasUpgrade("a", 23)) return "You are gaining " + format(tmp.a.getResetGain) + " Amoebas per second"
                                                 return "There is a two second cooldown for prestiging (" + format(Math.max(0, 2-player.a.time)) + ")" 
                                         },
@@ -1311,6 +1327,7 @@ addLayer("a", {
                                 ["display-text",
                                         function() {
                                                 if (player.tab != "a") return ""
+                                                if (player.subtabs.a.mainTabs != "Buyables") return ""
                                                 if (hasUpgrade("a", 23) && shiftDown) return "You are gaining " + format(tmp.a.getResetGain) + " Amoebas per second"
                                                 return ""
                                         },
@@ -1463,6 +1480,11 @@ addLayer("b", {
 
                                 if (hasUpgrade("c", 11)) ret = ret.pow(2)
                                 return ret
+                        },
+                        effectDescription(){
+                                if (player.tab != "b") return ""
+                                if (player.subtabs.b.mainTabs != "Upgrades") return ""
+                                return format(tmp.b.upgrades[11].effect)
                         },
                         unlocked(){
                                 return player.b.best.gte(1) || hasUnlockedPast("b")
@@ -2007,6 +2029,7 @@ addLayer("b", {
                                 ["display-text",
                                         function() {
                                                 if (player.tab != "b") return ""
+                                                if (player.subtabs.b.mainTabs != "Upgrades") return ""
                                                 let a = hasUnlockedPast("b") ? "" : "You have done " + formatWhole(player.b.times) + " Bacteria resets<br>"
                                                 if (hasUpgrade("b", 22)) return a + "You are gaining " + format(tmp.b.getResetGain) + " Bacteria per second"
                                                 return a + "There is a five second cooldown for prestiging (" + format(Math.max(0, 5-player.b.time)) + ")" 
@@ -2022,12 +2045,14 @@ addLayer("b", {
                                 ["display-text",
                                         function() {
                                                 if (player.tab != "b") return ""
+                                                if (player.subtabs.b.mainTabs != "Buyables") return ""
                                                 return "Each buyable gives free levels to all previous layers corresponding buyable"
                                         }
                                 ],
                                 ["display-text",
                                         function() {
                                                 if (player.tab != "b") return ""
+                                                if (player.subtabs.b.mainTabs != "Buyables") return ""
                                                 if (!shiftDown || !hasUpgrade("b", 22)) return ""
                                                 return "You are gaining " + format(tmp.b.getResetGain) + " Bacteria per second"
                                         }
@@ -2043,12 +2068,14 @@ addLayer("b", {
                                 ["display-text",
                                         function() {
                                                 if (player.tab != "b") return ""
+                                                if (player.subtabs.b.mainTabs != "Challenges") return ""
                                                 return "Challenge completions are never reset, and you can bulk complete challenges"
                                         }
                                 ],
                                 ["display-text",
                                         function() {
                                                 if (player.tab != "b") return ""
+                                                if (player.subtabs.b.mainTabs != "Challenges") return ""
                                                 return "You have completed " + formatWhole(totalChallengeComps("b")) + " Bacteria Challenges"
                                         }
                                 ],
@@ -2697,6 +2724,7 @@ addLayer("c", {
                                 ["display-text",
                                         function() {
                                                 if (player.tab != "c") return ""
+                                                if (player.subtabs.c.mainTabs != "Upgrades") return ""
                                                 return shiftDown ? "Your best Circles is " + format(player.c.best) : ""
                                         }
                                 ],
@@ -2704,12 +2732,14 @@ addLayer("c", {
                                         function() {
                                                 if (player.tab != "c") return ""
                                                 if (hasUnlockedPast("c")) return ""
+                                                if (player.subtabs.c.mainTabs != "Upgrades") return ""
                                                 return "You have done " + formatWhole(player.c.times) + " Circle resets"
                                         }
                                 ],
                                 ["display-text",
                                         function() {
                                                 if (player.tab != "c") return ""
+                                                if (player.subtabs.c.mainTabs != "Upgrades") return ""
                                                 if (hasUpgrade("c", 22)) return "You are gaining " + format(tmp.c.getResetGain) + " Circles per second"
                                                 return "There is a five second cooldown for prestiging (" + format(Math.max(0, 5-player.c.time)) + ")" 
                                         },
@@ -2726,6 +2756,7 @@ addLayer("c", {
                                 ["display-text",
                                         function() {
                                                 if (player.tab != "c") return ""
+                                                if (player.subtabs.c.mainTabs != "Buyables") return ""
                                                 return "Each buyable gives free levels to all previous layers corresponding buyable"
                                         }
                                 ],
@@ -2733,6 +2764,7 @@ addLayer("c", {
                                         function() {
                                                 if (player.tab != "c") return ""
                                                 if (!shiftDown || !hasUpgrade("c", 22)) return ""
+                                                if (player.subtabs.c.mainTabs != "Buyables") return ""
                                                 return "You are gaining " + format(tmp.c.getResetGain) + " Circles per second"
                                         }
                                 ],
@@ -2747,12 +2779,14 @@ addLayer("c", {
                                 ["display-text",
                                         function() {
                                                 if (player.tab != "c") return ""
+                                                if (player.subtabs.c.mainTabs != "Challenges") return ""
                                                 return "Challenge completions are never reset, and you can bulk complete challenges"
                                         }
                                 ],
                                 ["display-text",
                                         function() {
                                                 if (player.tab != "c") return ""
+                                                if (player.subtabs.c.mainTabs != "Challenges") return ""
                                                 return "You have completed " + formatWhole(totalChallengeComps("c")) + " Circle Challenges"
                                         }
                                 ],
@@ -2855,7 +2889,6 @@ addLayer("d", {
                 let ret = amt.times(15).plus(1).pow(exp)
 
                 ret = softcap(ret, "d_eff")
-
 
                 return ret
         },
@@ -3372,6 +3405,7 @@ addLayer("d", {
                                 ["display-text",
                                         function() {
                                                 if (player.tab != "d") return ""
+                                                if (player.subtabs.d.mainTabs != "Upgrades") return ""
                                                 return shiftDown ? "Your best Doodles is " + format(player.d.best) : ""
                                         }
                                 ],
@@ -3379,12 +3413,14 @@ addLayer("d", {
                                         function() {
                                                 if (player.tab != "d") return ""
                                                 if (hasUnlockedPast("d")) return ""
+                                                if (player.subtabs.d.mainTabs != "Upgrades") return ""
                                                 return "You have done " + formatWhole(player.d.times) + " Doodle resets"
                                         }
                                 ],
                                 ["display-text",
                                         function() {
                                                 if (player.tab != "d") return ""
+                                                if (player.subtabs.d.mainTabs != "Upgrades") return ""
                                                 if (hasUpgrade("d", 22)) return "You are gaining " + format(tmp.d.getResetGain) + " Doodles per second"
                                                 return "There is a five second cooldown for prestiging (" + format(Math.max(0, 5-player.d.time)) + ")" 
                                         },
@@ -3401,12 +3437,14 @@ addLayer("d", {
                                 ["display-text",
                                         function() {
                                                 if (player.tab != "d") return ""
+                                                if (player.subtabs.d.mainTabs != "Buyables") return ""
                                                 return "Each buyable gives free levels to all previous layers corresponding buyable"
                                         }
                                 ],
                                 ["display-text",
                                         function() {
                                                 if (player.tab != "d") return ""
+                                                if (player.subtabs.d.mainTabs != "Buyables") return ""
                                                 if (!shiftDown || !hasUpgrade("d", 22)) return ""
                                                 return "You are gaining " + format(tmp.d.getResetGain) + " Doodles per second"
                                         }
@@ -3422,12 +3460,14 @@ addLayer("d", {
                                 ["display-text",
                                         function() {
                                                 if (player.tab != "d") return ""
+                                                if (player.subtabs.d.mainTabs != "Challenges") return ""
                                                 return "Challenge completions are never reset, and you can bulk complete challenges"
                                         }
                                 ],
                                 ["display-text",
                                         function() {
                                                 if (player.tab != "d") return ""
+                                                if (player.subtabs.d.mainTabs != "Challenges") return ""
                                                 return "You have completed " + formatWhole(totalChallengeComps("d")) + " Doodle Challenges"
                                         }
                                 ],
@@ -3827,14 +3867,6 @@ addLayer("e", {
                                 return hasUpgrade("e", 54) || hasUnlockedPast("g")
                         }, // hasUpgrade("e", 55)
                 },
-
-                /*
-                
-                environmental
-                entry
-                european
-                employment
-                */
         },
         buyables: {
                 rows: 3,
@@ -4090,6 +4122,7 @@ addLayer("e", {
                                 ["display-text",
                                         function() {
                                                 if (player.tab != "e") return ""
+                                                if (player.subtabs.e.mainTabs != "Upgrades") return ""
                                                 return shiftDown ? "Your best Eggs is " + format(player.e.best) : ""
                                         }
                                 ],
@@ -4097,12 +4130,14 @@ addLayer("e", {
                                         function() {
                                                 if (player.tab != "e") return ""
                                                 if (hasUnlockedPast("e")) return ""
+                                                if (player.subtabs.e.mainTabs != "Upgrades") return ""
                                                 return "You have done " + formatWhole(player.e.times) + " Egg resets"
                                         }
                                 ],
                                 ["display-text",
                                         function() {
                                                 if (player.tab != "e") return ""
+                                                if (player.subtabs.e.mainTabs != "Upgrades") return ""
                                                 if (hasUpgrade("e", 22)) return "You are gaining " + format(tmp.e.getResetGain) + " Eggs per second"
                                                 return "There is a five second cooldown for prestiging (" + format(Math.max(0, 5-player.e.time)) + ")" 
                                         },
@@ -4121,6 +4156,7 @@ addLayer("e", {
                                                 if (player.tab != "e") return ""
                                                 if (!hasUpgrade("e", 22)) return ""
                                                 if (!shiftDown) return ""
+                                                if (player.subtabs.e.mainTabs != "Buyables") return ""
                                                 return "You are gaining " + format(tmp.e.getResetGain) + " Eggs per second"
                                         },
                                         //{"font-size": "20px"}
@@ -4135,12 +4171,14 @@ addLayer("e", {
                                 ["display-text",
                                         function() {
                                                 if (player.tab != "e") return ""
+                                                if (player.subtabs.e.mainTabs != "Challenges") return ""
                                                 return "Challenge completions are never reset, and you can bulk complete challenges"
                                         }
                                 ],
                                 ["display-text",
                                         function() {
                                                 if (player.tab != "e") return ""
+                                                if (player.subtabs.e.mainTabs != "Challenges") return ""
                                                 return "You have completed " + formatWhole(totalChallengeComps("e")) + " Egg Challenges"
                                         }
                                 ],
@@ -4895,6 +4933,7 @@ addLayer("f", {
                                 ["display-text",
                                         function() {
                                                 if (player.tab != "f") return ""
+                                                if (player.subtabs.f.mainTabs != "Upgrades") return ""
                                                 return shiftDown ? "Your best Features is " + format(player.f.best) : ""
                                         }
                                 ],
@@ -4902,12 +4941,14 @@ addLayer("f", {
                                         function() {
                                                 if (player.tab != "f") return ""
                                                 if (hasUnlockedPast("f")) return ""
+                                                if (player.subtabs.f.mainTabs != "Upgrades") return ""
                                                 return "You have done " + formatWhole(player.f.times) + " Feature resets"
                                         }
                                 ],
                                 ["display-text",
                                         function() {
                                                 if (player.tab != "f") return ""
+                                                if (player.subtabs.f.mainTabs != "Upgrades") return ""
                                                 if (hasMilestone("goalsii", 9)) return "You are gaining " + format(tmp.f.getResetGain) + " Features per second"
                                                 return "There is a two second cooldown for prestiging (" + format(Math.max(0, 2-player.f.time)) + ")" 
                                         },
@@ -4932,12 +4973,14 @@ addLayer("f", {
                                 ["display-text",
                                         function() {
                                                 if (player.tab != "f") return ""
+                                                if (player.subtabs.f.mainTabs != "Challenges") return ""
                                                 return "Challenge completions are never reset, and you can bulk complete challenges"
                                         }
                                 ],
                                 ["display-text",
                                         function() {
                                                if (player.tab != "f") return ""
+                                               if (player.subtabs.f.mainTabs != "Challenges") return ""
                                                 return "You have completed " + formatWhole(totalChallengeComps("f")) + " Feature Challenges"
                                         }
                                 ],
@@ -5041,6 +5084,8 @@ addLayer("ach", {
         milestones: {
                 1: {
                         requirementDescription(){
+                                if (player.tab != "ach") return ""
+                                if (player.subtabs.ach.mainTabs != "Milestones") return ""
                                 return "<b>Life</b><br>Requires: " + formatWhole(tmp.ach.milestones[1].req) + " Goals"
                         }, 
                         effectDescription: "You permanently keep all <b>A</b> upgrades",
@@ -5058,6 +5103,8 @@ addLayer("ach", {
                 },
                 2: {
                         requirementDescription() {
+                                if (player.tab != "ach") return ""
+                                if (player.subtabs.ach.mainTabs != "Milestones") return ""
                                 return "<b>The Universe</b><br>Requires: " + formatWhole(tmp.ach.milestones[2].req) + " Goals"
                         }, 
                         effectDescription: "You permanently keep all <b>B</b> upgrades",
@@ -5075,6 +5122,8 @@ addLayer("ach", {
                 },
                 3: {
                         requirementDescription(){
+                                if (player.tab != "ach") return ""
+                                if (player.subtabs.ach.mainTabs != "Milestones") return ""
                                 return "<b>And Everything</b><br>Requires: " + formatWhole(tmp.ach.milestones[3].req) + " Goals"
                         }, 
                         effectDescription: "You permanently keep all <b>C</b> upgrades",
@@ -5092,6 +5141,8 @@ addLayer("ach", {
                 },
                 4: {
                         requirementDescription() {
+                                if (player.tab != "ach") return ""
+                                if (player.subtabs.ach.mainTabs != "Milestones") return ""
                                 return "<b>Tell me and I forget</b><br>Requires: " + formatWhole(tmp.ach.milestones[4].req) + " Goals"
                         }, 
                         effectDescription: "All autobuyers buy 100x more",
@@ -5109,6 +5160,8 @@ addLayer("ach", {
                 },
                 5: {
                         requirementDescription() {
+                                if (player.tab != "ach") return ""
+                                if (player.subtabs.ach.mainTabs != "Milestones") return ""
                                 return "<b>Teach me and I remember</b><br>Requires: " + formatWhole(tmp.ach.milestones[5].req) + " Goals"
                         }, 
                         effectDescription: "You permanently keep all <b>D</b> upgrades",
@@ -5126,6 +5179,8 @@ addLayer("ach", {
                 },
                 6: {
                         requirementDescription() {
+                                if (player.tab != "ach") return ""
+                                if (player.subtabs.ach.mainTabs != "Milestones") return ""
                                 return "<b>Involve me and I learn</b><br>Requires: " + formatWhole(tmp.ach.milestones[6].req) + " Goals (needs Eighty or in Challenge 4)"
                         }, 
                         effectDescription: "You permanently keep all <b>E</b> upgrades and add 1.5 to the <b>F</b> gain exponent",
@@ -5477,6 +5532,7 @@ addLayer("goalsii", {
         layerShown(){return player.goalsii.times > 0 || player.f.times > 0 || player.g.best.gt(0) || hasUnlockedPast("g")},
         prestigeButtonText(){
                 if (player.tab != "goalsii") return ""
+                if (player.subtabs.goalsii.mainTabs != "Challenges") return ""
                 let b = ""
                 if (player.goalsii.times > 0) b = "This will keep you in the same challenge <br>"
 
@@ -5499,11 +5555,14 @@ addLayer("goalsii", {
                 cols: 5,
                 11: {
                         title(){
+                                if (player.tab != "goalsii") return ""
+                                if (player.subtabs.goalsii.mainTabs != "Challenges") return ""
                                 if (player.goalsii.tokens.best["00"].gt(0)) return "<h3 style='color: #13ACDF'>00</h3>"
                                 return "<h3 style='color: #C03000'>00</h3>"
                         },
                         display(){
                                 if (player.tab != "goalsii") return ""
+                                if (player.subtabs.goalsii.mainTabs != "Challenges") return ""
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["00"]) + "<br>"
                                 let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + format(getGoalChallengeReward("00"), 4) + " to<br>"
                                 let c = "all prior prestige gain exponents"
@@ -5528,11 +5587,14 @@ addLayer("goalsii", {
                 },
                 12: {
                         title(){
+                                if (player.tab != "goalsii") return ""
+                                if (player.subtabs.goalsii.mainTabs != "Challenges") return ""
                                 if (player.goalsii.tokens.best["01"].gt(0)) return "<h3 style='color: #13ACDF'>01</h3>"
                                 return "<h3 style='color: #C03000'>01</h3>"
                         },
                         display(){
                                 if (player.tab != "goalsii") return ""
+                                if (player.subtabs.goalsii.mainTabs != "Challenges") return ""
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["01"]) + "<br>"
                                 let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + format(getGoalChallengeReward("01").times(100), 4) + "<br>"
                                 let c = "/100 to <b>Country</b> and <b>Omnipotent I</b> base"
@@ -5557,11 +5619,14 @@ addLayer("goalsii", {
                 },
                 13: {
                         title(){
+                                if (player.tab != "goalsii") return ""
+                                if (player.subtabs.goalsii.mainTabs != "Challenges") return ""
                                 if (player.goalsii.tokens.best["02"].gt(0)) return "<h3 style='color: #13ACDF'>02</h3>"
                                 return "<h3 style='color: #C03000'>02</h3>"
                         },
                         display(){
                                 if (player.tab != "goalsii") return ""
+                                if (player.subtabs.goalsii.mainTabs != "Challenges") return ""
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["02"]) + "<br>"
                                 let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + format(getGoalChallengeReward("02"), 4) + " to<br>"
                                 let c = "Doodle effect exponent"
@@ -5586,11 +5651,14 @@ addLayer("goalsii", {
                 },
                 14: {
                         title(){
+                                if (player.tab != "goalsii") return ""
+                                if (player.subtabs.goalsii.mainTabs != "Challenges") return ""
                                 if (player.goalsii.tokens.best["03"].gt(0)) return "<h3 style='color: #13ACDF'>03</h3>"
                                 return "<h3 style='color: #C03000'>03</h3>"
                         },
                         display(){
                                 if (player.tab != "goalsii") return ""
+                                if (player.subtabs.goalsii.mainTabs != "Challenges") return ""
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["03"]) + "<br>"
                                 let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + format(getGoalChallengeReward("03"), 4) + " to<br>"
                                 let c = "<b>Delivery</b> and <b>December</b> base"
@@ -5615,11 +5683,14 @@ addLayer("goalsii", {
                 },
                 15: {
                         title(){
+                                if (player.tab != "goalsii") return ""
+                                if (player.subtabs.goalsii.mainTabs != "Challenges") return ""
                                 if (player.goalsii.tokens.best["04"].gt(0)) return "<h3 style='color: #13ACDF'>04</h3>"
                                 return "<h3 style='color: #C03000'>04</h3>"
                         },
                         display(){
                                 if (player.tab != "goalsii") return ""
+                                if (player.subtabs.goalsii.mainTabs != "Challenges") return ""
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["04"]) + "<br>"
                                 let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + format(getGoalChallengeReward("04"), 4) + "<br>"
                                 let c = "to <b>Experience</b> and <b>Card</b> base"
@@ -5644,11 +5715,14 @@ addLayer("goalsii", {
                 },
                 21: {
                         title(){
+                                if (player.tab != "goalsii") return ""
+                                if (player.subtabs.goalsii.mainTabs != "Challenges") return ""
                                 if (player.goalsii.tokens.best["10"].gt(0)) return "<h3 style='color: #13ACDF'>10</h3>"
                                 return "<h3 style='color: #C03000'>10</h3>"
                         },
                         display(){
                                 if (player.tab != "goalsii") return ""
+                                if (player.subtabs.goalsii.mainTabs != "Challenges") return ""
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["10"]) + "<br>"
                                 let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("10")) + "<br>"
                                 let c = "Free <b>Director</b> levels"
@@ -5673,11 +5747,14 @@ addLayer("goalsii", {
                 },
                 22: {
                         title(){
+                                if (player.tab != "goalsii") return ""
+                                if (player.subtabs.goalsii.mainTabs != "Challenges") return ""
                                 if (player.goalsii.tokens.best["11"].gt(0)) return "<h3 style='color: #13ACDF'>11</h3>"
                                 return "<h3 style='color: #C03000'>11</h3>"
                         },
                         display(){
                                 if (player.tab != "goalsii") return ""
+                                if (player.subtabs.goalsii.mainTabs != "Challenges") return ""
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["11"]) + "<br>"
                                 let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("11")) + "<br>"
                                 let c = "Free <b>Omnipotent II</b> levels"
@@ -5702,11 +5779,14 @@ addLayer("goalsii", {
                 },
                 23: {
                         title(){
+                                if (player.tab != "goalsii") return ""
+                                if (player.subtabs.goalsii.mainTabs != "Challenges") return ""
                                 if (player.goalsii.tokens.best["12"].gt(0)) return "<h3 style='color: #13ACDF'>12</h3>"
                                 return "<h3 style='color: #C03000'>12</h3>"
                         },
                         display(){
                                 if (player.tab != "goalsii") return ""
+                                if (player.subtabs.goalsii.mainTabs != "Challenges") return ""
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["12"]) + "<br>"
                                 let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("12")) + "<br>"
                                 let c = "Free <b>Category</b> levels"
@@ -5731,11 +5811,14 @@ addLayer("goalsii", {
                 },
                 24: {
                         title(){
+                                if (player.tab != "goalsii") return ""
+                                if (player.subtabs.goalsii.mainTabs != "Challenges") return ""
                                 if (player.goalsii.tokens.best["13"].gt(0)) return "<h3 style='color: #13ACDF'>13</h3>"
                                 return "<h3 style='color: #C03000'>13</h3>"
                         },
                         display(){
                                 if (player.tab != "goalsii") return ""
+                                if (player.subtabs.goalsii.mainTabs != "Challenges") return ""
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["13"]) + "<br>"
                                 let b = "<h3 style='color: #00FF66'>Reward</h3>: *" + format(getGoalChallengeReward("13"), 4) + " <br>to "
                                 let c = "base <b>F</b> gain"
@@ -5760,11 +5843,14 @@ addLayer("goalsii", {
                 },
                 25: {
                         title(){
+                                if (player.tab != "goalsii") return ""
+                                if (player.subtabs.goalsii.mainTabs != "Challenges") return ""
                                 if (player.goalsii.tokens.best["14"].gt(0)) return "<h3 style='color: #13ACDF'>14</h3>"
                                 return "<h3 style='color: #C03000'>14</h3>"
                         },
                         display(){
                                 if (player.tab != "goalsii") return ""
+                                if (player.subtabs.goalsii.mainTabs != "Challenges") return ""
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["14"]) + "<br>"
                                 let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("14")) + "<br>"
                                 let c = "free <b>Experience</b> levels"
@@ -5789,11 +5875,14 @@ addLayer("goalsii", {
                 },
                 31: {
                         title(){
+                                if (player.tab != "goalsii") return ""
+                                if (player.subtabs.goalsii.mainTabs != "Challenges") return ""
                                 if (player.goalsii.tokens.best["20"].gt(0)) return "<h3 style='color: #13ACDF'>20</h3>"
                                 return "<h3 style='color: #C03000'>20</h3>"
                         },
                         display(){
                                 if (player.tab != "goalsii") return ""
+                                if (player.subtabs.goalsii.mainTabs != "Challenges") return ""
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["20"]) + "<br>"
                                 let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + format(getGoalChallengeReward("20"), 4) + "<br>"
                                 let c = "to <b>Department</b><br>base"
@@ -5818,11 +5907,14 @@ addLayer("goalsii", {
                 },
                 32: {
                         title(){
+                                if (player.tab != "goalsii") return ""
+                                if (player.subtabs.goalsii.mainTabs != "Challenges") return ""
                                 if (player.goalsii.tokens.best["21"].gt(0)) return "<h3 style='color: #13ACDF'>21</h3>"
                                 return "<h3 style='color: #C03000'>21</h3>"
                         },
                         display(){
                                 if (player.tab != "goalsii") return ""
+                                if (player.subtabs.goalsii.mainTabs != "Challenges") return ""
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["21"]) + "<br>"
                                 let b = "<h3 style='color: #00FF66'>Reward</h3>: x" + format(getGoalChallengeReward("21")) + "<br>"
                                 let c = "<b>Egg</b> gain and <b>Account</b> base"
@@ -5847,11 +5939,14 @@ addLayer("goalsii", {
                 },
                 33: {
                         title(){
+                                if (player.tab != "goalsii") return ""
+                                if (player.subtabs.goalsii.mainTabs != "Challenges") return ""
                                 if (player.goalsii.tokens.best["22"].gt(0)) return "<h3 style='color: #13ACDF'>22</h3>"
                                 return "<h3 style='color: #C03000'>22</h3>"
                         },
                         display(){
                                 if (player.tab != "goalsii") return ""
+                                if (player.subtabs.goalsii.mainTabs != "Challenges") return ""
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["22"]) + "<br>"
                                 let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("22")) + "<br>"
                                 let c = "free <b>Drive</b><br>levels"
@@ -5876,11 +5971,14 @@ addLayer("goalsii", {
                 },
                 34: {
                         title(){
+                                if (player.tab != "goalsii") return ""
+                                if (player.subtabs.goalsii.mainTabs != "Challenges") return ""
                                 if (player.goalsii.tokens.best["23"].gt(0)) return "<h3 style='color: #13ACDF'>23</h3>"
                                 return "<h3 style='color: #C03000'>23</h3>"
                         },
                         display(){
                                 if (player.tab != "goalsii") return ""
+                                if (player.subtabs.goalsii.mainTabs != "Challenges") return ""
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["23"]) + "<br>"
                                 let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + format(getGoalChallengeReward("23"), 4) + " to<br>"
                                 let c = "<b>E</b> gain exp"
@@ -5905,11 +6003,14 @@ addLayer("goalsii", {
                 },
                 35: {
                         title(){
+                                if (player.tab != "goalsii") return ""
+                                if (player.subtabs.goalsii.mainTabs != "Challenges") return ""
                                 if (player.goalsii.tokens.best["24"].gt(0)) return "<h3 style='color: #13ACDF'>24</h3>"
                                 return "<h3 style='color: #C03000'>24</h3>"
                         },
                         display(){
                                 if (player.tab != "goalsii") return ""
+                                if (player.subtabs.goalsii.mainTabs != "Challenges") return ""
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["24"]) + "<br>"
                                 let b = "<h3 style='color: #00FF66'>Reward</h3>: log(eggs)^" + format(getGoalChallengeReward("24"), 4) + "<br>"
                                 let c = "boosts base <b>F</b> gain"
@@ -5934,11 +6035,14 @@ addLayer("goalsii", {
                 },
                 41: {
                         title(){
+                                if (player.tab != "goalsii") return ""
+                                if (player.subtabs.goalsii.mainTabs != "Challenges") return ""
                                 if (player.goalsii.tokens.best["30"].gt(0)) return "<h3 style='color: #13ACDF'>30</h3>"
                                 return "<h3 style='color: #C03000'>30</h3>"
                         },
                         display(){
                                 if (player.tab != "goalsii") return ""
+                                if (player.subtabs.goalsii.mainTabs != "Challenges") return ""
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["30"]) + "<br>"
                                 let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + format(getGoalChallengeReward("30"), 4) + " to<br>"
                                 let c = "<b>F</b> gain exp"
@@ -5963,11 +6067,14 @@ addLayer("goalsii", {
                 },
                 42: {
                         title(){
+                                if (player.tab != "goalsii") return ""
+                                if (player.subtabs.goalsii.mainTabs != "Challenges") return ""
                                 if (player.goalsii.tokens.best["31"].gt(0)) return "<h3 style='color: #13ACDF'>31</h3>"
                                 return "<h3 style='color: #C03000'>31</h3>"
                         },
                         display(){
                                 if (player.tab != "goalsii") return ""
+                                if (player.subtabs.goalsii.mainTabs != "Challenges") return ""
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["31"]) + "<br>"
                                 let b = "<h3 style='color: #00FF66'>Reward</h3>: *" + format(getGoalChallengeReward("31"), 4) + " to<br>"
                                 let c = "medal and base <b>E</b> gain"
@@ -5992,11 +6099,14 @@ addLayer("goalsii", {
                 },
                 43: {
                         title(){
+                                if (player.tab != "goalsii") return ""
+                                if (player.subtabs.goalsii.mainTabs != "Challenges") return ""
                                 if (player.goalsii.tokens.best["32"].gt(0)) return "<h3 style='color: #13ACDF'>32</h3>"
                                 return "<h3 style='color: #C03000'>32</h3>"
                         },
                         display(){
                                 if (player.tab != "goalsii") return ""
+                                if (player.subtabs.goalsii.mainTabs != "Challenges") return ""
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["32"]) + "<br>"
                                 let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + format(getGoalChallengeReward("32"), 4) + " to<br>"
                                 let c = "<b>Director</b> base per <b>Director</b>"
@@ -6021,11 +6131,14 @@ addLayer("goalsii", {
                 },
                 44: {
                         title(){
+                                if (player.tab != "goalsii") return ""
+                                if (player.subtabs.goalsii.mainTabs != "Challenges") return ""
                                 if (player.goalsii.tokens.best["33"].gt(0)) return "<h3 style='color: #13ACDF'>33</h3>"
                                 return "<h3 style='color: #C03000'>33</h3>"
                         },
                         display(){
                                 if (player.tab != "goalsii") return ""
+                                if (player.subtabs.goalsii.mainTabs != "Challenges") return ""
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["33"]) + "<br>"
                                 let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + format(getGoalChallengeReward("33"), 2) + " to<br>"
                                 let c = "<b>E</b> gain exp"
@@ -6050,11 +6163,14 @@ addLayer("goalsii", {
                 },
                 45: {
                         title(){
+                                if (player.tab != "goalsii") return ""
+                                if (player.subtabs.goalsii.mainTabs != "Challenges") return ""
                                 if (player.goalsii.tokens.best["34"].gt(0)) return "<h3 style='color: #13ACDF'>34</h3>"
                                 return "<h3 style='color: #C03000'>34</h3>"
                         },
                         display(){
                                 if (player.tab != "goalsii") return ""
+                                if (player.subtabs.goalsii.mainTabs != "Challenges") return ""
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["34"]) + "<br>"
                                 let b = "<h3 style='color: #00FF66'>Reward</h3>: /" + format(getGoalChallengeReward("34")) + "<br>"
                                 let c = "<b>East</b> cost and <b>Due</b> linear scaling"
@@ -6079,11 +6195,14 @@ addLayer("goalsii", {
                 },
                 51: {
                         title(){
+                                if (player.tab != "goalsii") return ""
+                                if (player.subtabs.goalsii.mainTabs != "Challenges") return ""
                                 if (player.goalsii.tokens.best["40"].gt(0)) return "<h3 style='color: #13ACDF'>40</h3>"
                                 return "<h3 style='color: #C03000'>40</h3>"
                         },
                         display(){
                                 if (player.tab != "goalsii") return ""
+                                if (player.subtabs.goalsii.mainTabs != "Challenges") return ""
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["40"]) + "<br>"
                                 let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("40")) + "<br>"
                                 let c = "free <b>Example</b> and <b>Database</b> levels"
@@ -6108,11 +6227,14 @@ addLayer("goalsii", {
                 },
                 52: {
                         title(){
+                                if (player.tab != "goalsii") return ""
+                                if (player.subtabs.goalsii.mainTabs != "Challenges") return ""
                                 if (player.goalsii.tokens.best["41"].gt(0)) return "<h3 style='color: #13ACDF'>41</h3>"
                                 return "<h3 style='color: #C03000'>41</h3>"
                         },
                         display(){
                                 if (player.tab != "goalsii") return ""
+                                if (player.subtabs.goalsii.mainTabs != "Challenges") return ""
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["41"]) + "<br>"
                                 let b = "<h3 style='color: #00FF66'>Reward</h3>: *" + format(getGoalChallengeReward("41")) + " to<br>"
                                 let c = "medal gain and <b>Department</b> base"
@@ -6137,11 +6259,14 @@ addLayer("goalsii", {
                 },
                 53: {
                         title(){
+                                if (player.tab != "goalsii") return ""
+                                if (player.subtabs.goalsii.mainTabs != "Challenges") return ""
                                 if (player.goalsii.tokens.best["42"].gt(0)) return "<h3 style='color: #13ACDF'>42</h3>"
                                 return "<h3 style='color: #C03000'>42</h3>"
                         },
                         display(){
                                 if (player.tab != "goalsii") return ""
+                                if (player.subtabs.goalsii.mainTabs != "Challenges") return ""
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["42"]) + "<br>"
                                 let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + format(getGoalChallengeReward("42"), 4) + " to<br>"
                                 let c = "<b>Omnipotent III</b> base"
@@ -6166,11 +6291,14 @@ addLayer("goalsii", {
                 },
                 54: {
                         title(){
+                                if (player.tab != "goalsii") return ""
+                                if (player.subtabs.goalsii.mainTabs != "Challenges") return ""
                                 if (player.goalsii.tokens.best["43"].gt(0)) return "<h3 style='color: #13ACDF'>43</h3>"
                                 return "<h3 style='color: #C03000'>43</h3>"
                         },
                         display(){
                                 if (player.tab != "goalsii") return ""
+                                if (player.subtabs.goalsii.mainTabs != "Challenges") return ""
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["43"]) + "<br>"
                                 let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("43")) + "<br>"
                                 let c = "free <b>Easy</b> levels"
@@ -6195,11 +6323,14 @@ addLayer("goalsii", {
                 },
                 55: {
                         title(){
+                                if (player.tab != "goalsii") return ""
+                                if (player.subtabs.goalsii.mainTabs != "Challenges") return ""
                                 if (player.goalsii.tokens.best["44"].gt(0)) return "<h3 style='color: #13ACDF'>44</h3>"
                                 return "<h3 style='color: #C03000'>44</h3>"
                         },
                         display(){
                                 if (player.tab != "goalsii") return ""
+                                if (player.subtabs.goalsii.mainTabs != "Challenges") return ""
                                 let a = "<h3 style='color: #AC4600'>Tokens</h3>: " + formatWhole(player.goalsii.tokens.points["44"]) + "<br>"
                                 let b = "<h3 style='color: #00FF66'>Reward</h3>: +" + formatWhole(getGoalChallengeReward("44")) + "<br>"
                                 let c = "free <b>Enter</b> levels"
@@ -6373,6 +6504,7 @@ addLayer("goalsii", {
                         requirementDescription: "<b>όμικρον (Omicron)</b><br>Requires: 20 31 Token", 
                         effectDescription(){
                                 if (player.tab != "goalsii") return ""
+                                if (player.subtabs.goalsii.mainTabs != "Milestones") return ""
                                 let a = "log10(10+medals) boosts base <b>F</b> gain, currently: "
                                 return a + format(player.goalsii.points.max(10).log10(), 4)
                         },
@@ -6407,6 +6539,7 @@ addLayer("goalsii", {
                         requirementDescription: "<b>σίγμα (Sigma)</b><br>Requires: 10 33 Tokens", 
                         effectDescription(){
                                 if (player.tab != "goalsii") return ""
+                                if (player.subtabs.goalsii.mainTabs != "Milestones") return ""
                                 let a = "Once per second, automatically complete <b>B</b> and <b>C</b> challenges if you have enough points and Goals^Goals multiply <b>E</b> gain, currently: "
                                 let b = Math.max(1, player.ach.achievements.length)
                                 return a + format(Decimal.pow(b, b))
@@ -6779,7 +6912,6 @@ addLayer("goalsii", {
                 
 
                 /*
-                
                 Villiani
                 Wiles
                 Xi
@@ -6796,10 +6928,12 @@ addLayer("goalsii", {
                                 ["display-text", "Click a button below to enter a challenge", function (){ return !player.goalsii.best.gt(0) ? {'display': 'none'} : {}}],
                                 ["display-text", function() {
                                         if (player.tab != "goalsii") return ""
+                                        if (player.subtabs.goalsii.mainTabs != "Challenges") return ""
                                         return "You are currently in challenge <h3 style = 'color: #CC00FF'>" + player.goalsii.currentChallenge + "</h3>"
                                 }],
                                 ["display-text", function() {
                                         if (player.tab != "goalsii") return ""
+                                        if (player.subtabs.goalsii.mainTabs != "Challenges") return ""
                                         return getChallengeDepth(3) == 0 ? "" : "You have " + format(player.f.points) + " features"
                                 }],
                                 "prestige-button",
@@ -6814,10 +6948,12 @@ addLayer("goalsii", {
                                 "main-display",
                                 ["display-text", function() {
                                         if (player.tab != "goalsii") return ""
+                                        if (player.subtabs.goalsii.mainTabs != "Details") return ""
                                         return "You are currently in challenge <h3 style = 'color: #CC00FF'>" + player.goalsii.currentChallenge + "</h3>"
                                 }],
                                 ["display-text", function() {
                                         if (player.tab != "goalsii") return ""
+                                        if (player.subtabs.goalsii.mainTabs != "Details") return ""
                                         let a = "That means you have the following effects due to challenges: " 
                                         if (getChallengeDepth(1) == 0) return ""
                                         a += "<br>Prestige Gain: <h3 style = 'color: #CC00FF'>^" + format(Decimal.pow(.985, getChallengeDepth(1)), 4) + "</h3>"
@@ -6833,6 +6969,7 @@ addLayer("goalsii", {
                                 }],
                                 ["display-text", function(){
                                         if (player.tab != "goalsii") return ""
+                                        if (player.subtabs.goalsii.mainTabs != "Details") return ""
                                         let a = `<br><br>
                                         <h2 style = 'color: #CC0033'>Explanation</h2><h2>:</h2> <br><br>
 
@@ -6892,6 +7029,7 @@ addLayer("goalsii", {
                                 "main-display",
                                 ["display-text", function(){
                                                 if (player.tab != "goalsii") return ""
+                                                if (player.subtabs.goalsii.mainTabs != "Upgrades") return ""
                                                 return "Upgrades require a certain number of tokens, but do not cost tokens"
                                         },
                                 ],
@@ -7148,9 +7286,6 @@ addLayer("g", {
                 exp = exp.times(tmp.f.challenges[21].rewardEffect)
 
                 let ret = amt.times(4).plus(1).pow(exp)
-
-                //ret = softcap(ret, "g_eff")
-
 
                 return ret
         },
@@ -7726,10 +7861,13 @@ addLayer("g", {
                 }, 
                 11: {
                         title(){
+                                if (player.tab != "g") return ""
+                                if (player.subtabs.g.mainTabs != "Games") return ""
                                 return "<h3 style='color: #903000'>Tetris</h3>"
                         },
                         display(){
                                 if (player.tab != "g") return ""
+                                if (player.subtabs.g.mainTabs != "Games") return ""
                                 let a = "<h3 style='color: #D070C0'>Cost</h3>: " + formatWhole(tmp.g.clickables[11].cost) + " Games<br>"
                                 let b = "<h3 style='color: #00CC66'>Gives</h3>: " + formatWhole(player.g.clickableAmounts[11]) + " charges per minute"
                                 let c = ""
@@ -7760,10 +7898,13 @@ addLayer("g", {
                 },
                 12: {
                         title(){
+                                if (player.tab != "g") return ""
+                                if (player.subtabs.g.mainTabs != "Games") return ""
                                 return "<h3 style='color: #903000'>Pac-man</h3>"
                         },
                         display(){
                                 if (player.tab != "g") return ""
+                                if (player.subtabs.g.mainTabs != "Games") return ""
                                 let a = "<h3 style='color: #D070C0'>Cost</h3>: " + format(tmp.g.clickables[12].cost) + " Medals<br>"
                                 let b = "<h3 style='color: #00CC66'>Gives</h3>: " + formatWhole(player.g.clickableAmounts[12]) + " charges per minute"
                                 let c = ""
@@ -7795,10 +7936,13 @@ addLayer("g", {
                 },
                 13: {
                         title(){
+                                if (player.tab != "g") return ""
+                                if (player.subtabs.g.mainTabs != "Games") return ""
                                 return "<h3 style='color: #903000'>Asteroids</h3>"
                         },
                         display(){
                                 if (player.tab != "g") return ""
+                                if (player.subtabs.g.mainTabs != "Games") return ""
                                 let a = "<h3 style='color: #D070C0'>Requires</h3>: " + formatWhole(tmp.g.clickables[13].cost) + " Goals<br>"
                                 let b = "<h3 style='color: #00CC66'>Gives</h3>: " + formatWhole(player.g.clickableAmounts[13]) + " charges per minute"
                                 let c = ""
@@ -7829,10 +7973,13 @@ addLayer("g", {
                 },
                 14: {
                         title(){
+                                if (player.tab != "g") return ""
+                                if (player.subtabs.g.mainTabs != "Games") return ""
                                 return "<h3 style='color: #903000'>Half life</h3>"
                         },
                         display(){
                                 if (player.tab != "g") return ""
+                                if (player.subtabs.g.mainTabs != "Games") return ""
                                 let a = "<h3 style='color: #D070C0'>Costs</h3>: " + format(tmp.g.clickables[14].cost) + " Features<br>"
                                 let b = "<h3 style='color: #00CC66'>Gives</h3>: " + formatWhole(player.g.clickableAmounts[14]) + " charges per minute"
                                 let c = ""
@@ -7869,10 +8016,13 @@ addLayer("g", {
                 },
                 21: {
                         title(){
+                                if (player.tab != "g") return ""
+                                if (player.subtabs.g.mainTabs != "Games") return ""
                                 return "<h3 style='color: #903000'>Quake</h3>"
                         },
                         display(){
                                 if (player.tab != "g") return ""
+                                if (player.subtabs.g.mainTabs != "Games") return ""
                                 let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(tmp.g.clickables[21].cost) + " Games<br>"
                                 if (hasUpgrade("goalsii", 31)) return a
                                 let b = "<h3 style='color: #00CC66'>Completion</h3>: " + format(player.g.clickableAmounts[21].times(100).div(tmp.g.clickables.getCompletionsReq)) + "%"
@@ -7941,10 +8091,13 @@ addLayer("g", {
                 },
                 22: {
                         title(){
+                                if (player.tab != "g") return ""
+                                if (player.subtabs.g.mainTabs != "Games") return ""
                                 return "<h3 style='color: #903000'>Minecraft</h3>"
                         },
                         display(){
                                 if (player.tab != "g") return ""
+                                if (player.subtabs.g.mainTabs != "Games") return ""
                                 let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(tmp.g.clickables[22].cost) + " Games<br>"
                                 if (hasUpgrade("goalsii", 31)) return a
                                 let b = "<h3 style='color: #00CC66'>Completion</h3>: " + format(player.g.clickableAmounts[22].times(100).div(tmp.g.clickables.getCompletionsReq)) + "%"
@@ -8012,10 +8165,13 @@ addLayer("g", {
                 },
                 23: {
                         title(){
+                                if (player.tab != "g") return ""
+                                if (player.subtabs.g.mainTabs != "Games") return ""
                                 return "<h3 style='color: #903000'>GTA V</h3>"
                         },
                         display(){
                                 if (player.tab != "g") return ""
+                                if (player.subtabs.g.mainTabs != "Games") return ""
                                 let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(tmp.g.clickables[23].cost) + " Games<br>"
                                 if (hasUpgrade("goalsii", 31)) return a
                                 let b = "<h3 style='color: #00CC66'>Completion</h3>: " + format(player.g.clickableAmounts[23].times(100).div(tmp.g.clickables.getCompletionsReq)) + "%"
@@ -8084,10 +8240,13 @@ addLayer("g", {
                 },
                 24: {
                         title(){
+                                if (player.tab != "g") return ""
+                                if (player.subtabs.g.mainTabs != "Games") return ""
                                 return "<h3 style='color: #903000'>FIFA</h3>"
                         },
                         display(){
                                 if (player.tab != "g") return ""
+                                if (player.subtabs.g.mainTabs != "Games") return ""
                                 let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(tmp.g.clickables[24].cost) + " Games<br>"
                                 if (hasUpgrade("goalsii", 31)) return a
                                 let b = "<h3 style='color: #00CC66'>Completion</h3>: " + format(player.g.clickableAmounts[24].times(100).div(tmp.g.clickables.getCompletionsReq)) + "%"
@@ -8156,10 +8315,13 @@ addLayer("g", {
                 },
                 31: {
                         title(){
+                                if (player.tab != "g") return ""
+                                if (player.subtabs.g.mainTabs != "Games") return ""
                                 return "<h3 style='color: #903000'>Portal</h3>"
                         },
                         display(){
                                 if (player.tab != "g") return ""
+                                if (player.subtabs.g.mainTabs != "Games") return ""
                                 let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(tmp.g.clickables[31].cost) + " Games<br>"
                                 if (hasUpgrade("goalsii", 31)) return a
                                 let b = "<h3 style='color: #00CC66'>Completion</h3>: " + format(player.g.clickableAmounts[31].times(100).div(tmp.g.clickables.getCompletionsReq)) + "%"
@@ -8228,10 +8390,13 @@ addLayer("g", {
                 },
                 32: {
                         title(){
+                                if (player.tab != "g") return ""
+                                if (player.subtabs.g.mainTabs != "Games") return ""
                                 return "<h3 style='color: #903000'>Pokemon</h3>"
                         },
                         display(){
                                 if (player.tab != "g") return ""
+                                if (player.subtabs.g.mainTabs != "Games") return ""
                                 let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(tmp.g.clickables[32].cost) + " Games<br>"
                                 if (hasUpgrade("goalsii", 31)) return a
                                 let b = "<h3 style='color: #00CC66'>Completion</h3>: " + format(player.g.clickableAmounts[32].times(100).div(tmp.g.clickables.getCompletionsReq)) + "%"
@@ -8300,10 +8465,13 @@ addLayer("g", {
                 },
                 33: {
                         title(){
+                                if (player.tab != "g") return ""
+                                if (player.subtabs.g.mainTabs != "Games") return ""
                                 return "<h3 style='color: #903000'>Diablo</h3>"
                         },
                         display(){
                                 if (player.tab != "g") return ""
+                                if (player.subtabs.g.mainTabs != "Games") return ""
                                 let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(tmp.g.clickables[33].cost) + " Games<br>"
                                 if (hasUpgrade("goalsii", 31)) return a
                                 let b = "<h3 style='color: #00CC66'>Completion</h3>: " + format(player.g.clickableAmounts[33].times(100).div(tmp.g.clickables.getCompletionsReq)) + "%"
@@ -8372,10 +8540,13 @@ addLayer("g", {
                 },
                 34: {
                         title(){
+                                if (player.tab != "g") return ""
+                                if (player.subtabs.g.mainTabs != "Games") return ""
                                 return "<h3 style='color: #903000'>Terraria</h3>"
                         },
                         display(){
                                 if (player.tab != "g") return ""
+                                if (player.subtabs.g.mainTabs != "Games") return ""
                                 let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(tmp.g.clickables[34].cost) + " Games<br>"
                                 if (hasUpgrade("goalsii", 31)) return a
                                 let b = "<h3 style='color: #00CC66'>Completion</h3>: " + format(player.g.clickableAmounts[34].times(100).div(tmp.g.clickables.getCompletionsReq)) + "%"
@@ -8444,10 +8615,13 @@ addLayer("g", {
                 },
                 41: {
                         title(){
+                                if (player.tab != "g") return ""
+                                if (player.subtabs.g.mainTabs != "Games") return ""
                                 return "<h3 style='color: #903000'>Roblox</h3>"
                         },
                         display(){
                                 if (player.tab != "g") return ""
+                                if (player.subtabs.g.mainTabs != "Games") return ""
                                 let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(tmp.g.clickables[41].cost) + " Games<br>"
                                 if (hasUpgrade("goalsii", 31)) return a
                                 let b = "<h3 style='color: #00CC66'>Completion</h3>: " + format(player.g.clickableAmounts[41].times(100).div(tmp.g.clickables.getCompletionsReq)) + "%"
@@ -8516,10 +8690,13 @@ addLayer("g", {
                 },
                 42: {
                         title(){
+                                if (player.tab != "g") return ""
+                                if (player.subtabs.g.mainTabs != "Games") return ""
                                 return "<h3 style='color: #903000'>Autochess</h3>"
                         },
                         display(){
                                 if (player.tab != "g") return ""
+                                if (player.subtabs.g.mainTabs != "Games") return ""
                                 let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(tmp.g.clickables[42].cost) + " Games<br>"
                                 if (hasUpgrade("goalsii", 31)) return a
                                 let b = "<h3 style='color: #00CC66'>Completion</h3>: " + format(player.g.clickableAmounts[42].times(100).div(tmp.g.clickables.getCompletionsReq)) + "%"
@@ -8588,10 +8765,13 @@ addLayer("g", {
                 },
                 43: {
                         title(){
+                                if (player.tab != "g") return ""
+                                if (player.subtabs.g.mainTabs != "Games") return ""
                                 return "<h3 style='color: #903000'>Pong</h3>"
                         },
                         display(){
                                 if (player.tab != "g") return ""
+                                if (player.subtabs.g.mainTabs != "Games") return ""
                                 let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(tmp.g.clickables[43].cost) + " Games<br>"
                                 if (hasUpgrade("goalsii", 31)) return a
                                 let b = "<h3 style='color: #00CC66'>Completion</h3>: " + format(player.g.clickableAmounts[43].times(100).div(tmp.g.clickables.getCompletionsReq)) + "%"
@@ -8660,10 +8840,13 @@ addLayer("g", {
                 },
                 44: {
                         title(){
+                                if (player.tab != "g") return ""
+                                if (player.subtabs.g.mainTabs != "Games") return ""
                                 return "<h3 style='color: #903000'>Dota 2</h3>"
                         },
                         display(){
                                 if (player.tab != "g") return ""
+                                if (player.subtabs.g.mainTabs != "Games") return ""
                                 let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(tmp.g.clickables[44].cost) + " Games<br>"
                                 if (hasUpgrade("goalsii", 31)) return a
                                 let b = "<h3 style='color: #00CC66'>Completion</h3>: " + format(player.g.clickableAmounts[44].times(100).div(tmp.g.clickables.getCompletionsReq)) + "%"
@@ -8732,10 +8915,13 @@ addLayer("g", {
                 },
                 51: {
                         title(){
+                                if (player.tab != "g") return ""
+                                if (player.subtabs.g.mainTabs != "Games") return ""
                                 return "<h3 style='color: #903000'>Snake</h3>"
                         },
                         display(){
                                 if (player.tab != "g") return ""
+                                if (player.subtabs.g.mainTabs != "Games") return ""
                                 let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(tmp.g.clickables[51].cost) + " Games<br>"
                                 if (hasUpgrade("goalsii", 31)) return a
                                 let b = "<h3 style='color: #00CC66'>Completion</h3>: " + format(player.g.clickableAmounts[51].times(100).div(tmp.g.clickables.getCompletionsReq)) + "%"
@@ -8802,10 +8988,13 @@ addLayer("g", {
                 },
                 52: {
                         title(){
+                                if (player.tab != "g") return ""
+                                if (player.subtabs.g.mainTabs != "Games") return ""
                                 return "<h3 style='color: #903000'>WoW</h3>"
                         },
                         display(){
                                 if (player.tab != "g") return ""
+                                if (player.subtabs.g.mainTabs != "Games") return ""
                                 let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(tmp.g.clickables[52].cost) + " Games<br>"
                                 if (hasUpgrade("goalsii", 31)) return a
                                 let b = "<h3 style='color: #00CC66'>Completion</h3>: " + format(player.g.clickableAmounts[52].times(100).div(tmp.g.clickables.getCompletionsReq)) + "%"
@@ -8872,10 +9061,13 @@ addLayer("g", {
                 },
                 53: {
                         title(){
+                                if (player.tab != "g") return ""
+                                if (player.subtabs.g.mainTabs != "Games") return ""
                                 return "<h3 style='color: #903000'>TFT</h3>"
                         },
                         display(){
                                 if (player.tab != "g") return ""
+                                if (player.subtabs.g.mainTabs != "Games") return ""
                                 let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(tmp.g.clickables[53].cost) + " Games<br>"
                                 if (hasUpgrade("goalsii", 31)) return a
                                 let b = "<h3 style='color: #00CC66'>Completion</h3>: " + format(player.g.clickableAmounts[53].times(100).div(tmp.g.clickables.getCompletionsReq)) + "%"
@@ -8942,10 +9134,13 @@ addLayer("g", {
                 },
                 54: {
                         title(){
+                                if (player.tab != "g") return ""
+                                if (player.subtabs.g.mainTabs != "Games") return ""
                                 return "<h3 style='color: #903000'>Valorant</h3>"
                         },
                         display(){
                                 if (player.tab != "g") return ""
+                                if (player.subtabs.g.mainTabs != "Games") return ""
                                 let a = "<h3 style='color: #D070C0'>Costs</h3>: " + formatWhole(tmp.g.clickables[54].cost) + " Games<br>"
                                 if (hasUpgrade("goalsii", 31)) return a
                                 let b = "<h3 style='color: #00CC66'>Completion</h3>: " + format(player.g.clickableAmounts[54].times(100).div(tmp.g.clickables.getCompletionsReq)) + "%"
@@ -9012,10 +9207,13 @@ addLayer("g", {
                 },
                 15: {
                         title(){
+                                if (player.tab != "g") return ""
+                                if (player.subtabs.g.mainTabs != "Games") return ""
                                 return "<h3 style='color: #903000'>Rebirth I</h3>"
                         },
                         display(){
                                 if (player.tab != "g") return ""
+                                if (player.subtabs.g.mainTabs != "Games") return ""
                                 let a = "<h3 style='color: #D070C0'>Requires</h3>: 16 Games at 100%<br>"
                                 let b = "<h3 style='color: #00CC66'>Times</h3>: " + formatWhole(player.g.rebirths[1])
                                 return a + b
@@ -9054,10 +9252,13 @@ addLayer("g", {
                 },
                 25: {
                         title(){
+                                if (player.tab != "g") return ""
+                                if (player.subtabs.g.mainTabs != "Games") return ""
                                 return "<h3 style='color: #903000'>Rebirth II</h3>"
                         },
                         display(){
                                 if (player.tab != "g") return ""
+                                if (player.subtabs.g.mainTabs != "Games") return ""
                                 let a = "<h3 style='color: #D070C0'>Requires</h3>:" + formatWhole(tmp.g.clickables[25].cost) + " Rebirth I<br>"
                                 let b = "<h3 style='color: #00CC66'>Times</h3>: " + formatWhole(player.g.rebirths[2])
                                 return a + b
@@ -9098,10 +9299,13 @@ addLayer("g", {
                 },
                 35: {
                         title(){
+                                if (player.tab != "g") return ""
+                                if (player.subtabs.g.mainTabs != "Games") return ""
                                 return "<h3 style='color: #903000'>Rebirth III</h3>"
                         },
                         display(){
                                 if (player.tab != "g") return ""
+                                if (player.subtabs.g.mainTabs != "Games") return ""
                                 let a = "<h3 style='color: #D070C0'>Requires</h3>:" + formatWhole(tmp.g.clickables[35].cost) + " Rebirth II<br>"
                                 let b = "<h3 style='color: #00CC66'>Times</h3>: " + formatWhole(player.g.rebirths[3])
                                 return a + b
@@ -9143,10 +9347,13 @@ addLayer("g", {
                 },
                 45: {
                         title(){
+                                if (player.tab != "g") return ""
+                                if (player.subtabs.g.mainTabs != "Games") return ""
                                 return "<h3 style='color: #903000'>Rebirth IV</h3>"
                         },
                         display(){
                                 if (player.tab != "g") return ""
+                                if (player.subtabs.g.mainTabs != "Games") return ""
                                 let a = "<h3 style='color: #D070C0'>Requires</h3>:" + formatWhole(tmp.g.clickables[45].cost) + " Rebirth III<br>"
                                 let b = "<h3 style='color: #00CC66'>Times</h3>: " + formatWhole(player.g.rebirths[4])
                                 return a + b
@@ -11212,7 +11419,7 @@ addLayer("i", {
                 }, // hasUpgrade("i", 55)
 
                 /*
-                independent
+                
                 improve
                 Impact
                 introduction
@@ -11356,6 +11563,33 @@ addLayer("i", {
                                 return hasUpgrade("j", 45) || hasUnlockedPast("k")
                         },
                 },
+                23: {
+                        title: "Independent",
+                        display(){
+                                return getBuyableDisplay("i", 23)
+                        },
+                        effect(){
+                                return CURRENT_BUYABLE_EFFECTS["i23"]
+                        },
+                        canAfford(){
+                                return canAffordBuyable("i", 23)
+                        },
+                        total(){
+                                return getBuyableAmount("i", 23).plus(this.extra())
+                        },
+                        extra(){
+                                return calcBuyableExtra("i", 23)
+                        },
+                        buy(){
+                                buyManualBuyable("i", 23)
+                        },
+                        buyMax(maximum){
+                                buyMaximumBuyable("i", 23, maximum)
+                        },
+                        unlocked(){ 
+                                return hasMilestone("l", 7) || hasUnlockedPast("l")
+                        },
+                },
         },
         tabFormat: {
                 "Upgrades": {
@@ -11441,7 +11675,6 @@ addLayer("i", {
                 //buyables
                 let resetBuyables = [11, 12, 13, 21, 22, 23, 31, 32, 33]
                 for (let j = 0; j < resetBuyables.length; j++) {
-                        break //remove when buyables added
                         data.buyables[resetBuyables[j]] = new Decimal(0)
                 }
         },
@@ -12037,6 +12270,13 @@ addLayer("j", {
                                         b = i + 1
                                         break
                                 }
+                                if (i == 0 && times > remtot) {
+                                        b = remtot
+                                        data.found.centers = tot1
+                                        data.found.edges = tot2
+                                        data.found.corners = tot3
+                                        break
+                                }
                                 let r = Math.random()
                                 if (r < rem1/remtot) data.found.centers ++
                                 else if (r < (rem1 + rem2)/remtot) data.found.edges ++
@@ -12092,7 +12332,7 @@ addLayer("j", {
                         data.mode = 4
                         let k
                         if (times > b) k = this.attemptFinish()
-                        if (k) this.doSearch(times - b - 1)
+                        // if (k) this.doSearch(times - b - 1)
                 },
                 attemptFinish(){
                         let data = player.j.puzzle
@@ -12172,10 +12412,12 @@ addLayer("j", {
                 11: {
                         title(){
                                 if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 return "<h3 style='color: #FF3333'>Success Chance</h3>"
                         },
                         display(){
                                 if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 if (shiftDown && !hasMilestone("k", 6)) {
                                         end = ""
                                         if (tmp.j.clickables[11].effeciency.lt(tmp.j.clickables[12].effeciency)) {
@@ -12268,10 +12510,12 @@ addLayer("j", {
                 12: {
                         title(){
                                 if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 return "<h3 style='color: #FF3333'>Attempt Speed</h3>"
                         },
                         display(){
                                 if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 if (shiftDown && !hasUpgrade("i", 53)) {
                                         end = ""
                                         if (tmp.j.clickables[12].effeciency.lt(tmp.j.clickables[11].effeciency)) {
@@ -12347,10 +12591,12 @@ addLayer("j", {
                 13: {
                         title(){
                                 if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 return "<h3 style='color: #FF3333'>Bulk Amount</h3>"
                         },
                         display(){
                                 if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 if (shiftDown && (!hasUpgrade("i", 53) || !hasMilestone("k", 6))) {
                                         end = ""
                                         if (tmp.j.clickables[13].effeciency.lt(tmp.j.clickables[12].effeciency)) {
@@ -12400,10 +12646,12 @@ addLayer("j", {
                 14: {
                         title(){
                                 if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 return "<h3 style='color: #FF3333'>Larger Puzzle</h3>"
                         },
                         display(){
                                 if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 let a = "<h3 style='color: #993300'>Cost</h3>: " + formatWhole(tmp.j.clickables[14].cost) + " Knowledge<br>"
                                 let x = tmp.j.clickables.getCurrentMaxSize
                                 if (Math.min(player.j.puzzle.currentX, player.j.puzzle.currentY) == x) a = "<h3 style='color: #993300'>MAXED!</h3><br>"
@@ -12471,10 +12719,12 @@ addLayer("j", {
                 15: {
                         title(){
                                 if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 return "<h3 style='color: #FF3333'>Progress Bar</h3>"
                         },
                         display(){
                                 if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 let z = player.j.puzzle.bartype
                                 if (z == 1) return "Current mode:<br>Only placing"
                                 if (z == 0) return "Current mode:<br>Finding and placing"
@@ -12495,6 +12745,7 @@ addLayer("j", {
                 21: {
                         title(){
                                 if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 if (player.j.puzzle.mode == 1) return "<h3 style='color: #FFFFFF'>Filter</h3><br>(6)"
                                 return "<h3 style='color: #FF3333'>Filter</h3><br>(6)"
                         },
@@ -12514,11 +12765,13 @@ addLayer("j", {
                 22: {
                         title(){
                                 if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 if (player.j.puzzle.mode == 2) return "<h3 style='color: #FFFFFF'>Edges</h3><br>(7)"
                                 return "<h3 style='color: #FF3333'>Edges</h3><br>(7)"
                         },
                         display(){
                                 if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 let data = player.j.puzzle
                                 let x = (data.currentX - 2 + data.currentY - 2) * 2
                                 if (data.found.corners < 4) return "Requires: 4 corners found"
@@ -12546,11 +12799,13 @@ addLayer("j", {
                 23: {
                         title(){
                                 if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 if (player.j.puzzle.mode == 3) return "<h3 style='color: #FFFFFF'>Center</h3><br>(8)"
                                 return "<h3 style='color: #FF3333'>Center</h3><br>(8)"
                         },
                         display(){
                                 if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 let data = player.j.puzzle
                                 let a = data.currentX * 2 + data.currentY * 2 - 8
                                 let b = (data.currentX - 2) * (data.currentY - 2)
@@ -12575,11 +12830,13 @@ addLayer("j", {
                 24: {
                         title(){
                                 if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 if (player.j.puzzle.mode == 4) return "<h3 style='color: #FFFFFF'>Finish</h3><br>(9)"
                                 return "<h3 style='color: #FF3333'>Finish</h3><br>(9)"
                         },
                         display(){
                                 if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 let data = player.j.puzzle
                                 let tot1 = (data.currentX - 2) * (data.currentY - 2)
                                 let tot2 = (data.currentX - 2 + data.currentY - 2) * 2
@@ -12602,16 +12859,19 @@ addLayer("j", {
                 25: {
                         title(){
                                 if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 return "<h3 style='color: #FF3333'>Reset</h3><br>(Shift+0)"
                         },
                         display(){
                                 if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 return "Reset puzzle progress to get Banked Experience (" + format(Math.max(0, tmp.j.clickables.getResetCD - player.j.puzzle.time)) + "s)" 
                         },
                         unlocked(){
                                 return player.j.puzzle.bestExp.gt(2) || player.j.puzzle.reset2.done || player.j.puzzle.bankedExp.gt(2) || hasUnlockedPast("j")
                         },
                         canClick(){
+                                if (hasMilestone("l", 7)) return player.j.puzzle.time >= tmp.j.clickables.getResetCD
                                 return player.j.puzzle.bankedExp.gt(0) && player.j.puzzle.time >= tmp.j.clickables.getResetCD
                         },
                         onClick(){
@@ -12647,10 +12907,12 @@ addLayer("j", {
                 31: {
                         title(){
                                 if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 return "<b style='color: #003333'>Join</b>"
                         },
                         display(){
                                 if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 let a = "Per upgrade in this row unlock an <b>H</b> buyable and raise charge gain ^50"
                                 let b = "<br><br>Cost: " + formatWhole(tmp.j.clickables[31].cost) + " Exp"
                                 return a + b
@@ -12679,10 +12941,12 @@ addLayer("j", {
                 32: {
                         title(){
                                 if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 return "<b style='color: #003333'>June</b>"
                         },
                         display(){
                                 if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 let a = "Unlock the final <b>G</b> buyable and per puzzle upgrade act as if you have 5% less rebirths"
                                 let b = "<br><br>Cost: " + formatWhole(tmp.j.clickables[32].cost) + " Exp"
                                 return a + b
@@ -12711,10 +12975,12 @@ addLayer("j", {
                 33: {
                         title(){
                                 if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 return "<b style='color: #003333'>July</b>"
                         },
                         display(){
                                 if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 let a = "Automatically buy <b>H</b> buyables and <b>Held</b> gives free <b>Holiday</b> and <b>Omnipotent VII</b> levels"
                                 let b = "<br><br>Cost: " + formatWhole(tmp.j.clickables[33].cost) + " Exp"
                                 return a + b
@@ -12743,10 +13009,12 @@ addLayer("j", {
                 34: {
                         title(){
                                 if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 return "<b style='color: #003333'>Journal</b>"
                         },
                         display(){
                                 if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 let a = "Unlock Bulk Amount, square Attempt speed, and Rebirth II is no longer reset by later rebirths"
                                 let b = "<br><br>Cost: " + formatWhole(tmp.j.clickables[34].cost) + " Exp"
                                 return a + b
@@ -12775,10 +13043,12 @@ addLayer("j", {
                 35: {
                         title(){
                                 if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 return "<b style='color: #003333'>Japan</b>"
                         },
                         display(){
                                 if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 let a = "Multiply success chance by " + format(tmp.j.clickables[35].base, 4)
                                 let c = "<br>Currently: *" + format(tmp.j.clickables[35].effect)
                                 let b = "<br><br>Cost: " + formatWhole(tmp.j.clickables[35].cost) + " Exp"
@@ -12822,10 +13092,12 @@ addLayer("j", {
                 41: {
                         title(){
                                 if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 return "<b style='color: #003333'>Jewelry</b>"
                         },
                         display(){
                                 if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 let a = "<b>Hour</b> gives free <b>Hope</b> levels and unlock rebirth IV"
                                 let b = "<br><br>Cost: " + formatWhole(tmp.j.clickables[41].cost) + " Exp"
                                 return a + b
@@ -12854,10 +13126,12 @@ addLayer("j", {
                 42: {
                         title(){
                                 if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 return "<b style='color: #003333'>Joined</b>"
                         },
                         display(){
                                 if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 let a = "<b>Rebirth IV</b> doesn't reset <b>Rebirth III</b>, autobuy <b>Rebirth IV</b>, and <b>Rebirth IV</b> gives free <b>Hour</b> levels"
                                 let b = "<br><br>Cost: " + formatWhole(tmp.j.clickables[42].cost) + " Exp"
                                 return a + b
@@ -12886,10 +13160,12 @@ addLayer("j", {
                 43: {
                         title(){
                                 if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 return "<b style='color: #003333'>Japanese</b>"
                         },
                         display(){
                                 if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 let a = "Raise <b>J</b> effect to the number of puzzle upgrades and upon finish or reset automatically start filtering"
                                 let b = "<br><br>Cost: " + formatWhole(tmp.j.clickables[43].cost) + " Exp"
                                 return a + b
@@ -12918,10 +13194,12 @@ addLayer("j", {
                 44: {
                         title(){
                                 if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 return "<b style='color: #003333'>Jersey</b>"
                         },
                         display(){
                                 if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 let a = "Upon finding all pieces while Filtering automatically go to edges and unlock an <b>H</b> buyable"
                                 let b = "<br><br>Cost: " + formatWhole(tmp.j.clickables[44].cost) + " Exp"
                                 return a + b
@@ -12950,10 +13228,12 @@ addLayer("j", {
                 45: {
                         title(){
                                 if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 return "<b style='color: #003333'>Jack</b>"
                         },
                         display(){
                                 if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 let a = "Multiply base <b>H</b> gain by 1e1000"
                                 let c = "<br>Currently: *" + format(tmp.j.clickables[45].effect)
                                 let b = "<br><br>Cost: " + formatWhole(tmp.j.clickables[45].cost) + " Exp"
@@ -12986,10 +13266,12 @@ addLayer("j", {
                 51: {
                         title(){
                                 if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 return "<b style='color: #003333'>Justice</b>"
                         },
                         display(){
                                 if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 let a = "You can hold shift to max buy Success Chance, you can complete 5 more <b>F</b> challenges, and unlock another milestone"
                                 let b = "<br><br>Cost: " + formatWhole(tmp.j.clickables[51].cost) + " Exp"
                                 return a + b
@@ -13018,10 +13300,12 @@ addLayer("j", {
                 52: {
                         title(){
                                 if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 return "<b style='color: #003333'>Jump</b>"
                         },
                         display(){
                                 if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 let a = "<b>Huge</b> gives free <b>Hour</b> and <b>Hope</b> levels and unlock a <b>H</b> challenge"
                                 let b = "<br><br>Cost: " + formatWhole(tmp.j.clickables[52].cost) + " Exp"
                                 return a + b
@@ -13050,10 +13334,12 @@ addLayer("j", {
                 53: {
                         title(){
                                 if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 return "<b style='color: #003333'>Johnson</b>"
                         },
                         display(){
                                 if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 let a = "<b>Hour</b> gives free <b>Held</b> levels and upon placing all pieces go to Finish"
                                 let b = "<br><br>Cost: " + formatWhole(tmp.j.clickables[53].cost) + " Exp"
                                 return a + b
@@ -13082,10 +13368,12 @@ addLayer("j", {
                 54: {
                         title(){
                                 if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 return "<b style='color: #003333'>Jazz</b>"
                         },
                         display(){
                                 if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 let a = "Each <b>J</b> upgrade doubles banked exp gain"
                                 let b = "<br><br>Cost: " + formatWhole(tmp.j.clickables[54].cost) + " Exp"
                                 return a + b
@@ -13114,10 +13402,12 @@ addLayer("j", {
                 55: {
                         title(){
                                 if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 return "<b style='color: #003333'>Junior</b>"
                         },
                         display(){
                                 if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 let a = "Multiply base <b>J</b> gain by " + format(tmp.j.clickables[55].base)
                                 let c = "<br>Currently: *" + format(tmp.j.clickables[55].effect)
                                 let b = "<br><br>Cost: " + formatWhole(tmp.j.clickables[55].cost) + " Exp"
@@ -13157,10 +13447,12 @@ addLayer("j", {
                 65: {
                         title(){
                                 if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 return "<b style='color: #003333'>Reset<sup>2</sup></b>"
                         },
                         display(){
                                 if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 let a = "Requires: Maxed Larger Puzzle"
                                 let c = "<br>You have done: " + formatWhole(player.j.puzzle.reset2.times)
                                 return a + c
@@ -13211,9 +13503,13 @@ addLayer("j", {
                 },
                 61: {
                         title(){
+                                if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 return "<b style='color: #003333'>Jonathan</b>"
                         },
                         display(){
+                                if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 let a = "Each <b>Japan</b> adds .005 to the <b>Japan</b> base and adds one to the <b>J</b> gain exponent and unlock <b>Lock</b>"
                                 let b = "<br><br>Cost: " + formatWhole(tmp.j.clickables[61].cost) + " Exp"
                                 return a + b
@@ -13241,9 +13537,13 @@ addLayer("j", {
                 },
                 62: {
                         title(){
+                                if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 return "<b style='color: #003333'>Jessica</b>"
                         },
                         display(){
+                                if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 let a = "Square Silver Lock effect, each lock doubles <b>K</b> gain, and Puzzle autobuyers trigger 4x as often"
                                 let b = "<br><br>Cost: " + formatWhole(tmp.j.clickables[62].cost) + " Exp"
                                 return a + b
@@ -13271,9 +13571,13 @@ addLayer("j", {
                 },
                 63: {
                         title(){
+                                if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 return "<b style='color: #003333'>Jerry</b>"
                         },
                         display(){
+                                if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 let a = "Jack levels multiply first row metal gain and you can buy 10x more Bulk Amount at once"
                                 let b = "<br><br>Cost: " + formatWhole(tmp.j.clickables[63].cost) + " Exp"
                                 return a + b
@@ -13301,9 +13605,13 @@ addLayer("j", {
                 },
                 64: {
                         title(){
+                                if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 return "<b style='color: #003333'>Johnny</b>"
                         },
                         display(){
+                                if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 let a = "Make <b>Hit</b> goal scaling much weaker and remove the <b>A</b>, <b>B</b> and, <b>C</b> effect softcaps"
                                 let b = "<br><br>Cost: " + formatWhole(tmp.j.clickables[64].cost) + " Exp"
                                 return a + b
@@ -13349,6 +13657,7 @@ addLayer("j", {
                         height: 40,
                         progress(){
                                 if (player.tab != "j") return 0
+                                if (player.subtabs.j.mainTabs != "Puzzle") return 0
                                 let data = player.j.puzzle
                                 let z = data.bartype
                                 if (z == 1){
@@ -13388,6 +13697,8 @@ addLayer("j", {
                                 }
                         },
                         display(){
+                                if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                 let data = player.j.puzzle
                                 let por = [4, 2 * (data.currentX + data.currentY) - 8, (data.currentX - 2) * (data.currentY - 2)]
                                 let val = [data.placed.corners, data.placed.edges, data.placed.centers]
@@ -13456,12 +13767,14 @@ addLayer("j", {
                                 ["display-text",
                                         function() {
                                                 if (player.tab != "j") return ""
+                                                if (player.subtabs.j.mainTabs != "Upgrades") return ""
                                                 return shiftDown ? "Your best Jigsaws is " + format(player.j.best) : ""
                                         }
                                 ],
                                 ["display-text",
                                         function() {
                                                 if (player.tab != "j") return ""
+                                                if (player.subtabs.j.mainTabs != "Upgrades") return ""
                                                 if (hasUnlockedPast("j")) return ""
                                                 return "You have done " + formatWhole(player.j.times) + " Jigsaw resets"
                                         }
@@ -13469,6 +13782,7 @@ addLayer("j", {
                                 ["display-text",
                                         function() {
                                                 if (player.tab != "j") return ""
+                                                if (player.subtabs.j.mainTabs != "Upgrades") return ""
                                                 if (hasUpgrade("i", 33)) return "You are gaining " + format(tmp.j.getResetGain) + " Jigsaws per second"
                                                 return "There is a two second cooldown for prestiging (" + format(Math.max(0, 2-player.j.time)) + ")" 
                                         },
@@ -13500,6 +13814,7 @@ addLayer("j", {
                         content: [
                                 ["display-text", function(){
                                         if (player.tab != "j") return ""
+                                        if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                         let data = player.j.puzzle
                                         let a = "You have " + formatWhole(player.j.points) + " jigsaws, causing a " + format(tmp.j.clickables.jigsawEffect, 4) + " speed multiplier<br>"
                                         if (shiftDown && (!hasUpgrade("i", 53) || !hasMilestone("k", 6))) {
@@ -13515,6 +13830,7 @@ addLayer("j", {
                                 ["clickables", [1,2]],
                                 ["display-text", function(){
                                         if (player.tab != "j") return ""
+                                        if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                         let data = player.j.puzzle
                                         let data2 = data.found
                                         let data3 = data.placed
@@ -13542,6 +13858,7 @@ addLayer("j", {
                                 "main-display",
                                 ["display-text", function(){
                                         if (player.tab != "j") return ""
+                                        if (player.subtabs.j.mainTabs != "Details") return ""
                                         let a = `<h2 style='color:#FF3366'>Puzzle mechanic:</h2><br>
                                         You have a 10x10 puzzle (initially)<br>You can buy the following upgrades [more unlocked later], <br>
                                         1. success chance, [50% base]<br>2. attempt speed, [1s base]<br><br>
@@ -13590,7 +13907,7 @@ addLayer("j", {
                 data.time = 0
                 data.times = 0
 
-                if (!false) {
+                if (!hasMilestone("l", 4)) {
                         //upgrades
                         let keep = []
                         data.upgrades = filter(data.upgrades, keep)
@@ -13627,7 +13944,7 @@ addLayer("j", {
                 data2.repeatables[35] = new Decimal(0)
                 data2.repeatables[45] = new Decimal(0)
                 data2.repeatables[55] = new Decimal(0)
-                data2.upgrades = []
+                if (!hasMilestone("l", 2)) data2.upgrades = []
                 data2.placed = {
                         corners: 0,
                         edges: 0,
@@ -13640,11 +13957,14 @@ addLayer("j", {
                 }
                 data2.currentX = 10
                 data2.currentY = 10
-                data2.finished = 0
                 data2.mode = 1
-                data2.reset2.times = 0
+                if (!hasMilestone("l", 5)) data2.reset2.times = 0
                 data2.time = 0
-                data2.bestCompletedK = 0
+                
+                let r = 0
+                if (hasMilestone("l", 7)) r = Math.floor(data2.bestCompletedAllTime * .98)
+                data2.finished = r
+                data2.bestCompletedK = r
         },
 })
 
@@ -13758,6 +14078,9 @@ addLayer("k", {
                 if (hasUpgrade("j", 44)) x = x.plus(1)
                 x = x.plus(tmp.k.clickables[43].effect.times(tmp.k.clickables.totalKeys))
                 x = x.plus(tmp.k.clickables[25].effect)
+                if (hasUpgrade("k", 25)) x = x.plus(player.k.lock.repeatables[25])
+                if (hasMilestone("l", 2)) x = x.plus(.1 * player.l.milestones.length)
+                if (hasMilestone("l", 8)) x = x.plus(.2 * player.l.milestones.length)
                 return x
         },
         getGainMultPre(){
@@ -13793,8 +14116,6 @@ addLayer("k", {
 
                 let ret2 = amt.pow(exp2).max(1)
 
-                //ret = softcap(ret, "h_eff")
-
                 return ret.times(ret2)
         },
         effectDescription(){
@@ -13822,7 +14143,9 @@ addLayer("k", {
                 }
 
                 data.time += diff
-                data.autodevtime += diff
+                let devtimefactor = 1
+                if (hasMilestone("l", 9)) devtimefactor *= 3
+                data.autodevtime += diff * devtimefactor
 
                 data2 = data.lock
                 data3 = data2.mines
@@ -13844,6 +14167,22 @@ addLayer("k", {
                 if (data.autodevtime < 1) return
                 data.autodevtime += -1
                 if (data.autodevtime > 10) data.autodevtime = 10
+                if (player.l.autobuyMines && hasMilestone("l", 3)){
+                        let list = [11,12,13,14,15,21,22,23,24,25]
+                        for (i = 0; i < 10; i++){
+                                let x = tmp.k.clickables[list[i]].canClick
+                                if (!x) continue
+                                layers.k.clickables[list[i]].onClick()
+                        }
+                }
+                if (player.l.autobuyLocks12 && hasMilestone("l", 5)){
+                        let list = [31,32,33,34,35,41,42,43,44,45]
+                        for (i = 0; i < 10; i++){
+                                let x = tmp.k.clickables[list[i]].canClick
+                                if (!x) continue
+                                layers.k.clickables[list[i]].onClick()
+                        }
+                }
         },
         row: 10, // Row the layer is in on the tree (0 is the first row)
         hotkeys: [
@@ -14009,6 +14348,16 @@ addLayer("k", {
                                 return hasMilestone("k", 13) || hasUnlockedPast("k")
                         }, // hasMilestone("k", 14)
                 },
+                15: {
+                        requirementDescription: "<b>Kits</b><br>Requires: 1.09e2,466 Keys",
+                        effectDescription: "Remove the ability to prestige for Lemons, but gain 100% of Lemons on reset per second",
+                        done(){
+                                return player.k.points.max(1).log(2).gte(Decimal.pow(2,13))
+                        },
+                        unlocked(){
+                                return hasMilestone("k", 14) || hasUnlockedPast("l")
+                        }, // hasMilestone("k", 15)
+                },
         },
         upgrades: {
                 rows: 5,
@@ -14085,9 +14434,20 @@ addLayer("k", {
                                 return hasUpgrade("k", 23) || hasUnlockedPast("k")
                         }
                 }, // hasUpgrade("k", 24)
+                25: {
+                        title: "Kevin",
+                        description: "Each <b>Osmium Mine</b> adds 1 to the <b>K</b> gain exponent and multiply Osmium gain by the number of reset<sup>2</sup>",
+                        cost: new Decimal("1e1674"),
+                        unlocked(){
+                                return hasUpgrade("k", 24) || hasUnlockedPast("k")
+                        }
+                }, // hasUpgrade("k", 25)
                 
                 /*
-                Kevin
+                Keys
+                Killed
+                Kid
+                Kernel
                 */
         },
         clickables: {
@@ -14113,6 +14473,7 @@ addLayer("k", {
                         let ret = new Decimal(1)
                         ret = ret.times(tmp.k.clickables[22].effect)
                         ret = ret.times(Decimal.pow(player.k.points.max(Math.E).ln(), tmp.k.clickables[42].effect))
+                        if (hasMilestone("l", 3)) ret = ret.times(Decimal.pow(4, player.l.milestones.length))
                         return ret
                 },
                 getGlobalMineGainMult(){
@@ -14126,10 +14487,12 @@ addLayer("k", {
                 11: {
                         title(){
                                 if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 return "<h3 style='color: #" + getUndulatingColor(0) + "'>Iron<br>Mine</h3>"
                         },
                         display(){
                                 if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 let a 
                                 let b 
                                 let c 
@@ -14184,6 +14547,8 @@ addLayer("k", {
                                 return ret
                         },
                         effectDescription(){
+                                if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 let eff = tmp.k.clickables[11].effect 
                                 return "*" + format(eff) + " Keys"
                         },
@@ -14191,7 +14556,6 @@ addLayer("k", {
                                 return tmp.k.clickables[11].mineProductionPer.times(tmp.k.clickables[11].total)
                         },
                         canClick(){
-                                if (player.tab != "k") return false
                                 return player.k.points.gte(this.cost())
                         },
                         onClick(nocost = false){
@@ -14204,10 +14568,12 @@ addLayer("k", {
                 12: {
                         title(){
                                 if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 return "<h3 style='color: #" + getUndulatingColor(0.4) + "'>Silver<br>Mine</h3>"
                         },
                         display(){
                                 if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 let a 
                                 let b 
                                 let c 
@@ -14264,6 +14630,8 @@ addLayer("k", {
                                 return ret
                         },
                         effectDescription(){
+                                if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 let eff = tmp.k.clickables[12].effect 
                                 return "*" + format(eff) + " Knowledge"
                         },
@@ -14271,7 +14639,6 @@ addLayer("k", {
                                 return tmp.k.clickables[12].mineProductionPer.times(tmp.k.clickables[12].total)
                         },
                         canClick(){
-                                if (player.tab != "k") return false
                                 return player.k.points.gte(this.cost())
                         },
                         onClick(nocost = false){
@@ -14284,10 +14651,12 @@ addLayer("k", {
                 13: {
                         title(){
                                 if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 return "<h3 style='color: #" + getUndulatingColor(0.8) + "'>Gold<br>Mine</h3>"
                         },
                         display(){
                                 if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 let a 
                                 let b 
                                 let c 
@@ -14345,6 +14714,8 @@ addLayer("k", {
                                 return ret
                         },
                         effectDescription(){
+                                if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 let eff = tmp.k.clickables[13].effect 
                                 return "*" + format(eff) + " Banked Exp gain"
                         },
@@ -14352,7 +14723,6 @@ addLayer("k", {
                                 return tmp.k.clickables[13].mineProductionPer.times(tmp.k.clickables[13].total)
                         },
                         canClick(){
-                                if (player.tab != "k") return false
                                 return player.k.points.gte(this.cost())
                         },
                         onClick(nocost = false){
@@ -14365,10 +14735,12 @@ addLayer("k", {
                 14: {
                         title(){
                                 if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 return "<h3 style='color: #" + getUndulatingColor(1.2) + "'>Bronze<br>Mine</h3>"
                         },
                         display(){
                                 if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 let a 
                                 let b 
                                 let c 
@@ -14425,6 +14797,8 @@ addLayer("k", {
                                 return ret
                         },
                         effectDescription(){
+                                if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 let eff = tmp.k.clickables[14].effect 
                                 return "+" + format(eff, 4) + " <b>Japan</b> base"
                         },
@@ -14432,7 +14806,6 @@ addLayer("k", {
                                 return tmp.k.clickables[14].mineProductionPer.times(tmp.k.clickables[14].total)
                         },
                         canClick(){
-                                if (player.tab != "k") return false
                                 return player.k.points.gte(this.cost())
                         },
                         onClick(nocost = false){
@@ -14445,10 +14818,12 @@ addLayer("k", {
                 15: {
                         title(){
                                 if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 return "<h3 style='color: #" + getUndulatingColor(1.6) + "'>Copper<br>Mine</h3>"
                         },
                         display(){
                                 if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 let a 
                                 let b 
                                 let c 
@@ -14505,6 +14880,8 @@ addLayer("k", {
                                 return ret
                         },
                         effectDescription(){
+                                if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 let eff = tmp.k.clickables[15].effect 
                                 return "*" + format(eff) + " Mine production"
                         },
@@ -14512,7 +14889,6 @@ addLayer("k", {
                                 return tmp.k.clickables[15].mineProductionPer.times(tmp.k.clickables[15].total)
                         },
                         canClick(){
-                                if (player.tab != "k") return false
                                 return player.k.points.gte(this.cost())
                         },
                         onClick(nocost = false){
@@ -14525,10 +14901,12 @@ addLayer("k", {
                 21: {
                         title(){
                                 if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 return "<h3 style='color: #" + getUndulatingColor(2) + "'>Tin<br>Mine</h3>"
                         },
                         display(){
                                 if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 let a 
                                 let b 
                                 let c 
@@ -14585,6 +14963,8 @@ addLayer("k", {
                                 return ret
                         },
                         effectDescription(){
+                                if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 let eff = tmp.k.clickables[21].effect 
                                 return "+" + format(eff) + " <b>I</b> gain exponent"
                         },
@@ -14592,7 +14972,6 @@ addLayer("k", {
                                 return tmp.k.clickables[21].mineProductionPer.times(tmp.k.clickables[21].total)
                         },
                         canClick(){
-                                if (player.tab != "k") return false
                                 return player.k.points.gte(this.cost())
                         },
                         onClick(nocost = false){
@@ -14605,10 +14984,12 @@ addLayer("k", {
                 22: {
                         title(){
                                 if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 return "<h3 style='color: #" + getUndulatingColor(2.4) + "'>Titanium<br>Mine</h3>"
                         },
                         display(){
                                 if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 let a 
                                 let b 
                                 let c 
@@ -14665,6 +15046,8 @@ addLayer("k", {
                                 return ret
                         },
                         effectDescription(){
+                                if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 let eff = tmp.k.clickables[22].effect 
                                 return "*" + format(eff) + " all Metal gain"
                         },
@@ -14672,7 +15055,6 @@ addLayer("k", {
                                 return tmp.k.clickables[22].mineProductionPer.times(tmp.k.clickables[22].total)
                         },
                         canClick(){
-                                if (player.tab != "k") return false
                                 return player.k.points.gte(this.cost())
                         },
                         onClick(nocost = false){
@@ -14685,10 +15067,12 @@ addLayer("k", {
                 23: {
                         title(){
                                 if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 return "<h3 style='color: #" + getUndulatingColor(2.8) + "'>Tungsten<br>Mine</h3>"
                         },
                         display(){
                                 if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 let a 
                                 let b 
                                 let c 
@@ -14741,9 +15125,12 @@ addLayer("k", {
                         effect(){
                                 let amt = player.k.lock.resources[23]
                                 let ret = amt.plus(1e18).log10().div(3).pow(2).sub(35)
+                                if (hasMilestone("l", 9)) ret = ret.pow(2)
                                 return ret
                         },
                         effectDescription(){
+                                if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 let eff = tmp.k.clickables[23].effect 
                                 return "*" + format(eff) + " Mine production"
                         },
@@ -14751,7 +15138,6 @@ addLayer("k", {
                                 return tmp.k.clickables[23].mineProductionPer.times(tmp.k.clickables[23].total)
                         },
                         canClick(){
-                                if (player.tab != "k") return false
                                 return player.k.points.gte(this.cost())
                         },
                         onClick(nocost = false){
@@ -14764,10 +15150,12 @@ addLayer("k", {
                 24: {
                         title(){
                                 if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 return "<h3 style='color: #" + getUndulatingColor(3.2) + "'>Aluminum<br>Mine</h3>"
                         },
                         display(){
                                 if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 let a 
                                 let b 
                                 let c 
@@ -14829,6 +15217,8 @@ addLayer("k", {
                                 return ret
                         },
                         effectDescription(){
+                                if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 let eff = tmp.k.clickables[24].effect 
                                 return "*" + format(eff) + " Knowledge"
                         },
@@ -14836,7 +15226,6 @@ addLayer("k", {
                                 return tmp.k.clickables[24].mineProductionPer.times(tmp.k.clickables[24].total)
                         },
                         canClick(){
-                                if (player.tab != "k") return false
                                 return player.k.points.gte(this.cost())
                         },
                         onClick(nocost = false){
@@ -14849,10 +15238,12 @@ addLayer("k", {
                 25: {
                         title(){
                                 if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 return "<h3 style='color: #" + getUndulatingColor(3.6) + "'>Osmium<br>Mine</h3>"
                         },
                         display(){
                                 if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 let a 
                                 let b 
                                 let c 
@@ -14878,6 +15269,7 @@ addLayer("k", {
                                 ret = ret.times(Decimal.pow(player.k.lock.resources[25].plus(Math.E).ln(), tmp.k.clickables[33].effect))
                                 ret = ret.times(Decimal.pow(tmp.k.clickables[34].effect, player.k.lock.repeatables[45]))
                                 ret = ret.times(tmp.k.clickables.getGlobalMetalGainMult)
+                                if (hasUpgrade("k", 25)) ret = ret.times(Math.max(1, player.j.puzzle.reset2.times))
                                 return ret
                         },
                         metalProductionPerSecond(){
@@ -14894,7 +15286,7 @@ addLayer("k", {
                                 return data.mines[25].plus(data.repeatables[25])
                         },
                         bases(){
-                                return [new Decimal("1e939"), new Decimal("1e55")]
+                                return [new Decimal("1e935"), new Decimal("1e55")]
                         },
                         cost(){
                                 let bases = tmp.k.clickables[25].bases
@@ -14908,6 +15300,8 @@ addLayer("k", {
                                 return ret
                         },
                         effectDescription(){
+                                if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 let eff = tmp.k.clickables[25].effect 
                                 return "+" + format(eff, 4) + " <b>K</b> gain exponent"
                         },
@@ -14915,7 +15309,6 @@ addLayer("k", {
                                 return tmp.k.clickables[25].mineProductionPer.times(tmp.k.clickables[25].total)
                         },
                         canClick(){
-                                if (player.tab != "k") return false
                                 return player.k.points.gte(this.cost())
                         },
                         onClick(nocost = false){
@@ -14928,10 +15321,12 @@ addLayer("k", {
                 31: {
                         title(){
                                 if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 return "<h3 style='color: #" + getUndulatingColor(4) + "'>Iron<br>Lock</h3>"
                         },
                         display(){
                                 if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 let a 
                                 let b 
                                 let c 
@@ -14957,14 +15352,16 @@ addLayer("k", {
                         effect(){
                                 let amt = player.k.lock.repeatables[31]
                                 let ret = amt.times(3).plus(1).sqrt()
+                                if (hasMilestone("l", 4)) ret = ret.pow(Decimal.pow(1.01, player.l.milestones.length))
                                 return ret
                         },
                         effectDescription(){
+                                if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 let eff = tmp.k.clickables[31].effect 
                                 return "*" + format(eff) + "^sqrt(bought mines) to each mines metal production"
                         },
                         canClick(){
-                                if (player.tab != "k") return false
                                 return player.k.lock.resources[11].gte(this.cost())
                         },
                         onClick(nocost = false){
@@ -14978,10 +15375,12 @@ addLayer("k", {
                 32: {
                         title(){
                                 if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 return "<h3 style='color: #" + getUndulatingColor(4.4) + "'>Silver<br>Lock</h3>"
                         },
                         display(){
                                 if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 let a 
                                 let b 
                                 let c 
@@ -15011,11 +15410,12 @@ addLayer("k", {
                                 return ret
                         },
                         effectDescription(){
+                                if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 let eff = tmp.k.clickables[32].effect 
                                 return "*" + format(eff) + " <b>K</b> gain per mine"
                         },
                         canClick(){
-                                if (player.tab != "k") return false
                                 return player.k.lock.resources[12].gte(this.cost())
                         },
                         onClick(nocost = false){
@@ -15029,10 +15429,12 @@ addLayer("k", {
                 33: {
                         title(){
                                 if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 return "<h3 style='color: #" + getUndulatingColor(4.8) + "'>Gold<br>Lock</h3>"
                         },
                         display(){
                                 if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 let a 
                                 let b 
                                 let c 
@@ -15058,14 +15460,16 @@ addLayer("k", {
                         effect(){
                                 let amt = player.k.lock.repeatables[33]
                                 let ret = amt.sqrt()
+                                if (hasMilestone("l", 6)) amt = amt.times(1.2)
                                 return ret
                         },
                         effectDescription(){
+                                if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 let eff = tmp.k.clickables[33].effect 
                                 return "per resource *ln(resource)^" + format(eff) + " to self gain"
                         },
                         canClick(){
-                                if (player.tab != "k") return false
                                 return player.k.lock.resources[13].gte(this.cost())
                         },
                         onClick(nocost = false){
@@ -15079,10 +15483,12 @@ addLayer("k", {
                 34: {
                         title(){
                                 if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 return "<h3 style='color: #" + getUndulatingColor(5.2) + "'>Bronze<br>Lock</h3>"
                         },
                         display(){
                                 if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 let a 
                                 let b 
                                 let c 
@@ -15113,11 +15519,12 @@ addLayer("k", {
                                 return ret
                         },
                         effectDescription(){
+                                if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 let eff = tmp.k.clickables[34].effect
                                 return "per resource *" + format(eff) + "^[bought locks] resource gain"
                         },
                         canClick(){
-                                if (player.tab != "k") return false
                                 return player.k.lock.resources[14].gte(this.cost())
                         },
                         onClick(nocost = false){
@@ -15131,10 +15538,12 @@ addLayer("k", {
                 35: {
                         title(){
                                 if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 return "<h3 style='color: #" + getUndulatingColor(5.6) + "'>Copper<br>Lock</h3>"
                         },
                         display(){
                                 if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 let a 
                                 let b 
                                 let c 
@@ -15163,11 +15572,12 @@ addLayer("k", {
                                 return ret
                         },
                         effectDescription(){
+                                if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 let eff = tmp.k.clickables[35].effect
                                 return "*" + format(eff) + " <b>K</b> and Knowledge gain"
                         },
                         canClick(){
-                                if (player.tab != "k") return false
                                 return player.k.lock.resources[15].gte(this.cost())
                         },
                         onClick(nocost = false){
@@ -15181,10 +15591,12 @@ addLayer("k", {
                 41: {
                         title(){
                                 if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 return "<h3 style='color: #" + getUndulatingColor(6) + "'>Tin<br>Lock</h3>"
                         },
                         display(){
                                 if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 let a 
                                 let b 
                                 let c 
@@ -15213,11 +15625,12 @@ addLayer("k", {
                                 return ret
                         },
                         effectDescription(){
+                                if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 let eff = tmp.k.clickables[41].effect
                                 return "+" + format(eff) + " to <b>Japan</b> base"
                         },
                         canClick(){
-                                if (player.tab != "k") return false
                                 return player.k.lock.resources[21].gte(this.cost())
                         },
                         onClick(nocost = false){
@@ -15231,10 +15644,12 @@ addLayer("k", {
                 42: {
                         title(){
                                 if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 return "<h3 style='color: #" + getUndulatingColor(6.4) + "'>Titanium<br>Lock</h3>"
                         },
                         display(){
                                 if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 let a 
                                 let b 
                                 let c 
@@ -15263,11 +15678,12 @@ addLayer("k", {
                                 return ret
                         },
                         effectDescription(){
+                                if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 let eff = tmp.k.clickables[42].effect
                                 return "*ln(keys)^" + format(eff) + " global Metal gain"
                         },
                         canClick(){
-                                if (player.tab != "k") return false
                                 return player.k.lock.resources[22].gte(this.cost())
                         },
                         onClick(nocost = false){
@@ -15281,10 +15697,12 @@ addLayer("k", {
                 43: {
                         title(){
                                 if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 return "<h3 style='color: #" + getUndulatingColor(6.8) + "'>Tungsten<br>Lock</h3>"
                         },
                         display(){
                                 if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 let a 
                                 let b 
                                 let c 
@@ -15313,11 +15731,12 @@ addLayer("k", {
                                 return ret
                         },
                         effectDescription(){
+                                if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 let eff = tmp.k.clickables[43].effect
                                 return "+[total locks]*" + format(eff, 4) + " <b>K</b> gain exponent"
                         },
                         canClick(){
-                                if (player.tab != "k") return false
                                 return player.k.lock.resources[23].gte(this.cost())
                         },
                         onClick(nocost = false){
@@ -15331,10 +15750,12 @@ addLayer("k", {
                 44: {
                         title(){
                                 if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 return "<h3 style='color: #" + getUndulatingColor(7.2) + "'>Aluminum<br>Lock</h3>"
                         },
                         display(){
                                 if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 let a 
                                 let b 
                                 let c 
@@ -15363,11 +15784,12 @@ addLayer("k", {
                                 return ret
                         },
                         effectDescription(){
+                                if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 let eff = tmp.k.clickables[44].effect
                                 return "per resource *" + format(eff) + "^[bought mines] mine production"
                         },
                         canClick(){
-                                if (player.tab != "k") return false
                                 return player.k.lock.resources[24].gte(this.cost())
                         },
                         onClick(nocost = false){
@@ -15381,10 +15803,12 @@ addLayer("k", {
                 45: {
                         title(){
                                 if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 return "<h3 style='color: #" + getUndulatingColor(7.6) + "'>Osmium<br>Lock</h3>"
                         },
                         display(){
                                 if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 let a 
                                 let b 
                                 let c 
@@ -15399,7 +15823,7 @@ addLayer("k", {
                                 return player.k.lock.repeatables[44].gt(1) || hasUnlockedPast("k")
                         },
                         bases(){
-                                return [new Decimal("2e25"), new Decimal(11)]
+                                return [new Decimal("1e25"), new Decimal(11)]
                         },
                         cost(){
                                 let bases = tmp.k.clickables[45].bases
@@ -15413,11 +15837,12 @@ addLayer("k", {
                                 return ret
                         },
                         effectDescription(){
+                                if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
                                 let eff = tmp.k.clickables[45].effect
                                 return "*ln(keys)^" + format(eff) + " global mine production"
                         },
                         canClick(){
-                                if (player.tab != "k") return false
                                 return player.k.lock.resources[25].gte(this.cost())
                         },
                         onClick(nocost = false){
@@ -15437,12 +15862,14 @@ addLayer("k", {
                                 ["display-text",
                                         function() {
                                                 if (player.tab != "k") return ""
-                                                return shiftDown ? "Your best Ideas is " + format(player.k.best) : ""
+                                                if (player.subtabs.k.mainTabs != "Upgrades") return ""
+                                                return shiftDown ? "Your best Keys is " + format(player.k.best) : ""
                                         }
                                 ],
                                 ["display-text",
                                         function() {
                                                 if (player.tab != "k") return ""
+                                                if (player.subtabs.k.mainTabs != "Upgrades") return ""
                                                 if (hasUnlockedPast("k")) return ""
                                                 return "You have done " + formatWhole(player.k.times) + " Key resets"
                                         }
@@ -15450,6 +15877,7 @@ addLayer("k", {
                                 ["display-text",
                                         function() {
                                                 if (player.tab != "k") return ""
+                                                if (player.subtabs.k.mainTabs != "Upgrades") return ""
                                                 if (hasMilestone("k", 5)) return "You are gaining " + format(tmp.k.getResetGain) + " Keys per second"
                                                 return "There is a two second cooldown for prestiging (" + format(Math.max(0, 2-player.k.time)) + ")" 
                                         },
@@ -15484,12 +15912,14 @@ addLayer("k", {
                                 "main-display",
                                 ["display-text", function(){
                                         if (player.tab != "k") return ""
+                                        if (player.subtabs.k.mainTabs != "Lock") return ""
                                         return hasMilestone("k", 5) ? "You are gaining " + format(tmp.k.getResetGain) + " Keys per second and hold shift to see costs" : ""
                                 }],
                                 ["clickables", [1,2]], //mines
                                 "blank", 
                                 ["display-text", function(){
                                         if (player.tab != "k") return ""
+                                        if (player.subtabs.k.mainTabs != "Lock") return ""
                                         let data1 = player.k.lock.resources
                                         let a = "You have <bdi style='color: #" + getUndulatingColor(0) + "'>" + format(data1[11]) + " Iron</bdi>"
                                         let b = ", <bdi style='color: #" + getUndulatingColor(0.4) + "'>" + format(data1[12]) + " Silver</bdi>"
@@ -15522,33 +15952,397 @@ addLayer("k", {
                                 return player.j.puzzle.upgrades.includes(61) || hasUnlockedPast("k")
                         },
                 },
-                "Details": {
-                        content: [
-                                ["display-text", function(){
-                                        let a = `tbd
-                                        there are 10 mines which produce previous mines<br>
-                                        Each mine also produced its own metal:<br>
-                                        Iron, Silver, Gold, Bronze, Copper, <br>
-                                        Tin, Titanium, Tungsten, Aluminum, Osmium<br>
-                                        Each metal has its own lock + key that it makes<br>
-                                        Each time you open a lock you get a boost to things idk lol<br>
-                                        <br>
-                                        the 3rd row of keys/locks is tbd<br> 
-                                        Please dont click things ty<br>
-                                        `
-                                        return a
-                                }],
-                        ],
-                        unlocked(){
-                                return false
-                                //player.j.puzzle.upgrades.includes(61) || hasUnlockedPast("k")
-                        },
-                },
         },
         doReset(layer){
                 let data = player.k
                 if (layer == "k") data.time = 0
                 if (!getsReset("k", layer)) return
+                data.time = 0
+                data.times = 0
+
+                if (!hasMilestone("l", 6)) {
+                        //upgrades
+                        let keep = []
+                        data.upgrades = filter(data.upgrades, keep)
+                }
+                
+                if (!false) {
+                        //milestones
+                        let keep2 = []
+                        x = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", 
+                             "11", "12", "13", "14"]
+                        for (i = 0; i < player.l.times * 2; i++){
+                                if (!hasMilestone("l", 1)) continue
+                                keep2.push(x[i])
+                        }
+                        data.milestones = filter(data.milestones, keep2)
+                }
+
+
+                //resources
+                data.points = new Decimal(0)
+                data.total = new Decimal(0)
+                data.best = new Decimal(0)
+
+                //buyables
+                let resetBuyables = [11, 12, 13, 21, 22, 23, 31, 32, 33]
+                for (let j = 0; j < resetBuyables.length; j++) {
+                        break //remove when buyables added
+                        data.buyables[resetBuyables[j]] = new Decimal(0)
+                }
+
+                let data2 = data.lock
+
+                data2.mines = {
+                        11: new Decimal(0),
+                        12: new Decimal(0),
+                        13: new Decimal(0),
+                        14: new Decimal(0),
+                        15: new Decimal(0),
+                        21: new Decimal(0),
+                        22: new Decimal(0),
+                        23: new Decimal(0),
+                        24: new Decimal(0),
+                        25: new Decimal(0),
+                }
+                data2.resources = {
+                        11: new Decimal(0),
+                        12: new Decimal(0),
+                        13: new Decimal(0),
+                        14: new Decimal(0),
+                        15: new Decimal(0),
+                        21: new Decimal(0),
+                        22: new Decimal(0),
+                        23: new Decimal(0),
+                        24: new Decimal(0),
+                        25: new Decimal(0),
+                },
+                data2.repeatables = {
+                        11: new Decimal(0),
+                        12: new Decimal(0),
+                        13: new Decimal(0),
+                        14: new Decimal(0),
+                        15: new Decimal(0),
+                        21: new Decimal(0),
+                        22: new Decimal(0),
+                        23: new Decimal(0),
+                        24: new Decimal(0),
+                        25: new Decimal(0),
+                        31: new Decimal(0),
+                        32: new Decimal(0),
+                        33: new Decimal(0),
+                        34: new Decimal(0),
+                        35: new Decimal(0),
+                        41: new Decimal(0),
+                        42: new Decimal(0),
+                        43: new Decimal(0),
+                        44: new Decimal(0),
+                        45: new Decimal(0),
+                        51: new Decimal(0),
+                        52: new Decimal(0),
+                        53: new Decimal(0),
+                        54: new Decimal(0),
+                        55: new Decimal(0),
+                        61: new Decimal(0),
+                        62: new Decimal(0),
+                        63: new Decimal(0),
+                        64: new Decimal(0),
+                        65: new Decimal(0),
+                        71: new Decimal(0),
+                        72: new Decimal(0),
+                        73: new Decimal(0),
+                        74: new Decimal(0),
+                        75: new Decimal(0),
+                        81: new Decimal(0),
+                        82: new Decimal(0),
+                        83: new Decimal(0),
+                        84: new Decimal(0),
+                        85: new Decimal(0),
+                }
+        },
+})
+
+
+
+addLayer("l", {
+        name: "Lemons",
+        symbol: "L",
+        position: 0,
+        startData() { 
+                return {
+                        unlocked: true,
+                        points: new Decimal(0),
+                        best: new Decimal(0),
+                        total: new Decimal(0),
+                        abtime: 0,
+                        time: 0,
+                        times: 0,
+                        autotimes: 0,
+                        autodevtime: 0,
+                } //no comma here
+        },
+        color: "#00CC33",
+        branches: ["k"],
+        requires: new Decimal(0),
+        resource: "Lemons",
+        baseResource: "Keys",
+        baseAmount() {
+                return player.k.best
+        },
+        type: "custom",
+        getResetGain() {
+                return getGeneralizedPrestigeGain("l")
+        },
+        getBaseDiv(){
+                let x = new Decimal("1e1904")
+                return x
+        },
+        getGainExp(){
+                let x = new Decimal(3)
+                if (hasMilestone("l", 8)) x = x.plus(.2 * player.l.milestones.length)
+                return x
+        },
+        getGainMultPre(){
+                let x = Decimal.pow(150, -1)
+                return x
+        },
+        getGainMultPost(){
+                let x = getGeneralizedInitialPostMult("l")
+
+                return x
+        },
+        effect(){
+                if (!isPrestigeEffectActive("l")) return new Decimal(1)
+
+                let amt = player.l.best
+
+                let exp = player.l.best.pow(.2).times(3).min(225)
+                
+                let exp2 = amt.div(2).cbrt().times(4).min(25)
+
+                let ret = amt.times(9).plus(1).pow(exp)
+
+                let ret2 = amt.pow(exp2).max(1)
+
+                return ret.times(ret2)
+        },
+        effectDescription(){
+                return getGeneralizedEffectDisplay("l")
+        },
+        update(diff){
+                let data = player.l
+
+                data.best = data.best.max(data.points)
+                if (hasMilestone("k", 15)) {
+                        let gain = tmp.l.getResetGain
+                        data.points = data.points.plus(gain.times(diff))
+                        data.total = data.total.plus(gain.times(diff))
+                        data.autotimes += diff
+                        if (data.autotimes > 3) data.autotimes = 3
+                        if (data.autotimes > 1) {
+                                data.autotimes += -1
+                                data.times ++
+                        }
+                }
+                if (false) {
+                        handleGeneralizedBuyableAutobuy(diff, "l")
+                } else {
+                        data.abtime = 0
+                }
+
+                data.time += diff
+                data.autodevtime += diff
+                
+                if (data.autodevtime < 1) return
+                data.autodevtime += -1
+                if (data.autodevtime > 10) data.autodevtime = 10
+        },
+        row: 11, // Row the layer is in on the tree (0 is the first row)
+        hotkeys: [
+                {key: "l", description: "L: Reset for Lemons", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+                {key: "shift+L", description: "Shift+L: Go to Lemons", onPress(){
+                                showTab("l")
+                        }
+                },
+        ],
+        layerShown(){return player.k.best.gt("1e2050") || player.l.best.gt(0) || hasUnlockedPast("l")},
+        prestigeButtonText(){
+                if (hasMilestone("k", 15)) return ""
+                return getGeneralizedPrestigeButtonText("l")
+        },
+        canReset(){
+                return player.l.time >= 2 && !hasMilestone("k", 15) && tmp.l.getResetGain.gt(0)
+        },
+        milestones: {
+                1: {
+                        requirementDescription: "<b>Like</b><br>Requires: 1 Lemon", 
+                        effectDescription: "Per <b>L</b> reset you keep two <b>K</b> milestones",
+                        done(){
+                                return player.l.points.gte(1)
+                        },
+                        unlocked(){
+                                return true || hasUnlockedPast("l")
+                        }, // hasMilestone("l", 1)
+                },
+                2: {
+                        requirementDescription: "<b>List</b><br>Requires: 2 Lemons", 
+                        effectDescription: "Keep Puzzle upgrades upon reset and each milestone adds .1 to the <b>K</b> gain exponent",
+                        done(){
+                                return player.l.points.gte(2)
+                        },
+                        unlocked(){
+                                return hasMilestone("l", 1) || hasUnlockedPast("l")
+                        }, // hasMilestone("l", 2)
+                },
+                3: {
+                        requirementDescription: "<b>Last</b><br>Requires: 3 Lemons", 
+                        effectDescription: "Unlock an autobuyer that buys each mine once per second and each milestone gives 4x metal gain",
+                        done(){
+                                return player.l.points.gte(3)
+                        },
+                        unlocked(){
+                                return hasMilestone("l", 2) || hasUnlockedPast("l")
+                        }, // hasMilestone("l", 3)
+                        toggles: [["l", "autobuyMines"]],
+                },
+                4: {
+                        requirementDescription: "<b>Links</b><br>Requires: 5 Lemons", 
+                        effectDescription: "Keep <b>J</b> upgrades and raise <b>Iron Lock</b> base ^1.01 per milestone",
+                        done(){
+                                return player.l.points.gte(5)
+                        },
+                        unlocked(){
+                                return hasMilestone("l", 3) || hasUnlockedPast("l")
+                        }, // hasMilestone("l", 4)
+                },
+                5: {
+                        requirementDescription: "<b>Life</b><br>Requires: 7 Lemons", 
+                        effectDescription: "Keep reset<sup>2</sup> times and unlock a autobuyer for the first two rows of locks",
+                        done(){
+                                return player.l.points.gte(7)
+                        },
+                        unlocked(){
+                                return hasMilestone("l", 4) || hasUnlockedPast("l")
+                        }, // hasMilestone("l", 5)
+                        toggles: [["l", "autobuyLocks12"]],
+                },
+                6: {
+                        requirementDescription: "<b>Line</b><br>Requires: 11 Lemons", 
+                        effectDescription: "Keep <b>K</b> upgrades and multiply <b>Gold Lock</b> effect by 1.2",
+                        done(){
+                                return player.l.points.gte(11)
+                        },
+                        unlocked(){
+                                return hasMilestone("l", 5) || hasUnlockedPast("l")
+                        }, // hasMilestone("l", 6)
+                },
+                7: {
+                        requirementDescription: "<b>Line</b><br>Requires: 15 Lemons", 
+                        effectDescription: "You start with 98% of your best puzzle completions over all time and unlock an <b>I</b> buyable [no buy yet]",
+                        done(){
+                                return player.l.points.gte(15)
+                        },
+                        unlocked(){
+                                return hasMilestone("l", 6) || hasUnlockedPast("l")
+                        },  // hasMilestone("l", 7)
+                },
+                8: {
+                        requirementDescription: "<b>Local</b><br>Requires: 50 Lemons", 
+                        effectDescription: "Each milestone adds .2 to the <b>L</b> gain exponent and <b>K</b> gain exponent",
+                        done(){
+                                return player.l.points.gte(50)
+                        },
+                        unlocked(){
+                                return hasMilestone("l", 7) || hasUnlockedPast("l")
+                        },  // hasMilestone("l", 8)
+                },
+                9: {
+                        requirementDescription: "<b>Long</b><br>Requires: 1000 Lemons", 
+                        effectDescription: "Lock content autobuyers are three times as fast and square Tungsten effect",
+                        done(){
+                                return player.l.points.gte(1000)
+                        },
+                        unlocked(){
+                                return hasMilestone("l", 8) || hasUnlockedPast("l")
+                        },  // hasMilestone("l", 9)
+                },
+        },
+        upgrades: {
+                rows: 5,
+                cols: 5,
+                /*
+                11: {
+                        title: "Kind",
+                        description: "<b>Japan</b> multiplies knowledge, <b>K</b> and banked exp gain",
+                        cost: new Decimal(1e32),
+                        unlocked(){
+                                return false || hasUnlockedPast("l")
+                        }
+                }, // hasUpgrade("l", 11)
+                */
+
+                /*
+                Link
+                */
+        },
+        tabFormat: {
+                "Upgrades": {
+                        content: [
+                                "main-display",
+                                ["prestige-button", "", function (){ return hasMilestone("k", 15) ? {'display': 'none'} : {}}],
+                                ["display-text",
+                                        function() {
+                                                if (player.tab != "l") return ""
+                                                if (player.subtabs.l.mainTabs != "Upgrades") return ""
+                                                return shiftDown ? "Your best Lemones is " + format(player.l.best) : ""
+                                        }
+                                ],
+                                ["display-text",
+                                        function() {
+                                                if (player.tab != "l") return ""
+                                                if (player.subtabs.l.mainTabs != "Upgrades") return ""
+                                                if (hasUnlockedPast("l")) return ""
+                                                return "You have done " + formatWhole(player.l.times) + " Lemones resets"
+                                        }
+                                ],
+                                ["display-text",
+                                        function() {
+                                                if (player.tab != "l") return ""
+                                                if (player.subtabs.l.mainTabs != "Upgrades") return ""
+                                                if (hasMilestone("k", 15)) return "You are gaining " + format(tmp.l.getResetGain) + " Lemones per second"
+                                                return "There is a two second cooldown for prestiging (" + format(Math.max(0, 2-player.l.time)) + ")" 
+                                        },
+                                        //{"font-size": "20px"}
+                                ],
+                                "blank", 
+                                ["upgrades", [1,5]]
+                        ],
+                        unlocked(){
+                                return true
+                        },
+                },
+                "Buyables": {
+                        content: ["main-display",
+                                "blank", 
+                                "buyables"],
+                        unlocked(){
+                                return false
+                        },
+                },
+                "Milestones": {
+                        content: [
+                                "main-display",
+                                "milestones",
+                        ],
+                        unlocked(){
+                                return true
+                        },
+                },
+        },
+        doReset(layer){
+                let data = player.l
+                if (layer == "l") data.time = 0
+                if (!getsReset("l", layer)) return
                 data.time = 0
                 data.times = 0
 
@@ -15578,5 +16372,3 @@ addLayer("k", {
                 }
         },
 })
-
-
