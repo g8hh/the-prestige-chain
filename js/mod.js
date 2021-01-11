@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".7 Make Lemonade",
+	num: ".7.1 Sleep",
 	name: "",
 }
 
@@ -784,6 +784,10 @@ function getChangeLogText(){
 	av5= "- Added a Key milestone"
 	av6= "- Added a Key upgrade"
 	av7= "- Made the game run slightly faster"
+	aw1= "v.7.1"
+	aw2= "- Added an Idea buyable"
+	aw3= "- Added a Key milestone"
+	aw4= "- Unlock a Lock and a Lemon milestone"
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
 	let part2 = [b1, b2, b3, b4, b5, "", b6, b7, "", b8, b9, b10, "", b11, b12, ""]
@@ -832,13 +836,14 @@ function getChangeLogText(){
 	let part45= [at1,at2,at3,at4,at5, ""]
 	let part46= [au1,au2,au3,au4, ""]
 	let part47= [av1,av2,av3,av4,av5,av6,av7, ""]
+	let part48= [aw1,aw2,aw3,aw4, ""]
 	// MAKE SURE TO ADD THEM
 
 	let final1 = [part10,  part9,  part8,  part7,  part6,  part5,  part4,  part3,  part2,  part1]
 	let final2 = [part20, part19, part18, part17, part16, part15, part14, part13, part12, part11]
 	let final3 = [part30, part29, part28, part27, part26, part25, part24, part23, part22, part21]
 	let final4 = [part40, part39, part38, part37, part36, part35, part34, part33, part32, part31]
-	let final5 = [part47, part46, part45, part44, part43, part42, part41]
+	let final5 = [part48, part47, part46, part45, part44, part43, part42, part41]
 
 	return final5.concat(final4).concat(final3).concat(final2).concat(final1)
 }

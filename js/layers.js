@@ -11419,8 +11419,6 @@ addLayer("i", {
                 }, // hasUpgrade("i", 55)
 
                 /*
-                
-                improve
                 Impact
                 introduction
                 */
@@ -11588,6 +11586,33 @@ addLayer("i", {
                         },
                         unlocked(){ 
                                 return hasMilestone("l", 7) || hasUnlockedPast("l")
+                        },
+                },
+                31: {
+                        title: "Improve",
+                        display(){
+                                return getBuyableDisplay("i", 31)
+                        },
+                        effect(){
+                                return CURRENT_BUYABLE_EFFECTS["i31"]
+                        },
+                        canAfford(){
+                                return canAffordBuyable("i", 31)
+                        },
+                        total(){
+                                return getBuyableAmount("i", 31).plus(this.extra())
+                        },
+                        extra(){
+                                return calcBuyableExtra("i", 31)
+                        },
+                        buy(){
+                                buyManualBuyable("i", 31)
+                        },
+                        buyMax(maximum){
+                                buyMaximumBuyable("i", 31, maximum)
+                        },
+                        unlocked(){ 
+                                return hasUpgrade("l", 11) || hasUnlockedPast("l")
                         },
                 },
         },
@@ -14340,7 +14365,7 @@ addLayer("k", {
                 },
                 14: {
                         requirementDescription: "<b>Keeping</b><br>Requires: 1.04e1,233 Keys",
-                        effectDescription: "You can buy 10 levels of <b>Larger Puzzle</b> at a time and square <b>Bronze Lock</b> base",
+                        effectDescription: "You can buy 10 levels of <b>Larger Puzzle</b> at a time and square <b>Coal Lock</b> base",
                         done(){
                                 return player.k.points.max(1).log(2).gte(4096)
                         },
@@ -14451,7 +14476,7 @@ addLayer("k", {
                 */
         },
         clickables: {
-                rows: 5,
+                rows: 8,
                 cols: 5,
                 totalMines(){
                         let sum = [11,12,13,14,15,21,22,23,24,25]
@@ -14482,6 +14507,10 @@ addLayer("k", {
                         ret = ret.times(tmp.k.clickables[23].effect)
                         ret = ret.times(Decimal.pow(player.k.points.plus(3).ln(), tmp.k.clickables[45].effect))
                         if (hasUpgrade("k", 24)) ret = ret.times(Decimal.pow(10, player.k.upgrades.length))
+                        if (hasMilestone("l", 10)) {
+                                let h = totalChallengeComps("h")
+                                if (h > 100) ret = ret.times(Decimal.pow(h / 100, h))
+                        }
                         return ret
                 },
                 11: {
@@ -14736,7 +14765,7 @@ addLayer("k", {
                         title(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
-                                return "<h3 style='color: #" + getUndulatingColor(1.2) + "'>Bronze<br>Mine</h3>"
+                                return "<h3 style='color: #" + getUndulatingColor(1.2) + "'>Coal<br>Mine</h3>"
                         },
                         display(){
                                 if (player.tab != "k") return ""
@@ -15484,7 +15513,7 @@ addLayer("k", {
                         title(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
-                                return "<h3 style='color: #" + getUndulatingColor(5.2) + "'>Bronze<br>Lock</h3>"
+                                return "<h3 style='color: #" + getUndulatingColor(5.2) + "'>Coal<br>Lock</h3>"
                         },
                         display(){
                                 if (player.tab != "k") return ""
@@ -15493,7 +15522,7 @@ addLayer("k", {
                                 let b 
                                 let c 
                                 let id = 34
-                                let extra = tmp.k.clickables[id].cost.lt("1e900") ? " <b>Bronze</b>" : ""
+                                let extra = tmp.k.clickables[id].cost.lt("1e900") ? " <b>Coal</b>" : ""
                                 a = "<h3 style='color: #AC4600'>Cost</h3>: " + formatWhole(tmp.k.clickables[id].cost) + extra + "<br>"
                                 c = "<h3 style='color: #FF33CC'>Effect</h3>: (" + formatWhole(player.k.lock.repeatables[id]) +")<br>" + tmp.k.clickables[id].effectDescription + "<br>"
                                 
@@ -15853,6 +15882,61 @@ addLayer("k", {
                                 data.repeatables[45] = data.repeatables[45].plus(1)
                         },
                 },
+                51: {
+                        title(){
+                                if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
+                                return "<h3 style='color: #" + getUndulatingColor(8) + "'>Basic<br>Lock</h3>"
+                                // 4: Master, 2: Diamond, 1: Basic, 3: Advanced, 5: Grandmaster
+                        },
+                        display(){
+                                if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
+                                let a 
+                                let b 
+                                let c 
+                                let id = 51
+                                let extra = tmp.k.clickables[id].cost.lt("1e900") ? " <b>Lemons</b>" : ""
+                                a = "<h3 style='color: #AC4600'>Cost</h3>: " + formatWhole(tmp.k.clickables[id].cost) + extra + "<br>"
+                                c = "<h3 style='color: #FF33CC'>Effect</h3>: (" + formatWhole(player.k.lock.repeatables[id]) +")<br>" + tmp.k.clickables[id].effectDescription + "<br>"
+                                
+                                return a + c
+                        },
+                        unlocked(){
+                                return hasUpgrade("l", 11) || hasUnlockedPast("l")
+                        },
+                        bases(){
+                                return [new Decimal("2e9"), new Decimal(2)]
+                        },
+                        cost(){
+                                let bases = tmp.k.clickables[51].bases
+                                let a = bases[0]
+                                let b = bases[1]
+                                return a.times(Decimal.pow(b, player.k.lock.repeatables[51].pow(2)))
+                        },
+                        effect(){
+                                let amt = player.k.lock.repeatables[51]
+                                let ret = amt.pow(1.5).div(500).plus(1).ln().plus(1)
+                                return ret
+                        },
+                        effectDescription(){
+                                if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
+                                let eff = tmp.k.clickables[51].effect
+                                return "*" + format(eff, 4) + "^[total mines] Lemon gain"
+                        },
+                        canClick(){
+                                return player.l.points.gte(this.cost())
+                        },
+                        onClick(nocost = false){
+                                if (!this.canClick()) return 
+                                let cost = this.cost()
+                                let data = player.k.lock 
+                                let data2 = player.l.points
+                                if (!nocost) data2 = data2.minus(cost)
+                                data.repeatables[51] = data.repeatables[51].plus(1)
+                        },
+                },
         },
         tabFormat: {
                 "Upgrades": {
@@ -15924,7 +16008,7 @@ addLayer("k", {
                                         let a = "You have <bdi style='color: #" + getUndulatingColor(0) + "'>" + format(data1[11]) + " Iron</bdi>"
                                         let b = ", <bdi style='color: #" + getUndulatingColor(0.4) + "'>" + format(data1[12]) + " Silver</bdi>"
                                         let c = ", <bdi style='color: #" + getUndulatingColor(0.8) + "'>" + format(data1[13]) + " Gold</bdi>"
-                                        let d = ", <bdi style='color: #" + getUndulatingColor(1.2) + "'>" + format(data1[14]) + " Bronze</bdi>"
+                                        let d = ", <bdi style='color: #" + getUndulatingColor(1.2) + "'>" + format(data1[14]) + " Coal</bdi>"
                                         let e = ", <bdi style='color: #" + getUndulatingColor(1.6) + "'>" + format(data1[15]) + " Copper</bdi>,"
                                         let f = "<bdi style='color: #" + getUndulatingColor(2) + "'>" + format(data1[21]) + " Tin</bdi>"
                                         let g = ", <bdi style='color: #" + getUndulatingColor(2.4) + "'>" + format(data1[22]) + " Titanium</bdi>"
@@ -16109,6 +16193,8 @@ addLayer("l", {
         getGainMultPost(){
                 let x = getGeneralizedInitialPostMult("l")
 
+                x = x.times(Decimal.pow(tmp.k.clickables[51].effect, tmp.k.clickables.totalMines))
+
                 return x
         },
         effect(){
@@ -16237,8 +16323,8 @@ addLayer("l", {
                         }, // hasMilestone("l", 6)
                 },
                 7: {
-                        requirementDescription: "<b>Line</b><br>Requires: 15 Lemons", 
-                        effectDescription: "You start with 98% of your best puzzle completions over all time and unlock an <b>I</b> buyable [no buy yet]",
+                        requirementDescription: "<b>Local</b><br>Requires: 15 Lemons", 
+                        effectDescription: "You start with 98% of your best puzzle completions over all time and unlock an <b>I</b> buyable",
                         done(){
                                 return player.l.points.gte(15)
                         },
@@ -16247,7 +16333,7 @@ addLayer("l", {
                         },  // hasMilestone("l", 7)
                 },
                 8: {
-                        requirementDescription: "<b>Local</b><br>Requires: 50 Lemons", 
+                        requirementDescription: "<b>Long</b><br>Requires: 50 Lemons", 
                         effectDescription: "Each milestone adds .2 to the <b>L</b> gain exponent and <b>K</b> gain exponent",
                         done(){
                                 return player.l.points.gte(50)
@@ -16257,7 +16343,7 @@ addLayer("l", {
                         },  // hasMilestone("l", 8)
                 },
                 9: {
-                        requirementDescription: "<b>Long</b><br>Requires: 1000 Lemons", 
+                        requirementDescription: "<b>Link</b><br>Requires: 1000 Lemons", 
                         effectDescription: "Lock content autobuyers are three times as fast and square Tungsten effect",
                         done(){
                                 return player.l.points.gte(1000)
@@ -16266,23 +16352,34 @@ addLayer("l", {
                                 return hasMilestone("l", 8) || hasUnlockedPast("l")
                         },  // hasMilestone("l", 9)
                 },
+                10: {
+                        requirementDescription: "<b>Law</b><br>Requires: 1e8 Lemons", 
+                        effectDescription: "Each <b>H</b> challenge multiples mine production by [<b>H</b> challenges]/100 (at least 1)",
+                        done(){
+                                return player.l.points.gte(1e8)
+                        },
+                        unlocked(){
+                                return hasMilestone("l", 9) || hasUnlockedPast("l")
+                        },  // hasMilestone("l", 10)
+                },
         },
         upgrades: {
                 rows: 5,
                 cols: 5,
-                /*
                 11: {
-                        title: "Kind",
-                        description: "<b>Japan</b> multiplies knowledge, <b>K</b> and banked exp gain",
-                        cost: new Decimal(1e32),
+                        title: "Location",
+                        description: "Unlock an <b>I</b> buyable and a new row of <b>Locks</b>",
+                        cost: new Decimal(2e9),
                         unlocked(){
-                                return false || hasUnlockedPast("l")
+                                return hasMilestone("l", 10) || hasUnlockedPast("l")
                         }
                 }, // hasUpgrade("l", 11)
-                */
 
                 /*
-                Link
+                Level
+                Love
+                Listing
+                Little
                 */
         },
         tabFormat: {
@@ -16294,7 +16391,7 @@ addLayer("l", {
                                         function() {
                                                 if (player.tab != "l") return ""
                                                 if (player.subtabs.l.mainTabs != "Upgrades") return ""
-                                                return shiftDown ? "Your best Lemones is " + format(player.l.best) : ""
+                                                return shiftDown ? "Your best Lemons is " + format(player.l.best) : ""
                                         }
                                 ],
                                 ["display-text",
@@ -16302,14 +16399,14 @@ addLayer("l", {
                                                 if (player.tab != "l") return ""
                                                 if (player.subtabs.l.mainTabs != "Upgrades") return ""
                                                 if (hasUnlockedPast("l")) return ""
-                                                return "You have done " + formatWhole(player.l.times) + " Lemones resets"
+                                                return "You have done " + formatWhole(player.l.times) + " Lemons resets"
                                         }
                                 ],
                                 ["display-text",
                                         function() {
                                                 if (player.tab != "l") return ""
                                                 if (player.subtabs.l.mainTabs != "Upgrades") return ""
-                                                if (hasMilestone("k", 15)) return "You are gaining " + format(tmp.l.getResetGain) + " Lemones per second"
+                                                if (hasMilestone("k", 15)) return "You are gaining " + format(tmp.l.getResetGain) + " Lemons per second"
                                                 return "There is a two second cooldown for prestiging (" + format(Math.max(0, 2-player.l.time)) + ")" 
                                         },
                                         //{"font-size": "20px"}

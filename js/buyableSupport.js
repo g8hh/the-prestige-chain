@@ -1900,6 +1900,15 @@ var MAIN_BUYABLE_DATA = {
                                 },
                                 type: "plus",
                         },
+                        4: {
+                                active: function(){
+                                        return true
+                                },
+                                amount: function(){
+                                        return CURRENT_BUYABLE_EFFECTS["i31"]
+                                },
+                                type: "plus",
+                        },
                 },
                 bases(){
                         let b0 = new Decimal("1e153e9")
@@ -2357,7 +2366,21 @@ var MAIN_BUYABLE_DATA = {
                         let b2 = new Decimal("1e1e7")
                         return [b0, b1, b2]
                 },
-        }
+        },
+        i31: {
+                name: "Improve",
+                func: "lin",
+                effects: "<b>Generated</b> base",
+                base: {
+                        initial: new Decimal("1"),
+                },
+                bases(){
+                        let b0 = new Decimal("1e10e13")
+                        let b1 = new Decimal("1e1e12")
+                        let b2 = new Decimal("1e1e9")
+                        return [b0, b1, b2]
+                },
+        },
 }
 
 var EXTRA_FREE_BUYABLE_DATA = {
