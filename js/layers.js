@@ -12267,8 +12267,13 @@ addLayer("j", {
                         }
                         return ret
                 },
+                getBaseAttemptChance(){
+                        let exp = Decimal.plus(player.j.puzzle.finished, 1)
+                        if (exp > 2500) exp = exp.pow(1.5).div(50)
+                        return Decimal.pow(.5, exp)
+                },
                 getAttemptChance(){
-                        let ret = Decimal.pow(.5, player.j.puzzle.finished).times(.5)
+                        let ret = tmp.j.clickables.getBaseAttemptChance
                         ret = ret.times(tmp.j.clickables[11].effect)
                         ret = ret.times(tmp.j.clickables[35].effect)
                         return ret
@@ -14101,7 +14106,7 @@ addLayer("k", {
                 if (hasUpgrade("j", 35)) x = x.plus(.1 * player.k.milestones.length)
                 if (hasUpgrade("k", 22)) x = x.plus(.08 * player.k.upgrades.length)
                 if (hasUpgrade("j", 44)) x = x.plus(1)
-                x = x.plus(tmp.k.clickables[43].effect.times(tmp.k.clickables.totalKeys))
+                x = x.plus(tmp.k.clickables[43].effect.times(tmp.k.clickables.totalLocks))
                 x = x.plus(tmp.k.clickables[25].effect)
                 if (hasUpgrade("k", 25)) x = x.plus(player.k.lock.repeatables[25])
                 if (hasMilestone("l", 2)) x = x.plus(.1 * player.l.milestones.length)
@@ -14122,7 +14127,7 @@ addLayer("k", {
                 if (hasUpgrade("j", 43)) x = x.times(tmp.h.challenges[21].rewardEffect)
                 x = x.times(tmp.k.clickables[11].effect)
                 x = x.times(Decimal.pow(tmp.k.clickables[32].effect, tmp.k.clickables.totalMines))
-                if (player.j.puzzle.upgrades.includes(62)) x = x.times(Decimal.pow(2, tmp.k.clickables.totalKeys))
+                if (player.j.puzzle.upgrades.includes(62)) x = x.times(Decimal.pow(2, tmp.k.clickables.totalLocks))
                 x = x.times(tmp.k.clickables[35].effect)
                 if (hasUpgrade("k", 23)) x = x.times(Decimal.pow(100, player.k.lock.repeatables[45]))
 
@@ -14486,7 +14491,7 @@ addLayer("k", {
                         }
                         return a
                 },
-                totalKeys(){
+                totalLocks(){
                         let sum = [31,32,33,34,35,41,42,43,44,45,51,52,53,54,55]
                         let a = new Decimal(0)
                         for (i = 0; i<10; i++){
@@ -14499,6 +14504,7 @@ addLayer("k", {
                         ret = ret.times(tmp.k.clickables[22].effect)
                         ret = ret.times(Decimal.pow(player.k.points.max(Math.E).ln(), tmp.k.clickables[42].effect))
                         if (hasMilestone("l", 3)) ret = ret.times(Decimal.pow(4, player.l.milestones.length))
+                        if (hasUpgrade("l", 12)) ret = ret.times(tmp.h.challenges[21].rewardEffect)
                         return ret
                 },
                 getGlobalMineGainMult(){
@@ -15155,6 +15161,7 @@ addLayer("k", {
                                 let amt = player.k.lock.resources[23]
                                 let ret = amt.plus(1e18).log10().div(3).pow(2).sub(35)
                                 if (hasMilestone("l", 9)) ret = ret.pow(2)
+                                if (hasUpgrade("l", 14)) ret = ret.pow(player.k.lock.repeatables[52].max(1))
                                 return ret
                         },
                         effectDescription(){
@@ -15651,6 +15658,7 @@ addLayer("k", {
                         effect(){
                                 let amt = player.k.lock.repeatables[41]
                                 let ret = amt
+                                if (hasUpgrade("l", 13)) ret = ret.pow(1.3)
                                 return ret
                         },
                         effectDescription(){
@@ -15704,6 +15712,7 @@ addLayer("k", {
                         effect(){
                                 let amt = player.k.lock.repeatables[42]
                                 let ret = amt.sqrt().div(4)
+                                if (hasUpgrade("l", 12)) ret = ret.times(Decimal.pow(player.l.upgrades.length, 2))
                                 return ret
                         },
                         effectDescription(){
@@ -15935,6 +15944,61 @@ addLayer("k", {
                                 let data2 = player.l.points
                                 if (!nocost) data2 = data2.minus(cost)
                                 data.repeatables[51] = data.repeatables[51].plus(1)
+                        },
+                },
+                52: {
+                        title(){
+                                if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
+                                return "<h3 style='color: #" + getUndulatingColor(8.4) + "'>Diamond<br>Lock</h3>"
+                                // 4: Master, 2: Diamond, 1: Basic, 3: Advanced, 5: Grandmaster
+                        },
+                        display(){
+                                if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
+                                let a 
+                                let b 
+                                let c 
+                                let id = 52
+                                let extra = tmp.k.clickables[id].cost.lt("1e900") ? " <b>Lemons</b>" : ""
+                                a = "<h3 style='color: #AC4600'>Cost</h3>: " + formatWhole(tmp.k.clickables[id].cost) + extra + "<br>"
+                                c = "<h3 style='color: #FF33CC'>Effect</h3>: (" + formatWhole(player.k.lock.repeatables[id]) +")<br>" + tmp.k.clickables[id].effectDescription + "<br>"
+                                
+                                return a + c
+                        },
+                        unlocked(){
+                                return hasUpgrade("l", 13) || hasUnlockedPast("l")
+                        },
+                        bases(){
+                                return [new Decimal("1e11"), new Decimal(2)]
+                        },
+                        cost(){
+                                let bases = tmp.k.clickables[52].bases
+                                let a = bases[0]
+                                let b = bases[1]
+                                return a.times(Decimal.pow(b, player.k.lock.repeatables[52].pow(2)))
+                        },
+                        effect(){
+                                let amt = player.k.lock.repeatables[52]
+                                let ret = amt.div(300).plus(1).ln().plus(1)
+                                return ret
+                        },
+                        effectDescription(){
+                                if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
+                                let eff = tmp.k.clickables[52].effect
+                                return "*" + format(eff, 4) + "^[total locks] Lemon gain"
+                        },
+                        canClick(){
+                                return player.l.points.gte(this.cost())
+                        },
+                        onClick(nocost = false){
+                                if (!this.canClick()) return 
+                                let cost = this.cost()
+                                let data = player.k.lock 
+                                let data2 = player.l.points
+                                if (!nocost) data2 = data2.minus(cost)
+                                data.repeatables[52] = data.repeatables[52].plus(1)
                         },
                 },
         },
@@ -16194,6 +16258,7 @@ addLayer("l", {
                 let x = getGeneralizedInitialPostMult("l")
 
                 x = x.times(Decimal.pow(tmp.k.clickables[51].effect, tmp.k.clickables.totalMines))
+                x = x.times(Decimal.pow(tmp.k.clickables[52].effect, tmp.k.clickables.totalLocks))
 
                 return x
         },
@@ -16374,11 +16439,32 @@ addLayer("l", {
                                 return hasMilestone("l", 10) || hasUnlockedPast("l")
                         }
                 }, // hasUpgrade("l", 11)
+                12: {
+                        title: "Level",
+                        description: "<b>Housing</b> effects mine gain and multiply <b>Titanium Lock</b> effect by the number of upgrades squared",
+                        cost: new Decimal(1.5e11),
+                        unlocked(){
+                                return hasUpgrade("l", 11) || hasUnlockedPast("l")
+                        }
+                }, // hasUpgrade("l", 12)
+                13: {
+                        title: "Love",
+                        description: "Unlock another <b>Lock</b> raise <b>Tin Lock</b> effect to the 1.3",
+                        cost: new Decimal(2e11),
+                        unlocked(){
+                                return hasUpgrade("l", 12) || hasUnlockedPast("l")
+                        }
+                }, // hasUpgrade("l", 13)
+                14: {
+                        title: "Listing",
+                        description: "Raise <b>Tungsten</b> effect to the number of <b>Diamond Locks</b>",
+                        cost: new Decimal(2e19),
+                        unlocked(){
+                                return hasUpgrade("l", 13) || hasUnlockedPast("l")
+                        }
+                }, // hasUpgrade("l", 14)
 
                 /*
-                Level
-                Love
-                Listing
                 Little
                 */
         },
