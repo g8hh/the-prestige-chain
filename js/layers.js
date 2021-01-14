@@ -307,24 +307,35 @@ function getMaxBuyablesAmount(layer){
         let ret = Decimal.pow(10, 20)
         if (layer == "a") {
                 ret = ret.times(CURRENT_BUYABLE_EFFECTS["h21"])
+                if (hasUpgrade("k", 32)) ret = ret.times(Decimal.pow(2, player.k.lock.repeatables[45]))
         }
         if (layer == "b") {
                 ret = ret.times(CURRENT_BUYABLE_EFFECTS["h21"])
+                if (hasUpgrade("k", 32)) ret = ret.times(Decimal.pow(2, player.k.lock.repeatables[45]))
         }
         if (layer == "c") {
                 ret = ret.times(CURRENT_BUYABLE_EFFECTS["h21"])
+                if (hasUpgrade("k", 32)) ret = ret.times(Decimal.pow(2, player.k.lock.repeatables[45]))
         }
         if (layer == "d") {
                 ret = ret.times(CURRENT_BUYABLE_EFFECTS["h21"])
+                if (hasUpgrade("k", 32)) ret = ret.times(Decimal.pow(2, player.k.lock.repeatables[45]))
         }
         if (layer == "e") {
                 ret = ret.times(CURRENT_BUYABLE_EFFECTS["h21"])
+                if (hasUpgrade("k", 32)) ret = ret.times(Decimal.pow(2, player.k.lock.repeatables[45]))
         }
         if (layer == "f") {
                 ret = ret.times(CURRENT_BUYABLE_EFFECTS["h21"])
+                if (hasUpgrade("k", 32)) ret = ret.times(Decimal.pow(2, player.k.lock.repeatables[45]))
         }
         if (layer == "g") {
                 ret = ret.times(CURRENT_BUYABLE_EFFECTS["h21"])
+                if (hasUpgrade("k", 32)) ret = ret.times(Decimal.pow(2, player.k.lock.repeatables[45]))
+        }
+        if (layer == "h"){
+                if (hasUpgrade("k", 32)) ret = ret.times(Decimal.pow(2, player.k.lock.repeatables[45]))
+                if (hasUpgrade("j", 52)) ret = ret.times(Decimal.pow(2.5, player.l.upgrades.length))
         }
        
         
@@ -1296,6 +1307,7 @@ addLayer("a", {
                                         function() {
                                                 if (player.tab != "a") return ""
                                                 if (player.subtabs.a.mainTabs != "Upgrades") return ""
+                                                if (!showCurrency(player.a.points)) return ""
                                                 return shiftDown ? "Your best Amoebas is " + format(player.a.best) : ""
                                         }
                                 ],
@@ -1311,6 +1323,7 @@ addLayer("a", {
                                         function() {
                                                 if (player.tab != "a") return ""
                                                 if (player.subtabs.a.mainTabs != "Upgrades") return ""
+                                                if (!showCurrency(player.a.points)) return ""
                                                 if (hasUpgrade("a", 23)) return "You are gaining " + format(tmp.a.getResetGain) + " Amoebas per second"
                                                 return "There is a two second cooldown for prestiging (" + format(Math.max(0, 2-player.a.time)) + ")" 
                                         },
@@ -1328,6 +1341,7 @@ addLayer("a", {
                                         function() {
                                                 if (player.tab != "a") return ""
                                                 if (player.subtabs.a.mainTabs != "Buyables") return ""
+                                                if (!showCurrency(player.a.points)) return ""
                                                 if (hasUpgrade("a", 23) && shiftDown) return "You are gaining " + format(tmp.a.getResetGain) + " Amoebas per second"
                                                 return ""
                                         },
@@ -2030,6 +2044,7 @@ addLayer("b", {
                                         function() {
                                                 if (player.tab != "b") return ""
                                                 if (player.subtabs.b.mainTabs != "Upgrades") return ""
+                                                if (!showCurrency(player.b.points)) return ""
                                                 let a = hasUnlockedPast("b") ? "" : "You have done " + formatWhole(player.b.times) + " Bacteria resets<br>"
                                                 if (hasUpgrade("b", 22)) return a + "You are gaining " + format(tmp.b.getResetGain) + " Bacteria per second"
                                                 return a + "There is a five second cooldown for prestiging (" + format(Math.max(0, 5-player.b.time)) + ")" 
@@ -2054,6 +2069,7 @@ addLayer("b", {
                                                 if (player.tab != "b") return ""
                                                 if (player.subtabs.b.mainTabs != "Buyables") return ""
                                                 if (!shiftDown || !hasUpgrade("b", 22)) return ""
+                                                if (!showCurrency(player.b.points)) return ""
                                                 return "You are gaining " + format(tmp.b.getResetGain) + " Bacteria per second"
                                         }
                                 ],
@@ -2069,7 +2085,7 @@ addLayer("b", {
                                         function() {
                                                 if (player.tab != "b") return ""
                                                 if (player.subtabs.b.mainTabs != "Challenges") return ""
-                                                return "Challenge completions are never reset, and you can bulk complete challenges"
+                                                return "Challenge completions are not reset unless said so, and you can bulk complete challenges"
                                         }
                                 ],
                                 ["display-text",
@@ -2725,6 +2741,7 @@ addLayer("c", {
                                         function() {
                                                 if (player.tab != "c") return ""
                                                 if (player.subtabs.c.mainTabs != "Upgrades") return ""
+                                                if (!showCurrency(player.c.points)) return ""
                                                 return shiftDown ? "Your best Circles is " + format(player.c.best) : ""
                                         }
                                 ],
@@ -2740,6 +2757,7 @@ addLayer("c", {
                                         function() {
                                                 if (player.tab != "c") return ""
                                                 if (player.subtabs.c.mainTabs != "Upgrades") return ""
+                                                if (!showCurrency(player.c.points)) return ""
                                                 if (hasUpgrade("c", 22)) return "You are gaining " + format(tmp.c.getResetGain) + " Circles per second"
                                                 return "There is a five second cooldown for prestiging (" + format(Math.max(0, 5-player.c.time)) + ")" 
                                         },
@@ -2765,6 +2783,7 @@ addLayer("c", {
                                                 if (player.tab != "c") return ""
                                                 if (!shiftDown || !hasUpgrade("c", 22)) return ""
                                                 if (player.subtabs.c.mainTabs != "Buyables") return ""
+                                                if (!showCurrency(player.c.points)) return ""
                                                 return "You are gaining " + format(tmp.c.getResetGain) + " Circles per second"
                                         }
                                 ],
@@ -2780,7 +2799,7 @@ addLayer("c", {
                                         function() {
                                                 if (player.tab != "c") return ""
                                                 if (player.subtabs.c.mainTabs != "Challenges") return ""
-                                                return "Challenge completions are never reset, and you can bulk complete challenges"
+                                                return "Challenge completions are not reset unless said so, and you can bulk complete challenges"
                                         }
                                 ],
                                 ["display-text",
@@ -3406,6 +3425,7 @@ addLayer("d", {
                                         function() {
                                                 if (player.tab != "d") return ""
                                                 if (player.subtabs.d.mainTabs != "Upgrades") return ""
+                                                if (!showCurrency(player.d.points)) return ""
                                                 return shiftDown ? "Your best Doodles is " + format(player.d.best) : ""
                                         }
                                 ],
@@ -3421,6 +3441,7 @@ addLayer("d", {
                                         function() {
                                                 if (player.tab != "d") return ""
                                                 if (player.subtabs.d.mainTabs != "Upgrades") return ""
+                                                if (!showCurrency(player.d.points)) return ""
                                                 if (hasUpgrade("d", 22)) return "You are gaining " + format(tmp.d.getResetGain) + " Doodles per second"
                                                 return "There is a five second cooldown for prestiging (" + format(Math.max(0, 5-player.d.time)) + ")" 
                                         },
@@ -3461,7 +3482,7 @@ addLayer("d", {
                                         function() {
                                                 if (player.tab != "d") return ""
                                                 if (player.subtabs.d.mainTabs != "Challenges") return ""
-                                                return "Challenge completions are never reset, and you can bulk complete challenges"
+                                                return "Challenge completions are not reset unless said so, and you can bulk complete challenges"
                                         }
                                 ],
                                 ["display-text",
@@ -4172,7 +4193,7 @@ addLayer("e", {
                                         function() {
                                                 if (player.tab != "e") return ""
                                                 if (player.subtabs.e.mainTabs != "Challenges") return ""
-                                                return "Challenge completions are never reset, and you can bulk complete challenges"
+                                                return "Challenge completions are not reset unless said so, and you can bulk complete challenges"
                                         }
                                 ],
                                 ["display-text",
@@ -4974,7 +4995,7 @@ addLayer("f", {
                                         function() {
                                                 if (player.tab != "f") return ""
                                                 if (player.subtabs.f.mainTabs != "Challenges") return ""
-                                                return "Challenge completions are never reset, and you can bulk complete challenges"
+                                                return "Challenge completions are not reset unless said so, and you can bulk complete challenges"
                                         }
                                 ],
                                 ["display-text",
@@ -5080,7 +5101,7 @@ addLayer("ach", {
         canReset(){
                 return false
         },
-        achievements: getFirstNAchData(210), //Object.keys(PROGRESSION_MILESTONES).length
+        achievements: getFirstNAchData(217), //Object.keys(PROGRESSION_MILESTONES).length
         milestones: {
                 1: {
                         requirementDescription(){
@@ -7837,6 +7858,7 @@ addLayer("g", {
                         while (up) {
                                 if (g.gte(Decimal.pow(a * r, this.getRebirthExp2(a * r)))) a *= 2
                                 else up = false 
+                                if (a > 5e5) break 
                         }
                         a = a / 2
                         let count = a
@@ -7845,7 +7867,7 @@ addLayer("g", {
                                 let b = (a + count) * r
                                 if (g.gte(Decimal.pow(b, this.getRebirthExp2(b)))) count += a
                         }
-                        return count + 1
+                        return Math.min(2e5, count + 1)
                 },
                 getCompletionsReq(){
                         let ret = 10 + 10 * player.g.rebirths[1]
@@ -10463,7 +10485,7 @@ addLayer("h", {
                 }, // hasUpgrade("h", 51)
                 52: {
                         title: "Homes",
-                        description: "Best knowledge multiplues <b>J</b> gain and automatically bulk <b>Rebirth III</b>",
+                        description: "Best knowledge multiplies <b>J</b> gain and automatically bulk <b>Rebirth III</b>",
                         cost: new Decimal("1e417e6"),
                         unlocked(){
                                 return player.j.puzzle.repeatables[14].gte(10) || player.j.puzzle.reset2.done || hasUnlockedPast("j")
@@ -10919,7 +10941,7 @@ addLayer("h", {
                                 ["display-text",
                                         function() {
                                                 if (player.tab != "h") return ""
-                                                return "Challenge completions are never reset, and you can bulk complete challenges"
+                                                return "Challenge completions are not reset unless said so, and you can bulk complete challenges"
                                         }
                                 ],
                                 ["display-text",
@@ -12233,9 +12255,36 @@ addLayer("j", {
                                 return hasUpgrade("j", 44) || hasUnlockedPast("k")
                         }
                 }, // hasUpgrade("j", 45)
+                51: {
+                        title: "Jimmy",
+                        description: "Per <b>H</b> challenge past 150 add .01 to the <b>L</b> gain exponent and <b>Jack</b><sup>.01</sup> effects Knowledge",
+                        cost: new Decimal("1e4438e6"),
+                        unlocked(){
+                                return hasUpgrade("k", 32) || hasUnlockedPast("l")
+                        }
+                }, // hasUpgrade("j", 51)
+                52: {
+                        title: "Jurisdiction",
+                        description: "Per <b>L</b> upgrade multiply base <b>L</b> gain by 1.25 and the <b>H</b> buyable limit is 2.5x",
+                        cost: new Decimal("1e8851e6"),
+                        unlocked(){
+                                return hasUpgrade("j", 51) || hasUnlockedPast("l")
+                        }
+                }, // hasUpgrade("j", 52)
+                53: {
+                        title: "Jam",
+                        description: "<b>Iron Mines</b> produce <b>Osmium Mines</b> at a logarithmic rate",
+                        cost: new Decimal("1e9946e6"),
+                        unlocked(){
+                                return hasUpgrade("j", 52) || hasUnlockedPast("l")
+                        }
+                }, // hasUpgrade("j", 53)
 
                 /*
-                jimmy
+                judicial
+                jeans
+                jefferson
+                jacksonville
                 */
         },
         clickables: {
@@ -12410,6 +12459,7 @@ addLayer("j", {
                         if (hasMilestone("k", 12)) ret = ret.times(Decimal.pow(1.1, tmp.k.clickables.totalMines))
                         ret = ret.times(tmp.k.clickables[24].effect)
                         if (hasUpgrade("k", 23)) ret = ret.times(Decimal.pow(100, player.k.lock.repeatables[45]))
+                        if (hasUpgrade("j", 51)) ret = ret.times(tmp.j.clickables[45].effect.pow(.01))
                         return ret
                 },
                 getBankedExpGainUF(){
@@ -14192,6 +14242,8 @@ addLayer("k", {
                 let last = minesOrder[minesOrder.length - 1]
                 let lastMetalProd = tmp.k.clickables[last].metalProductionPerSecond.times(diff)
                 data4[last] = data4[last].plus(lastMetalProd)
+                let firstMineProd = tmp.k.clickables[11].mineProductionPerSecond.times(diff)
+                data3[25] = data3[25].plus(firstMineProd)
                 
                 if (data.autodevtime < 1) return
                 data.autodevtime += -1
@@ -14479,9 +14531,16 @@ addLayer("k", {
                                 return hasUpgrade("j", 14) || hasUnlockedPast("l")
                         }
                 }, // hasUpgrade("k", 31)
+                32: {
+                        title: "Killed",
+                        description: "Each <b>Osmium Lock</b> allows you to buy twice as many buyables from <b>H</b> and before",
+                        cost: new Decimal("1e17900"),
+                        unlocked(){
+                                return hasUpgrade("k", 31) || hasUnlockedPast("l")
+                        }
+                }, // hasUpgrade("k", 32)
                 
                 /*
-                Killed
                 Kid
                 Kernel
                 */
@@ -14570,7 +14629,7 @@ addLayer("k", {
                         },
                         mineProductionPer(){
                                 let ret = new Decimal(.1)
-                                ret = ret.times(tmp.k.clickables[15].effect)
+                                ret = ret.times(tmp.k.clickables.getGlobalMineGainMult)
                                 ret = ret.times(Decimal.pow(tmp.k.clickables[44].effect, player.k.lock.repeatables[11]))
                                 return ret
                         },
@@ -14599,7 +14658,10 @@ addLayer("k", {
                                 return "*" + format(eff) + " Keys"
                         },
                         mineProductionPerSecond(){
-                                return tmp.k.clickables[11].mineProductionPer.times(tmp.k.clickables[11].total)
+                                if (!hasUpgrade("j", 53)) return new Decimal(0)
+                                let ret = tmp.k.clickables[11].mineProductionPer.times(tmp.k.clickables[11].total)
+                                if (ret.lt(10)) return new Decimal(0)
+                                return ret.log10().pow(10)
                         },
                         canClick(){
                                 return player.k.points.gte(this.cost())
@@ -16325,10 +16387,12 @@ addLayer("l", {
         getGainExp(){
                 let x = new Decimal(3)
                 if (hasMilestone("l", 8)) x = x.plus(.2 * player.l.milestones.length)
+                if (hasUpgrade("j", 51)) x = x.plus(.01 * Math.max(0, totalChallengeComps("h") - 150))
                 return x
         },
         getGainMultPre(){
                 let x = Decimal.pow(150, -1)
+                if (hasUpgrade("j", 52)) x = x.times(Decimal.pow(1.25, player.l.upgrades.length))
                 return x
         },
         getGainMultPost(){
@@ -16526,7 +16590,7 @@ addLayer("l", {
                 }, // hasUpgrade("l", 12)
                 13: {
                         title: "Love",
-                        description: "Unlock another <b>Lock</b> raise <b>Tin Lock</b> effect to the 1.3",
+                        description: "Unlock another <b>Lock</b> and raise <b>Tin Lock</b> effect to the 1.3",
                         cost: new Decimal(2e11),
                         unlocked(){
                                 return hasUpgrade("l", 12) || hasUnlockedPast("l")

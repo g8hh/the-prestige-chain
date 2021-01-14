@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".7.3 Make Batteries",
+	num: ".7.4 Throw them at people",
 	name: "",
 }
 
@@ -38,6 +38,14 @@ function getStartPoints(){
 // Determines if it should show points/sec
 function canGenPoints(){
 	return true
+}
+
+function showGenPoints(){
+	return player.points.max(10).log10().max(10).log10().lt(5)
+}
+
+function showCurrency(a){
+	return a.max(10).log10().max(10).log10().lt(5)
 }
 
 // You can add non-layer related variables that should to into "player" and be saved here, along with default values
@@ -257,6 +265,13 @@ PROGRESSION_MILESTONES = {
 	208:()=> player.j.puzzle.finished >= 3500             || hasAchievement("ach",305),
 	209:()=> player.j.puzzle.finished >= 4000             || hasAchievement("ach",306),
 	210:()=> player.j.puzzle.finished >= 4500             || hasAchievement("ach",307),
+	211:()=> player.k.lock.repeatables[51].gte(1)        || hasAchievement("ach",311),
+	212:()=> player.k.lock.repeatables[52].gte(1)        || hasAchievement("ach",312),
+	213:()=> player.k.lock.repeatables[53].gte(1)        || hasAchievement("ach",313),
+	214:()=> player.k.lock.repeatables[53].gte(3)        || hasAchievement("ach",314),
+	215:()=> player.k.lock.repeatables[53].gte(6)        || hasAchievement("ach",315),
+	216:()=> player.k.lock.repeatables[54].gte(1)        || hasAchievement("ach",316),
+	217:()=> player.k.lock.repeatables[55].gte(1)        || hasAchievement("ach",317),
 }
 
 PROGRESSION_MILESTONES_TEXT = {
@@ -470,6 +485,13 @@ PROGRESSION_MILESTONES_TEXT = {
 	208:"3500 puzzle completions at once",
 	209:"4000 puzzle completions at once",
 	210:"4500 puzzle completions at once",
+	211:"one Basic Lock",
+	212:"one Diamond Lock",
+	213:"one Advanced Lock",
+	214:"three Advaned Locks",
+	215:"six Advanced Locks",
+	216:"one Master Lock",
+	217:"one Grandmaster Lock",
 }
 
 function progressReachedNum(){
@@ -493,6 +515,10 @@ function nextMilestone(){
 
 // Display extra things at the top of the page
 var displayThings = [
+	function(){
+		if (!showGenPoints()) return ""
+		return "(" + format(getPointGen()) + "/sec)"
+	},
 	function(){
 		let a = "Endgame: 1e38 Lemons"
 		return player.autosave ? a : a + ". Warning: autosave is off"
@@ -796,6 +822,12 @@ function getChangeLogText(){
 	ay1= "v.7.3"
 	ay2= "- Added a Lock"
 	ay3= "- Added a Key upgrade"
+	az1= "v.7.4"
+	az2= "- Added 3 Jigsaw upgrades"
+	az3= "- Added a Key upgrade"
+	az4= "- Put a hardcap for rebirths at 200,000"
+	az5= "- Added an achievement row [31st]"
+	az6= "- Small rephrasing for challenges due to them not being reset by default, but are reset initially upon medal reset"
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
 	let part2 = [b1, b2, b3, b4, b5, "", b6, b7, "", b8, b9, b10, "", b11, b12, ""]
@@ -847,6 +879,7 @@ function getChangeLogText(){
 	let part48= [aw1,aw2,aw3,aw4, ""]
 	let part49= [ax1,ax2,ax3,ax4, ""]
 	let part50= [ay1,ay2,ay3, ""]
+	let part51= [az1,az2,az3,az4,az5,az6, ""]
 	// MAKE SURE TO ADD THEM
 
 	let final1 = [part10,  part9,  part8,  part7,  part6,  part5,  part4,  part3,  part2,  part1]
@@ -854,7 +887,7 @@ function getChangeLogText(){
 	let final3 = [part30, part29, part28, part27, part26, part25, part24, part23, part22, part21]
 	let final4 = [part40, part39, part38, part37, part36, part35, part34, part33, part32, part31]
 	let final5 = [part50, part49, part48, part47, part46, part45, part44, part43, part42, part41]
-	let final6 = []
+	let final6 = [part51]
 
 	return final6.concat(final5).concat(final4).concat(final3).concat(final2).concat(final1)
 }
