@@ -3105,6 +3105,7 @@ function buyManualBuyable(layer, id){
 
 function buyMaximumBuyable(layer, id, maximum){
         // Fully general
+        if (getBuyableAmount(layer, id).gte(maximum)) return
         let bases = getBuyableBases(layer, id)
         let pts = player[layer].points
         if (!isBuyableUnlocked(layer, id)) return 

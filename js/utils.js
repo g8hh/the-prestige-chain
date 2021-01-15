@@ -54,19 +54,23 @@ function format(decimal, precision=2,) {
 		
 		return "NaN"
 	}
-	if (decimal.sign<0) return "-"+format(decimal.neg(), precision)
+	if (decimal.sign < 0) return "-"+format(decimal.neg(), precision)
 	if (decimal.mag == Number.POSITIVE_INFINITY) return "Infinity"
-	if (decimal.layer > 4) {
+	if (decimal.layer > 3) {
 		var slog = decimal.slog()
 		if (slog.gte(1e5)) return "F" + formatWhole(slog.floor())
 		if (slog.gte(1e4)) return Decimal.pow(10, slog.sub(slog.floor())).toStringWithDecimalPlaces(0) + "F" + commaFormat(slog.floor(), 0)
 		if (slog.gte(100)) return Decimal.pow(10, slog.sub(slog.floor())).toStringWithDecimalPlaces(2) + "F" + commaFormat(slog.floor(), 0)
 		else return Decimal.pow(10, slog.sub(slog.floor())).toStringWithDecimalPlaces(4) + "F" + commaFormat(slog.floor(), 0)
-	} else if (decimal.gte("ee308")) return "e" + format(decimal.log10(), precision)
-	else if (decimal.gte("ee12")) return "e" + format(decimal.log10(), 4)
-	else if (decimal.gte(1e9)) return exponentialFormat(decimal, precision)
-	else if (decimal.gte(1e3)) return commaFormat(decimal, 0)
-	else return regularFormat(decimal, precision)
+	} else if (decimal.layer > 2 || (decimal.mag > 308 && decimal.layer == 2)) {
+		return "e" + format(decimal.log10(), precision)
+	} else if (decimal.layer > 1 || (decimal.mag > 1e12 && decimal.layer == 1)) {
+		return "e" + format(decimal.log10(), 4)
+	} else if (decimal.layer > 0 || decimal.mag > 1e12) {
+		return exponentialFormat(decimal, precision)
+	} else if (decimal.mag > 1000) {
+		return commaFormat(decimal, 0)
+	} else return regularFormat(decimal, precision)
 }
 
 function formatWhole(decimal) {
