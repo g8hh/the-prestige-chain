@@ -3143,6 +3143,7 @@ function getBuyableAmountDisplay(layer, id){
 function getBuyableDisplay(layer, id){
         // other than softcapping fully general
         if (player.tab != layer) return ""
+        if (player.subtabs[layer].mainTabs != "Buyables") return ""
         //if we arent on the tab, then we dont care :) (makes it faster)
         let amt = "<b><h2>Amount</h2>: " + getBuyableAmountDisplay(layer, id) + "</b><br>"
         let eff1 = "<b><h2>Effect</h2>: " + getBuyableEffectSymbol(layer, id) 

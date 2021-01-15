@@ -408,9 +408,9 @@ function getNumFinished(chance, pleft, attempts, ptotal){
         if (attempts == 0) return [pleft, attempts]
         if (chance.gte(1)) {
                 if (attempts.gt(pleft)) return [0, attempts.sub(pleft)]
-                return [pleft-attempts.toNumber(), 0]
+                return [pleft-attempts.toNumber(), new Decimal(0)]
         }
-        if (chance.lte(0)) return [pleft, 0]
+        if (chance.lte(0)) return [pleft, new Decimal(0)]
         let r1 = Math.random()
         r1 = changeDist(r1, ptotal) //because I say so
         let c2 = function(x){return x * (x + 1) / 2}
@@ -455,12 +455,12 @@ function getNumFinished(chance, pleft, attempts, ptotal){
                 
                 if (STEPS >= c2(pleft)) {
                         let unitsUsed = Math.ceil(RUNS * c2(pleft))
-                        return [0, attempts - unitsUsed]
+                        return [0, new Decimal(attempts - unitsUsed)]
                 }
                 let l = pleft
                 RET = -1/2 + Math.sqrt(1/4 - 2 * STEPS + l * l + l)
                 RET = Math.ceil(RET)
-                return [RET, 0]
+                return [RET, new Decimal(0)]
 
         } else {
                 lhs = Decimal.ln(r1).times(-1)
@@ -490,7 +490,7 @@ function getNumFinished(chance, pleft, attempts, ptotal){
                         let l = pleft
                         RET = -1/2 + Math.sqrt(1/4 - 2 * maxSteps + l * l + l)
                         RET = Math.ceil(RET)
-                        return [RET, 0]
+                        return [RET, new Decimal(0)]
                         
                 }
         }
@@ -12418,7 +12418,7 @@ addLayer("j", {
                         let x = getNumFinished(tmp.j.clickables.getAttemptChance.times(10), left, times.sub(b), total)
                         data.placed.edges = total - x[0]
 
-                        if (x[1] == 0) return 
+                        if (x[1].eq(0)) return 
                         if (!(hasUpgrade("i", 32) || player.j.puzzle.reset2.done)) return
                         data.mode = 3
                         if (x[1].lt(1)) return

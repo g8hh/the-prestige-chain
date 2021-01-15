@@ -56,7 +56,7 @@ function format(decimal, precision=2,) {
 	}
 	if (decimal.sign<0) return "-"+format(decimal.neg(), precision)
 	if (decimal.mag == Number.POSITIVE_INFINITY) return "Infinity"
-	if (decimal.gte("eeee10")) {
+	if (decimal.layer > 4) {
 		var slog = decimal.slog()
 		if (slog.gte(1e5)) return "F" + formatWhole(slog.floor())
 		if (slog.gte(1e4)) return Decimal.pow(10, slog.sub(slog.floor())).toStringWithDecimalPlaces(0) + "F" + commaFormat(slog.floor(), 0)
