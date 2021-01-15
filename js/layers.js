@@ -374,6 +374,22 @@ function getTimesRequired(chance, r1){
         return Math.floor(n.toNumber()) + 1
 }
 
+function getTimesRequiredDecimal(chance, r1){
+        chance = new Decimal(chance)
+        if (chance.gte(1)) return new Decimal(1)
+        if (chance.lte(0)) return new Decimal(Infinity)
+        if (r1 == undefined) r1 = Math.random()
+        //we want (1-chance)^n < r1
+        let n
+        if (chance.log10().gt(-5)){
+                n = Decimal.ln(r1).div(Math.log(1-chance))
+        } else {
+                n = Decimal.ln(1/r1).div(chance)
+        }
+        //log(1-chance) of r2
+        return n.floor().plus(1)
+}
+
 function changeDist(r1, t){
         /*
         x -> 1/2 + (x-1/2)^(2t-1) * 2 ^ (2t-2)
@@ -391,8 +407,8 @@ function getNumFinished(chance, pleft, attempts, ptotal){
         chance = new Decimal(chance)
         if (attempts == 0) return [pleft, attempts]
         if (chance.gte(1)) {
-                if (attempts > pleft) return [0, attempts-pleft]
-                return [pleft-attempts, 0]
+                if (attempts.gt(pleft)) return [0, attempts.sub(pleft)]
+                return [pleft-attempts.toNumber(), 0]
         }
         if (chance.lte(0)) return [pleft, 0]
         let r1 = Math.random()
@@ -415,6 +431,7 @@ function getNumFinished(chance, pleft, attempts, ptotal){
         */
 
         if (chance.div(attempts).log10().gt(-5)) {
+                attempts = attempts.toNumber()
                 /*
                 ln(1/r1) > total chance
                 LHS > 1-(1-basechance) ^ (1/runs)
@@ -459,7 +476,7 @@ function getNumFinished(chance, pleft, attempts, ptotal){
                         used = used.div(-Math.log(r1))
                         // ^ is lhs = 1/attempts
                         attemptUsedFinal = used.pow(-1).ceil()
-                        return [0, attempts - attemptUsedFinal]
+                        return [0, attempts.sub(attemptUsedFinal)]
                 } else {
                         /*
                         SOLVE: maxSteps = ll/2 + l/2 - RET*RET/2 - RET/2
@@ -1538,7 +1555,7 @@ addLayer("b", {
                 },
                 21: {
                         title: "Back",
-                        description: "<b>Business</b> can buy twice as much per this row upgrade and unlock a fourth Amoeba buyable",
+                        description: "<b>Business</b> can buy twice as much per upgrade in this row and unlock a fourth Amoeba buyable",
                         cost: new Decimal(15000),
                         unlocked(){
                                 return hasUpgrade("a", 35) || hasUnlockedPast("b")
@@ -2320,7 +2337,7 @@ addLayer("c", {
                 },
                 31: {
                         title: "Comments",
-                        description: "Gain a free <b>Omnipotent I</b> level per ugprade in this row",
+                        description: "Gain a free <b>Omnipotent I</b> level per upgrade in this row",
                         cost: new Decimal(2e19),
                         unlocked(){ 
                                 return hasUpgrade("b", 53) || hasUnlockedPast("d")
@@ -6945,7 +6962,7 @@ addLayer("goalsii", {
                 "Challenges": {
                         content: [
                                 "main-display",
-                                ["display-text", "This resets all prior Goals and all layers before and including F"],
+                                ["display-text", "This resets all prior Goals and all layers before and including F and their challenges"],
                                 ["display-text", "Click a button below to enter a challenge", function (){ return !player.goalsii.best.gt(0) ? {'display': 'none'} : {}}],
                                 ["display-text", function() {
                                         if (player.tab != "goalsii") return ""
@@ -11751,7 +11768,7 @@ addLayer("j", {
                                 currentX: 10,
                                 currentY: 10,
                                 upgrades: [],
-                                autotime: 0,
+                                autotime: new Decimal(0),
                                 time: 0,
                                 finished: 0,
                                 bartype: 2,
@@ -11884,7 +11901,7 @@ addLayer("j", {
                 data2.bestCompletedK = Math.max(data2.bestCompletedK, data2.finished)
                 data2.bestCompletedAllTime = Math.max(data2.bestCompletedAllTime, data2.finished)
                 data2.time += diff
-                data2.autotime += diff * tmp.j.clickables.getAttemptSpeed.toNumber()
+                data2.autotime = data2.autotime.plus(tmp.j.clickables.getAttemptSpeed.times(diff))
                 let multiplier = tmp.j.clickables.getBulkAmount
 
                 let finishedPEdges = tot2 == data2.placed.edges
@@ -11894,18 +11911,18 @@ addLayer("j", {
                 let finishedFCorners = tot3 == data2.found.corners
                 let finishedFCenters = tot1 == data2.found.centers
 
-
-                if (data2.mode == 1) layers.j.clickables.doSearch(Math.floor(data2.autotime) * multiplier)
+                let a = data2.autotime.floor().times(multiplier)
+                if (data2.mode == 1) layers.j.clickables.doSearch(a)
                 if (data2.mode == 2) {
                         if (finishedFCorners && finishedFEdges) {
-                                layers.j.clickables.doEdges(Math.floor(data2.autotime) * multiplier)
+                                layers.j.clickables.doEdges(a)
                         } else if (hasUpgrade("i", 34) || player.j.puzzle.reset2.done) {
                                 data2.mode = 1
                         }
                 }
                 if (data2.mode == 3) {
                         if (finishedFCenters && finishedPEdges) {
-                                layers.j.clickables.doCenters(Math.floor(data2.autotime) * multiplier)
+                                layers.j.clickables.doCenters(a)
                         } else if (hasUpgrade("i", 34) || player.j.puzzle.reset2.done) {
                                 data2.mode = 1
                         }
@@ -11942,7 +11959,8 @@ addLayer("j", {
                 
 
                 //do stuff for other settings
-                data2.autotime += -1 * Math.floor(data2.autotime)
+                if (data2.autotime.lt(1e20)) data2.autotime = data2.autotime.sub(data2.autotime.floor())
+                else data2.autotime = new Decimal(0)
                 
                 if (data.autodevtime < 1) return
                 data.autodevtime += -1
@@ -12279,10 +12297,24 @@ addLayer("j", {
                                 return hasUpgrade("j", 52) || hasUnlockedPast("l")
                         }
                 }, // hasUpgrade("j", 53)
+                54: {
+                        title: "Judicial",
+                        description: "Per upgrade add .04 to the <b>Hour</b> base and <b>L</b> gain exponent",
+                        cost: new Decimal("1e10288e6"),
+                        unlocked(){
+                                return hasUpgrade("j", 53) || hasUnlockedPast("l")
+                        }
+                }, // hasUpgrade("j", 54)
+                55: {
+                        title: "Jeans",
+                        description: "Raise <b>Copper Lock</b> effect to 2*sqrt(<b>L</b> upgrades)",
+                        cost: new Decimal("1e10875e6"),
+                        unlocked(){
+                                return hasUpgrade("j", 54) || hasUnlockedPast("l")
+                        }
+                }, // hasUpgrade("j", 55)
 
                 /*
-                judicial
-                jeans
                 jefferson
                 jacksonville
                 */
@@ -12332,13 +12364,13 @@ addLayer("j", {
                         if (hasMilestone("k", 1)) ret = ret.times(2)
                         return Math.round(ret.toNumber())
                 },
-                doSearch(times = 1){
+                doSearch(times = new Decimal(1)){
                         let data = player.j.puzzle
                         let tot1 = (data.currentX - 2) * (data.currentY - 2)
                         let tot2 = (data.currentX - 2 + data.currentY - 2) * 2
                         let tot3 = 4
                         let b = 0
-                        for (i = 0; i < times; i ++){
+                        for (i = 0; times.gt(i) ; i ++){
                                 let rem1 = tot1 - data.found.centers
                                 let rem2 = tot2 - data.found.edges
                                 let rem3 = tot3 - data.found.corners
@@ -12347,7 +12379,7 @@ addLayer("j", {
                                         b = i + 1
                                         break
                                 }
-                                if (i == 0 && times > remtot) {
+                                if (i == 0 && times.gt(remtot)) {
                                         b = remtot
                                         data.found.centers = tot1
                                         data.found.edges = tot2
@@ -12364,36 +12396,35 @@ addLayer("j", {
                         if (tot2 != data.found.edges) return
                         if (tot3 != data.found.corners) return
                         data.mode = 2
-                        if (times == b) return
-                        this.doEdges(times - b)
+                        if (times.eq(b)) return
+                        this.doEdges(times.sub(b))
                 },
-                doEdges(times = 1){
+                doEdges(times = new Decimal(1)){
                         let data = player.j.puzzle
-                        let b = 0
+                        let b = new Decimal(0)
                         let c = 0
                         while (c < 5){
                                 c ++ 
                                 if (data.placed.corners < 4) {
                                         let left = 4 - data.placed.corners 
-                                        b += getTimesRequired(tmp.j.clickables.getAttemptChance.div(left))
-                                        if (b > times) return 
+                                        b = b.plus(getTimesRequiredDecimal(tmp.j.clickables.getAttemptChance.div(left)))
+                                        if (b.gt(times)) return 
                                         data.placed.corners ++ 
                                 } else break
                         }
 
                         let left = (data.currentX - 2 + data.currentY - 2) * 2 - data.placed.edges
                         let total = (data.currentX - 2 + data.currentY - 2) * 2
-                        let x = getNumFinished(tmp.j.clickables.getAttemptChance.times(10), left, times - b, total)
+                        let x = getNumFinished(tmp.j.clickables.getAttemptChance.times(10), left, times.sub(b), total)
                         data.placed.edges = total - x[0]
-                        b = times - x[1]
 
                         if (x[1] == 0) return 
                         if (!(hasUpgrade("i", 32) || player.j.puzzle.reset2.done)) return
                         data.mode = 3
-                        if (times >= b + 1) return
-                        this.doCenters(times - b - 1)
+                        if (x[1].lt(1)) return
+                        this.doCenters(x[1].sub(1))
                 },
-                doCenters(times = 1){
+                doCenters(times = new Decimal(1)){
                         let data = player.j.puzzle
                         let b = 0
                         let c = 0
@@ -12402,14 +12433,11 @@ addLayer("j", {
                         let total = (data.currentX - 2) * (data.currentY - 2)
                         let x = getNumFinished(tmp.j.clickables.getAttemptChance.times(50), left, times, total)
                         data.placed.centers = total - x[0]
-                        b = times - x[1]
                         
                         if (x[1] == 0) return 
                         if (!(player.j.puzzle.upgrades.includes(53) || player.j.puzzle.reset2.done)) return
                         data.mode = 4
-                        let k
-                        if (times > b) k = this.attemptFinish()
-                        // if (k) this.doSearch(times - b - 1)
+                        if (x[1].gt(0)) this.attemptFinish()
                 },
                 attemptFinish(){
                         let data = player.j.puzzle
@@ -12460,6 +12488,7 @@ addLayer("j", {
                         ret = ret.times(tmp.k.clickables[24].effect)
                         if (hasUpgrade("k", 23)) ret = ret.times(Decimal.pow(100, player.k.lock.repeatables[45]))
                         if (hasUpgrade("j", 51)) ret = ret.times(tmp.j.clickables[45].effect.pow(.01))
+                        if (hasUpgrade("k", 33)) ret = ret.times(player.j.puzzle.exp.max(1).pow(.5))
                         return ret
                 },
                 getBankedExpGainUF(){
@@ -12699,6 +12728,11 @@ addLayer("j", {
                         canClick(){
                                 return player.j.puzzle.knowledge.gte(tmp.j.clickables[13].cost)
                         },
+                        getMaxAmt(){
+                                let a = player.j.puzzle.knowledge
+                                if (a.lt(10)) return new Decimal(0)
+                                return a.div(10).log(1.5).floor().plus(1)
+                        },      
                         effect(delta = 0){
                                 let ret = player.j.puzzle.repeatables[13].plus(delta).plus(1)
                                 if (hasMilestone("k", 1)) ret = ret.pow(2)
@@ -12713,12 +12747,11 @@ addLayer("j", {
                                 let data = player.j.puzzle
                                 if (hasUpgrade("j", 42)) times *= 10
                                 if (player.j.puzzle.upgrades.includes(63)) times *= 10
-                                for (i = 0; i < times; i++) {
-                                        let cost = this.cost()
-                                        if (cost.gt(data.knowledge)) return 
-                                        if (!nocost) data.knowledge = data.knowledge.minus(cost)
-                                        data.repeatables[13] = data.repeatables[13].plus(1)
-                                }
+                                if (hasUpgrade("k", 24)) times *= 10
+
+                                let max = tmp.j.clickables[13].getMaxAmt
+                                if (data.repeatables[13].plus(times).gte(max)) data.repeatables[13] = max
+                                else data.repeatables[13] = data.repeatables[13].plus(times)
                         },
                 },
                 14: {
@@ -13764,15 +13797,16 @@ addLayer("j", {
                                         let tot = c2(por[0]) + c2(por[1]) / 10 + c2(por[2]) / 50
                                         //total number needed to be done
                                         let togo = tot - (w1 + w2 + w3)
-                                        let factor = 1 / tmp.j.clickables.getBulkAmount / tmp.j.clickables.getAttemptChance.toNumber() / tmp.j.clickables.getAttemptSpeed.toNumber()
-                                        let timePLACE = togo * factor //time needed to place the rest
-                                        let timePLACETOTAL = tot * factor
+                                        let factor = Decimal.div(1, tmp.j.clickables.getBulkAmount).div(tmp.j.clickables.getAttemptChance).div(tmp.j.clickables.getAttemptSpeed)
+                                        let timePLACE = factor.times(togo) //time needed to place the rest
+                                        let timePLACETOTAL = factor.times(tot)
 
                                         let remtofind = (data.currentX * data.currentY - data.found.edges - data.found.corners - data.found.centers)
-                                        let timeFIND = remtofind / tmp.j.clickables.getBulkAmount / tmp.j.clickables.getAttemptSpeed.toNumber()
-                                        let timeFINDTOTAL = data.currentX * data.currentY / tmp.j.clickables.getBulkAmount / tmp.j.clickables.getAttemptSpeed.toNumber()
+                                        let a = Decimal.div(1, tmp.j.clickables.getBulkAmount).div(tmp.j.clickables.getAttemptSpeed)
+                                        let timeFIND = a.times(remtofind)
+                                        let timeFINDTOTAL = a.times(data.currentX * data.currentY)
 
-                                        return 1 - (timePLACE + timeFIND) / (timePLACETOTAL + timeFINDTOTAL)
+                                        return 1 - (timePLACE.plus(timeFIND)).div(timePLACETOTAL.plus(timeFINDTOTAL)).toNumber()
                                 }
                         },
                         display(){
@@ -13795,14 +13829,14 @@ addLayer("j", {
                                 let tot = c2(por[0]) + c2(por[1]) / 10 + c2(por[2]) / 50
                                 //total number needed to be done
                                 let togo = tot - (w1 + w2 + w3)
-                                let factor = 1 / tmp.j.clickables.getBulkAmount / tmp.j.clickables.getAttemptChance.toNumber() / tmp.j.clickables.getAttemptSpeed.toNumber()
-                                let timePLACE = togo * factor
+                                let factor = Decimal.div(1, tmp.j.clickables.getBulkAmount).div(tmp.j.clickables.getAttemptChance).div(tmp.j.clickables.getAttemptSpeed)
+                                let timePLACE = factor.times(togo)
                                 
                                 let remtofind = (data.currentX * data.currentY - data.found.edges - data.found.corners - data.found.centers)
-                                let timeFIND = remtofind / tmp.j.clickables.getBulkAmount / tmp.j.clickables.getAttemptSpeed.toNumber()
+                                let timeFIND = Decimal.div(remtofind, tmp.j.clickables.getBulkAmount).div(tmp.j.clickables.getAttemptSpeed)
 
                                 let timeTICK = (1 - data.autotime) / tmp.j.clickables.getAttemptSpeed.toNumber()
-                                if (timePLACE != 0) timePLACE += timeTICK
+                                if (timePLACE != 0) timePLACE = timePLACE.plus(timeTICK)
                                 return "Percent complete with this puzzle (est time " + format(timePLACE + timeFIND) + "s)"
                         },
                         fillStyle(){
@@ -14509,7 +14543,7 @@ addLayer("k", {
                 }, // hasUpgrade("k", 23)
                 24: {
                         title: "Knows",
-                        description: "Each upgrade multiplies mine gain by 10",
+                        description: "Each upgrade multiplies mine gain by 10 and you can buy 10x Bulk Amount",
                         cost: new Decimal("1e1382"),
                         unlocked(){
                                 return hasUpgrade("k", 23) || hasUnlockedPast("k")
@@ -14539,9 +14573,17 @@ addLayer("k", {
                                 return hasUpgrade("k", 31) || hasUnlockedPast("l")
                         }
                 }, // hasUpgrade("k", 32)
+                33: {
+                        title: "Kid",
+                        description: "The square root of your exp multiplies knowledge gain and unlock another lock",
+                        cost: new Decimal("1e29300"),
+                        unlocked(){
+                                return hasUpgrade("j", 55) || hasUnlockedPast("l")
+                        }
+                }, // hasUpgrade("k", 33)
                 
                 /*
-                Kid
+                kid: sqrt(exp) mults knowledge
                 Kernel
                 */
         },
@@ -14559,7 +14601,15 @@ addLayer("k", {
                 totalLocks(){
                         let sum = [31,32,33,34,35,41,42,43,44,45,51,52,53,54,55]
                         let a = new Decimal(0)
-                        for (i = 0; i<10; i++){
+                        for (i = 0; i < 15; i++){
+                                a = a.plus(player.k.lock.repeatables[sum[i]])
+                        }
+                        return a  
+                },
+                totalKeys(){
+                        let sum = [61,62,63,64,65,71,72,73,74,75,81,82,83,84,85]
+                        let a = new Decimal(0)
+                        for (i = 0; i < 15; i++){
                                 a = a.plus(player.k.lock.repeatables[sum[i]])
                         }
                         return a  
@@ -14661,7 +14711,9 @@ addLayer("k", {
                                 if (!hasUpgrade("j", 53)) return new Decimal(0)
                                 let ret = tmp.k.clickables[11].mineProductionPer.times(tmp.k.clickables[11].total)
                                 if (ret.lt(10)) return new Decimal(0)
-                                return ret.log10().pow(10)
+                                let exp = new Decimal(10)
+                                exp = exp.plus(tmp.k.clickables[54].effect)
+                                return ret.log10().pow(exp)
                         },
                         canClick(){
                                 return player.k.points.gte(this.cost())
@@ -15684,6 +15736,10 @@ addLayer("k", {
                                 let amt = player.k.lock.repeatables[35]
                                 amt = amt.plus(layers.k.clickables.getBonusLocks(35))
                                 let ret = Decimal.pow(1000, amt.sqrt())
+                                if (hasUpgrade("j", 55)) {
+                                        ret = ret.pow(2)
+                                        ret = ret.pow(Math.max(1, Math.sqrt(player.l.upgrades.length)))
+                                }
                                 return ret
                         },
                         effectDescription(){
@@ -16140,6 +16196,61 @@ addLayer("k", {
                                 data.repeatables[53] = data.repeatables[53].plus(1)
                         },
                 },
+                54: {
+                        title(){
+                                if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
+                                return "<h3 style='color: #" + getUndulatingColor(9.2) + "'>Master<br>Lock</h3>"
+                                // 4: Master, 2: Diamond, 1: Basic, 3: Advanced, 5: Grandmaster
+                        },
+                        display(){
+                                if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
+                                let a 
+                                let b 
+                                let c 
+                                let id = 54
+                                let extra = tmp.k.clickables[id].cost.lt("1e900") ? " <b>Lemons</b>" : ""
+                                a = "<h3 style='color: #AC4600'>Cost</h3>: " + formatWhole(tmp.k.clickables[id].cost) + extra + "<br>"
+                                c = "<h3 style='color: #FF33CC'>Effect</h3>: (" + formatWhole(player.k.lock.repeatables[id]) +")<br>" + tmp.k.clickables[id].effectDescription + "<br>"
+                                
+                                return a + c
+                        },
+                        unlocked(){
+                                return hasUpgrade("k", 33) || hasUnlockedPast("l")
+                        },
+                        bases(){
+                                return [new Decimal("1e94"), new Decimal(2)]
+                        },
+                        cost(){
+                                let bases = tmp.k.clickables[54].bases
+                                let a = bases[0]
+                                let b = bases[1]
+                                return a.times(Decimal.pow(b, player.k.lock.repeatables[54].pow(2)))
+                        },
+                        effect(){
+                                let amt = player.k.lock.repeatables[54]
+                                amt = amt.plus(layers.k.clickables.getBonusLocks(54))
+                                let ret = amt.div(100).plus(1).ln().times(200)
+                                return ret
+                        },
+                        effectDescription(){
+                                if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
+                                let eff = tmp.k.clickables[54].effect
+                                return "+" + format(eff) + " Osmium Mine gain exponent"
+                        },
+                        canClick(){
+                                return player.l.points.gte(this.cost())
+                        },
+                        onClick(nocost = false){
+                                if (!this.canClick()) return 
+                                let cost = this.cost()
+                                let data = player.k.lock 
+                                if (!nocost) player.l.points = player.l.points.minus(cost)
+                                data.repeatables[54] = data.repeatables[54].plus(1)
+                        },
+                },
         },
         tabFormat: {
                 "Upgrades": {
@@ -16388,6 +16499,7 @@ addLayer("l", {
                 let x = new Decimal(3)
                 if (hasMilestone("l", 8)) x = x.plus(.2 * player.l.milestones.length)
                 if (hasUpgrade("j", 51)) x = x.plus(.01 * Math.max(0, totalChallengeComps("h") - 150))
+                if (hasUpgrade("j", 54)) x = x.plus(.04 * player.j.upgrades.length)
                 return x
         },
         getGainMultPre(){

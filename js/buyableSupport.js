@@ -2082,6 +2082,15 @@ var MAIN_BUYABLE_DATA = {
                                 },
                                 type: "plus",
                         },
+                        2: {
+                                active: function(){
+                                        return hasUpgrade("j", 54)
+                                },
+                                amount: function(){
+                                        return .04 * player.j.upgrades.length
+                                },
+                                type: "plus",
+                        },
                 },
                 bases(){
                         let b0 = new Decimal("1e1623e3")
