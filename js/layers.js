@@ -13184,6 +13184,7 @@ addLayer("j", {
                                 ret = ret.plus(tmp.k.clickables[14].effect)
                                 ret = ret.plus(tmp.k.clickables[41].effect)
                                 if (hasUpgrade("k", 31)) ret = ret.times(tmp.h.challenges[22].rewardEffect.max(1))
+                                if (hasUpgrade("k", 34)) ret = ret.times(tmp.h.challenges[22].rewardEffect.max(1))
                                 return ret
                         },
                         effect(){
@@ -14559,7 +14560,7 @@ addLayer("k", {
                 }, // hasUpgrade("k", 25)
                 31: {
                         title: "Keys",
-                        description: "<b>Hit</b> multiplicatively effects <b>Japan</b> base and <b>Gold Lock</b> exponent if it at least one and unlock another Lock",
+                        description: "<b>Hit</b> multiplicatively effects <b>Japan</b> base and unlock another Lock",
                         cost: new Decimal("1e13700"),
                         unlocked(){
                                 return hasUpgrade("j", 14) || hasUnlockedPast("l")
@@ -14581,10 +14582,25 @@ addLayer("k", {
                                 return hasUpgrade("j", 55) || hasUnlockedPast("l")
                         }
                 }, // hasUpgrade("k", 33)
+                34: {
+                        title: "Kernel",
+                        description: "<b>Hit</b> multiplcatively effects <b>Japan</b> base and <b>Gold Lock</b> base",
+                        cost: new Decimal("1e43000"),
+                        unlocked(){
+                                return hasUpgrade("k", 33) || hasUnlockedPast("l")
+                        }
+                }, // hasUpgrade("k", 34)
+                35: {
+                        title: "Keyboard",
+                        description: "Raise <b>Iron Lock</b> base to the number of <b>L</b> upgrades and triple <b>Titanium Lock</b> effect",
+                        cost: new Decimal("1e53500"),
+                        unlocked(){
+                                return hasUpgrade("k", 34) || hasUnlockedPast("l")
+                        }
+                }, // hasUpgrade("k", 35)
                 
                 /*
-                kid: sqrt(exp) mults knowledge
-                Kernel
+                kim
                 */
         },
         clickables: {
@@ -14593,7 +14609,7 @@ addLayer("k", {
                 totalMines(){
                         let sum = [11,12,13,14,15,21,22,23,24,25]
                         let a = new Decimal(0)
-                        for (i = 0; i<10; i++){
+                        for (i = 0; i < 10; i++){
                                 a = a.plus(player.k.lock.repeatables[sum[i]])
                         }
                         return a
@@ -15515,6 +15531,7 @@ addLayer("k", {
                                 amt = amt.plus(layers.k.clickables.getBonusLocks(31))
                                 let ret = amt.times(3).plus(1).sqrt()
                                 if (hasMilestone("l", 4)) ret = ret.pow(Decimal.pow(1.01, player.l.milestones.length))
+                                if (hasUpgrade("k", 35)) ret = ret.pow(Math.max(1, player.l.upgrades.length))
                                 return ret
                         },
                         effectDescription(){
@@ -15624,8 +15641,8 @@ addLayer("k", {
                                 let amt = player.k.lock.repeatables[33]
                                 amt = amt.plus(layers.k.clickables.getBonusLocks(33))
                                 let ret = amt.sqrt()
-                                if (hasMilestone("l", 6)) amt = amt.times(1.2)
-                                if (hasUpgrade("k", 31)) amt = amt.times(tmp.h.challenges[22].rewardEffect.max(1))
+                                if (hasMilestone("l", 6)) ret = ret.times(1.2)
+                                if (hasUpgrade("k", 34)) ret = ret.times(tmp.h.challenges[22].rewardEffect.max(1))
                                 return ret
                         },
                         effectDescription(){
@@ -15850,6 +15867,7 @@ addLayer("k", {
                                 amt = amt.plus(layers.k.clickables.getBonusLocks(42))
                                 let ret = amt.sqrt().div(4)
                                 if (hasUpgrade("l", 12)) ret = ret.times(Decimal.pow(player.l.upgrades.length, 2))
+                                if (hasUpgrade("k", 35)) ret = ret.times(3)
                                 return ret
                         },
                         effectDescription(){
@@ -15910,7 +15928,7 @@ addLayer("k", {
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
                                 let eff = tmp.k.clickables[43].effect
-                                return "+[total locks]*" + format(eff, 4) + " <b>K</b> gain exponent"
+                                return "+" + format(eff, 4) + " <b>K</b> gain exponent per lock"
                         },
                         canClick(){
                                 return player.k.lock.resources[23].gte(this.cost())
