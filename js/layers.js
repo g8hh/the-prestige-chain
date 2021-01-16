@@ -66,6 +66,7 @@ function getPointGenExp(){
         if (inChallenge("b", 22)) exp = exp.div(2)
         exp = exp.times(Decimal.pow(.9, getChallengeDepth(2)))
         exp = exp.times(CURRENT_BUYABLE_EFFECTS["g31"])
+        if (hasUpgrade("l", 15)) exp = exp.times(Decimal.pow(2, player.k.lock.repeatables[54]))
         return exp
 }
 
@@ -13571,6 +13572,7 @@ addLayer("j", {
                                 return a + c
                         },
                         unlocked(){
+                                if (player.j.puzzle.reset2.times > 996) return false
                                 return player.j.puzzle.reset2.done || (player.j.puzzle.repeatables[14].gte(20) && player.ach.best.gte(149)) || hasUnlockedPast("j")
                         },
                         canClick(){
@@ -14653,6 +14655,7 @@ addLayer("k", {
                 getBonusLocks(id){
                         let ret = new Decimal(0)
                         if (id < 53) ret = ret.plus(tmp.k.clickables[53].effect)
+                        if (id < 55) ret = ret.plus(tmp.k.clickables[55].effect)
                         return ret
                 },
                 11: {
@@ -16091,7 +16094,7 @@ addLayer("k", {
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
                                 let eff = tmp.k.clickables[51].effect
-                                return "*" + format(eff, 4) + "^[total mines] Lemon gain"
+                                return "*" + format(eff, 4) + " Lemon gain per mine"
                         },
                         canClick(){
                                 return player.l.points.gte(this.cost())
@@ -16146,7 +16149,7 @@ addLayer("k", {
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
                                 let eff = tmp.k.clickables[52].effect
-                                return "*" + format(eff, 4) + "^[total locks] Lemon gain"
+                                return "*" + format(eff, 4) + " Lemon gain per Lock"
                         },
                         canClick(){
                                 return player.l.points.gte(this.cost())
@@ -16267,6 +16270,61 @@ addLayer("k", {
                                 let data = player.k.lock 
                                 if (!nocost) player.l.points = player.l.points.minus(cost)
                                 data.repeatables[54] = data.repeatables[54].plus(1)
+                        },
+                },
+                55: {
+                        title(){
+                                if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
+                                return "<h3 style='color: #" + getUndulatingColor(9.6) + "; font-size: 15px'>Grandmaster<br>Lock</h3>"
+                                // 4: Master, 2: Diamond, 1: Basic, 3: Advanced, 5: Grandmaster
+                        },
+                        display(){
+                                if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
+                                let a 
+                                let b 
+                                let c 
+                                let id = 55
+                                let extra = tmp.k.clickables[id].cost.lt("1e900") ? " <b>Lemons</b>" : ""
+                                a = "<h3 style='color: #AC4600'>Cost</h3>: " + formatWhole(tmp.k.clickables[id].cost) + extra + "<br>"
+                                c = "<h3 style='color: #FF33CC'>Effect</h3>: (" + formatWhole(player.k.lock.repeatables[id]) +")<br>" + tmp.k.clickables[id].effectDescription + "<br>"
+                                
+                                return a + c
+                        },
+                        unlocked(){
+                                return hasUpgrade("l", 15) || hasUnlockedPast("l")
+                        },
+                        bases(){
+                                return [new Decimal("1e193"), new Decimal(2e18)]
+                        },
+                        cost(){
+                                let bases = tmp.k.clickables[55].bases
+                                let a = bases[0]
+                                let b = bases[1]
+                                return a.times(Decimal.pow(b, player.k.lock.repeatables[55].pow(2)))
+                        },
+                        effect(){
+                                let amt = player.k.lock.repeatables[55]
+                                amt = amt.plus(layers.k.clickables.getBonusLocks(55))
+                                let ret = amt.div(100).plus(1).ln().times(20)
+                                return ret
+                        },
+                        effectDescription(){
+                                if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
+                                let eff = tmp.k.clickables[55].effect
+                                return "+" + format(eff, 3) + " effective prior locks and <b>L</b> gain exp"
+                        },
+                        canClick(){
+                                return player.l.points.gte(this.cost())
+                        },
+                        onClick(nocost = false){
+                                if (!this.canClick()) return 
+                                let cost = this.cost()
+                                let data = player.k.lock 
+                                if (!nocost) player.l.points = player.l.points.minus(cost)
+                                data.repeatables[55] = data.repeatables[55].plus(1)
                         },
                 },
         },
@@ -16518,6 +16576,7 @@ addLayer("l", {
                 if (hasMilestone("l", 8)) x = x.plus(.2 * player.l.milestones.length)
                 if (hasUpgrade("j", 51)) x = x.plus(.01 * Math.max(0, totalChallengeComps("h") - 150))
                 if (hasUpgrade("j", 54)) x = x.plus(.04 * player.j.upgrades.length)
+                x = x.plus(tmp.k.clickables[55].effect)
                 return x
         },
         getGainMultPre(){
@@ -16734,9 +16793,27 @@ addLayer("l", {
                                 return hasUpgrade("l", 13) || hasUnlockedPast("l")
                         }
                 }, // hasUpgrade("l", 14)
+                15: {
+                        title: "Little",
+                        description: "Unlock the final Lock and each <b>Advanced Lock</b> squares point gain",
+                        cost: new Decimal(5e165),
+                        unlocked(){
+                                return hasUpgrade("k", 35) || hasUnlockedPast("l")
+                        }
+                }, // hasUpgrade("l", 15)
+                21: {
+                        title: "Low",
+                        description: "Raise <b>Hour</b> effect to the number of locks (at least 1)",
+                        cost: new Decimal(1e227),
+                        unlocked(){
+                                return hasUpgrade("l", 15) || hasUnlockedPast("l")
+                        }
+                }, // hasUpgrade("l", 21)
 
                 /*
-                Little
+                Learn
+                Look 
+                Left
                 */
         },
         tabFormat: {

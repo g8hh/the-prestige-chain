@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".7.6 Wonders",
+	num: ".7.7 Sleep",
 	name: "",
 }
 
@@ -521,7 +521,7 @@ var displayThings = [
 		return "(" + format(getPointGen()) + "/sec)"
 	},
 	function(){
-		let a = "Endgame: 1e165 Lemons"
+		let a = "Endgame: 1e280 Lemons"
 		return player.autosave ? a : a + ". Warning: autosave is off"
 	},
 	function(){
@@ -836,6 +836,9 @@ function getChangeLogText(){
 	bb5= "- Small code cleanups"
 	bc1= "v.7.6"
 	bc2= "- Added two Key upgrades"
+	bd1= "v.7.7"
+	bd2= "- Added the final lock"
+	bd3= "- Added 2 Lemon upgrades"
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
 	let part2 = [b1, b2, b3, b4, b5, "", b6, b7, "", b8, b9, b10, "", b11, b12, ""]
@@ -890,6 +893,7 @@ function getChangeLogText(){
 	let part51= [az1,az2,az3,az4,az5,az6, ""]
 	let part52= [bb1,bb2,bb3,bb4,bb5, ""]
 	let part53= [bc1,bc2, ""]
+	let part54= [bd1,bd2,bd3, ""]
 	// MAKE SURE TO ADD THEM
 
 	let final1 = [part10,  part9,  part8,  part7,  part6,  part5,  part4,  part3,  part2,  part1]
@@ -897,7 +901,7 @@ function getChangeLogText(){
 	let final3 = [part30, part29, part28, part27, part26, part25, part24, part23, part22, part21]
 	let final4 = [part40, part39, part38, part37, part36, part35, part34, part33, part32, part31]
 	let final5 = [part50, part49, part48, part47, part46, part45, part44, part43, part42, part41]
-	let final6 = [part53, part52, part51]
+	let final6 = [part54, part53, part52, part51]
 
 	return final6.concat(final5).concat(final4).concat(final3).concat(final2).concat(final1)
 }

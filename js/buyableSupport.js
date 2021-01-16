@@ -2091,6 +2091,15 @@ var MAIN_BUYABLE_DATA = {
                                 },
                                 type: "plus",
                         },
+                        3: {
+                                active: function(){
+                                        return hasUpgrade("l", 21)
+                                },
+                                amount: function(){
+                                        return tmp.k.clickables.totalLocks.max(1)
+                                },
+                                type: "pow",
+                        },
                 },
                 bases(){
                         let b0 = new Decimal("1e1623e3")
@@ -3105,7 +3114,8 @@ function buyManualBuyable(layer, id){
 
 function buyMaximumBuyable(layer, id, maximum){
         // Fully general
-        if (getBuyableAmount(layer, id).gte(maximum)) return
+        let maxAllowed = getMaxBuyablesAmount(layer)
+        if (getBuyableAmount(layer, id).gte(maxAllowed)) return
         let bases = getBuyableBases(layer, id)
         let pts = player[layer].points
         if (!isBuyableUnlocked(layer, id)) return 
@@ -3117,12 +3127,11 @@ function buyMaximumBuyable(layer, id, maximum){
         let c = pttarget
         let b = bfactor
         let a = Decimal.log(bases[2], 3).div(Decimal.log(1.01, 3))
-        // let a = 1 this is constant so remove it
 
-        let target = c.times(a).times(4).plus(b.times(b)).sqrt().minus(b).div(2).div(a).floor().plus(1)
+        let target = c.times(a).times(4).plus(b.pow(2)).sqrt().minus(b).div(2).div(a).floor().plus(1)
         //-b + sqrt(b*b+4*c*a)
 
-        target = target.min(getMaxBuyablesAmount(layer))
+        target = target.min(maxAllowed)
 
         let diff = target.minus(player[layer].buyables[id]).max(0)
         if (maximum != undefined) diff = diff.min(maximum)
@@ -3178,6 +3187,12 @@ function getBuyableDisplay(layer, id){
 
         let allEff = ef1 + eformula + scsText + ef2
 
+        if (!shiftDown) {
+                let end = "Shift to see details"
+                let start = amt + eff1 + eff2 + cost
+                return "<br>" + start + end
+        }
+
         let bases = getBuyableBases(layer, id)
         let cost1 = "<b><h2>Cost formula</h2>:<br>"
         let cost3 = "</b><br>"
@@ -3185,13 +3200,12 @@ function getBuyableDisplay(layer, id){
         let cost2b = bases[1].eq(1) ? "" : "*(" + formatBuyableCostBase(bases[1]) + "^x)"
         let cost2c = bases[2].eq(1) ? "" : "*(" + formatBuyableCostBase(bases[2]) + "^x^2)" 
         let cost2 = cost2a + cost2b + cost2c
-        if (cost2.slice(0,1) == "*") cost2 = cost2.slice(1) //removes the star
+        if (cost2.slice(0,1) == "*") cost2 = cost2.slice(1) //removes the star if its the first character
         let allCost = cost1 + cost2 + cost3
 
 
-        let end = shiftDown ? allEff + exformula + allCost : "Shift to see details"
-        let start = shiftDown ? "" : amt + eff1 + eff2 + cost 
-        return "<br>" + start + end
+        let end = allEff + exformula + allCost
+        return "<br>" + end
 }
 
 function formatBuyableCostBase(x){
