@@ -39,9 +39,9 @@ var MAIN_BUYABLE_DATA = {
                         },
                 },
                 bases(){
-                        let b0 = new Decimal("500")
-                        let b1 = new Decimal("2")
-                        let b2 = new Decimal("1.001")
+                        let b0 = new Decimal(500)
+                        let b1 = new Decimal(2)
+                        let b2 = new Decimal(1.001)
                         return [b0, b1, b2]
                 },
                 a12: {
@@ -90,9 +90,9 @@ var MAIN_BUYABLE_DATA = {
                         },
                 },
                 bases(){
-                        let b0 = new Decimal("1e4")
-                        let b1 = new Decimal("3")
-                        let b2 = new Decimal("1.005")
+                        let b0 = new Decimal(1e4)
+                        let b1 = new Decimal(3)
+                        let b2 = new Decimal(1.005)
                         return [b0, b1, b2]
                 },
                 a13: {
@@ -120,9 +120,9 @@ var MAIN_BUYABLE_DATA = {
                         initial: new Decimal(1),
                 },
                 bases(){
-                        let b0 = new Decimal("1e8")
-                        let b1 = new Decimal("8")
-                        let b2 = new Decimal("1.25")
+                        let b0 = new Decimal(1e8)
+                        let b1 = new Decimal(8)
+                        let b2 = new Decimal(1.25)
                         return [b0, b1, b2]
                 },
                 a21: {
@@ -158,9 +158,9 @@ var MAIN_BUYABLE_DATA = {
                         },
                 },
                 bases(){
-                        let b0 = new Decimal("1e66")
-                        let b1 = new Decimal("100")
-                        let b2 = new Decimal("2")
+                        let b0 = new Decimal(1e66)
+                        let b1 = new Decimal(100)
+                        let b2 = new Decimal(2)
                         return [b0, b1, b2]
                 },
                 a22: {
@@ -205,9 +205,9 @@ var MAIN_BUYABLE_DATA = {
                         },
                 },
                 bases(){
-                        let b0 = new Decimal("1e149")
-                        let b1 = new Decimal("1e4")
-                        let b2 = new Decimal("5")
+                        let b0 = new Decimal(1e149)
+                        let b1 = new Decimal(1e4)
+                        let b2 = new Decimal(5)
                         return [b0, b1, b2]
                 },
                 a23: {
@@ -243,9 +243,9 @@ var MAIN_BUYABLE_DATA = {
                         },
                 },
                 bases(){
-                        let b0 = new Decimal("1e625")
-                        let b1 = new Decimal("1")
-                        let b2 = new Decimal("7")
+                        let b0 = Decimal.pow(10, 625)
+                        let b1 = new Decimal(1)
+                        let b2 = new Decimal(7)
                         return [b0, b1, b2]
                 },
                 a31: {
@@ -276,9 +276,9 @@ var MAIN_BUYABLE_DATA = {
                         },
                 },
                 bases(){
-                        let b0 = new Decimal("1e1805")
-                        let b1 = new Decimal("1e5")
-                        let b2 = new Decimal("10")
+                        let b0 = Decimal.pow(10, 1805)
+                        let b1 = new Decimal(1e5)
+                        let b2 = new Decimal(10)
                         return [b0, b1, b2]
                 },
                 a32: {
@@ -300,9 +300,9 @@ var MAIN_BUYABLE_DATA = {
                         initial: new Decimal(.01),
                 },
                 bases(){
-                        let b0 = new Decimal("1e12086")
-                        let b1 = new Decimal("1.5e99")
-                        let b2 = new Decimal("20")
+                        let b0 = Decimal.pow(10, 12086)
+                        let b1 = new Decimal(1.5e99)
+                        let b2 = new Decimal(20)
                         return [b0, b1, b2]
                 },
         },
@@ -341,9 +341,9 @@ var MAIN_BUYABLE_DATA = {
                         },
                 },
                 bases(){
-                        let b0 = new Decimal("1e32099")
-                        let b1 = new Decimal("1e777")
-                        let b2 = new Decimal("1e22")
+                        let b0 = Decimal.pow(10, 32099)
+                        let b1 = Decimal.pow(10, 777)
+                        let b2 = new Decimal(1e22)
                         return [b0, b1, b2]
                 },
                 b31: {
@@ -383,9 +383,9 @@ var MAIN_BUYABLE_DATA = {
                         },
                 },
                 bases(){
-                        let b0 = new Decimal("1e15")
-                        let b1 = new Decimal("4")
-                        let b2 = new Decimal("1.5")
+                        let b0 = new Decimal(1e15)
+                        let b1 = new Decimal(4)
+                        let b2 = new Decimal(1.5)
                         return [b0, b1, b2]
                 },
                 b12: {
@@ -441,9 +441,9 @@ var MAIN_BUYABLE_DATA = {
                         },
                 },
                 bases(){
-                        let b0 = new Decimal("1e71")
-                        let b1 = new Decimal("10")
-                        let b2 = new Decimal("2")
+                        let b0 = new Decimal(1e71)
+                        let b1 = new Decimal(10)
+                        let b2 = new Decimal(2)
                         return [b0, b1, b2]
                 },
                 b13: {
@@ -474,9 +474,9 @@ var MAIN_BUYABLE_DATA = {
                         },
                 },
                 bases(){
-                        let b0 = new Decimal("1e1270")
-                        let b1 = new Decimal("1")
-                        let b2 = new Decimal("5")
+                        let b0 = Decimal.pow(10, 1270)
+                        let b1 = new Decimal(1)
+                        let b2 = new Decimal(5)
                         return [b0, b1, b2]
                 },
                 b21: {
@@ -507,9 +507,9 @@ var MAIN_BUYABLE_DATA = {
                         },
                 },
                 bases(){
-                        let b0 = new Decimal("1e1421")
-                        let b1 = new Decimal("1e28")
-                        let b2 = new Decimal("100")
+                        let b0 = Decimal.pow(10, 1421)
+                        let b1 = new Decimal(1e28)
+                        let b2 = new Decimal(100)
                         return [b0, b1, b2]
                 },
                 b22: {
@@ -545,9 +545,9 @@ var MAIN_BUYABLE_DATA = {
                         },
                 },
                 bases(){
-                        let b0 = new Decimal("1e10967")
-                        let b1 = new Decimal("1e419")
-                        let b2 = new Decimal("1e10")
+                        let b0 = Decimal.pow(10, 10967)
+                        let b1 = Decimal.pow(10, 419)
+                        let b2 = new Decimal(1e10)
                         return [b0, b1, b2]
                 },
                 b23: {
@@ -583,9 +583,9 @@ var MAIN_BUYABLE_DATA = {
                         },
                 },
                 bases(){
-                        let b0 = new Decimal("1e11369")
-                        let b1 = new Decimal("1e156")
-                        let b2 = new Decimal("1e15")
+                        let b0 = Decimal.pow(10, 11369)
+                        let b1 = Decimal.pow(10, 156)
+                        let b2 = new Decimal(1e15)
                         return [b0, b1, b2]
                 },
                 b31: {
@@ -612,9 +612,9 @@ var MAIN_BUYABLE_DATA = {
                         initial: new Decimal(1e50),
                 },
                 bases(){
-                        let b0 = new Decimal("1e48252")
-                        let b1 = new Decimal("5e175")
-                        let b2 = new Decimal("2e27")
+                        let b0 = Decimal.pow(10, 48252)
+                        let b1 = new Decimal(5e175)
+                        let b2 = new Decimal(2e27)
                         return [b0, b1, b2]
                 },
                 b32: {
@@ -645,9 +645,9 @@ var MAIN_BUYABLE_DATA = {
                         },
                 },
                 bases(){
-                        let b0 = new Decimal("1e71386")
-                        let b1 = new Decimal("1")
-                        let b2 = new Decimal("1e37")
+                        let b0 = Decimal.pow(10, 71386)
+                        let b1 = new Decimal(1)
+                        let b2 = new Decimal(1e37)
                         return [b0, b1, b2]
                 },
                 c21:{
@@ -678,9 +678,9 @@ var MAIN_BUYABLE_DATA = {
                         },
                 },
                 bases(){
-                        let b0 = new Decimal("1e135520")
-                        let b1 = new Decimal("1e3481")
-                        let b2 = new Decimal("1e150")
+                        let b0 = Decimal.pow(10, 135520)
+                        let b1 = Decimal.pow(10, 3481)
+                        let b2 = Decimal.pow(10, 150)
                         return [b0, b1, b2]
                 },
                 c22: {
@@ -702,9 +702,9 @@ var MAIN_BUYABLE_DATA = {
                         initial: new Decimal(100),
                 },
                 bases(){
-                        let b0 = new Decimal("1e443")
-                        let b1 = new Decimal("2")
-                        let b2 = new Decimal("1.5")
+                        let b0 = Decimal.pow(10, 443)
+                        let b1 = new Decimal(2)
+                        let b2 = new Decimal(1.5)
                         return [b0, b1, b2]
                 },
                 c12: {
@@ -740,9 +740,9 @@ var MAIN_BUYABLE_DATA = {
                         },
                 },
                 bases(){
-                        let b0 = new Decimal("1e1875")
-                        let b1 = new Decimal("1e100")
-                        let b2 = new Decimal("3")
+                        let b0 = Decimal.pow(10, 1875)
+                        let b1 = new Decimal(1e100)
+                        let b2 = new Decimal(3)
                         return [b0, b1, b2]
                 },
                 c13: {
@@ -778,9 +778,9 @@ var MAIN_BUYABLE_DATA = {
                         },
                 },
                 bases(){
-                        let b0 = new Decimal("1e5422")
-                        let b1 = new Decimal("1e10")
-                        let b2 = new Decimal("10")
+                        let b0 = Decimal.pow(10, 5422)
+                        let b1 = new Decimal(1e10)
+                        let b2 = new Decimal(10)
                         return [b0, b1, b2]
                 },
                 c21: {
@@ -802,9 +802,9 @@ var MAIN_BUYABLE_DATA = {
                         initial: new Decimal(2),
                 },
                 bases(){
-                        let b0 = new Decimal("1e10314")
-                        let b1 = new Decimal("1e253")
-                        let b2 = new Decimal("1000")
+                        let b0 = Decimal.pow(10, 10314)
+                        let b1 = new Decimal(1e253)
+                        let b2 = new Decimal(1000)
                         return [b0, b1, b2]
                 },
                 c22: {
@@ -844,9 +844,9 @@ var MAIN_BUYABLE_DATA = {
                         },
                 },
                 bases(){
-                        let b0 = new Decimal("1e99999")
-                        let b1 = new Decimal(".001")
-                        let b2 = new Decimal("1e10")
+                        let b0 = Decimal.pow(10, 99999)
+                        let b1 = new Decimal(.001)
+                        let b2 = new Decimal(1e10)
                         return [b0, b1, b2]
                 },
                 c23: {
@@ -868,9 +868,9 @@ var MAIN_BUYABLE_DATA = {
                         initial: Decimal.pow(10, 1572e3),
                 },
                 bases(){
-                        let b0 = new Decimal("1e455951")
-                        let b1 = new Decimal("1e1000")
-                        let b2 = new Decimal("1e20")
+                        let b0 = Decimal.pow(10, 455951)
+                        let b1 = Decimal.pow(10, 1000)
+                        let b2 = new Decimal(1e20)
                         return [b0, b1, b2]
                 },
                 c31: {
@@ -892,9 +892,9 @@ var MAIN_BUYABLE_DATA = {
                         initial: new Decimal(1e50),
                 },
                 bases(){
-                        let b0 = new Decimal("1e1507038")
-                        let b1 = new Decimal("1e3000")
-                        let b2 = new Decimal("1e50")
+                        let b0 = Decimal.pow(10, 1507038)
+                        let b1 = Decimal.pow(10, 3000)
+                        let b2 = new Decimal(1e50)
                         return [b0, b1, b2]
                 },
                 c32: {
@@ -920,9 +920,9 @@ var MAIN_BUYABLE_DATA = {
                         },
                 },
                 bases(){
-                        let b0 = new Decimal("1e1000")
-                        let b1 = new Decimal("10")
-                        let b2 = new Decimal("100")
+                        let b0 = Decimal.pow(10, 1000)
+                        let b1 = new Decimal(10)
+                        let b2 = new Decimal(100)
                         return [b0, b1, b2]
                 },
         },
@@ -1002,9 +1002,9 @@ var MAIN_BUYABLE_DATA = {
                         },
                 },
                 bases(){
-                        let b0 = new Decimal("1e608")
-                        let b1 = new Decimal("4.5")
-                        let b2 = new Decimal("1.01")
+                        let b0 = Decimal.pow(10, 608)
+                        let b1 = new Decimal(4.5)
+                        let b2 = new Decimal(1.01)
                         return [b0, b1, b2]
                 },
                 d13: {
@@ -1040,9 +1040,9 @@ var MAIN_BUYABLE_DATA = {
                         },
                 },
                 bases(){
-                        let b0 = new Decimal("5e627")
-                        let b1 = new Decimal("45")
-                        let b2 = new Decimal("1.1")
+                        let b0 = Decimal.pow(10, 627).times(5)
+                        let b1 = new Decimal(45)
+                        let b2 = new Decimal(1.1)
                         return [b0, b1, b2]
                 },
                 d13: {
@@ -1078,9 +1078,9 @@ var MAIN_BUYABLE_DATA = {
                         },
                 },
                 bases(){
-                        let b0 = new Decimal("5e687")
-                        let b1 = new Decimal("50")
-                        let b2 = new Decimal("2")
+                        let b0 = Decimal.pow(10, 687).times(5)
+                        let b1 = new Decimal(50)
+                        let b2 = new Decimal(2)
                         return [b0, b1, b2]
                 },
                 d21: {
@@ -1111,9 +1111,9 @@ var MAIN_BUYABLE_DATA = {
                         },
                 },
                 bases(){
-                        let b0 = new Decimal("1e1655")
-                        let b1 = new Decimal(".2")
-                        let b2 = new Decimal("5")
+                        let b0 = Decimal.pow(10, 1655)
+                        let b1 = new Decimal(.2)
+                        let b2 = new Decimal(5)
                         return [b0, b1, b2]
                 },
                 d22: {
@@ -1153,9 +1153,9 @@ var MAIN_BUYABLE_DATA = {
                         },
                 },
                 bases(){
-                        let b0 = new Decimal("1e1945")
-                        let b1 = new Decimal("1e77")
-                        let b2 = new Decimal("10")
+                        let b0 = Decimal.pow(10, 1945)
+                        let b1 = new Decimal(1e77)
+                        let b2 = new Decimal(10)
                         return [b0, b1, b2]
                 },
                 e11: {
@@ -1186,10 +1186,10 @@ var MAIN_BUYABLE_DATA = {
                         },
                 },
                 bases(){
-                        let b0 = new Decimal("1e22222")
-                        let b1 = new Decimal("1e100")
+                        let b0 = Decimal.pow(10, 22222)
+                        let b1 = new Decimal(1e100)
                         b1 = b1.div(getGoalChallengeReward("34"))
-                        let b2 = new Decimal("1e3")
+                        let b2 = new Decimal(1e3)
                         return [b0, b1, b2]
                 },
                 e12: {
@@ -1206,9 +1206,9 @@ var MAIN_BUYABLE_DATA = {
                         initial: new Decimal(.25),
                 },
                 bases(){
-                        let b0 = new Decimal("1e44444")
-                        let b1 = new Decimal("1e323")
-                        let b2 = new Decimal("1e10")
+                        let b0 = Decimal.pow(10, 44444)
+                        let b1 = Decimal.pow(10, 323)
+                        let b2 = new Decimal(1e10)
                         return [b0, b1, b2]
                 },
         },
@@ -1220,9 +1220,9 @@ var MAIN_BUYABLE_DATA = {
                         initial: new Decimal(.02),
                 },
                 bases(){
-                        let b0 = new Decimal("1e333333")
-                        let b1 = new Decimal("1e1234")
-                        let b2 = new Decimal("1e50")
+                        let b0 = Decimal.pow(10, 333333)
+                        let b1 = Decimal.pow(10, 1234)
+                        let b2 = new Decimal(1e50)
                         return [b0, b1, b2]
                 },
         },
@@ -1234,9 +1234,9 @@ var MAIN_BUYABLE_DATA = {
                         initial: new Decimal(.1),
                 },
                 bases(){
-                        let b0 = new Decimal("1")
-                        let b1 = new Decimal("1")
-                        let b2 = new Decimal("1e1e40")
+                        let b0 = new Decimal(1)
+                        let b1 = new Decimal(1)
+                        let b2 = Decimal.pow(10, 1e40)
                         return [b0, b1, b2]
                 },
         },
@@ -1257,10 +1257,10 @@ var MAIN_BUYABLE_DATA = {
                         },
                 },
                 bases(){
-                        let b0 = new Decimal("1e116")
-                        let b1 = new Decimal("2")
+                        let b0 = new Decimal(1e116)
+                        let b1 = new Decimal(2)
                         if (hasMilestone("goalsii", 22)) b1 = new Decimal(1)
-                        let b2 = new Decimal("1.001")
+                        let b2 = new Decimal(1.001)
                         return [b0, b1, b2]
                 },
                 e12: {
@@ -1300,11 +1300,11 @@ var MAIN_BUYABLE_DATA = {
                         },
                 },
                 bases(){
-                        let b0 = new Decimal("1e350")
+                        let b0 = Decimal.pow(10, 350)
                         b0 = b0.div(getGoalChallengeReward("34"))
-                        let b1 = new Decimal("10")
-                        if (hasMilestone("goalsii", 23)) b1 = new Decimal("1") 
-                        let b2 = new Decimal("1.1")
+                        let b1 = new Decimal(10)
+                        if (hasMilestone("goalsii", 23)) b1 = new Decimal(1) 
+                        let b2 = new Decimal(1.1)
                         return [b0, b1, b2]
                 },
                 e13: {
@@ -1339,10 +1339,10 @@ var MAIN_BUYABLE_DATA = {
                         },
                 },
                 bases(){
-                        let b0 = new Decimal("1e200")
+                        let b0 = new Decimal(1e200)
                         if (hasUpgrade("goalsii", 12)) b0 = b0.div(getGoalChallengeReward("34"))
-                        let b1 = new Decimal("10")
-                        let b2 = new Decimal("2")
+                        let b1 = new Decimal(10)
+                        let b2 = new Decimal(2)
                         return [b0, b1, b2]
                 },
                 e21: {
@@ -1359,9 +1359,9 @@ var MAIN_BUYABLE_DATA = {
                         initial: new Decimal(1e50),
                 },
                 bases(){
-                        let b0 = new Decimal("1e1000")
-                        let b1 = new Decimal("20")
-                        let b2 = new Decimal("5")
+                        let b0 = Decimal.pow(10, 1000)
+                        let b1 = new Decimal(20)
+                        let b2 = new Decimal(5)
                         return [b0, b1, b2]
                 },
         },
@@ -1373,9 +1373,9 @@ var MAIN_BUYABLE_DATA = {
                         initial: new Decimal(1e5),
                 },
                 bases(){
-                        let b0 = new Decimal("1e500")
-                        let b1 = new Decimal(".1")
-                        let b2 = new Decimal("10")
+                        let b0 = Decimal.pow(10, 500)
+                        let b1 = new Decimal(.1)
+                        let b2 = new Decimal(10)
                         return [b0, b1, b2]
                 },
         },
@@ -1387,9 +1387,9 @@ var MAIN_BUYABLE_DATA = {
                         initial: new Decimal(1),
                 },
                 bases(){
-                        let b0 = new Decimal("1e2000")
-                        let b1 = new Decimal("1e67")
-                        let b2 = new Decimal("100")
+                        let b0 = Decimal.pow(10, 2000)
+                        let b1 = new Decimal(1e67)
+                        let b2 = new Decimal(100)
                         return [b0, b1, b2]
                 },
         },
@@ -1401,9 +1401,9 @@ var MAIN_BUYABLE_DATA = {
                         initial: new Decimal(.01),
                 },
                 bases(){
-                        let b0 = new Decimal("1e4000")
-                        let b1 = new Decimal("1e59")
-                        let b2 = new Decimal("1e10")
+                        let b0 = Decimal.pow(10, 4000)
+                        let b1 = new Decimal(1e59)
+                        let b2 = new Decimal(1e10)
                         return [b0, b1, b2]
                 },
         },
@@ -1421,9 +1421,9 @@ var MAIN_BUYABLE_DATA = {
                         initial: new Decimal(1),
                 },
                 bases(){
-                        let b0 = new Decimal("1e39000")
-                        let b1 = new Decimal("1e1234")
-                        let b2 = new Decimal("1e50")
+                        let b0 = Decimal.pow(10, 39000)
+                        let b1 = Decimal.pow(10, 1234)
+                        let b2 = new Decimal(1e50)
                         return [b0, b1, b2]
                 },
         },
@@ -1441,9 +1441,9 @@ var MAIN_BUYABLE_DATA = {
                         initial: new Decimal(1),
                 },
                 bases(){
-                        let b0 = new Decimal("1")
-                        let b1 = new Decimal("1")
-                        let b2 = new Decimal("1e1e40")
+                        let b0 = new Decimal(1)
+                        let b1 = new Decimal(1)
+                        let b2 = Decimal.pow(10, 1e40)
                         return [b0, b1, b2]
                 },
                 f11: {
@@ -1460,9 +1460,9 @@ var MAIN_BUYABLE_DATA = {
                         initial: new Decimal(1e10),
                 },
                 bases(){
-                        let b0 = new Decimal("1e970e3")
-                        let b1 = new Decimal("1e1e3")
-                        let b2 = new Decimal("1e10")
+                        let b0 = Decimal.pow(10, 970e3)
+                        let b1 = Decimal.pow(10, 1e3)
+                        let b2 = new Decimal(1e10)
                         return [b0, b1, b2]
                 },
                 f12: {
@@ -1502,9 +1502,9 @@ var MAIN_BUYABLE_DATA = {
                         },
                 },
                 bases(){
-                        let b0 = new Decimal("1e1e6")
-                        let b1 = new Decimal("1e270")
-                        let b2 = new Decimal("1e20")
+                        let b0 = Decimal.pow(10, 1e6)
+                        let b1 = new Decimal(1e270)
+                        let b2 = new Decimal(1e20)
                         return [b0, b1, b2]
                 },
                 f13: {
@@ -1544,9 +1544,9 @@ var MAIN_BUYABLE_DATA = {
                         },
                 },
                 bases(){
-                        let b0 = new Decimal("1e1225e3")
-                        let b1 = new Decimal("1.23e456")
-                        let b2 = new Decimal("1e50")
+                        let b0 = Decimal.pow(10, 1225e3)
+                        let b1 = Decimal.pow(10, 456).times(1.23)
+                        let b2 = new Decimal(1e50)
                         return [b0, b1, b2]
                 },
                 f21: {
@@ -1578,9 +1578,9 @@ var MAIN_BUYABLE_DATA = {
                         },
                 },
                 bases(){
-                        let b0 = new Decimal("1e3525e3")
-                        let b1 = new Decimal("1.23e4567")
-                        let b2 = new Decimal("1e100")
+                        let b0 = Decimal.pow(10, 3525e3)
+                        let b1 = Decimal.pow(10, 4567).times(1.23)
+                        let b2 = new Decimal(1e100)
                         return [b0, b1, b2]
                 },
                 f22: {
@@ -1606,9 +1606,9 @@ var MAIN_BUYABLE_DATA = {
                         },
                 },
                 bases(){
-                        let b0 = new Decimal("1e150289e3")
-                        let b1 = new Decimal("1.23e45678")
-                        let b2 = new Decimal("1e300")
+                        let b0 = Decimal.pow(10, 150289e3)
+                        let b1 = Decimal.pow(10, 45678).times(1.23)
+                        let b2 = new Decimal(1e300)
                         return [b0, b1, b2]
                 },
         },
@@ -1620,9 +1620,9 @@ var MAIN_BUYABLE_DATA = {
                         initial: new Decimal(1),
                 },
                 bases(){
-                        let b0 = new Decimal("1e27e13")
-                        let b1 = new Decimal("1ee10")
-                        let b2 = new Decimal("1ee6")
+                        let b0 = Decimal.pow(10, 27e13)
+                        let b1 = Decimal.pow(10, 1e10)
+                        let b2 = Decimal.pow(10, 1e6)
                         return [b0, b1, b2]
                 },
         },
@@ -1634,9 +1634,9 @@ var MAIN_BUYABLE_DATA = {
                         initial: new Decimal(.0001),
                 },
                 bases(){
-                        let b0 = new Decimal("1e1.7e15")
-                        let b1 = new Decimal("1ee13")
-                        let b2 = new Decimal("1ee8")
+                        let b0 = Decimal.pow(10, 1.7e15)
+                        let b1 = Decimal.pow(10, 1e13)
+                        let b2 = Decimal.pow(10, 1e8)
                         return [b0, b1, b2]
                 },
         },
@@ -1657,9 +1657,9 @@ var MAIN_BUYABLE_DATA = {
                         },
                 },
                 bases(){
-                        let b0 = new Decimal("1ee23")
-                        let b1 = new Decimal("1ee19")
-                        let b2 = new Decimal("1ee13")
+                        let b0 = Decimal.pow(10, 1e23)
+                        let b1 = Decimal.pow(10, 1e19)
+                        let b2 = Decimal.pow(10, 1e13)
                         return [b0, b1, b2]
                 },
         },
@@ -1680,9 +1680,9 @@ var MAIN_BUYABLE_DATA = {
                         },
                 },
                 bases(){
-                        let b0 = new Decimal("1e3e23")
-                        let b1 = new Decimal("1ee20")
-                        let b2 = new Decimal("1ee14")
+                        let b0 = Decimal.pow(10, 3e23)
+                        let b1 = Decimal.pow(10, 1e20)
+                        let b2 = Decimal.pow(10, 1e14)
                         return [b0, b1, b2]
                 },
         },
@@ -1703,9 +1703,9 @@ var MAIN_BUYABLE_DATA = {
                         },
                 },
                 bases(){
-                        let b0 = new Decimal("1e3435e3")
-                        let b1 = new Decimal("1e50")
-                        let b2 = new Decimal("1e3")
+                        let b0 = Decimal.pow(10, 3435e3)
+                        let b1 = new Decimal(1e50)
+                        let b2 = new Decimal(1e3)
                         return [b0, b1, b2]
                 },
                 g12: {
@@ -1731,9 +1731,9 @@ var MAIN_BUYABLE_DATA = {
                         },
                 },
                 bases(){
-                        let b0 = new Decimal("1e4558e3")
-                        let b1 = new Decimal("1e2000")
-                        let b2 = new Decimal("1e5")
+                        let b0 = Decimal.pow(10, 4558e3)
+                        let b1 = Decimal.pow(10, 2000)
+                        let b2 = new Decimal(1e5)
                         return [b0, b1, b2]
                 },
                 g13: {
@@ -1760,9 +1760,9 @@ var MAIN_BUYABLE_DATA = {
                         initial: new Decimal(5),
                 },
                 bases(){
-                        let b0 = new Decimal("1e11047e3")
-                        let b1 = new Decimal("1e10")
-                        let b2 = new Decimal("1e10")
+                        let b0 = Decimal.pow(10, 11047e3)
+                        let b1 = new Decimal(1e10)
+                        let b2 = new Decimal(1e10)
                         return [b0, b1, b2]
                 },
                 g21: {
@@ -1789,9 +1789,9 @@ var MAIN_BUYABLE_DATA = {
                         initial: new Decimal(.01),
                 },
                 bases(){
-                        let b0 = new Decimal("1e302e6")
-                        let b1 = new Decimal("1ee5")
-                        let b2 = new Decimal("1ee2")
+                        let b0 = Decimal.pow(10, 302e6)
+                        let b1 = Decimal.pow(10, 1e5)
+                        let b2 = new Decimal(1e100)
                         return [b0, b1, b2]
                 },
                 g22: {
@@ -1813,9 +1813,9 @@ var MAIN_BUYABLE_DATA = {
                         initial: new Decimal(.01),
                 },
                 bases(){
-                        let b0 = new Decimal("1e347e6")
-                        let b1 = new Decimal("1e5e5")
-                        let b2 = new Decimal("1e5e2")
+                        let b0 = Decimal.pow(10, 347e6)
+                        let b1 = Decimal.pow(10, 5e5)
+                        let b2 = Decimal.pow(10, 5e2)
                         return [b0, b1, b2]
                 },
                 g23: {
@@ -1850,9 +1850,9 @@ var MAIN_BUYABLE_DATA = {
                         },
                 },
                 bases(){
-                        let b0 = new Decimal("1e95e9")
-                        let b1 = new Decimal("1ee8")
-                        let b2 = new Decimal("1ee4")
+                        let b0 = Decimal.pow(10, 95e9)
+                        let b1 = Decimal.pow(10, 1e8)
+                        let b2 = Decimal.pow(10, 1e4)
                         return [b0, b1, b2]
                 },
                 g31: {
@@ -1911,9 +1911,9 @@ var MAIN_BUYABLE_DATA = {
                         },
                 },
                 bases(){
-                        let b0 = new Decimal("1e153e9")
-                        let b1 = new Decimal("1e5e8")
-                        let b2 = new Decimal("1ee5")
+                        let b0 = Decimal.pow(10, 153e9)
+                        let b1 = Decimal.pow(10, 5e8)
+                        let b2 = Decimal.pow(10, 1e5)
                         return [b0, b1, b2]
                 },
                 g32: {
@@ -1948,9 +1948,9 @@ var MAIN_BUYABLE_DATA = {
                         }
                 },
                 bases(){
-                        let b0 = new Decimal("1e498e9")
-                        let b1 = new Decimal("1")
-                        let b2 = new Decimal("1e1e6")
+                        let b0 = Decimal.pow(10, 498e9)
+                        let b1 = new Decimal(1)
+                        let b2 = Decimal.pow(10, 1e6)
                         return [b0, b1, b2]
                 },
         },
@@ -1962,9 +1962,9 @@ var MAIN_BUYABLE_DATA = {
                         initial: new Decimal(.001),
                 },
                 bases(){
-                        let b0 = new Decimal("1e1310e9")
-                        let b1 = new Decimal("1e4e9")
-                        let b2 = new Decimal("1e1e7")
+                        let b0 = Decimal.pow(10, 1310e9)
+                        let b1 = Decimal.pow(10, 4e9)
+                        let b2 = Decimal.pow(10, 1e7)
                         return [b0, b1, b2]
                 },
                 h12: {
@@ -1981,9 +1981,9 @@ var MAIN_BUYABLE_DATA = {
                         initial: new Decimal(1e6),
                 },
                 bases(){
-                        let b0 = new Decimal("1e1160e3")
-                        let b1 = new Decimal("1e1000")
-                        let b2 = new Decimal("1e5")
+                        let b0 = Decimal.pow(10, 1160e3)
+                        let b1 = Decimal.pow(10, 1000)
+                        let b2 = new Decimal(1e5)
                         return [b0, b1, b2]
                 },
                 h12: {
@@ -2009,9 +2009,9 @@ var MAIN_BUYABLE_DATA = {
                         }
                 },
                 bases(){
-                        let b0 = new Decimal("1e1165e3")
-                        let b1 = new Decimal("1e3000")
-                        let b2 = new Decimal("1e10")
+                        let b0 = Decimal.pow(10, 1165e3)
+                        let b1 = Decimal.pow(10, 3000)
+                        let b2 = new Decimal(1e10)
                         return [b0, b1, b2]
                 },
                 h13: {
@@ -2051,9 +2051,9 @@ var MAIN_BUYABLE_DATA = {
                         },
                 },
                 bases(){
-                        let b0 = new Decimal("1e1180e3")
-                        let b1 = new Decimal("1e1000")
-                        let b2 = new Decimal("1e20")
+                        let b0 = Decimal.pow(10, 1180e3)
+                        let b1 = Decimal.pow(10, 1000)
+                        let b2 = new Decimal(1e20)
                         return [b0, b1, b2]
                 },
                 h21: {
@@ -2102,9 +2102,9 @@ var MAIN_BUYABLE_DATA = {
                         },
                 },
                 bases(){
-                        let b0 = new Decimal("1e1623e3")
-                        let b1 = new Decimal("1")
-                        let b2 = new Decimal("1e25")
+                        let b0 = Decimal.pow(10, 1623e3)
+                        let b1 = new Decimal(1)
+                        let b2 = new Decimal(1e25)
                         return [b0, b1, b2]
                 },
                 h22: {
@@ -2162,9 +2162,9 @@ var MAIN_BUYABLE_DATA = {
                         },
                 },
                 bases(){
-                        let b0 = new Decimal("1e9876543")
-                        let b1 = new Decimal("1e210")
-                        let b2 = new Decimal("1e98")
+                        let b0 = Decimal.pow(10, 9876543)
+                        let b1 = new Decimal(1e210)
+                        let b2 = new Decimal(1e98)
                         return [b0, b1, b2]
                 },
                 h23: {
@@ -2190,9 +2190,9 @@ var MAIN_BUYABLE_DATA = {
                         },
                 },
                 bases(){
-                        let b0 = new Decimal("1e716e6")
-                        let b1 = new Decimal("1e123e3")
-                        let b2 = new Decimal("1ee3")
+                        let b0 = Decimal.pow(10, 716e6)
+                        let b1 = Decimal.pow(10, 123e3)
+                        let b2 = Decimal.pow(10, 1e3)
                         return [b0, b1, b2]
                 },
                 h31: {
@@ -2214,9 +2214,9 @@ var MAIN_BUYABLE_DATA = {
                         initial: new Decimal("1e10"),
                 },
                 bases(){
-                        let b0 = new Decimal("1e51e9")
-                        let b1 = new Decimal("1e1e7")
-                        let b2 = new Decimal("1e1e4")
+                        let b0 = Decimal.pow(10, 51e9)
+                        let b1 = Decimal.pow(10, 1e7)
+                        let b2 = Decimal.pow(10, 1e4)
                         return [b0, b1, b2]
                 },
                 h32: {
@@ -2233,9 +2233,9 @@ var MAIN_BUYABLE_DATA = {
                         initial: new Decimal(".001"),
                 },
                 bases(){
-                        let b0 = new Decimal("1e119e9")
-                        let b1 = new Decimal("1e5e7")
-                        let b2 = new Decimal("1e1e5")
+                        let b0 = Decimal.pow(10, 119e9)
+                        let b1 = Decimal.pow(10, 5e7)
+                        let b2 = Decimal.pow(10, 1e5)
                         return [b0, b1, b2]
                 },
         },
@@ -2248,9 +2248,9 @@ var MAIN_BUYABLE_DATA = {
                         initial: new Decimal("1.1"),
                 },
                 bases(){
-                        let b0 = new Decimal("1e2380e9")
-                        let b1 = new Decimal("1e1e9")
-                        let b2 = new Decimal("1e1e6")
+                        let b0 = Decimal.pow(10, 2380e9)
+                        let b1 = Decimal.pow(10, 1e9)
+                        let b2 = Decimal.pow(10, 1e6)
                         return [b0, b1, b2]
                 },
         },
@@ -2271,9 +2271,9 @@ var MAIN_BUYABLE_DATA = {
                         },
                 },
                 bases(){
-                        let b0 = new Decimal("1e5050e6")
-                        let b1 = new Decimal("1e1e6")
-                        let b2 = new Decimal("1e1e2")
+                        let b0 = Decimal.pow(10, 5050e6)
+                        let b1 = Decimal.pow(10, 1e6)
+                        let b2 = Decimal.pow(10, 100)
                         return [b0, b1, b2]
                 },
                 i13: {
@@ -2290,9 +2290,9 @@ var MAIN_BUYABLE_DATA = {
                         initial: new Decimal(".01"),
                 },
                 bases(){
-                        let b0 = new Decimal("1e8100e6")
-                        let b1 = new Decimal("1e5e6")
-                        let b2 = new Decimal("1e1e3")
+                        let b0 = Decimal.pow(10, 8100e6)
+                        let b1 = Decimal.pow(10, 5e6)
+                        let b2 = Decimal.pow(10, 1e3)
                         return [b0, b1, b2]
                 },
                 i21: {
@@ -2323,9 +2323,9 @@ var MAIN_BUYABLE_DATA = {
                         },
                 },
                 bases(){
-                        let b0 = new Decimal("1e11200e6")
-                        let b1 = new Decimal("1e1e7")
-                        let b2 = new Decimal("1e1e4")
+                        let b0 = Decimal.pow(10, 11200e6)
+                        let b1 = Decimal.pow(10, 1e7)
+                        let b2 = Decimal.pow(10, 1e4)
                         return [b0, b1, b2]
                 },
                 i21: {
@@ -2342,9 +2342,9 @@ var MAIN_BUYABLE_DATA = {
                         initial: new Decimal("1e5"),
                 },
                 bases(){
-                        let b0 = new Decimal("1e11600e6")
-                        let b1 = new Decimal("1e2e7")
-                        let b2 = new Decimal("1e2e4")
+                        let b0 = Decimal.pow(10, 11600e6)
+                        let b1 = Decimal.pow(10, 2e7)
+                        let b2 = Decimal.pow(10, 2e4)
                         return [b0, b1, b2]
                 },
         },
@@ -2365,9 +2365,9 @@ var MAIN_BUYABLE_DATA = {
                         },
                 },
                 bases(){
-                        let b0 = new Decimal("1e37e9")
-                        let b1 = new Decimal("1ee8")
-                        let b2 = new Decimal("1e5e4")
+                        let b0 = Decimal.pow(10, 37e9)
+                        let b1 = Decimal.pow(10, 1e8)
+                        let b2 = Decimal.pow(10, 5e4)
                         return [b0, b1, b2]
                 },
         },
@@ -2377,11 +2377,20 @@ var MAIN_BUYABLE_DATA = {
                 effects: "<b>Inn</b> base",
                 base: {
                         initial: new Decimal("1e1000"),
+                        1: {
+                                active: function(){
+                                        return true
+                                },
+                                amount: function(){
+                                        return CURRENT_BUYABLE_EFFECTS["j11"]
+                                },
+                                type: "times",
+                        },
                 },
                 bases(){
-                        let b0 = new Decimal("1e40e12")
-                        let b1 = new Decimal("1e1e10")
-                        let b2 = new Decimal("1e1e7")
+                        let b0 = Decimal.pow(10, 40e12)
+                        let b1 = Decimal.pow(10, 1e10)
+                        let b2 = Decimal.pow(10, 1e7)
                         return [b0, b1, b2]
                 },
         },
@@ -2393,12 +2402,68 @@ var MAIN_BUYABLE_DATA = {
                         initial: new Decimal("1"),
                 },
                 bases(){
-                        let b0 = new Decimal("1e10e13")
-                        let b1 = new Decimal("1e1e12")
-                        let b2 = new Decimal("1e1e9")
+                        let b0 = Decimal.pow(10, 10e13)
+                        let b1 = Decimal.pow(10, 1e12)
+                        let b2 = Decimal.pow(10, 1e9)
                         return [b0, b1, b2]
                 },
         },
+        i32: {
+                name: "Impact",
+                func: "lin",
+                effects: "<b>H</b> effect exponent",
+                base: {
+                        initial: new Decimal(1e7),
+                },
+                bases(){
+                        let b0 = Decimal.pow(10, 4e17)
+                        let b1 = Decimal.pow(10, 1e14)
+                        let b2 = Decimal.pow(10, 1e11)
+                        return [b0, b1, b2]
+                },
+        },
+        j11: {
+                name: "Jefferson",
+                func: "exp",
+                effects: "<b>Independent</b> base",
+                base: {
+                        initial: Decimal.pow(10, 1e4),
+                },
+                bases(){
+                        let b0 = Decimal.pow(10, 319e9)
+                        let b1 = Decimal.pow(10, 1e8)
+                        let b2 = Decimal.pow(10, 1e4)
+                        return [b0, b1, b2]
+                },
+        },
+        j12: {
+                name: "Jacksonville",
+                func: "lin",
+                effects: "<b>J</b> effect exponent",
+                base: {
+                        initial: new Decimal(1e3),
+                },
+                bases(){
+                        let b0 = Decimal.pow(10, 321e9)
+                        let b1 = Decimal.pow(10, 2e8)
+                        let b2 = Decimal.pow(10, 1e5)
+                        return [b0, b1, b2]
+                },
+        },  
+        j13: {
+                name: "Jamaica",
+                func: "lin",
+                effects: "<b>I</b> gain exponent",
+                base: {
+                        initial: new Decimal(1e5),
+                },
+                bases(){
+                        let b0 = Decimal.pow(10, 5.7e11)
+                        let b1 = Decimal.pow(10, 1e8)
+                        let b2 = Decimal.pow(10, 1e6)
+                        return [b0, b1, b2]
+                },
+        },     
 }
 
 var EXTRA_FREE_BUYABLE_DATA = {

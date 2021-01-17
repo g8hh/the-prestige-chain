@@ -5119,7 +5119,7 @@ addLayer("ach", {
         canReset(){
                 return false
         },
-        achievements: getFirstNAchData(217), //Object.keys(PROGRESSION_MILESTONES).length
+        achievements: getFirstNAchData(231), //Object.keys(PROGRESSION_MILESTONES).length
         milestones: {
                 1: {
                         requirementDescription(){
@@ -10192,6 +10192,8 @@ addLayer("h", {
 
                 let ret = amt.times(10).plus(1).pow(exp)
 
+                ret = ret.times(amt.max(1).pow(CURRENT_BUYABLE_EFFECTS["i32"]))
+
                 //ret = softcap(ret, "h_eff")
 
                 return ret
@@ -11457,7 +11459,6 @@ addLayer("i", {
                 }, // hasUpgrade("i", 55)
 
                 /*
-                Impact
                 introduction
                 */
         },
@@ -11653,6 +11654,62 @@ addLayer("i", {
                                 return hasUpgrade("l", 11) || hasUnlockedPast("l")
                         },
                 },
+                32: {
+                        title: "Impact",
+                        display(){
+                                return getBuyableDisplay("i", 32)
+                        },
+                        effect(){
+                                return CURRENT_BUYABLE_EFFECTS["i32"]
+                        },
+                        canAfford(){
+                                return canAffordBuyable("i", 32)
+                        },
+                        total(){
+                                return getBuyableAmount("i", 32).plus(this.extra())
+                        },
+                        extra(){
+                                return calcBuyableExtra("i", 32)
+                        },
+                        buy(){
+                                buyManualBuyable("i", 32)
+                        },
+                        buyMax(maximum){
+                                buyMaximumBuyable("i", 32, maximum)
+                        },
+                        unlocked(){ 
+                                return hasUpgrade("l", 22) || hasUnlockedPast("l")
+                        },
+                },
+                /*
+                33: {
+                        title: "Omnipotent IX",
+                        display(){
+                                return getBuyableDisplay("i", 33)
+                        },
+                        effect(){
+                                return CURRENT_BUYABLE_EFFECTS["i33"]
+                        },
+                        canAfford(){
+                                return canAffordBuyable("i", 33)
+                        },
+                        total(){
+                                return getBuyableAmount("i", 33).plus(this.extra())
+                        },
+                        extra(){
+                                return calcBuyableExtra("i", 33)
+                        },
+                        buy(){
+                                buyManualBuyable("i", 33)
+                        },
+                        buyMax(maximum){
+                                buyMaximumBuyable("i", 33, maximum)
+                        },
+                        unlocked(){ 
+                                return hasUpgrade("l", 23) || hasUnlockedPast("l")
+                        },
+                },
+                */
         },
         tabFormat: {
                 "Upgrades": {
@@ -11857,6 +11914,8 @@ addLayer("j", {
 
                 let ret = amt.times(3).plus(1).pow(exp)
 
+                ret = ret.times(amt.max(1).pow(CURRENT_BUYABLE_EFFECTS["j12"]))
+
                 //ret = softcap(ret, "h_eff")
 
                 return ret
@@ -11879,7 +11938,7 @@ addLayer("j", {
                                 data.times ++
                         }
                 }
-                if (false) {
+                if (hasUpgrade("l", 22)) {
                         handleGeneralizedBuyableAutobuy(diff, "j")
                 } else {
                         data.abtime = 0
@@ -12316,9 +12375,96 @@ addLayer("j", {
                 }, // hasUpgrade("j", 55)
 
                 /*
-                jefferson
-                jacksonville
+                
+                juice
+                judges
+                juvenile
                 */
+        },
+        buyables:{
+                rows: 3,
+                cols: 3,
+                11: {
+                        title: "Jefferson",
+                        display(){
+                                return getBuyableDisplay("j", 11)
+                        },
+                        effect(){
+                                return CURRENT_BUYABLE_EFFECTS["j11"]
+                        },
+                        canAfford(){
+                                return canAffordBuyable("j", 11)
+                        },
+                        total(){
+                                return getBuyableAmount("j", 11).plus(this.extra())
+                        },
+                        extra(){
+                                return calcBuyableExtra("j", 11)
+                        },
+                        buy(){
+                                buyManualBuyable("j", 11)
+                        },
+                        buyMax(maximum){
+                                buyMaximumBuyable("j", 11, maximum)
+                        },
+                        unlocked(){ 
+                                return hasUpgrade("l", 21) || hasUnlockedPast("l")
+                        },
+                },
+                12: {
+                        title: "Jacksonville",
+                        display(){
+                                return getBuyableDisplay("j", 12)
+                        },
+                        effect(){
+                                return CURRENT_BUYABLE_EFFECTS["j12"]
+                        },
+                        canAfford(){
+                                return canAffordBuyable("j", 12)
+                        },
+                        total(){
+                                return getBuyableAmount("j", 12).plus(this.extra())
+                        },
+                        extra(){
+                                return calcBuyableExtra("j", 12)
+                        },
+                        buy(){
+                                buyManualBuyable("j", 12)
+                        },
+                        buyMax(maximum){
+                                buyMaximumBuyable("j", 12, maximum)
+                        },
+                        unlocked(){ 
+                                return hasUpgrade("l", 22) || hasUnlockedPast("l")
+                        },
+                },
+                13: {
+                        title: "Jamaica",
+                        display(){
+                                return getBuyableDisplay("j", 13)
+                        },
+                        effect(){
+                                return CURRENT_BUYABLE_EFFECTS["j13"]
+                        },
+                        canAfford(){
+                                return canAffordBuyable("j", 13)
+                        },
+                        total(){
+                                return getBuyableAmount("j", 13).plus(this.extra())
+                        },
+                        extra(){
+                                return calcBuyableExtra("j", 13)
+                        },
+                        buy(){
+                                buyManualBuyable("j", 13)
+                        },
+                        buyMax(maximum){
+                                buyMaximumBuyable("j", 13, maximum)
+                        },
+                        unlocked(){ 
+                                return hasUpgrade("l", 23) || hasUnlockedPast("l")
+                        },
+                },
         },
         clickables: {
                 rows: 6,
@@ -13914,7 +14060,7 @@ addLayer("j", {
                                 "blank", 
                                 "buyables"],
                         unlocked(){
-                                return false
+                                return hasUpgrade("l", 21) || hasUnlockedPast("l")
                         },
                 },
                 "Milestones": {
@@ -14043,7 +14189,6 @@ addLayer("j", {
                 //buyables
                 let resetBuyables = [11, 12, 13, 21, 22, 23, 31, 32, 33]
                 for (let j = 0; j < resetBuyables.length; j++) {
-                        break //remove when buyables added
                         data.buyables[resetBuyables[j]] = new Decimal(0)
                 }
 
@@ -16582,6 +16727,7 @@ addLayer("l", {
         getGainMultPre(){
                 let x = Decimal.pow(150, -1)
                 if (hasUpgrade("j", 52)) x = x.times(Decimal.pow(1.25, player.l.upgrades.length))
+                if (hasUpgrade("l", 22)) x = x.times(1.5)
                 return x
         },
         getGainMultPost(){
@@ -16589,6 +16735,7 @@ addLayer("l", {
 
                 x = x.times(Decimal.pow(tmp.k.clickables[51].effect, tmp.k.clickables.totalMines))
                 x = x.times(Decimal.pow(tmp.k.clickables[52].effect, tmp.k.clickables.totalLocks))
+                if (hasUpgrade("l", 23)) x = x.times(tmp.h.challenges[21].rewardEffect)
 
                 return x
         },
@@ -16803,16 +16950,30 @@ addLayer("l", {
                 }, // hasUpgrade("l", 15)
                 21: {
                         title: "Low",
-                        description: "Raise <b>Hour</b> effect to the number of locks (at least 1)",
+                        description: "Raise <b>Hour</b> effect to the number of locks (at least 1) and per upgrade in this row unlock a <b>J</b> buyable",
                         cost: new Decimal(1e227),
                         unlocked(){
                                 return hasUpgrade("l", 15) || hasUnlockedPast("l")
                         }
                 }, // hasUpgrade("l", 21)
+                22: {
+                        title: "Learn",
+                        description: "Unlock a <b>J</b> buyable autobuyer and an <b>I</b> buyable and multiply base <b>L</b> gain by 1.5",
+                        cost: new Decimal(2e292),
+                        unlocked(){
+                                return hasUpgrade("l", 21) || hasUnlockedPast("l")
+                        }
+                }, // hasUpgrade("l", 22)
+                23: {
+                        title: "Look",
+                        description: "<b>Housing</b> effects <b>L</b> gain",
+                        cost: new Decimal("1e350"),
+                        unlocked(){
+                                return hasUpgrade("l", 22) || hasUnlockedPast("l")
+                        }
+                }, // hasUpgrade("l", 23)
 
                 /*
-                Learn
-                Look 
                 Left
                 */
         },

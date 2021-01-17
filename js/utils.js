@@ -64,9 +64,9 @@ function format(decimal, precision=2,) {
 		else return Decimal.pow(10, slog.sub(slog.floor())).toStringWithDecimalPlaces(4) + "F" + commaFormat(slog.floor(), 0)
 	} else if (decimal.layer > 2 || (decimal.mag > 308 && decimal.layer == 2)) {
 		return "e" + format(decimal.log10(), precision)
-	} else if (decimal.layer > 1 || (decimal.mag > 1e12 && decimal.layer == 1)) {
+	} else if (decimal.layer > 1 || (decimal.mag > 1e9 && decimal.layer == 1)) {
 		return "e" + format(decimal.log10(), 4)
-	} else if (decimal.layer > 0 || decimal.mag > 1e12) {
+	} else if (decimal.layer > 0 || decimal.mag > 1e9) {
 		return exponentialFormat(decimal, precision)
 	} else if (decimal.mag > 1000) {
 		return commaFormat(decimal, 0)
