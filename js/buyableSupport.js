@@ -2288,6 +2288,15 @@ var MAIN_BUYABLE_DATA = {
                 effects: "<b>Investment</b> base",
                 base: {
                         initial: new Decimal(".01"),
+                        1: {
+                                active: function(){
+                                        return true
+                                },
+                                amount: function(){
+                                        return CURRENT_BUYABLE_EFFECTS["j21"]
+                                },
+                                type: "plus",
+                        },
                 },
                 bases(){
                         let b0 = Decimal.pow(10, 8100e6)
@@ -2422,6 +2431,21 @@ var MAIN_BUYABLE_DATA = {
                         return [b0, b1, b2]
                 },
         },
+        i33: {
+                name: "Omnipotent IX",
+                func: "exp_sqrt",
+                effectSymbol: "^",
+                effects: "point and <b>A</b> gain",
+                base: {
+                        initial: new Decimal(2),
+                },
+                bases(){
+                        let b0 = Decimal.pow(10, 2e18)
+                        let b1 = Decimal.pow(10, 1e16)
+                        let b2 = Decimal.pow(10, 1e13)
+                        return [b0, b1, b2]
+                },
+        },
         j11: {
                 name: "Jefferson",
                 func: "exp",
@@ -2449,6 +2473,11 @@ var MAIN_BUYABLE_DATA = {
                         let b2 = Decimal.pow(10, 1e5)
                         return [b0, b1, b2]
                 },
+                j21: {
+                        active: function(){
+                                return hasUpgrade("k", 42)
+                        },
+                },
         },  
         j13: {
                 name: "Jamaica",
@@ -2463,7 +2492,26 @@ var MAIN_BUYABLE_DATA = {
                         let b2 = Decimal.pow(10, 1e6)
                         return [b0, b1, b2]
                 },
+                j21: {
+                        active: function(){
+                                return hasUpgrade("k", 42)
+                        },
+                },
         },     
+        j21: {
+                name: "Juice",
+                func: "lin",
+                effects: "<b>Ideas</b> base",
+                base: {
+                        initial: new Decimal(1),
+                },
+                bases(){
+                        let b0 = Decimal.pow(10, 7e11)
+                        let b1 = Decimal.pow(10, 1e8)
+                        let b2 = Decimal.pow(10, 3e6)
+                        return [b0, b1, b2]
+                },
+        }, 
 }
 
 var EXTRA_FREE_BUYABLE_DATA = {
@@ -2767,6 +2815,26 @@ var EXTRA_FREE_BUYABLE_DATA = {
                         },
                         amount: function(){
                                 return 10 * player.k.milestones.length
+                        },
+                },
+        },
+        i31: {
+                1: {
+                        active: function(){
+                                return hasUpgrade("l", 24)
+                        },
+                        amount: function(){
+                                return tmp.h.challenges[11].rewardEffect
+                        },
+                },
+        },
+        i33: {
+                1: {
+                        active: function(){
+                                return hasUpgrade("k", 42)
+                        },
+                        amount: function(){
+                                return totalChallengeComps("h")
                         },
                 },
         },

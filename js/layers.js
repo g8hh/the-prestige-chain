@@ -67,6 +67,8 @@ function getPointGenExp(){
         exp = exp.times(Decimal.pow(.9, getChallengeDepth(2)))
         exp = exp.times(CURRENT_BUYABLE_EFFECTS["g31"])
         if (hasUpgrade("l", 15)) exp = exp.times(Decimal.pow(2, player.k.lock.repeatables[54]))
+        exp = exp.times(CURRENT_BUYABLE_EFFECTS["i33"])
+        if (hasUpgrade("k", 43)) exp = exp.times(Decimal.pow(1.15, player.k.lock.repeatables[54]))
         return exp
 }
 
@@ -279,6 +281,7 @@ function getPrestigeGainChangeExp(layer){
         if (layer == "a") {
                 if (hasUpgrade("i", 14)) exp = exp.times(Decimal.pow(1.1, player.i.upgrades.length))
                 if (inChallenge("c", 12)) exp = exp.div(2)
+                exp = exp.times(CURRENT_BUYABLE_EFFECTS["i33"])
         }
         return exp
 }
@@ -2450,7 +2453,7 @@ addLayer("c", {
                 },
                 55: {
                         title: "Credit",
-                        description: "<b>Canada</b> gives free levels to <b>Omnipotent II</b> and <b>Compare</b> and unlock a <b>C</b> challange",
+                        description: "<b>Canada</b> gives free levels to <b>Omnipotent II</b> and <b>Compare</b> and unlock a <b>C</b> challenge",
                         cost: new Decimal("1e826733"),
                         unlocked(){ 
                                 return hasUpgrade("d", 35) || hasUnlockedPast("e")
@@ -9928,7 +9931,7 @@ addLayer("g", {
                                 "blank", 
                                 "buyables"],
                         unlocked(){
-                                return hasUpgrade("g", 11) || hasUnlockedPast("i")
+                                return hasUpgrade("i", 11) || hasUnlockedPast("i")
                         },
                 },
                 "Milestones": {
@@ -11681,7 +11684,6 @@ addLayer("i", {
                                 return hasUpgrade("l", 22) || hasUnlockedPast("l")
                         },
                 },
-                /*
                 33: {
                         title: "Omnipotent IX",
                         display(){
@@ -11706,10 +11708,9 @@ addLayer("i", {
                                 buyMaximumBuyable("i", 33, maximum)
                         },
                         unlocked(){ 
-                                return hasUpgrade("l", 23) || hasUnlockedPast("l")
+                                return hasUpgrade("l", 24) || hasUnlockedPast("l")
                         },
                 },
-                */
         },
         tabFormat: {
                 "Upgrades": {
@@ -12375,8 +12376,6 @@ addLayer("j", {
                 }, // hasUpgrade("j", 55)
 
                 /*
-                
-                juice
                 judges
                 juvenile
                 */
@@ -12463,6 +12462,33 @@ addLayer("j", {
                         },
                         unlocked(){ 
                                 return hasUpgrade("l", 23) || hasUnlockedPast("l")
+                        },
+                },
+                21: {
+                        title: "Juice",
+                        display(){
+                                return getBuyableDisplay("j", 21)
+                        },
+                        effect(){
+                                return CURRENT_BUYABLE_EFFECTS["j21"]
+                        },
+                        canAfford(){
+                                return canAffordBuyable("j", 21)
+                        },
+                        total(){
+                                return getBuyableAmount("j", 21).plus(this.extra())
+                        },
+                        extra(){
+                                return calcBuyableExtra("j", 21)
+                        },
+                        buy(){
+                                buyManualBuyable("j", 21)
+                        },
+                        buyMax(maximum){
+                                buyMaximumBuyable("j", 21, maximum)
+                        },
+                        unlocked(){ 
+                                return hasUpgrade("l", 24) || hasUnlockedPast("l")
                         },
                 },
         },
@@ -12636,6 +12662,7 @@ addLayer("j", {
                         if (hasUpgrade("k", 23)) ret = ret.times(Decimal.pow(100, player.k.lock.repeatables[45]))
                         if (hasUpgrade("j", 51)) ret = ret.times(tmp.j.clickables[45].effect.pow(.01))
                         if (hasUpgrade("k", 33)) ret = ret.times(player.j.puzzle.exp.max(1).pow(.5))
+                        ret = ret.times(Decimal.pow(tmp.k.clickables[62].effect, tmp.k.clickables.totalKeys))
                         return ret
                 },
                 getBankedExpGainUF(){
@@ -14440,7 +14467,14 @@ addLayer("k", {
                 }
                 if (player.l.autobuyLocks12 && hasMilestone("l", 5)){
                         let list = [31,32,33,34,35,41,42,43,44,45]
-                        for (i = 0; i < 10; i++){
+                        if (hasUpgrade("k", 43)) {
+                                list.push(51)
+                                list.push(52)
+                                list.push(53)
+                                list.push(54)
+                                list.push(55)
+                        }
+                        for (i = 0; i < list.length; i++){
                                 let x = tmp.k.clickables[list[i]].canClick
                                 if (!x) continue
                                 layers.k.clickables[list[i]].onClick()
@@ -14745,9 +14779,35 @@ addLayer("k", {
                                 return hasUpgrade("k", 34) || hasUnlockedPast("l")
                         }
                 }, // hasUpgrade("k", 35)
+                41: {
+                        title: "Kim",
+                        description: "Per <b>H</b> challenge completion past 170 get 4x <b>L</b> gain and per completion past 178 get an effective lock",
+                        cost: new Decimal("1e238500"),
+                        unlocked(){
+                                return hasUpgrade("l", 24) || hasUnlockedPast("l")
+                        }
+                }, // hasUpgrade("k", 41)
+                42: {
+                        title: "Ken",
+                        description: "<bdi style='font-size:80%'><b>Juice</b> gives free <b>Jamaica</b> and <b>Jacksonville</b> levels and each <b>H</b> challenge completion gives a free <b>Omnipotent IX</b> level</bdi>",
+                        cost: new Decimal("1e248500"),
+                        unlocked(){
+                                return hasUpgrade("k", 41) || hasUnlockedPast("l")
+                        }
+                }, // hasUpgrade("k", 42)
+                43: {
+                        title: "Korean",
+                        description: "Autobuy the last row of locks, each <b>Master Lock</b> raises point gain ^1.15, and unlock <b>Keys</b>",
+                        cost: new Decimal("1e280000"),
+                        unlocked(){
+                                return hasUpgrade("k", 42) || hasUnlockedPast("l")
+                        }
+                }, // hasUpgrade("k", 43)
                 
                 /*
-                kim
+                Korean
+                Kings
+                Kent (MY!)
                 */
         },
         clickables: {
@@ -14795,12 +14855,14 @@ addLayer("k", {
                                 let h = totalChallengeComps("h")
                                 if (h > 100) ret = ret.times(Decimal.pow(h / 100, h))
                         }
+                        ret = ret.times(Decimal.pow(tmp.k.clickables[61].effect, tmp.k.clickables.totalLocks))
                         return ret
                 },
                 getBonusLocks(id){
                         let ret = new Decimal(0)
                         if (id < 53) ret = ret.plus(tmp.k.clickables[53].effect)
                         if (id < 55) ret = ret.plus(tmp.k.clickables[55].effect)
+                        if (hasUpgrade("k", 41)) ret = ret.plus(Math.max(totalChallengeComps("h") - 178, 0))
                         return ret
                 },
                 11: {
@@ -16472,6 +16534,112 @@ addLayer("k", {
                                 data.repeatables[55] = data.repeatables[55].plus(1)
                         },
                 },
+                61: {
+                        title(){
+                                if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
+                                return "<h3 style='color: #" + getUndulatingColor(10) + "'>Iron<br>Key</h3>"
+                        },
+                        display(){
+                                if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
+                                let a 
+                                let b 
+                                let c 
+                                let id = 61
+                                a = "<h3 style='color: #AC4600'>Cost</h3>: " + formatWhole(tmp.k.clickables[id].cost) + "<br>"
+                                c = "<h3 style='color: #FF33CC'>Effect</h3>: (" + formatWhole(player.k.lock.repeatables[id]) +")<br>" + tmp.k.clickables[id].effectDescription + "<br>"
+                                return a + c
+                        },
+                        unlocked(){
+                                return hasUpgrade("k", 43) || hasUnlockedPast("l")
+                        },
+                        bases(){
+                                return [Decimal.pow(10, 16330), Decimal.pow(10, 100)]
+                        },
+                        cost(){
+                                let bases = tmp.k.clickables[61].bases
+                                let a = bases[0]
+                                let b = bases[1]
+                                return a.times(Decimal.pow(b, player.k.lock.repeatables[61].pow(2)))
+                        },
+                        effect(){
+                                let amt = player.k.lock.repeatables[61]
+                                let ret = amt.pow(1.1).div(700).plus(1).ln().times(10).plus(1)
+                                return ret
+                        },
+                        effectDescription(){
+                                if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
+                                let eff = tmp.k.clickables[61].effect 
+                                return "*" + format(eff, 4) + " global mine production per Lock"
+                        },
+                        canClick(){
+                                let data = player.k.lock.repeatables
+                                if (data[61].gte(data[31])) return false
+                                return player.k.lock.resources[11].gte(this.cost())
+                        },
+                        onClick(nocost = false){
+                                if (!this.canClick()) return 
+                                let cost = this.cost()
+                                let data = player.k.lock 
+                                if (!nocost) data.resources[11] = data.resources[11].minus(cost)
+                                data.repeatables[61] = data.repeatables[61].plus(1)
+                        },
+                },
+                62: {
+                        title(){
+                                if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
+                                return "<h3 style='color: #" + getUndulatingColor(10.4) + "'>Silver<br>Key</h3>"
+                        },
+                        display(){
+                                if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
+                                let a 
+                                let b 
+                                let c 
+                                let id = 62
+                                a = "<h3 style='color: #AC4600'>Cost</h3>: " + formatWhole(tmp.k.clickables[id].cost) + "<br>"
+                                c = "<h3 style='color: #FF33CC'>Effect</h3>: (" + formatWhole(player.k.lock.repeatables[id]) +")<br>" + tmp.k.clickables[id].effectDescription + "<br>"
+                                return a + c
+                        },
+                        unlocked(){
+                                return player.k.lock.repeatables[61].gt(0) || hasUnlockedPast("l")
+                        },
+                        bases(){
+                                return [Decimal.pow(10, 15000), Decimal.pow(10, 100)]
+                        },
+                        cost(){
+                                let bases = tmp.k.clickables[62].bases
+                                let a = bases[0]
+                                let b = bases[1]
+                                return a.times(Decimal.pow(b, player.k.lock.repeatables[62].pow(2)))
+                        },
+                        effect(){
+                                let amt = player.k.lock.repeatables[62]
+                                let ret = amt.times(100).plus(9900).pow(amt.sqrt().times(10))
+                                return ret
+                        },
+                        effectDescription(){
+                                if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
+                                let eff = tmp.k.clickables[62].effect
+                                return "*" + format(eff) + " knowledge per key"
+                        },
+                        canClick(){
+                                let data = player.k.lock.repeatables
+                                if (data[62].gte(data[32])) return false
+                                return player.k.lock.resources[12].gte(this.cost())
+                        },
+                        onClick(nocost = false){
+                                if (!this.canClick()) return 
+                                let cost = this.cost()
+                                let data = player.k.lock 
+                                if (!nocost) data.resources[12] = data.resources[12].minus(cost)
+                                data.repeatables[62] = data.repeatables[62].plus(1)
+                        },
+                },
         },
         tabFormat: {
                 "Upgrades": {
@@ -16543,14 +16711,14 @@ addLayer("k", {
                                         let a = "You have <bdi style='color: #" + getUndulatingColor(0) + "'>" + format(data1[11]) + " Iron</bdi>"
                                         let b = ", <bdi style='color: #" + getUndulatingColor(0.4) + "'>" + format(data1[12]) + " Silver</bdi>"
                                         let c = ", <bdi style='color: #" + getUndulatingColor(0.8) + "'>" + format(data1[13]) + " Gold</bdi>"
-                                        let d = ", <bdi style='color: #" + getUndulatingColor(1.2) + "'>" + format(data1[14]) + " Coal</bdi>"
-                                        let e = ", <bdi style='color: #" + getUndulatingColor(1.6) + "'>" + format(data1[15]) + " Copper</bdi>,"
-                                        let f = "<bdi style='color: #" + getUndulatingColor(2) + "'>" + format(data1[21]) + " Tin</bdi>"
+                                        let d = ", <bdi style='color: #" + getUndulatingColor(1.2) + "'>" + format(data1[14]) + " Coal</bdi>,<br>"
+                                        let e = "<bdi style='color: #" + getUndulatingColor(1.6) + "'>" + format(data1[15]) + " Copper</bdi>"
+                                        let f = ", <bdi style='color: #" + getUndulatingColor(2) + "'>" + format(data1[21]) + " Tin</bdi>"
                                         let g = ", <bdi style='color: #" + getUndulatingColor(2.4) + "'>" + format(data1[22]) + " Titanium</bdi>"
-                                        let h = ", <bdi style='color: #" + getUndulatingColor(2.8) + "'>" + format(data1[23]) + " Tungsten</bdi>"
-                                        let i = ", <bdi style='color: #" + getUndulatingColor(3.2) + "'>" + format(data1[24]) + " Aluminum</bdi>"
+                                        let h = ", <bdi style='color: #" + getUndulatingColor(2.8) + "'>" + format(data1[23]) + " Tungsten</bdi>,<br>"
+                                        let i = "<bdi style='color: #" + getUndulatingColor(3.2) + "'>" + format(data1[24]) + " Aluminum</bdi>"
                                         let j = " and, <bdi style='color: #" + getUndulatingColor(3.6) + "'>" + format(data1[25]) + " Osmium</bdi>."
-                                        let amts = a + b + c + d + e + "<br>" + f + g + h + i + j + "<br>"
+                                        let amts = a + b + c + d + e + f + g + h + i + j + "<br>"
                                         let k = "You get " + tmp.k.clickables[11].effectDescription + ", "
                                         let l = tmp.k.clickables[12].effectDescription + ", "
                                         let m = tmp.k.clickables[13].effectDescription + ",<br>"
@@ -16565,6 +16733,15 @@ addLayer("k", {
                                         return amts + effs
                                 }],
                                 ["clickables", [3,5]], //locks
+                                ["display-text", function(){
+                                        if (!hasUpgrade("k", 43) && !hasUnlockedPast("l")) return ""
+                                        if (player.tab != "k") return ""
+                                        if (player.subtabs.k.mainTabs != "Lock") return ""
+                                        let a = "Keys require having enough Locks unlocked."
+                                        let b = "They do not cause you to lose lock effects, and give additional effects."
+                                        let c = "The first ten locks cost their own resources<br>while the last five cost higher and higher layers' resrouces."
+                                        return a + "<br>" + b + "<br>" + c
+                                }],
                                 ["clickables", [6,8]], //keys
                         ],
                         unlocked(){
@@ -16736,6 +16913,7 @@ addLayer("l", {
                 x = x.times(Decimal.pow(tmp.k.clickables[51].effect, tmp.k.clickables.totalMines))
                 x = x.times(Decimal.pow(tmp.k.clickables[52].effect, tmp.k.clickables.totalLocks))
                 if (hasUpgrade("l", 23)) x = x.times(tmp.h.challenges[21].rewardEffect)
+                if (hasUpgrade("k", 41)) x = x.times(Decimal.pow(4, totalChallengeComps("h") - 170).max(1))
 
                 return x
         },
@@ -16942,7 +17120,7 @@ addLayer("l", {
                 }, // hasUpgrade("l", 14)
                 15: {
                         title: "Little",
-                        description: "Unlock the final Lock and each <b>Advanced Lock</b> squares point gain",
+                        description: "Unlock the final Lock and each <b>Master Lock</b> squares point gain",
                         cost: new Decimal(5e165),
                         unlocked(){
                                 return hasUpgrade("k", 35) || hasUnlockedPast("l")
@@ -16972,9 +17150,17 @@ addLayer("l", {
                                 return hasUpgrade("l", 22) || hasUnlockedPast("l")
                         }
                 }, // hasUpgrade("l", 23)
+                24: {
+                        title: "Left",
+                        description: "<b>Hi</b> effects <b>Improve</b> and unlock the last <b>I</b> buyable",
+                        cost: new Decimal("1e512"),
+                        unlocked(){
+                                return hasUpgrade("l", 23) || hasUnlockedPast("l")
+                        }
+                }, // hasUpgrade("l", 24)
 
                 /*
-                Left
+                Left [used]
                 */
         },
         tabFormat: {
