@@ -16954,7 +16954,7 @@ addLayer("k", {
                                         if (player.subtabs.k.mainTabs != "Lock") return ""
                                         let a = "Keys require having enough Locks unlocked."
                                         let b = "They do not cause you to lose lock effects, and give additional effects."
-                                        let c = "The first ten locks cost their own resources<br>while the last five cost higher and higher layers' resrouces."
+                                        let c = "The first ten keys cost their own resources<br>while the last five cost higher and higher layers' resrouces."
                                         return a + "<br>" + b + "<br>" + c
                                 }],
                                 ["clickables", [6,8]], //keys
