@@ -10859,8 +10859,9 @@ addLayer("h", {
                         rewardDescription: "Multiply base <b>J</b> and knowledge gain",
                         rewardEffect(){
                                 let c = challengeCompletions("h", 21)
-                                let base = 2
-                                if (hasUpgrade("j", 33)) base += .1 * player.j.upgrades.length
+                                let base = new Decimal(2)
+                                if (hasUpgrade("j", 33)) base = base.plus(.1 * player.j.upgrades.length)
+                                base = base.plus(tmp.j.clickables[74].effect)
                                 return Decimal.pow(base, c)
                         },
                         goal(){
@@ -12392,7 +12393,6 @@ addLayer("j", {
                 }, // hasUpgrade("j", 55)
 
                 /*
-                Jury
                 Juan
 
                 Justin
@@ -14072,6 +14072,46 @@ addLayer("j", {
                                 data.repeatables[73] = data.repeatables[73].plus(1)
                         },
                 },
+                74: {
+                        title(){
+                                if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
+                                return "<b style='color: #003333'>Jury</b>"
+                        },
+                        display(){
+                                if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
+                                let a = "Add to <b>Housing</b> and <b>Aluminum Lock</b> bases"
+                                let c = "<br>Currently: +" + format(tmp.j.clickables[74].effect)
+                                let b = "<br><br>Cost: " + formatWhole(tmp.j.clickables[74].cost) + " Knowledge"
+                                return a + c + b
+                        },
+                        unlocked(){
+                                return player.k.lock.repeatables[62].gt(13) || hasUnlockedPast("l")
+                        },
+                        cost(){
+                                return Decimal.pow(10, 203600).times(Decimal.pow(10, 400).pow(player.j.puzzle.repeatables[74].pow(2)))
+                        },
+                        canClick(){
+                                return player.j.puzzle.knowledge.gte(tmp.j.clickables[74].cost)
+                        },
+                        effect(){
+                                let amt = player.j.puzzle.repeatables[74]
+                                let ret = amt.div(10).plus(1).ln().times(50)
+                                return ret
+                        },
+                        style(){
+                                return {
+                                        "background-color": tmp.j.clickables[74].canClick ? "#66CCFF" : "#bf8f8f"
+                                }
+                        },
+                        onClick(){
+                                if (!this.canClick()) return
+                                let data = player.j.puzzle
+                                data.knowledge = data.knowledge.minus(tmp.j.clickables[74].cost).max(0)
+                                data.repeatables[74] = data.repeatables[74].plus(1)
+                        },
+                },
         },
         shouldNotify(){
                 for (id in tmp.j.clickables){
@@ -14516,6 +14556,7 @@ addLayer("k", {
                 if (hasUpgrade("k", 25)) x = x.plus(player.k.lock.repeatables[25])
                 if (hasMilestone("l", 2)) x = x.plus(.1 * player.l.milestones.length)
                 if (hasMilestone("l", 8)) x = x.plus(.2 * player.l.milestones.length)
+                if (hasUpgrade("k", 44)) x = x.plus(tmp.k.clickables[54].effect)
                 return x
         },
         getGainMultPre(){
@@ -14951,10 +14992,16 @@ addLayer("k", {
                                 return hasUpgrade("k", 42) || hasUnlockedPast("l")
                         }
                 }, // hasUpgrade("k", 43)
+                44: {
+                        title: "Kings",
+                        description: "You can bulk mines and locks 10x and </b>Master Lock</b> effects <b>K</b> gain exponent",
+                        cost: new Decimal("1e1360e3"),
+                        unlocked(){
+                                return player.k.lock.repeatables[71].gt(2) || hasUnlockedPast("l")
+                        }
+                }, // hasUpgrade("k", 44)
                 
                 /*
-                Korean
-                Kings
                 Kent (MY!)
                 */
         },
@@ -15005,6 +15052,7 @@ addLayer("k", {
                         }
                         ret = ret.times(Decimal.pow(tmp.k.clickables[61].effect, tmp.k.clickables.totalLocks))
                         ret = ret.times(tmp.j.clickables[71].effect)
+                        ret = ret.times(Decimal.pow(tmp.k.clickables[71].effect, tmp.k.clickables.totalKeys))
                         return ret
                 },
                 getBonusLocks(id){
@@ -15013,6 +15061,10 @@ addLayer("k", {
                         if (id < 55) ret = ret.plus(tmp.k.clickables[55].effect)
                         if (hasUpgrade("k", 41)) ret = ret.plus(Math.max(totalChallengeComps("h") - 178, 0))
                         ret = ret.plus(tmp.k.clickables[65].effect)
+                        return ret
+                },
+                getBonusKeys(id){
+                        let ret = new Decimal(0)
                         return ret
                 },
                 11: {
@@ -15072,6 +15124,12 @@ addLayer("k", {
                                 let b = bases[1]
                                 return a.times(Decimal.pow(b, player.k.lock.repeatables[11].pow(2)))
                         },
+                        getMaxPossible(){
+                                let bases = tmp.k.clickables[11].bases
+                                let amt = player.k.points
+                                if (amt.lt(bases[0])) return new Decimal(0)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                        },
                         effect(){
                                 let amt = player.k.lock.resources[11]
                                 let ret = amt.plus(1).sqrt()
@@ -15098,10 +15156,21 @@ addLayer("k", {
                                 return player.k.points.gte(this.cost())
                         },
                         onClick(nocost = false){
+                                let id = 11
                                 if (!this.canClick()) return 
+                                let maxPoss = tmp.k.clickables[id].getMaxPossible
+                                cur = player.k.lock.repeatables[id]
+                                if (maxPoss.lte(cur)) return 
+                                let diff = maxPoss.sub(cur)
+                                
+                                let init = 1
+                                if (hasUpgrade("k", 44)) init *= 10
+
+                                diff = diff.min(init)
+                                
                                 let cost = this.cost()
                                 if (!nocost) player.k.points = player.k.points.minus(cost)
-                                player.k.lock.repeatables[11] = player.k.lock.repeatables[11].plus(1)
+                                player.k.lock.repeatables[id] = player.k.lock.repeatables[id].plus(diff)
                         },
                 },
                 12: {
@@ -15163,6 +15232,12 @@ addLayer("k", {
                                 let b = bases[1]
                                 return a.times(Decimal.pow(b, player.k.lock.repeatables[12].pow(2)))
                         },
+                        getMaxPossible(){
+                                let bases = tmp.k.clickables[12].bases
+                                let amt = player.k.points
+                                if (amt.lt(bases[0])) return new Decimal(0)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                        },
                         effect(){
                                 let amt = player.k.lock.resources[12]
                                 let ret = amt.plus(10).log10().pow(5)
@@ -15181,10 +15256,21 @@ addLayer("k", {
                                 return player.k.points.gte(this.cost())
                         },
                         onClick(nocost = false){
+                                let id = 12
                                 if (!this.canClick()) return 
+                                let maxPoss = tmp.k.clickables[id].getMaxPossible
+                                cur = player.k.lock.repeatables[id]
+                                if (maxPoss.lte(cur)) return 
+                                let diff = maxPoss.sub(cur)
+                                
+                                let init = 1
+                                if (hasUpgrade("k", 44)) init *= 10
+
+                                diff = diff.min(init)
+                                
                                 let cost = this.cost()
                                 if (!nocost) player.k.points = player.k.points.minus(cost)
-                                player.k.lock.repeatables[12] = player.k.lock.repeatables[12].plus(1)
+                                player.k.lock.repeatables[id] = player.k.lock.repeatables[id].plus(diff)
                         },
                 },
                 13: {
@@ -15246,6 +15332,12 @@ addLayer("k", {
                                 let b = bases[1]
                                 return a.times(Decimal.pow(b, player.k.lock.repeatables[13].pow(2)))
                         },
+                        getMaxPossible(){
+                                let bases = tmp.k.clickables[13].bases
+                                let amt = player.k.points
+                                if (amt.lt(bases[0])) return new Decimal(0)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                        },
                         effect(){
                                 let amt = player.k.lock.resources[13]
                                 let log = amt.plus(10).log10()
@@ -15265,10 +15357,21 @@ addLayer("k", {
                                 return player.k.points.gte(this.cost())
                         },
                         onClick(nocost = false){
+                                let id = 13
                                 if (!this.canClick()) return 
+                                let maxPoss = tmp.k.clickables[id].getMaxPossible
+                                cur = player.k.lock.repeatables[id]
+                                if (maxPoss.lte(cur)) return 
+                                let diff = maxPoss.sub(cur)
+                                
+                                let init = 1
+                                if (hasUpgrade("k", 44)) init *= 10
+
+                                diff = diff.min(init)
+                                
                                 let cost = this.cost()
                                 if (!nocost) player.k.points = player.k.points.minus(cost)
-                                player.k.lock.repeatables[13] = player.k.lock.repeatables[13].plus(1)
+                                player.k.lock.repeatables[id] = player.k.lock.repeatables[id].plus(diff)
                         },
                 },
                 14: {
@@ -15330,6 +15433,12 @@ addLayer("k", {
                                 let b = bases[1]
                                 return a.times(Decimal.pow(b, player.k.lock.repeatables[14].pow(2)))
                         },
+                        getMaxPossible(){
+                                let bases = tmp.k.clickables[14].bases
+                                let amt = player.k.points
+                                if (amt.lt(bases[0])) return new Decimal(0)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                        },
                         effect(){
                                 let amt = player.k.lock.resources[14]
                                 let ret = amt.div(100).plus(1).log10().div(20)
@@ -15348,10 +15457,21 @@ addLayer("k", {
                                 return player.k.points.gte(this.cost())
                         },
                         onClick(nocost = false){
+                                let id = 14
                                 if (!this.canClick()) return 
+                                let maxPoss = tmp.k.clickables[id].getMaxPossible
+                                cur = player.k.lock.repeatables[id]
+                                if (maxPoss.lte(cur)) return 
+                                let diff = maxPoss.sub(cur)
+                                
+                                let init = 1
+                                if (hasUpgrade("k", 44)) init *= 10
+
+                                diff = diff.min(init)
+                                
                                 let cost = this.cost()
                                 if (!nocost) player.k.points = player.k.points.minus(cost)
-                                player.k.lock.repeatables[14] = player.k.lock.repeatables[14].plus(1)
+                                player.k.lock.repeatables[id] = player.k.lock.repeatables[id].plus(diff)
                         },
                 },
                 15: {
@@ -15413,6 +15533,12 @@ addLayer("k", {
                                 let b = bases[1]
                                 return a.times(Decimal.pow(b, player.k.lock.repeatables[15].pow(2)))
                         },
+                        getMaxPossible(){
+                                let bases = tmp.k.clickables[15].bases
+                                let amt = player.k.points
+                                if (amt.lt(bases[0])) return new Decimal(0)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                        },
                         effect(){
                                 let amt = player.k.lock.resources[15]
                                 let ret = amt.div(1e5).plus(10).log10().pow(5)
@@ -15431,10 +15557,21 @@ addLayer("k", {
                                 return player.k.points.gte(this.cost())
                         },
                         onClick(nocost = false){
+                                let id = 15
                                 if (!this.canClick()) return 
+                                let maxPoss = tmp.k.clickables[id].getMaxPossible
+                                cur = player.k.lock.repeatables[id]
+                                if (maxPoss.lte(cur)) return 
+                                let diff = maxPoss.sub(cur)
+                                
+                                let init = 1
+                                if (hasUpgrade("k", 44)) init *= 10
+
+                                diff = diff.min(init)
+                                
                                 let cost = this.cost()
                                 if (!nocost) player.k.points = player.k.points.minus(cost)
-                                player.k.lock.repeatables[15] = player.k.lock.repeatables[15].plus(1)
+                                player.k.lock.repeatables[id] = player.k.lock.repeatables[id].plus(diff)
                         },
                 },
                 21: {
@@ -15495,6 +15632,12 @@ addLayer("k", {
                                 let b = bases[1]
                                 return a.times(Decimal.pow(b, player.k.lock.repeatables[21].pow(2)))
                         },
+                        getMaxPossible(){
+                                let bases = tmp.k.clickables[21].bases
+                                let amt = player.k.points
+                                if (amt.lt(bases[0])) return new Decimal(0)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                        },
                         effect(){
                                 let amt = player.k.lock.resources[21]
                                 let ret = amt.div(3e8).max(1).log10().times(1e5)
@@ -15514,10 +15657,21 @@ addLayer("k", {
                                 return player.k.points.gte(this.cost())
                         },
                         onClick(nocost = false){
+                                let id = 21
                                 if (!this.canClick()) return 
+                                let maxPoss = tmp.k.clickables[id].getMaxPossible
+                                cur = player.k.lock.repeatables[id]
+                                if (maxPoss.lte(cur)) return 
+                                let diff = maxPoss.sub(cur)
+                                
+                                let init = 1
+                                if (hasUpgrade("k", 44)) init *= 10
+
+                                diff = diff.min(init)
+                                
                                 let cost = this.cost()
                                 if (!nocost) player.k.points = player.k.points.minus(cost)
-                                player.k.lock.repeatables[21] = player.k.lock.repeatables[21].plus(1)
+                                player.k.lock.repeatables[id] = player.k.lock.repeatables[id].plus(diff)
                         },
                 },
                 22: {
@@ -15578,6 +15732,12 @@ addLayer("k", {
                                 let b = bases[1]
                                 return a.times(Decimal.pow(b, player.k.lock.repeatables[22].pow(2)))
                         },
+                        getMaxPossible(){
+                                let bases = tmp.k.clickables[22].bases
+                                let amt = player.k.points
+                                if (amt.lt(bases[0])) return new Decimal(0)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                        },
                         effect(){
                                 let amt = player.k.lock.resources[22]
                                 let ret = amt.div(5e6).max(10).log10().pow(5)
@@ -15597,10 +15757,21 @@ addLayer("k", {
                                 return player.k.points.gte(this.cost())
                         },
                         onClick(nocost = false){
+                                let id = 22
                                 if (!this.canClick()) return 
+                                let maxPoss = tmp.k.clickables[id].getMaxPossible
+                                cur = player.k.lock.repeatables[id]
+                                if (maxPoss.lte(cur)) return 
+                                let diff = maxPoss.sub(cur)
+                                
+                                let init = 1
+                                if (hasUpgrade("k", 44)) init *= 10
+
+                                diff = diff.min(init)
+                                
                                 let cost = this.cost()
                                 if (!nocost) player.k.points = player.k.points.minus(cost)
-                                player.k.lock.repeatables[22] = player.k.lock.repeatables[22].plus(1)
+                                player.k.lock.repeatables[id] = player.k.lock.repeatables[id].plus(diff)
                         },
                 },
                 23: {
@@ -15661,6 +15832,12 @@ addLayer("k", {
                                 let b = bases[1]
                                 return a.times(Decimal.pow(b, player.k.lock.repeatables[23].pow(2)))
                         },
+                        getMaxPossible(){
+                                let bases = tmp.k.clickables[23].bases
+                                let amt = player.k.points
+                                if (amt.lt(bases[0])) return new Decimal(0)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                        },
                         effect(){
                                 let amt = player.k.lock.resources[23]
                                 let ret = amt.plus(1e18).log10().div(3).pow(2).sub(35)
@@ -15681,10 +15858,21 @@ addLayer("k", {
                                 return player.k.points.gte(this.cost())
                         },
                         onClick(nocost = false){
+                                let id = 23
                                 if (!this.canClick()) return 
+                                let maxPoss = tmp.k.clickables[id].getMaxPossible
+                                cur = player.k.lock.repeatables[id]
+                                if (maxPoss.lte(cur)) return 
+                                let diff = maxPoss.sub(cur)
+                                
+                                let init = 1
+                                if (hasUpgrade("k", 44)) init *= 10
+
+                                diff = diff.min(init)
+                                
                                 let cost = this.cost()
                                 if (!nocost) player.k.points = player.k.points.minus(cost)
-                                player.k.lock.repeatables[23] = player.k.lock.repeatables[23].plus(1)
+                                player.k.lock.repeatables[id] = player.k.lock.repeatables[id].plus(diff)
                         },
                 },
                 24: {
@@ -15745,6 +15933,12 @@ addLayer("k", {
                                 let b = bases[1]
                                 return a.times(Decimal.pow(b, player.k.lock.repeatables[24].pow(2)))
                         },
+                        getMaxPossible(){
+                                let bases = tmp.k.clickables[24].bases
+                                let amt = player.k.points
+                                if (amt.lt(bases[0])) return new Decimal(0)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                        },
                         effect(){
                                 let amt = player.k.lock.resources[24]
                                 let arg = amt.div(1e20).max(1)
@@ -15769,10 +15963,21 @@ addLayer("k", {
                                 return player.k.points.gte(this.cost())
                         },
                         onClick(nocost = false){
+                                let id = 24
                                 if (!this.canClick()) return 
+                                let maxPoss = tmp.k.clickables[id].getMaxPossible
+                                cur = player.k.lock.repeatables[id]
+                                if (maxPoss.lte(cur)) return 
+                                let diff = maxPoss.sub(cur)
+                                
+                                let init = 1
+                                if (hasUpgrade("k", 44)) init *= 10
+
+                                diff = diff.min(init)
+                                
                                 let cost = this.cost()
                                 if (!nocost) player.k.points = player.k.points.minus(cost)
-                                player.k.lock.repeatables[24] = player.k.lock.repeatables[24].plus(1)
+                                player.k.lock.repeatables[id] = player.k.lock.repeatables[id].plus(diff)
                         },
                 },
                 25: {
@@ -15834,6 +16039,12 @@ addLayer("k", {
                                 let b = bases[1]
                                 return a.times(Decimal.pow(b, player.k.lock.repeatables[25].pow(2)))
                         },
+                        getMaxPossible(){
+                                let bases = tmp.k.clickables[25].bases
+                                let amt = player.k.points
+                                if (amt.lt(bases[0])) return new Decimal(0)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                        },
                         effect(){
                                 let amt = player.k.lock.resources[25]
                                 let ret = amt.div(1e24).plus(10).log10().log10()
@@ -15852,10 +16063,21 @@ addLayer("k", {
                                 return player.k.points.gte(this.cost())
                         },
                         onClick(nocost = false){
+                                let id = 25
                                 if (!this.canClick()) return 
+                                let maxPoss = tmp.k.clickables[id].getMaxPossible
+                                cur = player.k.lock.repeatables[id]
+                                if (maxPoss.lte(cur)) return 
+                                let diff = maxPoss.sub(cur)
+                                
+                                let init = 1
+                                if (hasUpgrade("k", 44)) init *= 10
+
+                                diff = diff.min(init)
+                                
                                 let cost = this.cost()
                                 if (!nocost) player.k.points = player.k.points.minus(cost)
-                                player.k.lock.repeatables[25] = player.k.lock.repeatables[25].plus(1)
+                                player.k.lock.repeatables[id] = player.k.lock.repeatables[id].plus(diff)
                         },
                 },
                 31: {
@@ -15889,6 +16111,12 @@ addLayer("k", {
                                 let b = bases[1]
                                 return a.times(Decimal.pow(b, player.k.lock.repeatables[31].pow(2)))
                         },
+                        getMaxPossible(){
+                                let bases = tmp.k.clickables[31].bases
+                                let amt = player.k.lock.resources[11]
+                                if (amt.lt(bases[0])) return new Decimal(0)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                        },
                         effect(){
                                 let amt = player.k.lock.repeatables[31]
                                 amt = amt.plus(layers.k.clickables.getBonusLocks(31))
@@ -15907,11 +16135,21 @@ addLayer("k", {
                                 return player.k.lock.resources[11].gte(this.cost())
                         },
                         onClick(nocost = false){
+                                let id = 31
                                 if (!this.canClick()) return 
+                                let maxPoss = tmp.k.clickables[id].getMaxPossible
+                                cur = player.k.lock.repeatables[id]
+                                if (maxPoss.lte(cur)) return 
+                                let diff = maxPoss.sub(cur)
+                                
+                                let init = 1
+                                if (hasUpgrade("k", 44)) init *= 10
+
+                                diff = diff.min(init)
+                                
                                 let cost = this.cost()
-                                let data = player.k.lock 
-                                if (!nocost) data.resources[11] = data.resources[11].minus(cost)
-                                data.repeatables[31] = data.repeatables[31].plus(1)
+                                if (!nocost) player.k.points = player.k.points.minus(cost)
+                                player.k.lock.repeatables[id] = player.k.lock.repeatables[id].plus(diff)
                         },
                 },
                 32: {
@@ -15945,6 +16183,12 @@ addLayer("k", {
                                 let b = bases[1]
                                 return a.times(Decimal.pow(b, player.k.lock.repeatables[32].pow(2)))
                         },
+                        getMaxPossible(){
+                                let bases = tmp.k.clickables[32].bases
+                                let amt = player.k.lock.resources[12]
+                                if (amt.lt(bases[0])) return new Decimal(0)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                        },
                         effect(){
                                 let amt = player.k.lock.repeatables[32]
                                 amt = amt.plus(layers.k.clickables.getBonusLocks(32))
@@ -15962,11 +16206,21 @@ addLayer("k", {
                                 return player.k.lock.resources[12].gte(this.cost())
                         },
                         onClick(nocost = false){
+                                let id = 32
                                 if (!this.canClick()) return 
+                                let maxPoss = tmp.k.clickables[id].getMaxPossible
+                                cur = player.k.lock.repeatables[id]
+                                if (maxPoss.lte(cur)) return 
+                                let diff = maxPoss.sub(cur)
+                                
+                                let init = 1
+                                if (hasUpgrade("k", 44)) init *= 10
+
+                                diff = diff.min(init)
+                                
                                 let cost = this.cost()
-                                let data = player.k.lock 
-                                if (!nocost) data.resources[12] = data.resources[12].minus(cost)
-                                data.repeatables[32] = data.repeatables[32].plus(1)
+                                if (!nocost) player.k.points = player.k.points.minus(cost)
+                                player.k.lock.repeatables[id] = player.k.lock.repeatables[id].plus(diff)
                         },
                 },
                 33: {
@@ -16000,6 +16254,12 @@ addLayer("k", {
                                 let b = bases[1]
                                 return a.times(Decimal.pow(b, player.k.lock.repeatables[33].pow(2)))
                         },
+                        getMaxPossible(){
+                                let bases = tmp.k.clickables[33].bases
+                                let amt = player.k.lock.resources[13]
+                                if (amt.lt(bases[0])) return new Decimal(0)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                        },
                         effect(){
                                 let amt = player.k.lock.repeatables[33]
                                 amt = amt.plus(layers.k.clickables.getBonusLocks(33))
@@ -16018,11 +16278,21 @@ addLayer("k", {
                                 return player.k.lock.resources[13].gte(this.cost())
                         },
                         onClick(nocost = false){
+                                let id = 33
                                 if (!this.canClick()) return 
+                                let maxPoss = tmp.k.clickables[id].getMaxPossible
+                                cur = player.k.lock.repeatables[id]
+                                if (maxPoss.lte(cur)) return 
+                                let diff = maxPoss.sub(cur)
+                                
+                                let init = 1
+                                if (hasUpgrade("k", 44)) init *= 10
+
+                                diff = diff.min(init)
+                                
                                 let cost = this.cost()
-                                let data = player.k.lock 
-                                if (!nocost) data.resources[13] = data.resources[13].minus(cost)
-                                data.repeatables[33] = data.repeatables[33].plus(1)
+                                if (!nocost) player.k.points = player.k.points.minus(cost)
+                                player.k.lock.repeatables[id] = player.k.lock.repeatables[id].plus(diff)
                         },
                 },
                 34: {
@@ -16056,6 +16326,12 @@ addLayer("k", {
                                 let b = bases[1]
                                 return a.times(Decimal.pow(b, player.k.lock.repeatables[34].pow(2)))
                         },
+                        getMaxPossible(){
+                                let bases = tmp.k.clickables[34].bases
+                                let amt = player.k.lock.resources[14]
+                                if (amt.lt(bases[0])) return new Decimal(0)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                        },
                         effect(){
                                 let amt = player.k.lock.repeatables[34]
                                 amt = amt.plus(layers.k.clickables.getBonusLocks(34))
@@ -16074,11 +16350,21 @@ addLayer("k", {
                                 return player.k.lock.resources[14].gte(this.cost())
                         },
                         onClick(nocost = false){
+                                let id = 34
                                 if (!this.canClick()) return 
+                                let maxPoss = tmp.k.clickables[id].getMaxPossible
+                                cur = player.k.lock.repeatables[id]
+                                if (maxPoss.lte(cur)) return 
+                                let diff = maxPoss.sub(cur)
+                                
+                                let init = 1
+                                if (hasUpgrade("k", 44)) init *= 10
+
+                                diff = diff.min(init)
+                                
                                 let cost = this.cost()
-                                let data = player.k.lock 
-                                if (!nocost) data.resources[14] = data.resources[14].minus(cost)
-                                data.repeatables[34] = data.repeatables[34].plus(1)
+                                if (!nocost) player.k.points = player.k.points.minus(cost)
+                                player.k.lock.repeatables[id] = player.k.lock.repeatables[id].plus(diff)
                         },
                 },
                 35: {
@@ -16112,6 +16398,12 @@ addLayer("k", {
                                 let b = bases[1]
                                 return a.times(Decimal.pow(b, player.k.lock.repeatables[35].pow(2)))
                         },
+                        getMaxPossible(){
+                                let bases = tmp.k.clickables[35].bases
+                                let amt = player.k.lock.resources[15]
+                                if (amt.lt(bases[0])) return new Decimal(0)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                        },
                         effect(){
                                 let amt = player.k.lock.repeatables[35]
                                 amt = amt.plus(layers.k.clickables.getBonusLocks(35))
@@ -16132,11 +16424,21 @@ addLayer("k", {
                                 return player.k.lock.resources[15].gte(this.cost())
                         },
                         onClick(nocost = false){
+                                let id = 35
                                 if (!this.canClick()) return 
+                                let maxPoss = tmp.k.clickables[id].getMaxPossible
+                                cur = player.k.lock.repeatables[id]
+                                if (maxPoss.lte(cur)) return 
+                                let diff = maxPoss.sub(cur)
+                                
+                                let init = 1
+                                if (hasUpgrade("k", 44)) init *= 10
+
+                                diff = diff.min(init)
+                                
                                 let cost = this.cost()
-                                let data = player.k.lock 
-                                if (!nocost) data.resources[15] = data.resources[15].minus(cost)
-                                data.repeatables[35] = data.repeatables[35].plus(1)
+                                if (!nocost) player.k.points = player.k.points.minus(cost)
+                                player.k.lock.repeatables[id] = player.k.lock.repeatables[id].plus(diff)
                         },
                 },
                 41: {
@@ -16170,6 +16472,12 @@ addLayer("k", {
                                 let b = bases[1]
                                 return a.times(Decimal.pow(b, player.k.lock.repeatables[41].pow(2)))
                         },
+                        getMaxPossible(){
+                                let bases = tmp.k.clickables[41].bases
+                                let amt = player.k.lock.resources[21]
+                                if (amt.lt(bases[0])) return new Decimal(0)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                        },
                         effect(){
                                 let amt = player.k.lock.repeatables[41]
                                 amt = amt.plus(layers.k.clickables.getBonusLocks(41))
@@ -16187,11 +16495,21 @@ addLayer("k", {
                                 return player.k.lock.resources[21].gte(this.cost())
                         },
                         onClick(nocost = false){
+                                let id = 41
                                 if (!this.canClick()) return 
+                                let maxPoss = tmp.k.clickables[id].getMaxPossible
+                                cur = player.k.lock.repeatables[id]
+                                if (maxPoss.lte(cur)) return 
+                                let diff = maxPoss.sub(cur)
+                                
+                                let init = 1
+                                if (hasUpgrade("k", 44)) init *= 10
+
+                                diff = diff.min(init)
+                                
                                 let cost = this.cost()
-                                let data = player.k.lock 
-                                if (!nocost) data.resources[21] = data.resources[21].minus(cost)
-                                data.repeatables[41] = data.repeatables[41].plus(1)
+                                if (!nocost) player.k.points = player.k.points.minus(cost)
+                                player.k.lock.repeatables[id] = player.k.lock.repeatables[id].plus(diff)
                         },
                 },
                 42: {
@@ -16225,6 +16543,12 @@ addLayer("k", {
                                 let b = bases[1]
                                 return a.times(Decimal.pow(b, player.k.lock.repeatables[42].pow(2)))
                         },
+                        getMaxPossible(){
+                                let bases = tmp.k.clickables[42].bases
+                                let amt = player.k.lock.resources[22]
+                                if (amt.lt(bases[0])) return new Decimal(0)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                        },
                         effect(){
                                 let amt = player.k.lock.repeatables[42]
                                 amt = amt.plus(layers.k.clickables.getBonusLocks(42))
@@ -16243,11 +16567,21 @@ addLayer("k", {
                                 return player.k.lock.resources[22].gte(this.cost())
                         },
                         onClick(nocost = false){
+                                let id = 42
                                 if (!this.canClick()) return 
+                                let maxPoss = tmp.k.clickables[id].getMaxPossible
+                                cur = player.k.lock.repeatables[id]
+                                if (maxPoss.lte(cur)) return 
+                                let diff = maxPoss.sub(cur)
+                                
+                                let init = 1
+                                if (hasUpgrade("k", 44)) init *= 10
+
+                                diff = diff.min(init)
+                                
                                 let cost = this.cost()
-                                let data = player.k.lock 
-                                if (!nocost) data.resources[22] = data.resources[22].minus(cost)
-                                data.repeatables[42] = data.repeatables[42].plus(1)
+                                if (!nocost) player.k.points = player.k.points.minus(cost)
+                                player.k.lock.repeatables[id] = player.k.lock.repeatables[id].plus(diff)
                         },
                 },
                 43: {
@@ -16281,6 +16615,12 @@ addLayer("k", {
                                 let b = bases[1]
                                 return a.times(Decimal.pow(b, player.k.lock.repeatables[43].pow(2)))
                         },
+                        getMaxPossible(){
+                                let bases = tmp.k.clickables[43].bases
+                                let amt = player.k.lock.resources[23]
+                                if (amt.lt(bases[0])) return new Decimal(0)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                        },
                         effect(){
                                 let amt = player.k.lock.repeatables[43]
                                 amt = amt.plus(layers.k.clickables.getBonusLocks(43))
@@ -16297,11 +16637,21 @@ addLayer("k", {
                                 return player.k.lock.resources[23].gte(this.cost())
                         },
                         onClick(nocost = false){
+                                let id = 43
                                 if (!this.canClick()) return 
+                                let maxPoss = tmp.k.clickables[id].getMaxPossible
+                                cur = player.k.lock.repeatables[id]
+                                if (maxPoss.lte(cur)) return 
+                                let diff = maxPoss.sub(cur)
+                                
+                                let init = 1
+                                if (hasUpgrade("k", 44)) init *= 10
+
+                                diff = diff.min(init)
+                                
                                 let cost = this.cost()
-                                let data = player.k.lock 
-                                if (!nocost) data.resources[23] = data.resources[23].minus(cost)
-                                data.repeatables[43] = data.repeatables[43].plus(1)
+                                if (!nocost) player.k.points = player.k.points.minus(cost)
+                                player.k.lock.repeatables[id] = player.k.lock.repeatables[id].plus(diff)
                         },
                 },
                 44: {
@@ -16335,10 +16685,17 @@ addLayer("k", {
                                 let b = bases[1]
                                 return a.times(Decimal.pow(b, player.k.lock.repeatables[44].pow(2)))
                         },
+                        getMaxPossible(){
+                                let bases = tmp.k.clickables[44].bases
+                                let amt = player.k.lock.resources[24]
+                                if (amt.lt(bases[0])) return new Decimal(0)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                        },
                         effect(){
                                 let amt = player.k.lock.repeatables[44]
                                 amt = amt.plus(layers.k.clickables.getBonusLocks(44))
                                 let ret = amt.div(10).plus(1).ln().times(10).plus(1)
+                                ret = ret.plus(tmp.j.clickables[74].effect)
                                 return ret
                         },
                         effectDescription(){
@@ -16351,11 +16708,21 @@ addLayer("k", {
                                 return player.k.lock.resources[24].gte(this.cost())
                         },
                         onClick(nocost = false){
+                                let id = 44
                                 if (!this.canClick()) return 
+                                let maxPoss = tmp.k.clickables[id].getMaxPossible
+                                cur = player.k.lock.repeatables[id]
+                                if (maxPoss.lte(cur)) return 
+                                let diff = maxPoss.sub(cur)
+                                
+                                let init = 1
+                                if (hasUpgrade("k", 44)) init *= 10
+
+                                diff = diff.min(init)
+                                
                                 let cost = this.cost()
-                                let data = player.k.lock 
-                                if (!nocost) data.resources[24] = data.resources[24].minus(cost)
-                                data.repeatables[44] = data.repeatables[44].plus(1)
+                                if (!nocost) player.k.points = player.k.points.minus(cost)
+                                player.k.lock.repeatables[id] = player.k.lock.repeatables[id].plus(diff)
                         },
                 },
                 45: {
@@ -16389,6 +16756,12 @@ addLayer("k", {
                                 let b = bases[1]
                                 return a.times(Decimal.pow(b, player.k.lock.repeatables[45].pow(2)))
                         },
+                        getMaxPossible(){
+                                let bases = tmp.k.clickables[45].bases
+                                let amt = player.k.lock.resources[25]
+                                if (amt.lt(bases[0])) return new Decimal(0)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                        },
                         effect(){
                                 let amt = player.k.lock.repeatables[45]
                                 amt = amt.plus(layers.k.clickables.getBonusLocks(45))
@@ -16405,11 +16778,21 @@ addLayer("k", {
                                 return player.k.lock.resources[25].gte(this.cost())
                         },
                         onClick(nocost = false){
+                                let id = 45
                                 if (!this.canClick()) return 
+                                let maxPoss = tmp.k.clickables[id].getMaxPossible
+                                cur = player.k.lock.repeatables[id]
+                                if (maxPoss.lte(cur)) return 
+                                let diff = maxPoss.sub(cur)
+                                
+                                let init = 1
+                                if (hasUpgrade("k", 44)) init *= 10
+
+                                diff = diff.min(init)
+                                
                                 let cost = this.cost()
-                                let data = player.k.lock 
-                                if (!nocost) data.resources[25] = data.resources[25].minus(cost)
-                                data.repeatables[45] = data.repeatables[45].plus(1)
+                                if (!nocost) player.k.points = player.k.points.minus(cost)
+                                player.k.lock.repeatables[id] = player.k.lock.repeatables[id].plus(diff)
                         },
                 },
                 51: {
@@ -16444,6 +16827,12 @@ addLayer("k", {
                                 let b = bases[1]
                                 return a.times(Decimal.pow(b, player.k.lock.repeatables[51].pow(2)))
                         },
+                        getMaxPossible(){
+                                let bases = tmp.k.clickables[51].bases
+                                let amt = player.l.points
+                                if (amt.lt(bases[0])) return new Decimal(0)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                        },
                         effect(){
                                 let amt = player.k.lock.repeatables[51]
                                 amt = amt.plus(layers.k.clickables.getBonusLocks(51))
@@ -16460,11 +16849,21 @@ addLayer("k", {
                                 return player.l.points.gte(this.cost())
                         },
                         onClick(nocost = false){
+                                let id = 51
                                 if (!this.canClick()) return 
+                                let maxPoss = tmp.k.clickables[id].getMaxPossible
+                                cur = player.k.lock.repeatables[id]
+                                if (maxPoss.lte(cur)) return 
+                                let diff = maxPoss.sub(cur)
+                                
+                                let init = 1
+                                if (hasUpgrade("k", 44)) init *= 10
+
+                                diff = diff.min(init)
+                                
                                 let cost = this.cost()
-                                let data = player.k.lock 
-                                if (!nocost) player.l.points = player.l.points.minus(cost)
-                                data.repeatables[51] = data.repeatables[51].plus(1)
+                                if (!nocost) player.k.points = player.k.points.minus(cost)
+                                player.k.lock.repeatables[id] = player.k.lock.repeatables[id].plus(diff)
                         },
                 },
                 52: {
@@ -16499,6 +16898,12 @@ addLayer("k", {
                                 let b = bases[1]
                                 return a.times(Decimal.pow(b, player.k.lock.repeatables[52].pow(2)))
                         },
+                        getMaxPossible(){
+                                let bases = tmp.k.clickables[52].bases
+                                let amt = player.l.points
+                                if (amt.lt(bases[0])) return new Decimal(0)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                        },
                         effect(){
                                 let amt = player.k.lock.repeatables[52]
                                 amt = amt.plus(layers.k.clickables.getBonusLocks(52))
@@ -16515,11 +16920,21 @@ addLayer("k", {
                                 return player.l.points.gte(this.cost())
                         },
                         onClick(nocost = false){
+                                let id = 52
                                 if (!this.canClick()) return 
+                                let maxPoss = tmp.k.clickables[id].getMaxPossible
+                                cur = player.k.lock.repeatables[id]
+                                if (maxPoss.lte(cur)) return 
+                                let diff = maxPoss.sub(cur)
+                                
+                                let init = 1
+                                if (hasUpgrade("k", 44)) init *= 10
+
+                                diff = diff.min(init)
+                                
                                 let cost = this.cost()
-                                let data = player.k.lock 
-                                if (!nocost) player.l.points = player.l.points.minus(cost)
-                                data.repeatables[52] = data.repeatables[52].plus(1)
+                                if (!nocost) player.k.points = player.k.points.minus(cost)
+                                player.k.lock.repeatables[id] = player.k.lock.repeatables[id].plus(diff)
                         },
                 },
                 53: {
@@ -16554,6 +16969,12 @@ addLayer("k", {
                                 let b = bases[1]
                                 return a.times(Decimal.pow(b, player.k.lock.repeatables[53].pow(2)))
                         },
+                        getMaxPossible(){
+                                let bases = tmp.k.clickables[53].bases
+                                let amt = player.l.points
+                                if (amt.lt(bases[0])) return new Decimal(0)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                        },
                         effect(){
                                 let amt = player.k.lock.repeatables[53]
                                 amt = amt.plus(layers.k.clickables.getBonusLocks(53))
@@ -16570,11 +16991,21 @@ addLayer("k", {
                                 return player.l.points.gte(this.cost())
                         },
                         onClick(nocost = false){
+                                let id = 53
                                 if (!this.canClick()) return 
+                                let maxPoss = tmp.k.clickables[id].getMaxPossible
+                                cur = player.k.lock.repeatables[id]
+                                if (maxPoss.lte(cur)) return 
+                                let diff = maxPoss.sub(cur)
+                                
+                                let init = 1
+                                if (hasUpgrade("k", 44)) init *= 10
+
+                                diff = diff.min(init)
+                                
                                 let cost = this.cost()
-                                let data = player.k.lock 
-                                if (!nocost) player.l.points = player.l.points.minus(cost)
-                                data.repeatables[53] = data.repeatables[53].plus(1)
+                                if (!nocost) player.k.points = player.k.points.minus(cost)
+                                player.k.lock.repeatables[id] = player.k.lock.repeatables[id].plus(diff)
                         },
                 },
                 54: {
@@ -16609,6 +17040,12 @@ addLayer("k", {
                                 let b = bases[1]
                                 return a.times(Decimal.pow(b, player.k.lock.repeatables[54].pow(2)))
                         },
+                        getMaxPossible(){
+                                let bases = tmp.k.clickables[54].bases
+                                let amt = player.l.points
+                                if (amt.lt(bases[0])) return new Decimal(0)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                        },
                         effect(){
                                 let amt = player.k.lock.repeatables[54]
                                 amt = amt.plus(layers.k.clickables.getBonusLocks(54))
@@ -16625,11 +17062,21 @@ addLayer("k", {
                                 return player.l.points.gte(this.cost())
                         },
                         onClick(nocost = false){
+                                let id = 54
                                 if (!this.canClick()) return 
+                                let maxPoss = tmp.k.clickables[id].getMaxPossible
+                                cur = player.k.lock.repeatables[id]
+                                if (maxPoss.lte(cur)) return 
+                                let diff = maxPoss.sub(cur)
+                                
+                                let init = 1
+                                if (hasUpgrade("k", 44)) init *= 10
+
+                                diff = diff.min(init)
+                                
                                 let cost = this.cost()
-                                let data = player.k.lock 
-                                if (!nocost) player.l.points = player.l.points.minus(cost)
-                                data.repeatables[54] = data.repeatables[54].plus(1)
+                                if (!nocost) player.k.points = player.k.points.minus(cost)
+                                player.k.lock.repeatables[id] = player.k.lock.repeatables[id].plus(diff)
                         },
                 },
                 55: {
@@ -16664,6 +17111,12 @@ addLayer("k", {
                                 let b = bases[1]
                                 return a.times(Decimal.pow(b, player.k.lock.repeatables[55].pow(2)))
                         },
+                        getMaxPossible(){
+                                let bases = tmp.k.clickables[55].bases
+                                let amt = player.l.points
+                                if (amt.lt(bases[0])) return new Decimal(0)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                        },
                         effect(){
                                 let amt = player.k.lock.repeatables[55]
                                 amt = amt.plus(layers.k.clickables.getBonusLocks(55))
@@ -16680,11 +17133,21 @@ addLayer("k", {
                                 return player.l.points.gte(this.cost())
                         },
                         onClick(nocost = false){
+                                let id = 55
                                 if (!this.canClick()) return 
+                                let maxPoss = tmp.k.clickables[id].getMaxPossible
+                                cur = player.k.lock.repeatables[id]
+                                if (maxPoss.lte(cur)) return 
+                                let diff = maxPoss.sub(cur)
+                                
+                                let init = 1
+                                if (hasUpgrade("k", 44)) init *= 10
+
+                                diff = diff.min(init)
+                                
                                 let cost = this.cost()
-                                let data = player.k.lock 
-                                if (!nocost) player.l.points = player.l.points.minus(cost)
-                                data.repeatables[55] = data.repeatables[55].plus(1)
+                                if (!nocost) player.k.points = player.k.points.minus(cost)
+                                player.k.lock.repeatables[id] = player.k.lock.repeatables[id].plus(diff)
                         },
                 },
                 61: {
@@ -16716,8 +17179,15 @@ addLayer("k", {
                                 let b = bases[1]
                                 return a.times(Decimal.pow(b, player.k.lock.repeatables[61].pow(2)))
                         },
+                        getMaxPossible(){
+                                let bases = tmp.k.clickables[61].bases
+                                let amt = player.k.lock.resources[11]
+                                if (amt.lt(bases[0])) return new Decimal(0)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                        },
                         effect(){
                                 let amt = player.k.lock.repeatables[61]
+                                amt = amt.plus(layers.k.clickables.getBonusKeys(61))
                                 let ret = amt.pow(1.1).div(700).plus(1).ln().times(10).plus(1)
                                 return ret
                         },
@@ -16769,8 +17239,15 @@ addLayer("k", {
                                 let b = bases[1]
                                 return a.times(Decimal.pow(b, player.k.lock.repeatables[62].pow(2)))
                         },
+                        getMaxPossible(){
+                                let bases = tmp.k.clickables[62].bases
+                                let amt = player.k.lock.resources[12]
+                                if (amt.lt(bases[0])) return new Decimal(0)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                        },
                         effect(){
                                 let amt = player.k.lock.repeatables[62]
+                                amt = amt.plus(layers.k.clickables.getBonusKeys(62))
                                 let ret = amt.times(100).plus(9900).pow(amt.sqrt().times(10))
                                 return ret
                         },
@@ -16822,8 +17299,15 @@ addLayer("k", {
                                 let b = bases[1]
                                 return a.times(Decimal.pow(b, player.k.lock.repeatables[63].pow(2)))
                         },
+                        getMaxPossible(){
+                                let bases = tmp.k.clickables[63].bases
+                                let amt = player.k.lock.resources[13]
+                                if (amt.lt(bases[0])) return new Decimal(0)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                        },
                         effect(){
                                 let amt = player.k.lock.repeatables[63]
+                                amt = amt.plus(layers.k.clickables.getBonusKeys(63))
                                 let ret = amt.sqrt().div(100).plus(1).ln().times(40)
                                 return ret
                         },
@@ -16875,8 +17359,15 @@ addLayer("k", {
                                 let b = bases[1]
                                 return a.times(Decimal.pow(b, player.k.lock.repeatables[64].pow(2)))
                         },
+                        getMaxPossible(){
+                                let bases = tmp.k.clickables[64].bases
+                                let amt = player.k.lock.resources[14]
+                                if (amt.lt(bases[0])) return new Decimal(0)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                        },
                         effect(){
                                 let amt = player.k.lock.repeatables[64]
+                                amt = amt.plus(layers.k.clickables.getBonusKeys(64))
                                 let ret = Decimal.sub(.99, amt.div(100).plus(1).pow(-1).times(.99))
                                 return ret
                         },
@@ -16928,8 +17419,15 @@ addLayer("k", {
                                 let b = bases[1]
                                 return a.times(Decimal.pow(b, player.k.lock.repeatables[65].pow(2)))
                         },
+                        getMaxPossible(){
+                                let bases = tmp.k.clickables[65].bases
+                                let amt = player.k.lock.resources[15]
+                                if (amt.lt(bases[0])) return new Decimal(0)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                        },
                         effect(){
                                 let amt = player.k.lock.repeatables[65]
+                                amt = amt.plus(layers.k.clickables.getBonusKeys(65))
                                 let ret = amt.pow(1.7).div(100).plus(1).ln().times(250)
                                 return ret
                         },
@@ -16950,6 +17448,66 @@ addLayer("k", {
                                 let data = player.k.lock 
                                 if (!nocost) data.resources[15] = data.resources[15].minus(cost)
                                 data.repeatables[65] = data.repeatables[65].plus(1)
+                        },
+                },
+                71: {
+                        title(){
+                                if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
+                                return "<h3 style='color: #" + getUndulatingColor(12) + "'>Tin<br>Key</h3>"
+                        },
+                        display(){
+                                if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
+                                let a 
+                                let b 
+                                let c 
+                                let id = 71
+                                a = "<h3 style='color: #AC4600'>Cost</h3>: " + formatWhole(tmp.k.clickables[id].cost) + "<br>"
+                                c = "<h3 style='color: #FF33CC'>Effect</h3>: (" + formatWhole(player.k.lock.repeatables[id]) +")<br>" + tmp.k.clickables[id].effectDescription + "<br>"
+                                return a + c
+                        },
+                        unlocked(){
+                                return player.k.lock.repeatables[65].gt(2) || hasUnlockedPast("l")
+                        },
+                        bases(){
+                                return [Decimal.pow(10, 19430), Decimal.pow(10, 700)]
+                        },
+                        cost(){
+                                let bases = tmp.k.clickables[71].bases
+                                let a = bases[0]
+                                let b = bases[1]
+                                return a.times(Decimal.pow(b, player.k.lock.repeatables[71].pow(2)))
+                        },
+                        getMaxPossible(){
+                                let bases = tmp.k.clickables[71].bases
+                                let amt = player.k.lock.resources[21]
+                                if (amt.lt(bases[0])) return new Decimal(0)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                        },
+                        effect(){
+                                let amt = player.k.lock.repeatables[71]
+                                amt = amt.plus(layers.k.clickables.getBonusKeys(71))
+                                let ret = amt.times(9).plus(1).pow(amt.sqrt())
+                                return ret
+                        },
+                        effectDescription(){
+                                if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
+                                let eff = tmp.k.clickables[71].effect
+                                return "*" + format(eff) + " mine gain per Key"
+                        },
+                        canClick(){
+                                let data = player.k.lock.repeatables
+                                if (data[71].gte(data[41])) return false
+                                return player.k.lock.resources[21].gte(this.cost())
+                        },
+                        onClick(nocost = false){
+                                if (!this.canClick()) return 
+                                let cost = this.cost()
+                                let data = player.k.lock 
+                                if (!nocost) data.resources[21] = data.resources[21].minus(cost)
+                                data.repeatables[71] = data.repeatables[71].plus(1)
                         },
                 },
         },
