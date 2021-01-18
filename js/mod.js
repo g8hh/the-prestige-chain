@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".7.10 SLEEEEEEEEP",
+	num: ".7.11",
 	name: "",
 }
 
@@ -287,6 +287,13 @@ PROGRESSION_MILESTONES = {
 	229:()=> player.j.puzzle.finished >= 9000             || hasAchievement("ach",335),
 	230:()=> player.j.puzzle.finished >= 10e3             || hasAchievement("ach",336),
 	231:()=> totalChallengeComps("h") >= 171             || hasAchievement("ach",337),
+	232:()=> player.j.puzzle.finished >= 11e3             || hasAchievement("ach",341),
+	233:()=> player.j.puzzle.finished >= 12e3             || hasAchievement("ach",342),
+	234:()=> player.j.puzzle.finished >= 13e3             || hasAchievement("ach",343),
+	235:()=> player.j.puzzle.finished >= 14e3             || hasAchievement("ach",344),
+	236:()=> player.j.puzzle.finished >= 15e3             || hasAchievement("ach",345),
+	237:()=> player.j.puzzle.finished >= 16e3             || hasAchievement("ach",346),
+	238:()=> totalChallengeComps("h") >= 190             || hasAchievement("ach",347),
 }
 
 PROGRESSION_MILESTONES_TEXT = {
@@ -521,6 +528,13 @@ PROGRESSION_MILESTONES_TEXT = {
 	229:"9000 puzzle completions at once",
 	230:"10000 puzzle completions at once",
 	231:"171 Heart challenge completions",
+	232:"11000 puzzle completions at once",
+	233:"12000 puzzle completions at once",
+	234:"13000 puzzle completions at once",
+	235:"14000 puzzle completions at once",
+	236:"15000 puzzle completions at once",
+	237:"16000 puzzle completions at once",
+	238:"190 Heart challenge completions",
 }
 
 function progressReachedNum(){
@@ -549,7 +563,7 @@ var displayThings = [
 		return "(" + format(getPointGen()) + "/sec)"
 	},
 	function(){
-		let a = "Endgame: 1e512 Lemons"
+		let a = "Endgame: 1e1696 Lemons"
 		return player.autosave ? a : a + ". Warning: autosave is off"
 	},
 	function(){
@@ -881,6 +895,9 @@ function getChangeLogText(){
 	bg1= "v.7.10"
 	bg2= "- Added two Keys"
 	bg3= "- Added a puzzle repeatable"
+	bh1= "v.7.11"
+	bh2= "- Added an achievement row"
+	bh3= "- Added a puzzle repeatable"
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
 	let part2 = [b1, b2, b3, b4, b5, "", b6, b7, "", b8, b9, b10, "", b11, b12, ""]

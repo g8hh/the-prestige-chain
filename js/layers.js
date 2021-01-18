@@ -5122,7 +5122,7 @@ addLayer("ach", {
         canReset(){
                 return false
         },
-        achievements: getFirstNAchData(231), //Object.keys(PROGRESSION_MILESTONES).length
+        achievements: getFirstNAchData(238), //Object.keys(PROGRESSION_MILESTONES).length
         milestones: {
                 1: {
                         requirementDescription(){
@@ -12388,7 +12388,15 @@ addLayer("j", {
                 }, // hasUpgrade("j", 55)
 
                 /*
-                juvenile
+                Joining
+                Jury
+                Juan
+
+                Justin
+                Junction
+                Joel
+                
+                Julie
                 */
         },
         buyables:{
@@ -13979,6 +13987,48 @@ addLayer("j", {
                                 data.repeatables[71] = data.repeatables[71].plus(1)
                         },
                 },
+                72: {
+                        title(){
+                                if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
+                                return "<b style='color: #003333'>Juvenile</b>"
+                        },
+                        display(){
+                                if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
+                                let a = "Add " + format(tmp.j.clickables[72].base) + " to the <b>K</b> effect exponent"
+                                let c = "<br>Currently: +" + format(tmp.j.clickables[72].effect)
+                                let b = "<br><br>Cost: " + formatWhole(tmp.j.clickables[72].cost) + " Knowledge"
+                                return a + c + b
+                        },
+                        unlocked(){
+                                return player.k.lock.repeatables[64].gt(0) || hasUnlockedPast("l")
+                        },
+                        cost(){
+                                return Decimal.pow(10, 144700).times(Decimal.pow(10, 200).pow(player.j.puzzle.repeatables[72].pow(2)))
+                        },
+                        canClick(){
+                                return player.j.puzzle.knowledge.gte(tmp.j.clickables[72].cost)
+                        },
+                        base(){
+                                let ret = Decimal.pow(10, 7)
+                                return ret
+                        },
+                        effect(){
+                                return Decimal.times(tmp.j.clickables[72].base, player.j.puzzle.repeatables[72])
+                        },
+                        style(){
+                                return {
+                                        "background-color": tmp.j.clickables[72].canClick ? "#66CCFF" : "#bf8f8f"
+                                }
+                        },
+                        onClick(){
+                                if (!this.canClick()) return
+                                let data = player.j.puzzle
+                                data.knowledge = data.knowledge.minus(tmp.j.clickables[72].cost).max(0)
+                                data.repeatables[72] = data.repeatables[72].plus(1)
+                        },
+                },
         },
         shouldNotify(){
                 for (id in tmp.j.clickables){
@@ -14453,6 +14503,7 @@ addLayer("k", {
                 let exp = player.k.best.pow(.2).times(3).min(98)
                 
                 let exp2 = new Decimal(2)
+                exp2 = exp.plus(tmp.j.clickables[72].effect)
 
                 let ret = amt.times(3).plus(1).pow(exp)
 
