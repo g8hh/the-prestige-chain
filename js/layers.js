@@ -10802,6 +10802,7 @@ addLayer("h", {
                                 let init = new Decimal("1e3800e18")
                                 let c = challengeCompletions("h", 11)
                                 c = Math.max(0, c-tmp.k.clickables[63].effect)
+                                c = Math.max(0, c-tmp.j.clickables[73].effect)
                                 let factor = getChallengeFactor(c)
                                 if (factor.eq(1)) factor = new Decimal(0)
                                 return init.times(Decimal.pow("1e11e18", factor))
@@ -10833,6 +10834,7 @@ addLayer("h", {
                                 let init = new Decimal("1e9525e18")
                                 let c = challengeCompletions("h", 12)
                                 c = Math.max(0, c-tmp.k.clickables[63].effect)
+                                c = Math.max(0, c-tmp.j.clickables[73].effect)
                                 let factor = getChallengeFactor(c)
                                 if (factor.eq(1)) factor = new Decimal(0)
                                 return init.times(Decimal.pow("1e1624e18", factor))
@@ -10865,6 +10867,7 @@ addLayer("h", {
                                 let init = new Decimal("1e2362e21")
                                 let c = challengeCompletions("h", 21)
                                 c = Math.max(0, c-tmp.k.clickables[63].effect)
+                                c = Math.max(0, c-tmp.j.clickables[73].effect)
                                 let factor = getChallengeFactor(c)
                                 if (factor.eq(1)) factor = new Decimal(0)
                                 return init.times(Decimal.pow("1e587e21", factor))
@@ -10898,6 +10901,7 @@ addLayer("h", {
                                 let init = new Decimal("1e1099e28")
                                 let c = challengeCompletions("h", 22)
                                 c = Math.max(0, c-tmp.k.clickables[63].effect)
+                                c = Math.max(0, c-tmp.j.clickables[73].effect)
                                 if (c > 3 && !player.j.puzzle.upgrades.includes(64)) c = c * c / 3
                                 let factor = getChallengeFactor(c)
                                 if (factor.eq(1)) factor = new Decimal(0)
@@ -12388,7 +12392,6 @@ addLayer("j", {
                 }, // hasUpgrade("j", 55)
 
                 /*
-                Joining
                 Jury
                 Juan
 
@@ -13768,7 +13771,7 @@ addLayer("j", {
                                 return player.j.puzzle.reset2.done || (player.j.puzzle.repeatables[14].gte(20) && player.ach.best.gte(149)) || hasUnlockedPast("j")
                         },
                         canClick(){
-                                if (player.j.puzzle.reset2.times > 996) return false
+                                //if (player.j.puzzle.reset2.times > 996) return false
                                 return player.j.puzzle.repeatables[14].gte(20 + 10 * player.j.puzzle.reset2.times)
                         },
                         style(){
@@ -14027,6 +14030,46 @@ addLayer("j", {
                                 let data = player.j.puzzle
                                 data.knowledge = data.knowledge.minus(tmp.j.clickables[72].cost).max(0)
                                 data.repeatables[72] = data.repeatables[72].plus(1)
+                        },
+                },
+                73: {
+                        title(){
+                                if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
+                                return "<b style='color: #003333'>Joining</b>"
+                        },
+                        display(){
+                                if (player.tab != "j") return ""
+                                if (player.subtabs.j.mainTabs != "Puzzle") return ""
+                                let a = "Act as if you have less <b>H</b> challenge completions"
+                                let c = "<br>Currently: -" + format(tmp.j.clickables[73].effect)
+                                let b = "<br><br>Cost: " + formatWhole(tmp.j.clickables[73].cost) + " Knowledge"
+                                return a + c + b
+                        },
+                        unlocked(){
+                                return player.k.lock.repeatables[64].gt(4) || hasUnlockedPast("l")
+                        },
+                        cost(){
+                                return Decimal.pow(10, 170e3).times(Decimal.pow(10, 300).pow(player.j.puzzle.repeatables[73].pow(2)))
+                        },
+                        canClick(){
+                                return player.j.puzzle.knowledge.gte(tmp.j.clickables[73].cost)
+                        },
+                        effect(){
+                                let amt = player.j.puzzle.repeatables[73]
+                                let ret = amt.div(5).plus(1).ln()
+                                return ret
+                        },
+                        style(){
+                                return {
+                                        "background-color": tmp.j.clickables[73].canClick ? "#66CCFF" : "#bf8f8f"
+                                }
+                        },
+                        onClick(){
+                                if (!this.canClick()) return
+                                let data = player.j.puzzle
+                                data.knowledge = data.knowledge.minus(tmp.j.clickables[73].cost).max(0)
+                                data.repeatables[73] = data.repeatables[73].plus(1)
                         },
                 },
         },
@@ -14969,6 +15012,7 @@ addLayer("k", {
                         if (id < 53) ret = ret.plus(tmp.k.clickables[53].effect)
                         if (id < 55) ret = ret.plus(tmp.k.clickables[55].effect)
                         if (hasUpgrade("k", 41)) ret = ret.plus(Math.max(totalChallengeComps("h") - 178, 0))
+                        ret = ret.plus(tmp.k.clickables[65].effect)
                         return ret
                 },
                 11: {
@@ -16855,6 +16899,70 @@ addLayer("k", {
                                 data.repeatables[64] = data.repeatables[64].plus(1)
                         },
                 },
+                65: {
+                        title(){
+                                if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
+                                return "<h3 style='color: #" + getUndulatingColor(11.6) + "'>Copper<br>Key</h3>"
+                        },
+                        display(){
+                                if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
+                                let a 
+                                let b 
+                                let c 
+                                let id = 65
+                                a = "<h3 style='color: #AC4600'>Cost</h3>: " + formatWhole(tmp.k.clickables[id].cost) + "<br>"
+                                c = "<h3 style='color: #FF33CC'>Effect</h3>: (" + formatWhole(player.k.lock.repeatables[id]) +")<br>" + tmp.k.clickables[id].effectDescription + "<br>"
+                                return a + c
+                        },
+                        unlocked(){
+                                return player.k.lock.repeatables[64].gt(4) || hasUnlockedPast("l")
+                        },
+                        bases(){
+                                return [Decimal.pow(10, 19110), Decimal.pow(10, 500)]
+                        },
+                        cost(){
+                                let bases = tmp.k.clickables[65].bases
+                                let a = bases[0]
+                                let b = bases[1]
+                                return a.times(Decimal.pow(b, player.k.lock.repeatables[65].pow(2)))
+                        },
+                        effect(){
+                                let amt = player.k.lock.repeatables[65]
+                                let ret = amt.pow(1.7).div(100).plus(1).ln().times(250)
+                                return ret
+                        },
+                        effectDescription(){
+                                if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
+                                let eff = tmp.k.clickables[65].effect
+                                return "+" + format(eff) + " effective locks"
+                        },
+                        canClick(){
+                                let data = player.k.lock.repeatables
+                                if (data[65].gte(data[35])) return false
+                                return player.k.lock.resources[15].gte(this.cost())
+                        },
+                        onClick(nocost = false){
+                                if (!this.canClick()) return 
+                                let cost = this.cost()
+                                let data = player.k.lock 
+                                if (!nocost) data.resources[15] = data.resources[15].minus(cost)
+                                data.repeatables[65] = data.repeatables[65].plus(1)
+                        },
+                },
+        },
+        shouldNotify(){
+                for (id in tmp.k.clickables){
+                        id = Number(id)
+                        if (typeof id != "number") continue
+                        if (isNaN(id)) continue
+                        if (tmp.k.clickables[id].canClick && tmp.k.clickables[id].unlocked){
+                                return true
+                        }
+                }
+                return false
         },
         tabFormat: {
                 "Upgrades": {
@@ -16954,7 +17062,7 @@ addLayer("k", {
                                         if (player.subtabs.k.mainTabs != "Lock") return ""
                                         let a = "Keys require having enough Locks unlocked."
                                         let b = "They do not cause you to lose lock effects, and give additional effects."
-                                        let c = "The first ten keys cost their own resources<br>while the last five cost higher and higher layers' resrouces."
+                                        let c = "The first ten keys cost their own resources<br>while the last five cost higher and higher layers' resources."
                                         return a + "<br>" + b + "<br>" + c
                                 }],
                                 ["clickables", [6,8]], //keys
