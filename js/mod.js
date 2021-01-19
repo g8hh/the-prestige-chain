@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".7.15 'bruh'",
+	num: ".7.16 MY?",
 	name: "",
 }
 
@@ -294,6 +294,27 @@ PROGRESSION_MILESTONES = {
 	236:()=> player.j.puzzle.finished >= 15e3             || hasAchievement("ach",345),
 	237:()=> player.j.puzzle.finished >= 16e3             || hasAchievement("ach",346),
 	238:()=> totalChallengeComps("h") >= 190             || hasAchievement("ach",347),
+	239:()=> player.k.lock.repeatables[55].gte(45)       || hasAchievement("ach",351),
+	240:()=> player.k.lock.repeatables[55].gte(55)       || hasAchievement("ach",352),
+	241:()=> player.k.lock.repeatables[55].gte(66)       || hasAchievement("ach",353),
+	242:()=> player.k.lock.repeatables[55].gte(78)       || hasAchievement("ach",354),
+	243:()=> player.k.lock.repeatables[55].gte(91)       || hasAchievement("ach",355),
+	244:()=> player.k.lock.repeatables[55].gte(105)      || hasAchievement("ach",356),
+	245:()=> totalChallengeComps("h") >= 210             || hasAchievement("ach",357),
+	246:()=> player.j.puzzle.finished >= 17e3             || hasAchievement("ach",361),
+	247:()=> player.j.puzzle.finished >= 18e3             || hasAchievement("ach",362),
+	248:()=> player.j.puzzle.finished >= 19e3             || hasAchievement("ach",363),
+	249:()=> player.j.puzzle.finished >= 20e3             || hasAchievement("ach",364),
+	250:()=> player.j.puzzle.finished >= 21e3             || hasAchievement("ach",365),
+	251:()=> player.j.puzzle.finished >= 22e3             || hasAchievement("ach",366),
+	252:()=> totalChallengeComps("h") >= 231             || hasAchievement("ach",367),
+	253:()=> player.j.puzzle.finished >= 23e3             || hasAchievement("ach",371),
+	254:()=> player.j.puzzle.finished >= 24e3             || hasAchievement("ach",372),
+	255:()=> player.j.puzzle.finished >= 25e3             || hasAchievement("ach",373),
+	256:()=> player.j.puzzle.finished >= 26e3             || hasAchievement("ach",374),
+	257:()=> player.j.puzzle.finished >= 27e3             || hasAchievement("ach",375),
+	258:()=> player.j.puzzle.finished >= 28e3             || hasAchievement("ach",376),
+	259:()=> totalChallengeComps("h") >= 253             || hasAchievement("ach",377),
 }
 
 PROGRESSION_MILESTONES_TEXT = {
@@ -535,6 +556,27 @@ PROGRESSION_MILESTONES_TEXT = {
 	236:"15000 puzzle completions at once",
 	237:"16000 puzzle completions at once",
 	238:"190 Heart challenge completions",
+	239:"45 Grandmaster Locks",
+	240:"55 Grandmaster Locks",
+	241:"66 Grandmaster Locks",
+	242:"78 Grandmaster Locks",
+	243:"91 Grandmaster Locks",
+	244:"105 Grandmaster Locks",
+	245:"210 Heart challenge completions",
+	246:"17000 puzzle completions at once",
+	247:"18000 puzzle completions at once",
+	248:"19000 puzzle completions at once",
+	249:"20000 puzzle completions at once",
+	250:"21000 puzzle completions at once",
+	251:"22000 puzzle completions at once",
+	252:"231 Heart challenge completions",
+	253:"23000 puzzle completions at once",
+	254:"24000 puzzle completions at once",
+	255:"25000 puzzle completions at once",
+	256:"26000 puzzle completions at once",
+	257:"27000 puzzle completions at once",
+	258:"28000 puzzle completions at once",
+	259:"253 Heart challenge completions",
 }
 
 function progressReachedNum(){
@@ -913,9 +955,14 @@ function getChangeLogText(){
 	bk6= "- Made bulk Larger Puzzle"
 	bl1= "v.7.15"
 	bl2= "- Added a puzzle upgrade"
-	bl3= "- Added a keys"
+	bl3= "- Added a key"
 	bl4= "- Added a challenge"
 	bl5= "- Improved Puzzle QoL later on"
+	bm1= "v.7.16"
+	bm2= "- Added a lemon milestone "
+	bm3= "- Added a key"
+	bm4= "- Added three achievement rows"
+	bm5= "- Notification is not shown in Keys if the mines/locks/keys are being autobought"
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
 	let part2 = [b1, b2, b3, b4, b5, "", b6, b7, "", b8, b9, b10, "", b11, b12, ""]
@@ -979,6 +1026,7 @@ function getChangeLogText(){
 	let part60= [bj1,bj2,bj3,bj4, ""]
 	let part61= [bk1,bk2,bk3,bk4,bk5,bk6, ""]
 	let part62= [bl1,bl2,bl3,bl4,bl5, ""]
+	let part63= [bm1,bm2,bm3,bm4,bm5, ""]
 	// MAKE SURE TO ADD THEM
 
 	let final1 = [part10,  part9,  part8,  part7,  part6,  part5,  part4,  part3,  part2,  part1]
@@ -987,7 +1035,7 @@ function getChangeLogText(){
 	let final4 = [part40, part39, part38, part37, part36, part35, part34, part33, part32, part31]
 	let final5 = [part50, part49, part48, part47, part46, part45, part44, part43, part42, part41]
 	let final6 = [part60, part59, part58, part57, part56, part55, part54, part53, part52, part51]
-	let final7 = [part62, part61]
+	let final7 = [part63, part62, part61]
 
 	return final7.concat(final6).concat(final5).concat(final4).concat(final3).concat(final2).concat(final1)
 }

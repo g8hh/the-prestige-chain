@@ -5123,7 +5123,7 @@ addLayer("ach", {
         canReset(){
                 return false
         },
-        achievements: getFirstNAchData(238), //Object.keys(PROGRESSION_MILESTONES).length
+        achievements: getFirstNAchData(259), //Object.keys(PROGRESSION_MILESTONES).length
         milestones: {
                 1: {
                         requirementDescription(){
@@ -10824,6 +10824,7 @@ addLayer("h", {
                                 if (hasUpgrade("j", 33)) ret += player.j.upgrades.length
                                 if (hasUpgrade("k", 21)) ret += 5
                                 if (hasMilestone("k", 10)) ret += player.k.milestones.length
+                                if (hasMilestone("l", 11)) ret += player.l.milestones.length
 
                                 return ret
                         },
@@ -10855,6 +10856,7 @@ addLayer("h", {
                                 if (hasUpgrade("j", 33)) ret += player.j.upgrades.length
                                 if (hasUpgrade("k", 21)) ret += 5
                                 if (hasMilestone("k", 10)) ret += player.k.milestones.length
+                                if (hasMilestone("l", 11)) ret += player.l.milestones.length
 
                                 return ret
                         },
@@ -10888,6 +10890,7 @@ addLayer("h", {
                                 if (hasUpgrade("j", 33)) ret += player.j.upgrades.length
                                 if (hasUpgrade("k", 21)) ret += 5
                                 if (hasMilestone("k", 10)) ret += player.k.milestones.length
+                                if (hasMilestone("l", 11)) ret += player.l.milestones.length
 
                                 return ret
                         },
@@ -10922,6 +10925,7 @@ addLayer("h", {
                                 if (hasUpgrade("j", 33)) ret += player.j.upgrades.length
                                 if (hasUpgrade("k", 21)) ret += 5
                                 if (hasMilestone("k", 10)) ret += player.k.milestones.length
+                                if (hasMilestone("l", 11)) ret += player.l.milestones.length
 
                                 return ret
                         },
@@ -12070,6 +12074,12 @@ addLayer("j", {
                         layers.j.clickables[45].onClick()
                         layers.j.clickables[55].onClick()
                 }
+                if (hasMilestone("l", 11)){
+                        layers.j.clickables[71].onClick()
+                        layers.j.clickables[72].onClick()
+                        layers.j.clickables[73].onClick()
+                        layers.j.clickables[74].onClick()
+                }
                 if (data.autodevtime > 10) data.autodevtime = 10
         },
         row: 9, // Row the layer is in on the tree (0 is the first row)
@@ -12574,7 +12584,7 @@ addLayer("j", {
                 getBaseAttemptChance(){
                         let exp = Decimal.plus(player.j.puzzle.finished, 1)
                         if (exp.gt(2500)) exp = exp.pow(1.5).div(50)
-                        if (exp.gt(18e3)) exp = exp.pow(2).div(18e3)
+                        if (exp.gt(40e3)) exp = exp.pow(2).div(40e3)
                         return Decimal.pow(.5, exp)
                 },
                 getAttemptChance(){
@@ -12976,6 +12986,7 @@ addLayer("j", {
                                 if (hasUpgrade("j", 42)) times *= 10
                                 if (player.j.puzzle.upgrades.includes(63)) times *= 10
                                 if (hasUpgrade("k", 24)) times *= 10
+                                if (hasMilestone("l", 11)) times *= 1000
 
                                 let max = tmp.j.clickables[13].getMaxAmt
                                 if (data.repeatables[13].plus(times).gte(max)) data.repeatables[13] = max
@@ -15228,6 +15239,7 @@ addLayer("k", {
                         ret = ret.times(tmp.j.clickables[71].effect)
                         ret = ret.times(Decimal.pow(tmp.k.clickables[71].effect, tmp.k.clickables.totalKeys))
                         ret = ret.times(Decimal.pow(tmp.k.clickables[74].effect, totalChallengeComps("h")))
+                        ret = ret.times(Decimal.pow(tmp.k.clickables[81].effect, tmp.k.clickables.totalMines))
                         return ret
                 },
                 getBonusLocks(id){
@@ -15242,7 +15254,7 @@ addLayer("k", {
                 getBonusKeys(id){
                         let ret = new Decimal(0)
                         if (id < 72) ret = ret.plus(tmp.k.clickables[72].effect)
-                        ret = ret.plus(tmp.k.challenges[11].rewardEffect)
+                        if (id < 80) ret = ret.plus(tmp.k.challenges[11].rewardEffect)
                         return ret
                 },
                 11: {
@@ -15520,6 +15532,7 @@ addLayer("k", {
                                 let amt = player.k.lock.resources[13]
                                 let log = amt.plus(10).log10()
                                 let ret = Decimal.pow(log, log)
+                                if (ret.gt(Decimal.pow(10, 4e6))) ret = ret.sqrt().times(Decimal.pow(10, 2e6))
                                 return ret
                         },
                         effectDescription(){
@@ -17930,6 +17943,66 @@ addLayer("k", {
                                 data.repeatables[75] = data.repeatables[75].plus(1)
                         },
                 },
+                81: {
+                        title(){
+                                if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
+                                return "<h3 style='color: #" + getUndulatingColor(14) + "'>Basic<br>Key</h3>"
+                        },
+                        display(){
+                                if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
+                                let a 
+                                let b 
+                                let c 
+                                let id = 81
+                                a = "<h3 style='color: #AC4600'>Cost</h3>: " + formatWhole(tmp.k.clickables[id].cost) + "<br>"
+                                c = "<h3 style='color: #FF33CC'>Effect</h3>: (" + formatWhole(player.k.lock.repeatables[id]) +")<br>" + tmp.k.clickables[id].effectDescription + "<br>"
+                                return a + c
+                        },
+                        unlocked(){
+                                return player.k.challenges[11] > 2 || hasUnlockedPast("l")
+                        },
+                        bases(){
+                                return [Decimal.pow(10, 16347), Decimal.pow(10, 2319)]
+                        },
+                        cost(){
+                                let bases = tmp.k.clickables[81].bases
+                                let a = bases[0]
+                                let b = bases[1]
+                                return a.times(Decimal.pow(b, player.k.lock.repeatables[81].pow(2)))
+                        },
+                        getMaxPossible(){
+                                let bases = tmp.k.clickables[81].bases
+                                let amt = player.l.points
+                                if (amt.lt(bases[0])) return new Decimal(0)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                        },
+                        effect(){
+                                let amt = player.k.lock.repeatables[81]
+                                amt = amt.plus(layers.k.clickables.getBonusKeys(81))
+                                let ret = amt.pow(1.5).div(100).plus(1).ln().times(50).plus(1)
+                                return ret
+                        },
+                        effectDescription(){
+                                if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
+                                let eff = tmp.k.clickables[81].effect
+                                return "*" + format(eff) + " mine production per mine"
+                        },
+                        canClick(){
+                                let data = player.k.lock.repeatables
+                                if (data[81].gte(data[51])) return false
+                                return player.l.points.gte(this.cost())
+                        },
+                        onClick(nocost = false){
+                                if (!this.canClick()) return 
+                                let cost = this.cost()
+                                let data = player.k.lock 
+                                if (!nocost) player.l.points = player.l.points.minus(cost)
+                                data.repeatables[81] = data.repeatables[81].plus(1)
+                        },
+                },
         },
         challenges: {
                 rows: 2,
@@ -17937,7 +18010,7 @@ addLayer("k", {
                 11: {
                         name: "Kiss",
                         challengeDescription: "All previous layer buyables have no effect",
-                        rewardDescription: "Give free effective Keys",
+                        rewardDescription: "Give free effective Keys [first two rows]",
                         rewardEffect(){
                                 let c = challengeCompletions("k", 11)
                                 let ret = Math.sqrt(c)
@@ -17965,6 +18038,12 @@ addLayer("k", {
                         id = Number(id)
                         if (typeof id != "number") continue
                         if (isNaN(id)) continue
+
+                        
+                        if (hasMilestone("l", 3) && [11,12,13,14,15,21,22,23,24,25].includes(id)) continue
+                        if (hasMilestone("l", 5) && [31,32,33,34,35,41,42,43,44,45].includes(id)) continue
+                        if (hasUpgrade("k", 43) && [51,52,53,54,55].includes(id)) continue
+
                         if (tmp.k.clickables[id].canClick && tmp.k.clickables[id].unlocked){
                                 return true
                         }
@@ -18435,6 +18514,16 @@ addLayer("l", {
                                 return hasMilestone("l", 9) || hasUnlockedPast("l")
                         },  // hasMilestone("l", 10)
                 },
+                11: {
+                        requirementDescription: "<b>Live</b><br>Requires: 1e30,000 Lemons", 
+                        effectDescription: "You buy 1000x Bulk Amount, autobuy the last row of puzzle upgrades, and you can completed one more <b>H</b> challenge per minestone",
+                        done(){
+                                return player.l.points.max(10).log10().gt(3e4)
+                        },
+                        unlocked(){
+                                return hasMilestone("l", 10) || hasUnlockedPast("l")
+                        },  // hasMilestone("l", 11)
+                },
         },
         upgrades: {
                 rows: 5,
@@ -18513,7 +18602,10 @@ addLayer("l", {
                 }, // hasUpgrade("l", 24)
 
                 /*
-                Left [used]
+                large
+                library
+                Looking
+                Less
                 */
         },
         tabFormat: {
