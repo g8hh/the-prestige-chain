@@ -311,6 +311,8 @@ function load() {
 	updateTemp();
 	updateTemp();
 	loadVue();
+	updateTemp()
+	updateTemp()
 }
 
 function exportSave() {

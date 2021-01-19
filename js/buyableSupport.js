@@ -2512,6 +2512,26 @@ var MAIN_BUYABLE_DATA = {
                         return [b0, b1, b2]
                 },
         }, 
+        j22: {
+                name: "Juan",
+                func(a,x){
+                        let ret = Decimal.plus(x, 1).log10().times(a)
+                        return ret
+                },
+                identity: new Decimal(0),
+                effectSymbol: "-",
+                eFormula: "[base]*log10(1+x)",
+                effects: "effective <b>H</b> challenges",
+                base: {
+                        initial: new Decimal(.1),
+                },
+                bases(){
+                        let b0 = Decimal.pow(10, 7e14)
+                        let b1 = Decimal.pow(10, 1e13)
+                        let b2 = Decimal.pow(10, 1e11)
+                        return [b0, b1, b2]
+                },
+        },
 }
 
 var EXTRA_FREE_BUYABLE_DATA = {

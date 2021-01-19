@@ -10789,6 +10789,14 @@ addLayer("h", {
         challenges: {
                 rows: 2,
                 cols: 2,
+                totalSub(){
+                        let c = 0
+                        c += tmp.k.clickables[63].effect.toNumber()
+                        c += tmp.j.clickables[73].effect.toNumber()
+                        if (hasUpgrade("k", 45)) c += .05 * player.l.upgrades.length
+                        c += CURRENT_BUYABLE_EFFECTS["j22"].toNumber()
+                        return c
+                },
                 11: {
                         name: "Hi",
                         challengeDescription: "All previous layer buyables have no effect",
@@ -10801,8 +10809,7 @@ addLayer("h", {
                         goal(){
                                 let init = new Decimal("1e3800e18")
                                 let c = challengeCompletions("h", 11)
-                                c = Math.max(0, c-tmp.k.clickables[63].effect)
-                                c = Math.max(0, c-tmp.j.clickables[73].effect)
+                                c = Math.max(0, c - tmp.h.challenges.totalSub)
                                 let factor = getChallengeFactor(c)
                                 if (factor.eq(1)) factor = new Decimal(0)
                                 return init.times(Decimal.pow("1e11e18", factor))
@@ -10833,8 +10840,7 @@ addLayer("h", {
                         goal(){
                                 let init = new Decimal("1e9525e18")
                                 let c = challengeCompletions("h", 12)
-                                c = Math.max(0, c-tmp.k.clickables[63].effect)
-                                c = Math.max(0, c-tmp.j.clickables[73].effect)
+                                c = Math.max(0, c - tmp.h.challenges.totalSub)
                                 let factor = getChallengeFactor(c)
                                 if (factor.eq(1)) factor = new Decimal(0)
                                 return init.times(Decimal.pow("1e1624e18", factor))
@@ -10867,8 +10873,7 @@ addLayer("h", {
                         goal(){
                                 let init = new Decimal("1e2362e21")
                                 let c = challengeCompletions("h", 21)
-                                c = Math.max(0, c-tmp.k.clickables[63].effect)
-                                c = Math.max(0, c-tmp.j.clickables[73].effect)
+                                c = Math.max(0, c - tmp.h.challenges.totalSub)
                                 let factor = getChallengeFactor(c)
                                 if (factor.eq(1)) factor = new Decimal(0)
                                 return init.times(Decimal.pow("1e587e21", factor))
@@ -10901,8 +10906,7 @@ addLayer("h", {
                         goal(){
                                 let init = new Decimal("1e1099e28")
                                 let c = challengeCompletions("h", 22)
-                                c = Math.max(0, c-tmp.k.clickables[63].effect)
-                                c = Math.max(0, c-tmp.j.clickables[73].effect)
+                                c = Math.max(0, c - tmp.h.challenges.totalSub)
                                 if (c > 3 && !player.j.puzzle.upgrades.includes(64)) c = c * c / 3
                                 let factor = getChallengeFactor(c)
                                 if (factor.eq(1)) factor = new Decimal(0)
@@ -12393,8 +12397,6 @@ addLayer("j", {
                 }, // hasUpgrade("j", 55)
 
                 /*
-                Juan
-
                 Justin
                 Junction
                 Joel
@@ -12513,6 +12515,34 @@ addLayer("j", {
                                 return hasUpgrade("l", 24) || hasUnlockedPast("l")
                         },
                 },
+                22: {
+                        title: "Juan",
+                        display(){
+                                return getBuyableDisplay("j", 22)
+                        },
+                        effect(){
+                                return CURRENT_BUYABLE_EFFECTS["j22"]
+                        },
+                        canAfford(){
+                                return canAffordBuyable("j", 22)
+                        },
+                        total(){
+                                return getBuyableAmount("j", 22).plus(this.extra())
+                        },
+                        extra(){
+                                return calcBuyableExtra("j", 22)
+                        },
+                        buy(){
+                                buyManualBuyable("j", 22)
+                        },
+                        buyMax(maximum){
+                                buyMaximumBuyable("j", 22, maximum)
+                        },
+                        unlocked(){ 
+                                return hasUpgrade("k", 45) || hasUnlockedPast("l")
+                        },
+                },
+                
         },
         clickables: {
                 rows: 7,
@@ -12976,6 +13006,14 @@ addLayer("j", {
 
                                 return a.max(b).max(c).floor()
                         },
+                        getMaxPossible(){
+                                let data = player.j.puzzle
+                                let rss = data.knowledge
+                                let a = rss.gte(40) ? rss.div(40).log(4).root(.8).plus(1).floor() : new Decimal(0)
+                                let b = rss.max(1).log(2.25).plus(1).floor()
+                                let c = rss.max(1).log(1.0046).sqrt().plus(1).floor()
+                                return a.min(b).min(c)
+                        },
                         canClick(){
                                 let x = tmp.j.clickables.getCurrentMaxSize
                                 return player.j.puzzle.knowledge.gte(this.cost()) && (player.j.puzzle.currentX < x || player.j.puzzle.currentY < x)
@@ -12995,14 +13033,19 @@ addLayer("j", {
                         onClick(nocost = false){
                                 let data = player.j.puzzle
                                 let cost = this.cost()
+                                let mp = tmp.j.clickables[14].getMaxPossible
+                                let amt = data.repeatables[14]
                                 let times = 1
 
                                 if (hasMilestone("k", 14)) times *= 10
 
-                                for (i = 0; i < times; i++){
-                                        if (!this.canClick()) return 
-                                        if (!nocost) data.knowledge = data.knowledge.minus(cost)
-                                        data.repeatables[14] = data.repeatables[14].plus(1)
+                                let diff = mp.sub(amt).min(times)
+
+                                //if (!this.canClick()) return 
+                                if (amt.gte(mp)) return
+                                if (!nocost) data.knowledge = data.knowledge.minus(cost)
+                                data.repeatables[14] = data.repeatables[14].plus(diff)
+                                if (diff.eq(1)) {
                                         let x = tmp.j.clickables.getCurrentMaxSize
                                         if (data.currentY == x) {
                                                 data.currentX ++
@@ -13011,16 +13054,49 @@ addLayer("j", {
                                         } else if (Math.random() < .5) {
                                                 data.currentY ++
                                         } else data.currentX ++
-                                        data.placed = {
-                                                edges: 0,
-                                                corners: 0,
-                                                centers: 0,
+                                } else {
+                                        let x = layers.j.clickables.getCurrentMaxSize()
+                                        let remaining = diff
+                                        for (i = 0; diff.gt(i); i++){
+                                                remaining = remaining.sub(1)
+                                                if (i >= 10) break
+                                                if (data.currentY >= x) {
+                                                        if (data.currentX >= x) break
+                                                        data.currentX ++
+                                                } else if (data.currentX >= x) {
+                                                        data.currentY ++
+                                                } else if (Math.random() < .5) {
+                                                        data.currentY ++
+                                                } else data.currentX ++
+                                        } //get both to multiples of five
+                                        let a = data.repeatables[14].plus(1).div(10).floor().sub(1).toNumber()
+                                        data.reset2.times = Math.max(data.reset2.times, a)
+                                        
+                                        let mult5steps = remaining.div(10).floor().toNumber()
+                                        remaining = remaining.sub(10 * mult5steps)
+                                        data.currentX += 5 * mult5steps
+                                        data.currentY += 5 * mult5steps
+                                        //deal with mults of five
+                                        x = layers.j.clickables.getCurrentMaxSize()
+                                        for (i = 0; remaining.gt(i); i++){
+                                                if (data.currentY == x) {
+                                                        data.currentX ++
+                                                } else if (data.currentX == x) {
+                                                        data.currentY ++
+                                                } else if (Math.random() < .5) {
+                                                        data.currentY ++
+                                                } else data.currentX ++
                                         }
-                                        data.found = {
-                                                edges: 0,
-                                                corners: 0,
-                                                centers: 0,
-                                        }
+                                }
+                                data.placed = {
+                                        edges: 0,
+                                        corners: 0,
+                                        centers: 0,
+                                }
+                                data.found = {
+                                        edges: 0,
+                                        corners: 0,
+                                        centers: 0,
                                 }
                         },
                 },
@@ -15000,9 +15076,17 @@ addLayer("k", {
                                 return player.k.lock.repeatables[71].gt(2) || hasUnlockedPast("l")
                         }
                 }, // hasUpgrade("k", 44)
+                45: {
+                        title: "Kent",
+                        description: "<bdi style='font-size:80%'>Double <b>Osmium Lock</b> and <b>Gold Key</b> effects, -.05 effective <b>H</b> challenge completions per <b>L</b> upgrade, and unlock a <b>J</b> buyable</bdi>",
+                        cost: new Decimal("1e1822e3"),
+                        unlocked(){
+                                return player.k.lock.repeatables[73].gt(1) || hasUnlockedPast("l")
+                        }
+                }, // hasUpgrade("k", 45)
                 
                 /*
-                Kent (MY!)
+                Kent (MY!) [used]
                 */
         },
         clickables: {
@@ -15053,6 +15137,7 @@ addLayer("k", {
                         ret = ret.times(Decimal.pow(tmp.k.clickables[61].effect, tmp.k.clickables.totalLocks))
                         ret = ret.times(tmp.j.clickables[71].effect)
                         ret = ret.times(Decimal.pow(tmp.k.clickables[71].effect, tmp.k.clickables.totalKeys))
+                        ret = ret.times(Decimal.pow(tmp.k.clickables[74].effect, totalChallengeComps("h")))
                         return ret
                 },
                 getBonusLocks(id){
@@ -15065,6 +15150,7 @@ addLayer("k", {
                 },
                 getBonusKeys(id){
                         let ret = new Decimal(0)
+                        if (id < 72) ret = ret.plus(tmp.k.clickables[72].effect)
                         return ret
                 },
                 11: {
@@ -16766,6 +16852,7 @@ addLayer("k", {
                                 let amt = player.k.lock.repeatables[45]
                                 amt = amt.plus(layers.k.clickables.getBonusLocks(45))
                                 let ret = amt.div(20).plus(1).ln().times(10)
+                                if (hasUpgrade("k", 45)) ret = ret.times(2)
                                 return ret
                         },
                         effectDescription(){
@@ -17309,6 +17396,7 @@ addLayer("k", {
                                 let amt = player.k.lock.repeatables[63]
                                 amt = amt.plus(layers.k.clickables.getBonusKeys(63))
                                 let ret = amt.sqrt().div(100).plus(1).ln().times(40)
+                                if (hasUpgrade("k", 45)) ret = ret.times(2)
                                 return ret
                         },
                         effectDescription(){
@@ -17508,6 +17596,186 @@ addLayer("k", {
                                 let data = player.k.lock 
                                 if (!nocost) data.resources[21] = data.resources[21].minus(cost)
                                 data.repeatables[71] = data.repeatables[71].plus(1)
+                        },
+                },
+                72: {
+                        title(){
+                                if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
+                                return "<h3 style='color: #" + getUndulatingColor(12.4) + "'>Titanium<br>Key</h3>"
+                        },
+                        display(){
+                                if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
+                                let a 
+                                let b 
+                                let c 
+                                let id = 72
+                                a = "<h3 style='color: #AC4600'>Cost</h3>: " + formatWhole(tmp.k.clickables[id].cost) + "<br>"
+                                c = "<h3 style='color: #FF33CC'>Effect</h3>: (" + formatWhole(player.k.lock.repeatables[id]) +")<br>" + tmp.k.clickables[id].effectDescription + "<br>"
+                                return a + c
+                        },
+                        unlocked(){
+                                return player.k.lock.repeatables[71].gt(2) || hasUnlockedPast("l")
+                        },
+                        bases(){
+                                return [Decimal.pow(10, 22130), Decimal.pow(10, 1100)]
+                        },
+                        cost(){
+                                let bases = tmp.k.clickables[72].bases
+                                let a = bases[0]
+                                let b = bases[1]
+                                return a.times(Decimal.pow(b, player.k.lock.repeatables[72].pow(2)))
+                        },
+                        getMaxPossible(){
+                                let bases = tmp.k.clickables[72].bases
+                                let amt = player.k.lock.resources[22]
+                                if (amt.lt(bases[0])) return new Decimal(0)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                        },
+                        effect(){
+                                let amt = player.k.lock.repeatables[72]
+                                amt = amt.plus(layers.k.clickables.getBonusKeys(72))
+                                let ret = amt.div(10).plus(1).ln().times(4)
+                                return ret
+                        },
+                        effectDescription(){
+                                if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
+                                let eff = tmp.k.clickables[72].effect
+                                return "+" + format(eff) + " effective prior Keys"
+                        },
+                        canClick(){
+                                let data = player.k.lock.repeatables
+                                if (data[72].gte(data[42])) return false
+                                return player.k.lock.resources[22].gte(this.cost())
+                        },
+                        onClick(nocost = false){
+                                if (!this.canClick()) return 
+                                let cost = this.cost()
+                                let data = player.k.lock 
+                                if (!nocost) data.resources[22] = data.resources[22].minus(cost)
+                                data.repeatables[72] = data.repeatables[72].plus(1)
+                        },
+                },
+                73: {
+                        title(){
+                                if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
+                                return "<h3 style='color: #" + getUndulatingColor(12.8) + "'>Tungsten<br>Key</h3>"
+                        },
+                        display(){
+                                if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
+                                let a 
+                                let b 
+                                let c 
+                                let id = 73
+                                a = "<h3 style='color: #AC4600'>Cost</h3>: " + formatWhole(tmp.k.clickables[id].cost) + "<br>"
+                                c = "<h3 style='color: #FF33CC'>Effect</h3>: (" + formatWhole(player.k.lock.repeatables[id]) +")<br>" + tmp.k.clickables[id].effectDescription + "<br>"
+                                return a + c
+                        },
+                        unlocked(){
+                                return player.k.lock.repeatables[72].gt(1) || hasUnlockedPast("l")
+                        },
+                        bases(){
+                                return [Decimal.pow(10, 21300), Decimal.pow(10, 300)]
+                        },
+                        cost(){
+                                let bases = tmp.k.clickables[73].bases
+                                let a = bases[0]
+                                let b = bases[1]
+                                return a.times(Decimal.pow(b, player.k.lock.repeatables[73].pow(2)))
+                        },
+                        getMaxPossible(){
+                                let bases = tmp.k.clickables[73].bases
+                                let amt = player.k.lock.resources[23]
+                                if (amt.lt(bases[0])) return new Decimal(0)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                        },
+                        effect(){
+                                let amt = player.k.lock.repeatables[73]
+                                amt = amt.plus(layers.k.clickables.getBonusKeys(73))
+                                let ret = amt.pow(1.8).div(40).plus(1).ln().times(240).plus(1)
+                                return ret
+                        },
+                        effectDescription(){
+                                if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
+                                let eff = tmp.k.clickables[73].effect
+                                return "*" + format(eff) + " <b>L</b> gain per Key"
+                        },
+                        canClick(){
+                                let data = player.k.lock.repeatables
+                                if (data[73].gte(data[43])) return false
+                                return player.k.lock.resources[23].gte(this.cost())
+                        },
+                        onClick(nocost = false){
+                                if (!this.canClick()) return 
+                                let cost = this.cost()
+                                let data = player.k.lock 
+                                if (!nocost) data.resources[23] = data.resources[23].minus(cost)
+                                data.repeatables[73] = data.repeatables[73].plus(1)
+                        },
+                },
+                74: {
+                        title(){
+                                if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
+                                return "<h3 style='color: #" + getUndulatingColor(13.2) + "'>Aluminum<br>Key</h3>"
+                        },
+                        display(){
+                                if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
+                                let a 
+                                let b 
+                                let c 
+                                let id = 74
+                                a = "<h3 style='color: #AC4600'>Cost</h3>: " + formatWhole(tmp.k.clickables[id].cost) + "<br>"
+                                c = "<h3 style='color: #FF33CC'>Effect</h3>: (" + formatWhole(player.k.lock.repeatables[id]) +")<br>" + tmp.k.clickables[id].effectDescription + "<br>"
+                                return a + c
+                        },
+                        unlocked(){
+                                return player.k.lock.repeatables[73].gt(4) || hasUnlockedPast("l")
+                        },
+                        bases(){
+                                return [Decimal.pow(10, 21800), Decimal.pow(10, 3900)]
+                        },
+                        cost(){
+                                let bases = tmp.k.clickables[74].bases
+                                let a = bases[0]
+                                let b = bases[1]
+                                return a.times(Decimal.pow(b, player.k.lock.repeatables[74].pow(2)))
+                        },
+                        getMaxPossible(){
+                                let bases = tmp.k.clickables[74].bases
+                                let amt = player.k.lock.resources[24]
+                                if (amt.lt(bases[0])) return new Decimal(0)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                        },
+                        effect(){
+                                let amt = player.k.lock.repeatables[74]
+                                amt = amt.plus(layers.k.clickables.getBonusKeys(74))
+                                let ret = amt.pow(2).plus(1).pow(7)
+                                return ret
+                        },
+                        effectDescription(){
+                                if (player.tab != "k") return ""
+                                if (player.subtabs.k.mainTabs != "Lock") return ""
+                                let eff = tmp.k.clickables[74].effect
+                                return "*" + format(eff) + " mine production per <b>H</b> challenge"
+                        },
+                        canClick(){
+                                let data = player.k.lock.repeatables
+                                if (data[74].gte(data[44])) return false
+                                return player.k.lock.resources[24].gte(this.cost())
+                        },
+                        onClick(nocost = false){
+                                if (!this.canClick()) return 
+                                let cost = this.cost()
+                                let data = player.k.lock 
+                                if (!nocost) data.resources[24] = data.resources[24].minus(cost)
+                                data.repeatables[74] = data.repeatables[74].plus(1)
                         },
                 },
         },
@@ -17795,6 +18063,7 @@ addLayer("l", {
                 x = x.times(Decimal.pow(tmp.k.clickables[52].effect, tmp.k.clickables.totalLocks))
                 if (hasUpgrade("l", 23)) x = x.times(tmp.h.challenges[21].rewardEffect)
                 if (hasUpgrade("k", 41)) x = x.times(Decimal.pow(4, totalChallengeComps("h") - 170).max(1))
+                x = x.times(Decimal.pow(tmp.k.clickables[73].effect, tmp.k.clickables.totalKeys))
 
                 return x
         },
