@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".7.16 MY?",
+	num: ".7.17 hm",
 	name: "",
 }
 
@@ -605,7 +605,7 @@ var displayThings = [
 		return "(" + format(getPointGen()) + "/sec)"
 	},
 	function(){
-		let a = "Endgame: 1e3417 Lemons"
+		let a = "Endgame: 258 h chall comps"
 		return player.autosave ? a : a + ". Warning: autosave is off"
 	},
 	function(){
@@ -963,6 +963,9 @@ function getChangeLogText(){
 	bm3= "- Added a key"
 	bm4= "- Added three achievement rows"
 	bm5= "- Notification is not shown in Keys if the mines/locks/keys are being autobought"
+	bn1= "v.7.17"
+	bn2= "- Added a Key Challenge"
+	bn3= "- Added a Lemon upgrade"
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
 	let part2 = [b1, b2, b3, b4, b5, "", b6, b7, "", b8, b9, b10, "", b11, b12, ""]

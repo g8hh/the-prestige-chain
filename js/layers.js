@@ -9506,7 +9506,7 @@ addLayer("g", {
                 }, // hasUpgrade("g", 23)
                 24: {
                         title: "Grand",
-                        description: "Square the successfully deved boosted to Max Charges",
+                        description: "Square the successfully deved boost to Max Charges",
                         cost: new Decimal("1e64436"),
                         unlocked(){
                                 return hasUpgrade("e", 55) || hasUnlockedPast("g")
@@ -13471,6 +13471,7 @@ addLayer("j", {
                                 return amt.log(1.5).sqrt().plus(1).floor()
                         },
                         base(){
+                                if (inChallenge("k", 12)) return new Decimal(1)
                                 let ret = new Decimal(1.2)
                                 if (hasUpgrade("j", 34)) ret = ret.plus(.1)
                                 if (hasUpgrade("j", 35)) ret = ret.plus(.01 * player.k.milestones.length)
@@ -15182,7 +15183,6 @@ addLayer("k", {
                 }, // hasUpgrade("k", 45)
                 
                 /*
-                kerry
                 knowing
                 keith
                 Keeps
@@ -18032,6 +18032,32 @@ addLayer("k", {
                         currencyInternalName: "points",
                         completionLimit: 20,
                 },
+                12: {
+                        name: "Kerry",
+                        challengeDescription: "<b>Kiss</b> and remove <b>Japan</b> effect",
+                        rewardDescription: "Multiply Lemon gain per Key",
+                        rewardEffect(){
+                                let c = challengeCompletions("k", 12)
+                                c = new Decimal(c)
+                                let ret = c.plus(9).pow(c.sqrt().times(6))
+                                return ret
+                        },
+                        goal(){
+                                let init = new Decimal(10.728)
+                                let c = challengeCompletions("k", 12)
+                                let factor = getChallengeFactor(c)
+                                if (factor.eq(1)) factor = new Decimal(0)
+                                let second = new Decimal(347.5)
+                                let exp = second.pow(factor).times(init).times(Decimal.pow(Math.max(c,1), c + 4))
+                                return Decimal.pow(10, exp.times(1e161))
+                        },
+                        unlocked(){
+                                return hasUpgrade("l", 25) || hasUnlockedPast("l")
+                        },
+                        currencyInternalName: "points",
+                        completionLimit: 20,
+                        countsAs: [11],
+                },
         },
         shouldNotify(){
                 for (id in tmp.k.clickables){
@@ -18330,6 +18356,7 @@ addLayer("l", {
                 if (hasUpgrade("j", 51)) x = x.plus(.01 * Math.max(0, totalChallengeComps("h") - 150))
                 if (hasUpgrade("j", 54)) x = x.plus(.04 * player.j.upgrades.length)
                 x = x.plus(tmp.k.clickables[55].effect)
+                if (hasUpgrade("l", 25)) x = x.plus(5 * totalChallengeComps("k"))
                 return x
         },
         getGainMultPre(){
@@ -18346,6 +18373,7 @@ addLayer("l", {
                 if (hasUpgrade("l", 23)) x = x.times(tmp.h.challenges[21].rewardEffect)
                 if (hasUpgrade("k", 41)) x = x.times(Decimal.pow(4, totalChallengeComps("h") - 170).max(1))
                 x = x.times(Decimal.pow(tmp.k.clickables[73].effect, tmp.k.clickables.totalKeys))
+                x = x.times(Decimal.pow(tmp.k.challenges[12].rewardEffect, tmp.k.clickables.totalKeys))
 
                 return x
         },
@@ -18516,7 +18544,7 @@ addLayer("l", {
                 },
                 11: {
                         requirementDescription: "<b>Live</b><br>Requires: 1e30,000 Lemons", 
-                        effectDescription: "You buy 1000x Bulk Amount, autobuy the last row of puzzle upgrades, and you can completed one more <b>H</b> challenge per minestone",
+                        effectDescription: "You buy 1000x Bulk Amount, autobuy the last row of puzzle upgrades, and you can complete one more <b>H</b> challenge per milestone",
                         done(){
                                 return player.l.points.max(10).log10().gt(3e4)
                         },
@@ -18600,6 +18628,14 @@ addLayer("l", {
                                 return hasUpgrade("l", 23) || hasUnlockedPast("l")
                         }
                 }, // hasUpgrade("l", 24)
+                25: {
+                        title: "Large",
+                        description: "Unlock a <b>K</b> challenge [to do] and each <b>K</b> challenge completion adds 5 to the <b>L</b> gain exponent",
+                        cost: new Decimal("1e31827"),
+                        unlocked(){
+                                return player.k.challenges[11] >= 5 || hasUnlockedPast("l")
+                        }
+                }, // hasUpgrade("l", 25)
 
                 /*
                 large
