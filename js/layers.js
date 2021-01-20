@@ -137,6 +137,9 @@ function getChallengeFactor(comps){
 }
 
 function isBuyableActive(layer, thang){
+        if (layer == "o") return true
+        if (layer == "n") return true
+        if (layer == "m") return true
         if (layer == "l") return true
         if (layer == "k") return true
         if (inChallenge("k", 11)) return false
@@ -161,6 +164,9 @@ function isBuyableActive(layer, thang){
 }
 
 function isPrestigeEffectActive(layer){
+        if (layer == "o") return true
+        if (layer == "n") return true
+        if (layer == "m") return true
         if (layer == "l") return true
         if (layer == "k") return true
         if (layer == "j") return true
@@ -749,7 +755,7 @@ addLayer("a", {
         hotkeys: [
                 {key: "]", description: "]: Buy max of all upgrades", 
                         onPress(){
-                                let l =  ["a", "b", "c", "d", "e", "goalsii", "f", "g", "h", "i", "j"]
+                                let l =  ["a", "b", "c", "d", "e", "goalsii", "f", "g", "h", "i", "j", "k", "l", "m", "n"]
                                 let trylist = [11, 12, 13, 14, 15, 
                                         21, 22, 23, 24, 25,
                                         31, 32, 33, 34, 35,
@@ -9522,7 +9528,7 @@ addLayer("g", {
                 }, // hasUpgrade("g", 25)
                 31: {
                         title: "Guest",
-                        description: "<b>Future</b> gives free <b>February</b> levels and each file completion gives a free <b>Future</b> level",
+                        description: "<b>Future</b> gives free <b>February</b> levels and each <b>Files</b> completion gives a free <b>Future</b> level",
                         cost: new Decimal("1e123123"),
                         unlocked(){
                                 return hasUpgrade("h", 22) || hasUnlockedPast("h")
@@ -12408,7 +12414,6 @@ addLayer("j", {
                 }, // hasUpgrade("j", 55)
 
                 /*
-                Junction
                 Joel
                 
                 Julie
@@ -12552,7 +12557,33 @@ addLayer("j", {
                                 return hasUpgrade("k", 45) || hasUnlockedPast("l")
                         },
                 },
-                
+                23: {
+                        title: "Junction",
+                        display(){
+                                return getBuyableDisplay("j", 23)
+                        },
+                        effect(){
+                                return CURRENT_BUYABLE_EFFECTS["j23"]
+                        },
+                        canAfford(){
+                                return canAffordBuyable("j", 23)
+                        },
+                        total(){
+                                return getBuyableAmount("j", 23).plus(this.extra())
+                        },
+                        extra(){
+                                return calcBuyableExtra("j", 23)
+                        },
+                        buy(){
+                                buyManualBuyable("j", 23)
+                        },
+                        buyMax(maximum){
+                                buyMaximumBuyable("j", 23, maximum)
+                        },
+                        unlocked(){ 
+                                return hasUpgrade("l", 25) || hasUnlockedPast("l")
+                        },
+                },
         },
         clickables: {
                 rows: 7,
@@ -14576,11 +14607,11 @@ addLayer("j", {
 
                 let r = 0
                 if (hasMilestone("l", 7)) r = Math.floor(data2.bestCompletedAllTime * .98)
-                data2.finished = r
                 data2.bestCompletedK = r
 
                 if (data2.upgrades.includes(75)) return 
 
+                data2.finished = r
                 data2.exp = new Decimal(0)
                 data2.bankedExp = new Decimal(0)
                 data2.knowledge = new Decimal(0)
@@ -14830,11 +14861,12 @@ addLayer("k", {
                 if (player.l.autobuyLocks12 && hasMilestone("l", 5)){
                         let list = [31,32,33,34,35,41,42,43,44,45]
                         if (hasUpgrade("k", 43)) {
-                                list.push(51)
-                                list.push(52)
-                                list.push(53)
-                                list.push(54)
-                                list.push(55)
+                                list = list.concat([51,52,53,54,55])
+                        }
+                        if (hasMilestone("m", 2)) {
+                                list = list.concat([61,62,63,64,65])
+                                list = list.concat([71,72,73,74,75])
+                                list = list.concat([81])
                         }
                         for (i = 0; i < list.length; i++){
                                 let x = tmp.k.clickables[list[i]].canClick
@@ -15255,6 +15287,7 @@ addLayer("k", {
                         let ret = new Decimal(0)
                         if (id < 72) ret = ret.plus(tmp.k.clickables[72].effect)
                         if (id < 80) ret = ret.plus(tmp.k.challenges[11].rewardEffect)
+                        if (hasMilestone("m", 3) && id == 72) ret = ret.plus(1) 
                         return ret
                 },
                 11: {
@@ -15355,6 +15388,7 @@ addLayer("k", {
                                 
                                 let init = 1
                                 if (hasUpgrade("k", 44)) init *= 10
+                                if (hasMilestone("m", 2)) init *= 10
 
                                 diff = diff.min(init)
                                 
@@ -15455,6 +15489,7 @@ addLayer("k", {
                                 
                                 let init = 1
                                 if (hasUpgrade("k", 44)) init *= 10
+                                if (hasMilestone("m", 2)) init *= 10
 
                                 diff = diff.min(init)
                                 
@@ -15557,6 +15592,7 @@ addLayer("k", {
                                 
                                 let init = 1
                                 if (hasUpgrade("k", 44)) init *= 10
+                                if (hasMilestone("m", 2)) init *= 10
 
                                 diff = diff.min(init)
                                 
@@ -15657,6 +15693,7 @@ addLayer("k", {
                                 
                                 let init = 1
                                 if (hasUpgrade("k", 44)) init *= 10
+                                if (hasMilestone("m", 2)) init *= 10
 
                                 diff = diff.min(init)
                                 
@@ -15757,6 +15794,7 @@ addLayer("k", {
                                 
                                 let init = 1
                                 if (hasUpgrade("k", 44)) init *= 10
+                                if (hasMilestone("m", 2)) init *= 10
 
                                 diff = diff.min(init)
                                 
@@ -15857,6 +15895,7 @@ addLayer("k", {
                                 
                                 let init = 1
                                 if (hasUpgrade("k", 44)) init *= 10
+                                if (hasMilestone("m", 2)) init *= 10
 
                                 diff = diff.min(init)
                                 
@@ -15957,6 +15996,7 @@ addLayer("k", {
                                 
                                 let init = 1
                                 if (hasUpgrade("k", 44)) init *= 10
+                                if (hasMilestone("m", 2)) init *= 10
 
                                 diff = diff.min(init)
                                 
@@ -16058,6 +16098,7 @@ addLayer("k", {
                                 
                                 let init = 1
                                 if (hasUpgrade("k", 44)) init *= 10
+                                if (hasMilestone("m", 2)) init *= 10
 
                                 diff = diff.min(init)
                                 
@@ -16163,6 +16204,7 @@ addLayer("k", {
                                 
                                 let init = 1
                                 if (hasUpgrade("k", 44)) init *= 10
+                                if (hasMilestone("m", 2)) init *= 10
 
                                 diff = diff.min(init)
                                 
@@ -16263,6 +16305,7 @@ addLayer("k", {
                                 
                                 let init = 1
                                 if (hasUpgrade("k", 44)) init *= 10
+                                if (hasMilestone("m", 2)) init *= 10
 
                                 diff = diff.min(init)
                                 
@@ -16335,6 +16378,7 @@ addLayer("k", {
                                 
                                 let init = 1
                                 if (hasUpgrade("k", 44)) init *= 10
+                                if (hasMilestone("m", 2)) init *= 10
 
                                 diff = diff.min(init)
                                 
@@ -16406,6 +16450,7 @@ addLayer("k", {
                                 
                                 let init = 1
                                 if (hasUpgrade("k", 44)) init *= 10
+                                if (hasMilestone("m", 2)) init *= 10
 
                                 diff = diff.min(init)
                                 
@@ -16478,6 +16523,7 @@ addLayer("k", {
                                 
                                 let init = 1
                                 if (hasUpgrade("k", 44)) init *= 10
+                                if (hasMilestone("m", 2)) init *= 10
 
                                 diff = diff.min(init)
                                 
@@ -16550,6 +16596,7 @@ addLayer("k", {
                                 
                                 let init = 1
                                 if (hasUpgrade("k", 44)) init *= 10
+                                if (hasMilestone("m", 2)) init *= 10
 
                                 diff = diff.min(init)
                                 
@@ -16624,6 +16671,7 @@ addLayer("k", {
                                 
                                 let init = 1
                                 if (hasUpgrade("k", 44)) init *= 10
+                                if (hasMilestone("m", 2)) init *= 10
 
                                 diff = diff.min(init)
                                 
@@ -16695,6 +16743,7 @@ addLayer("k", {
                                 
                                 let init = 1
                                 if (hasUpgrade("k", 44)) init *= 10
+                                if (hasMilestone("m", 2)) init *= 10
 
                                 diff = diff.min(init)
                                 
@@ -16767,6 +16816,7 @@ addLayer("k", {
                                 
                                 let init = 1
                                 if (hasUpgrade("k", 44)) init *= 10
+                                if (hasMilestone("m", 2)) init *= 10
 
                                 diff = diff.min(init)
                                 
@@ -16837,6 +16887,7 @@ addLayer("k", {
                                 
                                 let init = 1
                                 if (hasUpgrade("k", 44)) init *= 10
+                                if (hasMilestone("m", 2)) init *= 10
 
                                 diff = diff.min(init)
                                 
@@ -16908,6 +16959,7 @@ addLayer("k", {
                                 
                                 let init = 1
                                 if (hasUpgrade("k", 44)) init *= 10
+                                if (hasMilestone("m", 2)) init *= 10
 
                                 diff = diff.min(init)
                                 
@@ -16979,6 +17031,7 @@ addLayer("k", {
                                 
                                 let init = 1
                                 if (hasUpgrade("k", 44)) init *= 10
+                                if (hasMilestone("m", 2)) init *= 10
 
                                 diff = diff.min(init)
                                 
@@ -17050,6 +17103,7 @@ addLayer("k", {
                                 
                                 let init = 1
                                 if (hasUpgrade("k", 44)) init *= 10
+                                if (hasMilestone("m", 2)) init *= 10
 
                                 diff = diff.min(init)
                                 
@@ -17121,6 +17175,7 @@ addLayer("k", {
                                 
                                 let init = 1
                                 if (hasUpgrade("k", 44)) init *= 10
+                                if (hasMilestone("m", 2)) init *= 10
 
                                 diff = diff.min(init)
                                 
@@ -17192,6 +17247,7 @@ addLayer("k", {
                                 
                                 let init = 1
                                 if (hasUpgrade("k", 44)) init *= 10
+                                if (hasMilestone("m", 2)) init *= 10
 
                                 diff = diff.min(init)
                                 
@@ -17263,6 +17319,7 @@ addLayer("k", {
                                 
                                 let init = 1
                                 if (hasUpgrade("k", 44)) init *= 10
+                                if (hasMilestone("m", 2)) init *= 10
 
                                 diff = diff.min(init)
                                 
@@ -17334,6 +17391,7 @@ addLayer("k", {
                                 
                                 let init = 1
                                 if (hasUpgrade("k", 44)) init *= 10
+                                if (hasMilestone("m", 2)) init *= 10
 
                                 diff = diff.min(init)
                                 
@@ -17395,11 +17453,20 @@ addLayer("k", {
                                 return player.k.lock.resources[11].gte(this.cost())
                         },
                         onClick(nocost = false){
+                                let id = 61
                                 if (!this.canClick()) return 
+                                let maxPoss = tmp.k.clickables[id].getMaxPossible
+                                cur = player.k.lock.repeatables[id]
+                                if (maxPoss.lte(cur)) return 
+                                let diff = maxPoss.sub(cur)
+                                
+                                let init = 1
+
+                                diff = diff.min(init)
+                                
                                 let cost = this.cost()
-                                let data = player.k.lock 
-                                if (!nocost) data.resources[11] = data.resources[11].minus(cost)
-                                data.repeatables[61] = data.repeatables[61].plus(1)
+                                if (!nocost) player.k.lock.resources[id-50] = player.k.lock.resources[id-50].minus(cost)
+                                player.k.lock.repeatables[id] = player.k.lock.repeatables[id].plus(diff)
                         },
                 },
                 62: {
@@ -17455,11 +17522,20 @@ addLayer("k", {
                                 return player.k.lock.resources[12].gte(this.cost())
                         },
                         onClick(nocost = false){
+                                let id = 62
                                 if (!this.canClick()) return 
+                                let maxPoss = tmp.k.clickables[id].getMaxPossible
+                                cur = player.k.lock.repeatables[id]
+                                if (maxPoss.lte(cur)) return 
+                                let diff = maxPoss.sub(cur)
+                                
+                                let init = 1
+
+                                diff = diff.min(init)
+                                
                                 let cost = this.cost()
-                                let data = player.k.lock 
-                                if (!nocost) data.resources[12] = data.resources[12].minus(cost)
-                                data.repeatables[62] = data.repeatables[62].plus(1)
+                                if (!nocost) player.k.lock.resources[id-50] = player.k.lock.resources[id-50].minus(cost)
+                                player.k.lock.repeatables[id] = player.k.lock.repeatables[id].plus(diff)
                         },
                 },
                 63: {
@@ -17516,11 +17592,20 @@ addLayer("k", {
                                 return player.k.lock.resources[13].gte(this.cost())
                         },
                         onClick(nocost = false){
+                                let id = 63
                                 if (!this.canClick()) return 
+                                let maxPoss = tmp.k.clickables[id].getMaxPossible
+                                cur = player.k.lock.repeatables[id]
+                                if (maxPoss.lte(cur)) return 
+                                let diff = maxPoss.sub(cur)
+                                
+                                let init = 1
+
+                                diff = diff.min(init)
+                                
                                 let cost = this.cost()
-                                let data = player.k.lock 
-                                if (!nocost) data.resources[13] = data.resources[13].minus(cost)
-                                data.repeatables[63] = data.repeatables[63].plus(1)
+                                if (!nocost) player.k.lock.resources[id-50] = player.k.lock.resources[id-50].minus(cost)
+                                player.k.lock.repeatables[id] = player.k.lock.repeatables[id].plus(diff)
                         },
                 },
                 64: {
@@ -17576,11 +17661,20 @@ addLayer("k", {
                                 return player.k.lock.resources[14].gte(this.cost())
                         },
                         onClick(nocost = false){
+                                let id = 64
                                 if (!this.canClick()) return 
+                                let maxPoss = tmp.k.clickables[id].getMaxPossible
+                                cur = player.k.lock.repeatables[id]
+                                if (maxPoss.lte(cur)) return 
+                                let diff = maxPoss.sub(cur)
+                                
+                                let init = 1
+
+                                diff = diff.min(init)
+                                
                                 let cost = this.cost()
-                                let data = player.k.lock 
-                                if (!nocost) data.resources[14] = data.resources[14].minus(cost)
-                                data.repeatables[64] = data.repeatables[64].plus(1)
+                                if (!nocost) player.k.lock.resources[id-50] = player.k.lock.resources[id-50].minus(cost)
+                                player.k.lock.repeatables[id] = player.k.lock.repeatables[id].plus(diff)
                         },
                 },
                 65: {
@@ -17636,11 +17730,20 @@ addLayer("k", {
                                 return player.k.lock.resources[15].gte(this.cost())
                         },
                         onClick(nocost = false){
+                                let id = 65
                                 if (!this.canClick()) return 
+                                let maxPoss = tmp.k.clickables[id].getMaxPossible
+                                cur = player.k.lock.repeatables[id]
+                                if (maxPoss.lte(cur)) return 
+                                let diff = maxPoss.sub(cur)
+                                
+                                let init = 1
+
+                                diff = diff.min(init)
+                                
                                 let cost = this.cost()
-                                let data = player.k.lock 
-                                if (!nocost) data.resources[15] = data.resources[15].minus(cost)
-                                data.repeatables[65] = data.repeatables[65].plus(1)
+                                if (!nocost) player.k.lock.resources[id-50] = player.k.lock.resources[id-50].minus(cost)
+                                player.k.lock.repeatables[id] = player.k.lock.repeatables[id].plus(diff)
                         },
                 },
                 71: {
@@ -17696,11 +17799,20 @@ addLayer("k", {
                                 return player.k.lock.resources[21].gte(this.cost())
                         },
                         onClick(nocost = false){
+                                let id = 71
                                 if (!this.canClick()) return 
+                                let maxPoss = tmp.k.clickables[id].getMaxPossible
+                                cur = player.k.lock.repeatables[id]
+                                if (maxPoss.lte(cur)) return 
+                                let diff = maxPoss.sub(cur)
+                                
+                                let init = 1
+
+                                diff = diff.min(init)
+                                
                                 let cost = this.cost()
-                                let data = player.k.lock 
-                                if (!nocost) data.resources[21] = data.resources[21].minus(cost)
-                                data.repeatables[71] = data.repeatables[71].plus(1)
+                                if (!nocost) player.k.lock.resources[id-50] = player.k.lock.resources[id-50].minus(cost)
+                                player.k.lock.repeatables[id] = player.k.lock.repeatables[id].plus(diff)
                         },
                 },
                 72: {
@@ -17756,11 +17868,20 @@ addLayer("k", {
                                 return player.k.lock.resources[22].gte(this.cost())
                         },
                         onClick(nocost = false){
+                                let id = 72
                                 if (!this.canClick()) return 
+                                let maxPoss = tmp.k.clickables[id].getMaxPossible
+                                cur = player.k.lock.repeatables[id]
+                                if (maxPoss.lte(cur)) return 
+                                let diff = maxPoss.sub(cur)
+                                
+                                let init = 1
+
+                                diff = diff.min(init)
+                                
                                 let cost = this.cost()
-                                let data = player.k.lock 
-                                if (!nocost) data.resources[22] = data.resources[22].minus(cost)
-                                data.repeatables[72] = data.repeatables[72].plus(1)
+                                if (!nocost) player.k.lock.resources[id-50] = player.k.lock.resources[id-50].minus(cost)
+                                player.k.lock.repeatables[id] = player.k.lock.repeatables[id].plus(diff)
                         },
                 },
                 73: {
@@ -17816,11 +17937,20 @@ addLayer("k", {
                                 return player.k.lock.resources[23].gte(this.cost())
                         },
                         onClick(nocost = false){
+                                let id = 73
                                 if (!this.canClick()) return 
+                                let maxPoss = tmp.k.clickables[id].getMaxPossible
+                                cur = player.k.lock.repeatables[id]
+                                if (maxPoss.lte(cur)) return 
+                                let diff = maxPoss.sub(cur)
+                                
+                                let init = 1
+
+                                diff = diff.min(init)
+                                
                                 let cost = this.cost()
-                                let data = player.k.lock 
-                                if (!nocost) data.resources[23] = data.resources[23].minus(cost)
-                                data.repeatables[73] = data.repeatables[73].plus(1)
+                                if (!nocost) player.k.lock.resources[id-50] = player.k.lock.resources[id-50].minus(cost)
+                                player.k.lock.repeatables[id] = player.k.lock.repeatables[id].plus(diff)
                         },
                 },
                 74: {
@@ -17876,11 +18006,20 @@ addLayer("k", {
                                 return player.k.lock.resources[24].gte(this.cost())
                         },
                         onClick(nocost = false){
+                                let id = 74
                                 if (!this.canClick()) return 
+                                let maxPoss = tmp.k.clickables[id].getMaxPossible
+                                cur = player.k.lock.repeatables[id]
+                                if (maxPoss.lte(cur)) return 
+                                let diff = maxPoss.sub(cur)
+                                
+                                let init = 1
+
+                                diff = diff.min(init)
+                                
                                 let cost = this.cost()
-                                let data = player.k.lock 
-                                if (!nocost) data.resources[24] = data.resources[24].minus(cost)
-                                data.repeatables[74] = data.repeatables[74].plus(1)
+                                if (!nocost) player.k.lock.resources[id-50] = player.k.lock.resources[id-50].minus(cost)
+                                player.k.lock.repeatables[id] = player.k.lock.repeatables[id].plus(diff)
                         },
                 },
                 75: {
@@ -17936,11 +18075,20 @@ addLayer("k", {
                                 return player.k.lock.resources[25].gte(this.cost())
                         },
                         onClick(nocost = false){
+                                let id = 75
                                 if (!this.canClick()) return 
+                                let maxPoss = tmp.k.clickables[id].getMaxPossible
+                                cur = player.k.lock.repeatables[id]
+                                if (maxPoss.lte(cur)) return 
+                                let diff = maxPoss.sub(cur)
+                                
+                                let init = 1
+
+                                diff = diff.min(init)
+                                
                                 let cost = this.cost()
-                                let data = player.k.lock 
-                                if (!nocost) data.resources[25] = data.resources[25].minus(cost)
-                                data.repeatables[75] = data.repeatables[75].plus(1)
+                                if (!nocost) player.k.lock.resources[id-50] = player.k.lock.resources[id-50].minus(cost)
+                                player.k.lock.repeatables[id] = player.k.lock.repeatables[id].plus(diff)
                         },
                 },
                 81: {
@@ -17996,11 +18144,20 @@ addLayer("k", {
                                 return player.l.points.gte(this.cost())
                         },
                         onClick(nocost = false){
+                                let id = 81
                                 if (!this.canClick()) return 
+                                let maxPoss = tmp.k.clickables[id].getMaxPossible
+                                cur = player.k.lock.repeatables[id]
+                                if (maxPoss.lte(cur)) return 
+                                let diff = maxPoss.sub(cur)
+                                
+                                let init = 1
+
+                                diff = diff.min(init)
+                                
                                 let cost = this.cost()
-                                let data = player.k.lock 
                                 if (!nocost) player.l.points = player.l.points.minus(cost)
-                                data.repeatables[81] = data.repeatables[81].plus(1)
+                                player.k.lock.repeatables[id] = player.k.lock.repeatables[id].plus(diff)
                         },
                 },
         },
@@ -18069,6 +18226,7 @@ addLayer("k", {
                         if (hasMilestone("l", 3) && [11,12,13,14,15,21,22,23,24,25].includes(id)) continue
                         if (hasMilestone("l", 5) && [31,32,33,34,35,41,42,43,44,45].includes(id)) continue
                         if (hasUpgrade("k", 43) && [51,52,53,54,55].includes(id)) continue
+                        if (hasMilestone("m", 2) && [61,62,63,64,65,71,72,73,74,75,81].includes(id)) continue
 
                         if (tmp.k.clickables[id].canClick && tmp.k.clickables[id].unlocked){
                                 return true
@@ -18219,7 +18377,7 @@ addLayer("k", {
                         data.upgrades = filter(data.upgrades, keep)
                 }
                 
-                if (!false) {
+                if (!hasMilestone("m", 1)) {
                         //milestones
                         let keep2 = []
                         x = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", 
@@ -18702,6 +18860,265 @@ addLayer("l", {
                 let data = player.l
                 if (layer == "l") data.time = 0
                 if (!getsReset("l", layer)) return
+                data.time = 0
+                data.times = 0
+
+                if (!hasMilestone("m", 3)) {
+                        //upgrades
+                        let keep = []
+                        data.upgrades = filter(data.upgrades, keep)
+                }
+                
+                if (!false) {
+                        //milestones
+                        let keep2 = []
+                        if (hasMilestone("m", 1)) {
+                                let possible = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"]
+                                for (i = 0; i < player.m.times; i++){
+                                        keep2 = keep2.concat(possible.slice(i*3, i*3 + 3))
+                                        if (possible.length < i * 3 + 3) break
+                                }
+                        }
+                        data.milestones = filter(data.milestones, keep2)
+                }
+
+
+                //resources
+                data.points = new Decimal(0)
+                data.total = new Decimal(0)
+                data.best = new Decimal(0)
+
+                //buyables
+                let resetBuyables = [11, 12, 13, 21, 22, 23, 31, 32, 33]
+                for (let j = 0; j < resetBuyables.length; j++) {
+                        break //remove when buyables added
+                        data.buyables[resetBuyables[j]] = new Decimal(0)
+                }
+        },
+})
+
+addLayer("m", {
+        name: "Maps",
+        symbol: "M",
+        position: 0,
+        startData() { 
+                return {
+                        unlocked: true,
+                        points: new Decimal(0),
+                        best: new Decimal(0),
+                        total: new Decimal(0),
+                        abtime: 0,
+                        time: 0,
+                        times: 0,
+                        autotimes: 0,
+                        autodevtime: 0,
+                } //no comma here
+        },
+        color: "#FFDFA7",
+        branches: ["l"],
+        requires: new Decimal(0),
+        resource: "Maps",
+        baseResource: "Lemons",
+        baseAmount() {
+                return player.l.best
+        },
+        type: "custom",
+        getResetGain() {
+                return getGeneralizedPrestigeGain("m")
+        },
+        getBaseDiv(){
+                let x = new Decimal("1e44546")
+                return x
+        },
+        getGainExp(){
+                let x = new Decimal(4)
+                return x
+        },
+        getGainMultPre(){
+                let x = Decimal.pow(1000, -1)
+                return x
+        },
+        getGainMultPost(){
+                let x = getGeneralizedInitialPostMult("m")
+
+                return x
+        },
+        effect(){
+                if (!isPrestigeEffectActive("m")) return new Decimal(1)
+
+                let amt = player.m.best
+
+                let exp = player.m.best.pow(.2).times(3).min(450)
+                
+                let exp2 = amt.div(2).cbrt().times(5).min(50)
+
+                let ret = amt.times(24).plus(1).pow(exp)
+
+                let ret2 = amt.pow(exp2).max(1)
+
+                return ret.times(ret2)
+        },
+        effectDescription(){
+                return getGeneralizedEffectDisplay("m")
+        },
+        update(diff){
+                let data = player.m
+
+                data.best = data.best.max(data.points)
+                if (false) {
+                        let gain = tmp.m.getResetGain
+                        data.points = data.points.plus(gain.times(diff))
+                        data.total = data.total.plus(gain.times(diff))
+                        data.autotimes += diff
+                        if (data.autotimes > 3) data.autotimes = 3
+                        if (data.autotimes > 1) {
+                                data.autotimes += -1
+                                data.times ++
+                        }
+                }
+                if (false) {
+                        handleGeneralizedBuyableAutobuy(diff, "m")
+                } else {
+                        data.abtime = 0
+                }
+
+                data.time += diff
+                data.autodevtime += diff
+                
+                if (data.autodevtime < 1) return
+                data.autodevtime += -1
+                if (data.autodevtime > 10) data.autodevtime = 10
+        },
+        row: 12, // Row the layer is in on the tree (0 is the first row)
+        hotkeys: [
+                {key: "m", description: "M: Reset for Maps", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+                {key: "shift+M", description: "Shift+M: Go to Maps", onPress(){
+                                showTab("m")
+                        }
+                },
+        ],
+        layerShown(){return player.l.best.gt("1e45546") || player.m.best.gt(0) || hasUnlockedPast("m")},
+        prestigeButtonText(){
+                if (false) return ""
+                return getGeneralizedPrestigeButtonText("m")
+        },
+        canReset(){
+                return player.m.time >= 2 && !false && tmp.m.getResetGain.gt(0)
+        },
+        milestones: {
+                //2^^n
+                1: {
+                        requirementDescription: "<b>My</b><br>Requires: 1 Map", 
+                        effectDescription: "Per <b>M</b> reset you keep three <b>L</b> milestones and keep <b>K</b> milestones",
+                        done(){
+                                return player.m.points.gte(1)
+                        },
+                        unlocked(){
+                                return true || hasUnlockedPast("m")
+                        }, // hasMilestone("m", 1)
+                },
+                2: {
+                        requirementDescription: "<b>May</b><br>Requires: 2 Maps", 
+                        effectDescription: "All prior Lock feature autobuyers bulk 10x more and unlock a Key autobuyer for the first eleven Keys",
+                        done(){
+                                return player.m.points.gte(2)
+                        },
+                        unlocked(){
+                                return hasMilestone("m", 1) || hasUnlockedPast("m")
+                        }, // hasMilestone("m", 2)
+                },
+                3: {
+                        requirementDescription: "<b>Me</b><br>Requires: 4 Maps", 
+                        effectDescription: "Keep <b>L</b> upgrades and get an effective <b>Titanium Key</b>",
+                        done(){
+                                return player.m.points.gte(4)
+                        },
+                        unlocked(){
+                                return hasMilestone("m", 2) || hasUnlockedPast("m")
+                        }, // hasMilestone("m", 3)
+                },
+        },
+        upgrades: {
+                rows: 5,
+                cols: 5,
+                /*
+                11: {
+                        title: "",
+                        description: "Unlock an <b>I</b> buyable and a new row of <b>Locks</b>",
+                        cost: new Decimal(2e9),
+                        unlocked(){
+                                return hasMilestone("l", 10) || hasUnlockedPast("l")
+                        }
+                }, // hasUpgrade("l", 11)
+                */
+        
+
+                /*
+                Most
+                Music
+                Make
+                Message 
+                Many
+                */
+        },
+        tabFormat: {
+                "Upgrades": {
+                        content: [
+                                "main-display",
+                                ["prestige-button", "", function (){ return false ? {'display': 'none'} : {}}],
+                                ["display-text",
+                                        function() {
+                                                if (player.tab != "m") return ""
+                                                if (player.subtabs.m.mainTabs != "Upgrades") return ""
+                                                return shiftDown ? "Your best Maps is " + format(player.m.best) : ""
+                                        }
+                                ],
+                                ["display-text",
+                                        function() {
+                                                if (player.tab != "m") return ""
+                                                if (player.subtabs.m.mainTabs != "Upgrades") return ""
+                                                if (hasUnlockedPast("l")) return ""
+                                                return "You have done " + formatWhole(player.m.times) + " Maps resets"
+                                        }
+                                ],
+                                ["display-text",
+                                        function() {
+                                                if (player.tab != "m") return ""
+                                                if (player.subtabs.m.mainTabs != "Upgrades") return ""
+                                                if (false) return "You are gaining " + format(tmp.m.getResetGain) + " Maps per second"
+                                                return "There is a two second cooldown for prestiging (" + format(Math.max(0, 2-player.m.time)) + ")" 
+                                        },
+                                        //{"font-size": "20px"}
+                                ],
+                                "blank", 
+                                ["upgrades", [1,5]]
+                        ],
+                        unlocked(){
+                                return true
+                        },
+                },
+                "Buyables": {
+                        content: ["main-display",
+                                "blank", 
+                                "buyables"],
+                        unlocked(){
+                                return false
+                        },
+                },
+                "Milestones": {
+                        content: [
+                                "main-display",
+                                "milestones",
+                        ],
+                        unlocked(){
+                                return true
+                        },
+                },
+        },
+        doReset(layer){
+                let data = player.m
+                if (layer == "m") data.time = 0
+                if (!getsReset("m", layer)) return
                 data.time = 0
                 data.times = 0
 

@@ -2246,6 +2246,15 @@ var MAIN_BUYABLE_DATA = {
                 effectSymbol: "^",
                 base: {
                         initial: new Decimal("1.1"),
+                        1: {
+                                active: function(){
+                                        return true
+                                },
+                                amount: function(){
+                                        return CURRENT_BUYABLE_EFFECTS["j23"]
+                                },
+                                type: "plus",
+                        },
                 },
                 bases(){
                         let b0 = Decimal.pow(10, 2380e9)
@@ -2529,6 +2538,20 @@ var MAIN_BUYABLE_DATA = {
                         let b0 = Decimal.pow(10, 7e14)
                         let b1 = Decimal.pow(10, 1e13)
                         let b2 = Decimal.pow(10, 1e11)
+                        return [b0, b1, b2]
+                },
+        },
+        j23: {
+                name: "Junction",
+                func: "lin",
+                effects: "<b>Omnipotent VIII</b> base",
+                base: {
+                        initial: new Decimal(.2),
+                },
+                bases(){
+                        let b0 = Decimal.pow(10, 7e16)
+                        let b1 = Decimal.pow(10, 1e14)
+                        let b2 = Decimal.pow(10, 1e12)
                         return [b0, b1, b2]
                 },
         },

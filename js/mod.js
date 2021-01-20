@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".7.17 hm",
+	num: ".8 MAPS!",
 	name: "",
 }
 
@@ -605,7 +605,7 @@ var displayThings = [
 		return "(" + format(getPointGen()) + "/sec)"
 	},
 	function(){
-		let a = "Endgame: 258 h chall comps"
+		let a = "Endgame: 15 Maps"
 		return player.autosave ? a : a + ". Warning: autosave is off"
 	},
 	function(){
@@ -966,6 +966,10 @@ function getChangeLogText(){
 	bn1= "v.7.17"
 	bn2= "- Added a Key Challenge"
 	bn3= "- Added a Lemon upgrade"
+	bo1= "v.8"
+	bo2= "- Added Maps"
+	bo3= "- Added a Jigsaw buyable"
+	bo4= "- Added 3 Map milestones"
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
 	let part2 = [b1, b2, b3, b4, b5, "", b6, b7, "", b8, b9, b10, "", b11, b12, ""]
@@ -1030,6 +1034,7 @@ function getChangeLogText(){
 	let part61= [bk1,bk2,bk3,bk4,bk5,bk6, ""]
 	let part62= [bl1,bl2,bl3,bl4,bl5, ""]
 	let part63= [bm1,bm2,bm3,bm4,bm5, ""]
+	let part64= [bo1,bo2,bo3,bo4, ""]
 	// MAKE SURE TO ADD THEM
 
 	let final1 = [part10,  part9,  part8,  part7,  part6,  part5,  part4,  part3,  part2,  part1]
@@ -1038,7 +1043,7 @@ function getChangeLogText(){
 	let final4 = [part40, part39, part38, part37, part36, part35, part34, part33, part32, part31]
 	let final5 = [part50, part49, part48, part47, part46, part45, part44, part43, part42, part41]
 	let final6 = [part60, part59, part58, part57, part56, part55, part54, part53, part52, part51]
-	let final7 = [part63, part62, part61]
+	let final7 = [part64, part63, part62, part61]
 
 	return final7.concat(final6).concat(final5).concat(final4).concat(final3).concat(final2).concat(final1)
 }
