@@ -5129,7 +5129,7 @@ addLayer("ach", {
         canReset(){
                 return false
         },
-        achievements: getFirstNAchData(259), //Object.keys(PROGRESSION_MILESTONES).length
+        achievements: getFirstNAchData(266), //Object.keys(PROGRESSION_MILESTONES).length
         milestones: {
                 1: {
                         requirementDescription(){
@@ -14490,15 +14490,16 @@ addLayer("j", {
                                         if (player.tab != "j") return ""
                                         if (player.subtabs.j.mainTabs != "Puzzle") return ""
                                         let data = player.j.puzzle
-                                        let a = "You have " + formatWhole(player.j.points) + " jigsaws, causing a " + format(tmp.j.clickables.jigsawEffect, 4) + " speed multiplier<br>"
+                                        let a = ""
                                         if (shiftDown && (!hasUpgrade("i", 53) || !hasMilestone("k", 6))) {
                                                 a = "You are holding shift down to bulk buy and see effeciencies (hint: smaller is better)<br>"
-                                        }
-                                        let b = "You have " + formatWhole(data.exp) + " experience, " + formatWhole(data.bankedExp) + " banked experience, " + formatWhole(data.knowledge) + " knowledge<br>"
-                                        let c = "You are currently working on a <h3>" + data.currentX + "</h3>x<h3>" + data.currentY + "</h3> puzzle (" + formatWhole(data.finished) + " completed)<br>"
-                                        if (shiftDown) {
-                                                c = "Your bulk amount is " + formatWhole(tmp.j.clickables.getBulkAmount) + "<br>"
-                                        }
+                                        } else a = "You have " + formatWhole(player.j.points) + " jigsaws, causing a " + format(tmp.j.clickables.jigsawEffect, 4) + " speed multiplier<br>"
+                                        let b = ""
+                                        if (data.exp.max(1).log10().gt(1e6)) b = b = "You have " + formatWhole(data.exp) + " experience, " + formatWhole(data.knowledge) + " knowledge<br>"
+                                        else b = "You have " + formatWhole(data.exp) + " experience, " + formatWhole(data.bankedExp) + " banked experience, " + formatWhole(data.knowledge) + " knowledge<br>"
+                                        let c = ""
+                                        if (!shiftDown) c = "You are currently working on a <h3>" + data.currentX + "</h3>x<h3>" + data.currentY + "</h3> puzzle (" + formatWhole(data.finished) + " completed)<br>"
+                                        else c = "Your bulk amount is " + formatWhole(tmp.j.clickables.getBulkAmount) + "<br>"
                                         return a + b + c
                                 }],
                                 ["clickables", [1,2]],
@@ -15289,6 +15290,7 @@ addLayer("k", {
                         let ret = new Decimal(0)
                         if (id < 72) ret = ret.plus(tmp.k.clickables[72].effect)
                         if (id < 80) ret = ret.plus(tmp.k.challenges[11].rewardEffect)
+                        if (hasUpgrade("m", 14) && id == 81) ret = ret.plus(tmp.k.challenges[11].rewardEffect)
                         if (hasMilestone("m", 3) && id == 72) ret = ret.plus(1) 
                         if (hasMilestone("m", 4) && id == 72) ret = ret.plus(player.m.milestones.length)
                         if (id < 82) ret = ret.plus(tmp.k.clickables[82].effect)
@@ -19065,6 +19067,7 @@ addLayer("m", {
                         let c = totalChallengeComps("k")
                         x = x.times(Decimal.pow(c/8, c).max(1))
                 }
+                if (hasUpgrade("m", 14)) x = x.times(Decimal.pow(1.01, totalChallengeComps("k") ** 2))
 
                 return x
         },
@@ -19213,10 +19216,21 @@ addLayer("m", {
                                 return hasUpgrade("m", 12) || hasUnlockedPast("m")
                         }
                 }, // hasUpgrade("m", 13)
+                14: {
+                        title: "Mail",
+                        description: "<b>Kiss</b> effects <b>Basic Key</b> and per <b>K</b> challenge completion squared multiply <b>M</b> gain by 1.01",
+                        cost: new Decimal(5e11),
+                        unlocked(){
+                                return hasUpgrade("m", 13) || hasUnlockedPast("m")
+                        }
+                }, // hasUpgrade("m", 14)
         
 
                 /*
-                Many [used]
+                Map
+                management
+                Must
+                Made
                 */
         },
         tabFormat: {

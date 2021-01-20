@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".8.1 Treasure",
+	num: ".8.2 Climatic",
 	name: "",
 }
 
@@ -315,6 +315,13 @@ PROGRESSION_MILESTONES = {
 	257:()=> player.j.puzzle.finished >= 27e3             || hasAchievement("ach",375),
 	258:()=> player.j.puzzle.finished >= 28e3             || hasAchievement("ach",376),
 	259:()=> totalChallengeComps("h") >= 253             || hasAchievement("ach",377),
+	260:()=> player.j.puzzle.finished >= 29e3             || hasAchievement("ach",381),
+	261:()=> player.j.puzzle.finished >= 30e3             || hasAchievement("ach",382),
+	262:()=> player.j.puzzle.finished >= 31e3             || hasAchievement("ach",383),
+	263:()=> player.j.puzzle.finished >= 32e3             || hasAchievement("ach",384),
+	264:()=> player.j.puzzle.finished >= 33e3             || hasAchievement("ach",385),
+	265:()=> player.j.puzzle.finished >= 34e3             || hasAchievement("ach",386),
+	266:()=> totalChallengeComps("h") >= 276             || hasAchievement("ach",387),
 }
 
 PROGRESSION_MILESTONES_TEXT = {
@@ -577,6 +584,13 @@ PROGRESSION_MILESTONES_TEXT = {
 	257:"27000 puzzle completions at once",
 	258:"28000 puzzle completions at once",
 	259:"253 Heart challenge completions",
+	260:"29000 puzzle completions at once",
+	261:"30000 puzzle completions at once",
+	262:"31000 puzzle completions at once",
+	263:"32000 puzzle completions at once",
+	264:"33000 puzzle completions at once",
+	265:"34000 puzzle completions at once",
+	266:"276 Heart challenge completions",
 }
 
 function progressReachedNum(){
@@ -605,7 +619,7 @@ var displayThings = [
 		return "(" + format(getPointGen()) + "/sec)"
 	},
 	function(){
-		let a = "Endgame: 5e11 Maps"
+		let a = "Endgame: 2e13 Maps"
 		return player.autosave ? a : a + ". Warning: autosave is off"
 	},
 	function(){
@@ -974,6 +988,10 @@ function getChangeLogText(){
 	bp2= "- Added a Key"
 	bp3= "- Added 3 Map upgrades"
 	bp4= "- Added 2 Map milestones"
+	bq1= "v.8.2"
+	bq2= "- Added a achievement row"
+	bq3= "- Added a Map upgrade"
+
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
 	let part2 = [b1, b2, b3, b4, b5, "", b6, b7, "", b8, b9, b10, "", b11, b12, ""]
@@ -1040,6 +1058,7 @@ function getChangeLogText(){
 	let part63= [bm1,bm2,bm3,bm4,bm5, ""]
 	let part64= [bo1,bo2,bo3,bo4, ""]
 	let part65= [bp1,bp2,bp3,bp4, ""]
+	let part66= [bq1,bq2,bq3, ""]
 	// MAKE SURE TO ADD THEM
 
 	let final1 = [part10,  part9,  part8,  part7,  part6,  part5,  part4,  part3,  part2,  part1]
@@ -1048,7 +1067,7 @@ function getChangeLogText(){
 	let final4 = [part40, part39, part38, part37, part36, part35, part34, part33, part32, part31]
 	let final5 = [part50, part49, part48, part47, part46, part45, part44, part43, part42, part41]
 	let final6 = [part60, part59, part58, part57, part56, part55, part54, part53, part52, part51]
-	let final7 = [part65, part64, part63, part62, part61]
+	let final7 = [part66, part65, part64, part63, part62, part61]
 
 	return final7.concat(final6).concat(final5).concat(final4).concat(final3).concat(final2).concat(final1)
 }
