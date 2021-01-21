@@ -12696,8 +12696,11 @@ addLayer("j", {
                                 if (hasMilestone("l", 11)) times *= 1000
 
                                 let max = tmp.j.clickables[13].getMaxAmt
-                                if (data.repeatables[13].plus(times).gte(max)) data.repeatables[13] = max
-                                else data.repeatables[13] = data.repeatables[13].plus(times)
+                                let diff = max.sub(data.repeatables[13]).min(times)
+                                if (diff.eq(0)) return
+                                if (!nocost) data.knowledge = data.knowledge.minus(this.cost())
+                                data.repeatables[13] = data.repeatables[13].plus(diff)
+                                
                         },
                 },
                 14: {
