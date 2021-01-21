@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".8.3 Aeronautical",
+	num: ".8.4 Nautical",
 	name: "",
 }
 
@@ -997,7 +997,10 @@ function getChangeLogText(){
 	br4= "- Fixed formatting when number is small <10^-9"
 	br5= "- Added a way to hide achievement rows to reduce scrolling (kept upon reload)"
 	br6= "- Fixed J notification when automation is unlocked"
-
+	bt1= "v.8.4"
+	bt2= "- Added a Key challenge"
+	bt3= "- Added 2 Key upgrades"
+	bt4= "- Gave Message an additional effect"
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
 	let part2 = [b1, b2, b3, b4, b5, "", b6, b7, "", b8, b9, b10, "", b11, b12, ""]

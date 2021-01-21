@@ -69,6 +69,7 @@ function getPointGenExp(){
         if (hasUpgrade("l", 15)) exp = exp.times(Decimal.pow(2, player.k.lock.repeatables[54]))
         exp = exp.times(CURRENT_BUYABLE_EFFECTS["i33"])
         if (hasUpgrade("k", 43)) exp = exp.times(Decimal.pow(1.15, player.k.lock.repeatables[54]))
+        if (hasUpgrade("k", 51)) exp = exp.times(Decimal.pow(player.k.lock.repeatables[82].div(100).plus(1), tmp.k.clickables.totalKeys))
         return exp
 }
 
@@ -170,7 +171,7 @@ function isPrestigeEffectActive(layer){
         if (layer == "l") return true
         if (layer == "k") return true
         if (layer == "j") return true
-        if (layer == "i") return true
+        if (layer == "i") return !inChallenge("k", 21)
         if (layer == "h") return !inChallenge("h", 22)
         if (layer == "g") return true
         if (layer == "f") return true
@@ -13103,8 +13104,9 @@ addLayer("j", {
                                 let a = "<h3 style='color: #993300'>Cost</h3>: " + formatWhole(tmp.j.clickables[14].cost) + " Knowledge<br>"
                                 let x = tmp.j.clickables.getCurrentMaxSize
                                 if (Math.min(player.j.puzzle.currentX, player.j.puzzle.currentY) == x) a = "<h3 style='color: #993300'>MAXED!</h3><br>"
-                                let c = "<h3 style='color: #9933CC'>Effect</h3>: *" + format(tmp.j.clickables[14].effect) + " Knowledge and Banked Exp gain<br>"
-                                return a + c
+                                let c = "<h3 style='color: #9933CC'>Effect</h3>: *" + format(tmp.j.clickables[14].effect)
+                                let extra = " Knowledge and Banked Exp gain<br>"
+                                return a + c + (tmp.j.clickables[14].effect.gt(1e100) ? "" : extra)
                         },
                         unlocked(){
                                 return true
@@ -13148,6 +13150,7 @@ addLayer("j", {
                                 let times = 1
 
                                 if (hasMilestone("k", 14)) times *= 10
+                                if (hasUpgrade("m", 12)) times *= 10
 
                                 let diff = mp.sub(amt).min(times)
 
@@ -14902,6 +14905,7 @@ addLayer("k", {
                 let devtimefactor = 1
                 if (hasMilestone("l", 9)) devtimefactor *= 3
                 if (hasUpgrade("m", 11)) devtimefactor *= 3
+                if (hasUpgrade("k", 51)) devtimefactor *= 3
                 data.autodevtime += diff * devtimefactor
 
                 data2 = data.lock
@@ -15289,11 +15293,24 @@ addLayer("k", {
                                 return player.k.lock.repeatables[73].gt(1) || hasUnlockedPast("l")
                         }
                 }, // hasUpgrade("k", 45)
+                51: {
+                        title: "Knowing",
+                        description: "Each Key raises point gain to 1 + [Diamond Keys] / 100 and triple lock autobuyer speed",
+                        cost: new Decimal("1e337e6"),
+                        unlocked(){
+                                return hasUpgrade("m", 15) || hasUnlockedPast("m")
+                        }
+                }, // hasUpgrade("k", 51)
+                52: {
+                        title: "Keith",
+                        description: "<b>K</b> challenges after 5 are halved and unlock another <b>K</b> challenge [not yet]",
+                        cost: new Decimal("1e495.59e6"),
+                        unlocked(){
+                                return hasUpgrade("k", 51) || hasUnlockedPast("m")
+                        }
+                }, // hasUpgrade("k", 52)
                 
                 /*
-                knowing
-                keith
-                Keeps
                 Kate
                 Karen
                 */
@@ -15369,6 +15386,7 @@ addLayer("k", {
                         if (id < 82) ret = ret.plus(tmp.k.clickables[82].effect)
                         if (hasUpgrade("m", 11) && id == 75) ret = ret.plus(player.m.upgrades.length)
                         if (hasUpgrade("m", 15) && id == 64) ret = ret.plus(totalChallengeComps("k"))
+                        if (id == 82) ret = ret.plus(tmp.k.challenges[21].rewardEffect)
                         return ret
                 },
                 11: {
@@ -18365,9 +18383,11 @@ addLayer("k", {
                         goal(){
                                 let init = new Decimal(24.252)
                                 let c = challengeCompletions("k", 11)
+                                //
                                 if (hasUpgrade("m", 13)) c -= tmp.m.upgrades[13].effect.toNumber()
 
                                 c = Math.max(c, 0)
+                                if (c > 5 && hasUpgrade("k", 52)) c = (c+5)/2
                                 let factor = getChallengeFactor(c)
                                 if (factor.eq(1)) factor = new Decimal(0)
                                 let second = new Decimal(20580)
@@ -18397,6 +18417,7 @@ addLayer("k", {
                                 if (hasUpgrade("m", 13)) c -= tmp.m.upgrades[13].effect.toNumber()
 
                                 c = Math.max(c, 0)
+                                if (c > 5 && hasUpgrade("k", 52)) c = (c+5)/2
                                 let factor = getChallengeFactor(c)
                                 if (factor.eq(1)) factor = new Decimal(0)
                                 let second = new Decimal(347.5)
@@ -18409,6 +18430,36 @@ addLayer("k", {
                         currencyInternalName: "points",
                         completionLimit: 20,
                         countsAs: [11],
+                },
+                21: {
+                        name: "Keeps",
+                        challengeDescription: "<b>Kerry</b> and remove <b>I</b> effect",
+                        rewardDescription: "Add to <b>M</b> gain exponent and effective <b>Diamond Keys</b>",
+                        rewardEffect(){
+                                let c = challengeCompletions("k", 21)
+                                ret = Math.sqrt(c)
+                                return ret
+                        },
+                        goal(){
+                                let init = new Decimal(868)
+                                let c = challengeCompletions("k", 21)
+                                let raw = c
+                                if (hasUpgrade("m", 13)) c -= tmp.m.upgrades[13].effect.toNumber()
+
+                                c = Math.max(c, 0)
+                                if (c > 5 && hasUpgrade("k", 52)) c = (c+5)/2
+                                let factor = getChallengeFactor(c)
+                                if (factor.eq(1)) factor = new Decimal(0)
+                                let second = new Decimal(4290)
+                                let exp = second.pow(factor).times(init).times(Decimal.pow(raw+1, 125))
+                                return Decimal.pow(10, exp.times(Decimal.pow(10, 386)))
+                        },
+                        unlocked(){
+                                return hasUpgrade("k", 52) || hasUnlockedPast("m")
+                        },
+                        currencyInternalName: "points",
+                        completionLimit: 20,
+                        countsAs: [11, 12],
                 },
         },
         shouldNotify(){
@@ -19128,6 +19179,7 @@ addLayer("m", {
         getGainExp(){
                 let x = new Decimal(3)
                 if (hasUpgrade("m", 13)) x = x.plus(tmp.m.upgrades[13].effect)
+                x = x.plus(tmp.k.challenges[21].rewardEffect)
                 return x
         },
         getGainMultPre(){
@@ -19275,7 +19327,7 @@ addLayer("m", {
                 }, // hasUpgrade("m", 11)
                 12: {
                         title: "Message",
-                        description: "Per <b>K</b> challenge multiply <b>M</b> gain by the number of <b>K</b> challenges completed/8 [minimum 1]",
+                        description: "Per <b>K</b> challenge multiply <b>M</b> gain by the number of <b>K</b> challenges completed/8 [min 1] and you buy 20x Larger Puzzle",
                         cost: new Decimal(5e6),
                         unlocked(){
                                 return hasMilestone("m", 5) || hasUnlockedPast("m")
