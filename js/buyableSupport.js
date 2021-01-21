@@ -3041,7 +3041,8 @@ function getBuyableName(code){
         // NOT fully general
         if (MAIN_BUYABLE_DATA[code] != undefined && MAIN_BUYABLE_DATA[code].name != undefined) return MAIN_BUYABLE_DATA[code].name
         console.log("do this " + code)
-        return layers[code.slice(0,1)].buyables[code.slice(1,3)].title
+        return "bug bug bug yeet"
+        //return layers[code.slice(0,1)].buyables[code.slice(1,3)].title
 }
 
 function getNoExtras(layer, id){
@@ -3406,6 +3407,41 @@ function replaceString(s,find,replace){
         return s 
 }
 
+function getGeneralizedBuyableData(layer, id, unlockedTF){
+        let title = getBuyableName(layer+id)
+        let display = function(){
+                return getBuyableDisplay(layer, id)
+        }
+        let effect = function(){
+                return CURRENT_BUYABLE_EFFECTS[layer+id]
+        }
+        let canAfford = function(){
+                return canAffordBuyable(layer, id)
+        }
+        let total = function(){
+                return getBuyableAmount(layer, id).plus(this.extra())
+        }
+        let extra = function(){
+                return calcBuyableExtra(layer, id)
+        }
+        let buy = function(){
+                buyManualBuyable(layer, id)
+        }
+        let buyMax = function(maximum){
+                buyMaximumBuyable(layer, id, maximum)
+        }
+        return {
+                title: title, 
+                display: display, 
+                effect: effect,
+                canAfford: canAfford,
+                total: total,
+                extra: extra,
+                buy: buy,
+                buyMax: buyMax,
+                unlocked: unlockedTF,
+                }
+}
 
 
 

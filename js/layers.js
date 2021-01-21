@@ -103,7 +103,7 @@ function getsReset(layer, layerPrestiging) {
 }
 
 function getNextLayer(l){
-        x = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",]
+        x = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p"]
         return x[x.indexOf(l) + 1]
 }
 
@@ -623,39 +623,6 @@ function mergeSort(l, comp = function(a,b){return a<=b}){
         }
 }
 
-/*
-function tryRandListThang(n){
-        let l = []
-        for (let i = 0; i < n; i ++){
-                l.push(Math.random())
-        }
-        l = mergeSort(l)
-        let p = 1
-        let k1 = n
-        let k2 = 0
-        let c = 0
-        while (c < 100){
-                c ++ 
-                if (l[k2] < 1/k1) {
-                        p *= l[k2] * k1
-                        k1 --
-                        k2 ++
-                } else {
-                        return p
-                }
-        }
-        return "k"
-}
-
-function ranthingmult(n,k){
-        let sumsofar = 0
-        for (adasd = 0; adasd < k; adasd++){
-                sumsofar += 1/tryRandListThang(n)
-        }
-        return sumsofar/k
-}
-*/
-
 var devSpeedUp = false
 
 // upgrade names: https://github.com/first20hours/google-10000-english/blob/master/google-10000-english.txt
@@ -1084,249 +1051,33 @@ addLayer("a", {
         buyables: {
                 rows: 3,
                 cols: 3,
-                11: {
-                        title: "All",
-                        display(){
-                                return getBuyableDisplay("a", 11)
-                        },
-                        effect(){
-                                return CURRENT_BUYABLE_EFFECTS["a11"]
-                        },
-                        canAfford(){
-                                return canAffordBuyable("a", 11)
-                        },
-                        total(){
-                                return getBuyableAmount("a", 11).plus(this.extra())
-                        },
-                        extra(){
-                                return calcBuyableExtra("a", 11)
-                        },
-                        buy(){
-                                buyManualBuyable("a", 11)
-                        },
-                        buyMax(maximum){
-                                buyMaximumBuyable("a", 11, maximum)
-                        },
-                        unlocked(){ 
-                                return hasUpgrade("a", 15) || hasUnlockedPast("a")
-                        },
-                },
-                12: {
-                        title: "Any",
-                        display(){
-                                return getBuyableDisplay("a", 12)
-                        },
-                        effect(){
-                                return CURRENT_BUYABLE_EFFECTS["a12"]
-                        },
-                        canAfford(){
-                                return canAffordBuyable("a", 12)
-                        },
-                        total(){
-                                return getBuyableAmount("a", 12).plus(this.extra())
-                        },
-                        extra(){
-                                return calcBuyableExtra("a", 12)
-                        },
-                        buy(){
-                                buyManualBuyable("a", 12)
-                        },
-                        buyMax(maximum){
-                                buyMaximumBuyable("a", 12, maximum)
-                        },
-                        unlocked(){ 
-                                return hasUpgrade("a", 22) || hasUnlockedPast("a")
-                        },
-                },
-                13: {
-                        title: "After",
-                        display(){
-                                return getBuyableDisplay("a", 13)
-                        },
-                        effect(){
-                                return CURRENT_BUYABLE_EFFECTS["a13"]
-                        },
-                        canAfford(){
-                                return canAffordBuyable("a", 13)
-                        },
-                        total(){
-                                return getBuyableAmount("a", 13).plus(this.extra())
-                        },
-                        extra(){
-                                return calcBuyableExtra("a", 13)
-                        },
-                        buy(){
-                                buyManualBuyable("a", 13)
-                        },
-                        buyMax(maximum){
-                                buyMaximumBuyable("a", 13, maximum)
-                        },
-                        unlocked(){ 
-                                return hasUpgrade("a", 31) || hasUnlockedPast("b")
-                        },
-                },
-                21: {
-                        title: "Access",
-                        display(){
-                                return getBuyableDisplay("a", 21)
-                        },
-                        effect(){
-                                return CURRENT_BUYABLE_EFFECTS["a21"]
-                        },
-                        canAfford(){
-                                return canAffordBuyable("a", 21)
-                        },
-                        total(){
-                                return getBuyableAmount("a", 21).plus(this.extra())
-                        },
-                        extra(){
-                                return calcBuyableExtra("a", 21)
-                        },
-                        buy(){
-                                buyManualBuyable("a", 21)
-                        },
-                        buyMax(maximum){
-                                buyMaximumBuyable("a", 21, maximum)
-                        },
-                        unlocked(){ 
-                                return hasUpgrade("b", 21) || hasUnlockedPast("b")
-                        },
-                },
-                22: {
-                        title: "Account",
-                        display(){
-                                return getBuyableDisplay("a", 22)
-                        },
-                        effect(){
-                                return CURRENT_BUYABLE_EFFECTS["a22"]
-                        },
-                        canAfford(){
-                                return canAffordBuyable("a", 22)
-                        },
-                        total(){
-                                return getBuyableAmount("a", 22).plus(this.extra())
-                        },
-                        extra(){
-                                return calcBuyableExtra("a", 22)
-                        },
-                        buy(){
-                                buyManualBuyable("a", 22)
-                        },
-                        buyMax(maximum){
-                                buyMaximumBuyable("a", 22, maximum)
-                        },
-                        unlocked(){ 
-                                return hasUpgrade("b", 24) || hasUnlockedPast("b")
-                        },
-                },
-                23: {
-                        title: "Advanced",
-                        display(){
-                                return getBuyableDisplay("a", 23)
-                        },
-                        effect(){
-                                return CURRENT_BUYABLE_EFFECTS["a23"]
-                        },
-                        canAfford(){
-                                return canAffordBuyable("a", 23)
-                        },
-                        total(){
-                                return getBuyableAmount("a", 23).plus(this.extra())
-                        },
-                        extra(){
-                                return calcBuyableExtra("a", 23)
-                        },
-                        buy(){
-                                buyManualBuyable("a", 23)
-                        },
-                        buyMax(maximum){
-                                buyMaximumBuyable("a", 23, maximum)
-                        },
-                        unlocked(){ 
-                                return hasUpgrade("c", 12) || hasUnlockedPast("c")
-                        },
-                },
-                31: {
-                        title: "Against",
-                        display(){
-                                return getBuyableDisplay("a", 31)
-                        },
-                        effect(){
-                                return CURRENT_BUYABLE_EFFECTS["a31"]
-                        },
-                        canAfford(){
-                                return canAffordBuyable("a", 31)
-                        },
-                        total(){
-                                return getBuyableAmount("a", 31).plus(this.extra())
-                        },
-                        extra(){
-                                return calcBuyableExtra("a", 31)
-                        },
-                        buy(){
-                                buyManualBuyable("a", 31)
-                        },
-                        buyMax(maximum){
-                                buyMaximumBuyable("a", 31, maximum)
-                        },
-                        unlocked(){ 
-                                return hasUpgrade("a", 53) || hasUnlockedPast("c")
-                        },
-                },
-                32: {
-                        title: "Above",
-                        display(){
-                                return getBuyableDisplay("a", 32)
-                        },
-                        effect(){
-                                return CURRENT_BUYABLE_EFFECTS["a32"]
-                        },
-                        canAfford(){
-                                return canAffordBuyable("a", 32)
-                        },
-                        total(){
-                                return getBuyableAmount("a", 32).plus(this.extra())
-                        },
-                        extra(){
-                                return calcBuyableExtra("a", 32)
-                        },
-                        buy(){
-                                buyManualBuyable("a", 32)
-                        },
-                        buyMax(maximum){
-                                buyMaximumBuyable("a", 32, maximum)
-                        },
-                        unlocked(){ 
-                                return hasUpgrade("b", 43) || hasUnlockedPast("c")
-                        },
-                },
-                33: {
-                        title: "Omnipotent I",
-                        display(){
-                                return getBuyableDisplay("a", 33)
-                        },
-                        effect(){
-                                return CURRENT_BUYABLE_EFFECTS["a33"]
-                        },
-                        canAfford(){
-                                return canAffordBuyable("a", 33)
-                        },
-                        total(){
-                                return getBuyableAmount("a", 33).plus(this.extra())
-                        },
-                        extra(){
-                                return calcBuyableExtra("a", 33)
-                        },
-                        buy(){
-                                buyManualBuyable("a", 33)
-                        },
-                        buyMax(maximum){
-                                buyMaximumBuyable("a", 33, maximum)
-                        },
-                        unlocked(){ 
-                                return hasUpgrade("b", 51) || hasUnlockedPast("d")
-                        },
-                },
+                11: getGeneralizedBuyableData("a", 11, function(){
+                        return hasUpgrade("a", 15) || hasUnlockedPast("a")
+                        }),
+                12: getGeneralizedBuyableData("a", 12, function(){
+                        return hasUpgrade("a", 22) || hasUnlockedPast("a")
+                        }),
+                13: getGeneralizedBuyableData("a", 13, function(){
+                        return hasUpgrade("a", 31) || hasUnlockedPast("b")
+                        }),
+                21: getGeneralizedBuyableData("a", 21, function(){
+                        return hasUpgrade("b", 21) || hasUnlockedPast("b")
+                        }),
+                22: getGeneralizedBuyableData("a", 22, function(){
+                        return hasUpgrade("b", 24) || hasUnlockedPast("b")
+                        }),
+                23: getGeneralizedBuyableData("a", 23, function(){
+                        return hasUpgrade("c", 12) || hasUnlockedPast("c")
+                        }),
+                31: getGeneralizedBuyableData("a", 31, function(){
+                        return hasUpgrade("a", 53) || hasUnlockedPast("c")
+                        }),
+                32: getGeneralizedBuyableData("a", 32, function(){
+                        return hasUpgrade("b", 43) || hasUnlockedPast("c")
+                        }),
+                33: getGeneralizedBuyableData("a", 33, function(){
+                        return hasUpgrade("b", 51) || hasUnlockedPast("d")
+                        }),
         },
         tabFormat: {
                 "Upgrades": {
@@ -5132,7 +4883,7 @@ addLayer("ach", {
         canReset(){
                 return false
         },
-        achievements: getFirstNAchData(266), //Object.keys(PROGRESSION_MILESTONES).length
+        achievements: getFirstNAchData(Object.keys(PROGRESSION_MILESTONES).length),
         clickables: {
                 rows: 1,
                 cols: 3,
@@ -5183,7 +4934,7 @@ addLayer("ach", {
                                 return "<h3 style='color: #0033FF'>Click</h3>"
                         },
                         display(){
-                                return formatWhole(player.ach.clickedYeet)
+                                return formatWhole(player.ach.clickedYeet) + (player.ach.clickedYeet == 69 ? " nice" : "")
                         },
                         unlocked(){
                                 return true
@@ -7502,7 +7253,7 @@ addLayer("g", {
                         data.autotime = 0
                 }
 
-                if (hasMilestone("i", 8)) {
+                if (hasMilestone("i", 8) && player.g.rebirths[0] < 2e5) {
                         cmr = tmp.g.clickables.getCurrentMaxRebirths
                         let diff = cmr - player.g.rebirths[1]
                         player.g.rebirths[1] = cmr 
@@ -9339,6 +9090,7 @@ addLayer("g", {
                         canClick(){
                                 let gdata = player.g
                                 rb = player.g.rebirths[1]
+                                if (rb >= 2e5) return false
                                 let a = gdata.partialTally.gte(Decimal.times(160, (rb + 1) * (rb + 2) / 2))
                                 let b = gdata.charges.gte(layers.g.clickables.getChargeComsumption())
                                 return a && b && tmp.g.clickables.getChargesPerMinute.gt(0) && tmp.g.clickables[15].unlocked
@@ -12487,171 +12239,27 @@ addLayer("j", {
                 Julie
                 */
         },
-        buyables:{
+        buyables: {
                 rows: 3,
                 cols: 3,
-                11: {
-                        title: "Jefferson",
-                        display(){
-                                return getBuyableDisplay("j", 11)
-                        },
-                        effect(){
-                                return CURRENT_BUYABLE_EFFECTS["j11"]
-                        },
-                        canAfford(){
-                                return canAffordBuyable("j", 11)
-                        },
-                        total(){
-                                return getBuyableAmount("j", 11).plus(this.extra())
-                        },
-                        extra(){
-                                return calcBuyableExtra("j", 11)
-                        },
-                        buy(){
-                                buyManualBuyable("j", 11)
-                        },
-                        buyMax(maximum){
-                                buyMaximumBuyable("j", 11, maximum)
-                        },
-                        unlocked(){ 
-                                return hasUpgrade("l", 21) || hasUnlockedPast("l")
-                        },
-                },
-                12: {
-                        title: "Jacksonville",
-                        display(){
-                                return getBuyableDisplay("j", 12)
-                        },
-                        effect(){
-                                return CURRENT_BUYABLE_EFFECTS["j12"]
-                        },
-                        canAfford(){
-                                return canAffordBuyable("j", 12)
-                        },
-                        total(){
-                                return getBuyableAmount("j", 12).plus(this.extra())
-                        },
-                        extra(){
-                                return calcBuyableExtra("j", 12)
-                        },
-                        buy(){
-                                buyManualBuyable("j", 12)
-                        },
-                        buyMax(maximum){
-                                buyMaximumBuyable("j", 12, maximum)
-                        },
-                        unlocked(){ 
-                                return hasUpgrade("l", 22) || hasUnlockedPast("l")
-                        },
-                },
-                13: {
-                        title: "Jamaica",
-                        display(){
-                                return getBuyableDisplay("j", 13)
-                        },
-                        effect(){
-                                return CURRENT_BUYABLE_EFFECTS["j13"]
-                        },
-                        canAfford(){
-                                return canAffordBuyable("j", 13)
-                        },
-                        total(){
-                                return getBuyableAmount("j", 13).plus(this.extra())
-                        },
-                        extra(){
-                                return calcBuyableExtra("j", 13)
-                        },
-                        buy(){
-                                buyManualBuyable("j", 13)
-                        },
-                        buyMax(maximum){
-                                buyMaximumBuyable("j", 13, maximum)
-                        },
-                        unlocked(){ 
-                                return hasUpgrade("l", 23) || hasUnlockedPast("l")
-                        },
-                },
-                21: {
-                        title: "Juice",
-                        display(){
-                                return getBuyableDisplay("j", 21)
-                        },
-                        effect(){
-                                return CURRENT_BUYABLE_EFFECTS["j21"]
-                        },
-                        canAfford(){
-                                return canAffordBuyable("j", 21)
-                        },
-                        total(){
-                                return getBuyableAmount("j", 21).plus(this.extra())
-                        },
-                        extra(){
-                                return calcBuyableExtra("j", 21)
-                        },
-                        buy(){
-                                buyManualBuyable("j", 21)
-                        },
-                        buyMax(maximum){
-                                buyMaximumBuyable("j", 21, maximum)
-                        },
-                        unlocked(){ 
-                                return hasUpgrade("l", 24) || hasUnlockedPast("l")
-                        },
-                },
-                22: {
-                        title: "Juan",
-                        display(){
-                                return getBuyableDisplay("j", 22)
-                        },
-                        effect(){
-                                return CURRENT_BUYABLE_EFFECTS["j22"]
-                        },
-                        canAfford(){
-                                return canAffordBuyable("j", 22)
-                        },
-                        total(){
-                                return getBuyableAmount("j", 22).plus(this.extra())
-                        },
-                        extra(){
-                                return calcBuyableExtra("j", 22)
-                        },
-                        buy(){
-                                buyManualBuyable("j", 22)
-                        },
-                        buyMax(maximum){
-                                buyMaximumBuyable("j", 22, maximum)
-                        },
-                        unlocked(){ 
-                                return hasUpgrade("k", 45) || hasUnlockedPast("l")
-                        },
-                },
-                23: {
-                        title: "Junction",
-                        display(){
-                                return getBuyableDisplay("j", 23)
-                        },
-                        effect(){
-                                return CURRENT_BUYABLE_EFFECTS["j23"]
-                        },
-                        canAfford(){
-                                return canAffordBuyable("j", 23)
-                        },
-                        total(){
-                                return getBuyableAmount("j", 23).plus(this.extra())
-                        },
-                        extra(){
-                                return calcBuyableExtra("j", 23)
-                        },
-                        buy(){
-                                buyManualBuyable("j", 23)
-                        },
-                        buyMax(maximum){
-                                buyMaximumBuyable("j", 23, maximum)
-                        },
-                        unlocked(){ 
-                                return hasUpgrade("l", 25) || hasUnlockedPast("l")
-                        },
-                },
+                11: getGeneralizedBuyableData("j", 11, function(){
+                        return hasUpgrade("l", 21) || hasUnlockedPast("l")
+                        }),
+                12: getGeneralizedBuyableData("j", 12, function(){
+                        return hasUpgrade("l", 22) || hasUnlockedPast("l")
+                        }),
+                13: getGeneralizedBuyableData("j", 13, function(){
+                        return hasUpgrade("l", 23) || hasUnlockedPast("l")
+                        }),
+                21: getGeneralizedBuyableData("j", 21, function(){
+                        return hasUpgrade("l", 24) || hasUnlockedPast("l")
+                        }),
+                22: getGeneralizedBuyableData("j", 22, function(){
+                        return hasUpgrade("k", 45) || hasUnlockedPast("l")
+                        }),
+                23: getGeneralizedBuyableData("j", 23, function(){
+                        return hasUpgrade("l", 25) || hasUnlockedPast("l")
+                        }),
         },
         clickables: {
                 rows: 7,
@@ -19455,3 +19063,25 @@ addLayer("m", {
                 }
         },
 })
+
+
+/*
+Idea: You are given a map with 3 points on it
+You are trying to find a path between them that is "pretty good" 
+By this you need to get the path that is within [factor based on time] of the optimal path
+You can unlock various algorithms:
+1. Random--try ranodm duh lol
+2. Random instead we swap a pair adj
+3. Random but we swap pair leq given distance [init 4]
+4. Random but we flip leq given distance pair [init 4]
+
+You can unlock each of the 4 algorithms (you start with 1 unlocked)
+You can also up the simulations per second (default 1/s & each upgrade + .1/s)
+You can upgrade algs 3/4
+You can increase the time factor
+You can prestige to +1 points 
+Prestiging is what gives the big bucks 
+
+
+
+*/
