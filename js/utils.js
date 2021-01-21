@@ -56,6 +56,7 @@ function format(decimal, precision=2,) {
 	}
 	if (decimal.sign < 0) return "-"+format(decimal.neg(), precision)
 	if (decimal.mag == Number.POSITIVE_INFINITY) return "Infinity"
+	if (decimal.mag < 0) return "1/" + format(decimal.recip(), precision)
 	if (decimal.layer > 3) {
 		var slog = decimal.slog()
 		if (slog.gte(1e5)) return "F" + formatWhole(slog.floor())

@@ -65,22 +65,27 @@ function getAchStuffFromNumber(n){
         let unlocked 
         if (n <= 53) {
                 unlocked = function(){
+                        if (player.ach.hiddenRows >= n/7) return false
                         return true
                 }
         } else if (n <= 98) {
                 unlocked = function(){
+                        if (player.ach.hiddenRows >= n/7) return false
                         return hasMilestone("goalsii", 7) || player.g.best.gt(0) || hasUnlockedPast("g")
                 }
         } else if (n <= 119) {
                 unlocked = function(){
+                        if (player.ach.hiddenRows >= n/7) return false
                         return hasUnlockedPast("g")
                 }
         } else if (n <= 154) {
                 unlocked = function(){
+                        if (player.ach.hiddenRows >= n/7) return false
                         return hasUnlockedPast("i")
                 }
         } else if (n <= Infinity) {
                 unlocked = function(){
+                        if (player.ach.hiddenRows >= n/7) return false
                         return hasUnlockedPast("j")
                 }
         } 

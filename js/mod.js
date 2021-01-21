@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".8.2 Climatic",
+	num: ".8.3 Aeronautical",
 	name: "",
 }
 
@@ -991,6 +991,12 @@ function getChangeLogText(){
 	bq1= "v.8.2"
 	bq2= "- Added a achievement row"
 	bq3= "- Added a Map upgrade"
+	br1= "v.8.3"
+	br2= "- Added a Map upgrade"
+	br3= "- Fixed a bug with time displays; I used +[thing] instead of .plus([thing])"
+	br4= "- Fixed formatting when number is small <10^-9"
+	br5= "- Added a way to hide achievement rows to reduce scrolling (kept upon reload)"
+	br6= "- Fixed J notification when automation is unlocked"
 
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
@@ -1059,6 +1065,7 @@ function getChangeLogText(){
 	let part64= [bo1,bo2,bo3,bo4, ""]
 	let part65= [bp1,bp2,bp3,bp4, ""]
 	let part66= [bq1,bq2,bq3, ""]
+	let part67= [br1,br2,br3,br4,br5,br6, ""]
 	// MAKE SURE TO ADD THEM
 
 	let final1 = [part10,  part9,  part8,  part7,  part6,  part5,  part4,  part3,  part2,  part1]
@@ -1067,7 +1074,7 @@ function getChangeLogText(){
 	let final4 = [part40, part39, part38, part37, part36, part35, part34, part33, part32, part31]
 	let final5 = [part50, part49, part48, part47, part46, part45, part44, part43, part42, part41]
 	let final6 = [part60, part59, part58, part57, part56, part55, part54, part53, part52, part51]
-	let final7 = [part66, part65, part64, part63, part62, part61]
+	let final7 = [part67, part66, part65, part64, part63, part62, part61]
 
 	return final7.concat(final6).concat(final5).concat(final4).concat(final3).concat(final2).concat(final1)
 }

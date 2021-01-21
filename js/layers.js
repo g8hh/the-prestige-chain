@@ -5081,6 +5081,8 @@ addLayer("ach", {
                 time: 0,
                 times: 0,
                 autotimes: 0,
+                hiddenRows: 0,
+                clickedYeet: 0,
         }},
         color: "#FFC746",
         branches: ["goalsii"],
@@ -5130,6 +5132,69 @@ addLayer("ach", {
                 return false
         },
         achievements: getFirstNAchData(266), //Object.keys(PROGRESSION_MILESTONES).length
+        clickables: {
+                rows: 1,
+                cols: 3,
+                11: {
+                        title(){
+                                if (player.tab != "ach") return ""
+                                if (player.subtabs.ach.mainTabs != "Achievements") return ""
+                                return "<h3 style='color: #0033FF'>Hide the top row</h3>"
+                        },
+                        display(){
+                                return ""
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        canClick(){
+                                return player.ach.hiddenRows < Object.keys(PROGRESSION_MILESTONES).length/7
+                        },
+                        onClick(){
+                                if (!this.canClick()) return 
+                                player.ach.hiddenRows ++
+                        },
+                },
+                12: {
+                        title(){
+                                if (player.tab != "ach") return ""
+                                if (player.subtabs.ach.mainTabs != "Achievements") return ""
+                                return "<h3 style='color: #0033FF'>Show a row</h3>"
+                        },
+                        display(){
+                                return ""
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        canClick(){
+                                return player.ach.hiddenRows > 0
+                        },
+                        onClick(){
+                                if (!this.canClick()) return 
+                                player.ach.hiddenRows --
+                        },
+                },
+                13: {
+                        title(){
+                                if (player.tab != "ach") return ""
+                                if (player.subtabs.ach.mainTabs != "Achievements") return ""
+                                return "<h3 style='color: #0033FF'>Click</h3>"
+                        },
+                        display(){
+                                return formatWhole(player.ach.clickedYeet)
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        canClick(){
+                                return true
+                        },
+                        onClick(){
+                                player.ach.clickedYeet ++ 
+                        },
+                },
+        },
         milestones: {
                 1: {
                         requirementDescription(){
@@ -5251,6 +5316,7 @@ addLayer("ach", {
                 "Achievements": {
                         content: [
                                 "main-display-goals",
+                                "clickables",
                                 "achievements",
                         ],
                         unlocked(){
@@ -14317,6 +14383,11 @@ addLayer("j", {
                         if (typeof id != "number") continue
                         if (isNaN(id)) continue
                         if ([11,12,13,21,22,23,24,15].includes(id)) continue
+                        if (hasMilestone("j", 5) && id == 25) continue 
+                        if (hasUpgrade("i", 54) && id == 65) continue
+                        if (hasMilestone("k", 9) && id == 14) continue
+                        if (hasUpgrade("j", 44) && [35,45,55].includes(id)) continue
+                        if (hasMilestone("l", 11) && [71, 72, 73,74].includes(id)) continue
                         if (tmp.j.clickables[id].canClick && !player.j.upgrades.includes(id) && tmp.j.clickables[id].unlocked){
                                 return true
                         }
@@ -14398,7 +14469,9 @@ addLayer("j", {
 
                                 let timeTICK = (1 - data.autotime) / tmp.j.clickables.getAttemptSpeed.toNumber()
                                 if (timePLACE != 0) timePLACE = timePLACE.plus(timeTICK)
-                                return "Percent complete with this puzzle (est time " + format(timePLACE + timeFIND) + "s)"
+                                
+                                let timebit = shiftDown && timeFIND.gt(.001) ? format(timePLACE) + "+" + format(timeFIND) : format(timePLACE.plus(timeFIND))
+                                return "Percent complete with this puzzle (est time " + timebit + "s)"
                         },
                         fillStyle(){
                                 return {
@@ -15295,6 +15368,7 @@ addLayer("k", {
                         if (hasMilestone("m", 4) && id == 72) ret = ret.plus(player.m.milestones.length)
                         if (id < 82) ret = ret.plus(tmp.k.clickables[82].effect)
                         if (hasUpgrade("m", 11) && id == 75) ret = ret.plus(player.m.upgrades.length)
+                        if (hasUpgrade("m", 15) && id == 64) ret = ret.plus(totalChallengeComps("k"))
                         return ret
                 },
                 11: {
@@ -17962,6 +18036,7 @@ addLayer("k", {
                                 let amt = player.k.lock.repeatables[73]
                                 amt = amt.plus(layers.k.clickables.getBonusKeys(73))
                                 let ret = amt.pow(1.8).div(40).plus(1).ln().times(240).plus(1)
+                                if (hasUpgrade("m", 15)) ret = ret.times(Decimal.pow(1.25, player.m.upgrades.length))
                                 return ret
                         },
                         effectDescription(){
@@ -19068,6 +19143,7 @@ addLayer("m", {
                         x = x.times(Decimal.pow(c/8, c).max(1))
                 }
                 if (hasUpgrade("m", 14)) x = x.times(Decimal.pow(1.01, totalChallengeComps("k") ** 2))
+                if (hasUpgrade("m", 15)) x = x.times(Decimal.pow(2, totalChallengeComps("k")))
 
                 return x
         },
@@ -19224,10 +19300,17 @@ addLayer("m", {
                                 return hasUpgrade("m", 13) || hasUnlockedPast("m")
                         }
                 }, // hasUpgrade("m", 14)
+                15: {
+                        title: "Map",
+                        description: "Per upgrade multiply <b>Tungsten Key</b> effect by 1.25 and each <b>K</b> challenge gives a free <b>Coal Key</b> and doubles <b>M</b> gain",
+                        cost: new Decimal(2e13),
+                        unlocked(){
+                                return hasUpgrade("m", 14) || hasUnlockedPast("m")
+                        }
+                }, // hasUpgrade("m", 15)
         
 
                 /*
-                Map
                 management
                 Must
                 Made
