@@ -7253,7 +7253,7 @@ addLayer("g", {
                         data.autotime = 0
                 }
 
-                if (hasMilestone("i", 8) && player.g.rebirths[0] < 2e5) {
+                if (hasMilestone("i", 8) && player.g.rebirths[1] < 2e5) {
                         cmr = tmp.g.clickables.getCurrentMaxRebirths
                         let diff = cmr - player.g.rebirths[1]
                         player.g.rebirths[1] = cmr 
@@ -14914,15 +14914,22 @@ addLayer("k", {
                 }, // hasUpgrade("k", 51)
                 52: {
                         title: "Keith",
-                        description: "<b>K</b> challenges after 5 are halved and unlock another <b>K</b> challenge [not yet]",
-                        cost: new Decimal("1e495.59e6"),
+                        description: "<b>K</b> challenges after 5 are halved and unlock another <b>K</b> challenge",
+                        cost: new Decimal("1e495.5e6"),
                         unlocked(){
                                 return hasUpgrade("k", 51) || hasUnlockedPast("m")
                         }
                 }, // hasUpgrade("k", 52)
+                53: {
+                        title: "Kate",
+                        description: "<b>Tungsten Key</b> base effects <b>M</b> gain and [qol]",
+                        cost: new Decimal("1e876e6"),
+                        unlocked(){
+                                return hasUpgrade("k", 52) || hasUnlockedPast("m")
+                        }
+                }, // hasUpgrade("k", 53)
                 
                 /*
-                Kate
                 Karen
                 */
         },
@@ -18160,13 +18167,13 @@ addLayer("k", {
                                         let data1 = player.k.lock.resources
                                         let a = "You have <bdi style='color: #" + getUndulatingColor(0) + "'>" + format(data1[11]) + " Iron</bdi>"
                                         let b = ", <bdi style='color: #" + getUndulatingColor(0.4) + "'>" + format(data1[12]) + " Silver</bdi>"
-                                        let c = ", <bdi style='color: #" + getUndulatingColor(0.8) + "'>" + format(data1[13]) + " Gold</bdi>"
-                                        let d = ", <bdi style='color: #" + getUndulatingColor(1.2) + "'>" + format(data1[14]) + " Coal</bdi>,<br>"
-                                        let e = "<bdi style='color: #" + getUndulatingColor(1.6) + "'>" + format(data1[15]) + " Copper</bdi>"
-                                        let f = ", <bdi style='color: #" + getUndulatingColor(2) + "'>" + format(data1[21]) + " Tin</bdi>"
-                                        let g = ", <bdi style='color: #" + getUndulatingColor(2.4) + "'>" + format(data1[22]) + " Titanium</bdi>"
-                                        let h = ", <bdi style='color: #" + getUndulatingColor(2.8) + "'>" + format(data1[23]) + " Tungsten</bdi>,<br>"
-                                        let i = "<bdi style='color: #" + getUndulatingColor(3.2) + "'>" + format(data1[24]) + " Aluminum</bdi>"
+                                        let c = ", <bdi style='color: #" + getUndulatingColor(0.8) + "'>" + format(data1[13]) + " Gold</bdi>,<br>"
+                                        let d = "<bdi style='color: #" + getUndulatingColor(1.2) + "'>" + format(data1[14]) + " Coal</bdi>"
+                                        let e = ", <bdi style='color: #" + getUndulatingColor(1.6) + "'>" + format(data1[15]) + " Copper</bdi>"
+                                        let f = ", <bdi style='color: #" + getUndulatingColor(2) + "'>" + format(data1[21]) + " Tin</bdi>,<br>"
+                                        let g = "<bdi style='color: #" + getUndulatingColor(2.4) + "'>" + format(data1[22]) + " Titanium</bdi>"
+                                        let h = ", <bdi style='color: #" + getUndulatingColor(2.8) + "'>" + format(data1[23]) + " Tungsten</bdi>"
+                                        let i = ", <bdi style='color: #" + getUndulatingColor(3.2) + "'>" + format(data1[24]) + " Aluminum</bdi><br>"
                                         let j = " and, <bdi style='color: #" + getUndulatingColor(3.6) + "'>" + format(data1[25]) + " Osmium</bdi>."
                                         let amts = a + b + c + d + e + f + g + h + i + j + "<br>"
                                         let k = "You get " + tmp.k.clickables[11].effectDescription + ", "
@@ -18807,6 +18814,7 @@ addLayer("m", {
                 }
                 if (hasUpgrade("m", 14)) x = x.times(Decimal.pow(1.01, totalChallengeComps("k") ** 2))
                 if (hasUpgrade("m", 15)) x = x.times(Decimal.pow(2, totalChallengeComps("k")))
+                if (hasUpgrade("k", 53)) x = x.times(tmp.k.clickables[73].effect)
 
                 return x
         },
