@@ -169,7 +169,7 @@ function isPrestigeEffectActive(layer){
         if (layer == "n") return true
         if (layer == "m") return true
         if (layer == "l") return true
-        if (layer == "k") return true
+        if (layer == "k") return !inChallenge("k", 22)
         if (layer == "j") return true
         if (layer == "i") return !inChallenge("k", 21)
         if (layer == "h") return !inChallenge("h", 22)
@@ -10652,6 +10652,7 @@ addLayer("h", {
                                 if (hasMilestone("k", 10)) ret += player.k.milestones.length
                                 if (hasMilestone("l", 11)) ret += player.l.milestones.length
                                 if (hasUpgrade("k", 53)) ret += Math.floor(totalChallengeComps("k")/3)
+                                if (hasUpgrade("k", 55)) ret += 40
 
                                 return ret
                         },
@@ -10685,6 +10686,7 @@ addLayer("h", {
                                 if (hasMilestone("k", 10)) ret += player.k.milestones.length
                                 if (hasMilestone("l", 11)) ret += player.l.milestones.length
                                 if (hasUpgrade("k", 53)) ret += Math.floor(totalChallengeComps("k")/3)
+                                if (hasUpgrade("k", 55)) ret += 40
 
                                 return ret
                         },
@@ -10720,6 +10722,7 @@ addLayer("h", {
                                 if (hasMilestone("k", 10)) ret += player.k.milestones.length
                                 if (hasMilestone("l", 11)) ret += player.l.milestones.length
                                 if (hasUpgrade("k", 53)) ret += Math.floor(totalChallengeComps("k")/3)
+                                if (hasUpgrade("k", 55)) ret += 40
 
                                 return ret
                         },
@@ -10756,6 +10759,7 @@ addLayer("h", {
                                 if (hasMilestone("k", 10)) ret += player.k.milestones.length
                                 if (hasMilestone("l", 11)) ret += player.l.milestones.length
                                 if (hasUpgrade("k", 53)) ret += Math.floor(totalChallengeComps("k")/3)
+                                if (hasUpgrade("k", 55)) ret += 40
 
                                 return ret
                         },
@@ -12296,6 +12300,8 @@ addLayer("j", {
                         let exp = Decimal.plus(player.j.puzzle.finished, 1)
                         if (exp.gt(2500)) exp = exp.pow(1.5).div(50)
                         if (exp.gt(40e3)) exp = exp.pow(2).div(40e3)
+                        if (exp.gt(7e5)) exp = exp.pow(3).div(49e10)
+                        if (exp.gt(1e6)) exp = exp.div(1e6).times(6).pow10()
                         return Decimal.pow(.5, exp)
                 },
                 getAttemptChance(){
@@ -12437,6 +12443,8 @@ addLayer("j", {
                         if (hasUpgrade("j", 51)) ret = ret.times(tmp.j.clickables[45].effect.pow(.01))
                         if (hasUpgrade("k", 33)) ret = ret.times(player.j.puzzle.exp.max(1).pow(.5))
                         ret = ret.times(Decimal.pow(tmp.k.clickables[62].effect, tmp.k.clickables.totalKeys))
+
+                        if (ret.max(10).log10().gt(36e8)) ret = ret.log10().sqrt().times(6e4).pow10()
                         return ret
                 },
                 getBankedExpGainUF(){
@@ -12698,6 +12706,7 @@ addLayer("j", {
                                 if (player.j.puzzle.upgrades.includes(63)) times *= 10
                                 if (hasUpgrade("k", 24)) times *= 10
                                 if (hasMilestone("l", 11)) times *= 1000
+                                if (hasUpgrade("k", 52)) times *= 1000
 
                                 let max = tmp.j.clickables[13].getMaxAmt
                                 let diff = max.sub(data.repeatables[13]).min(times)
@@ -12766,6 +12775,7 @@ addLayer("j", {
 
                                 if (hasMilestone("k", 14)) times *= 10
                                 if (hasUpgrade("m", 12)) times *= 10
+                                if (hasUpgrade("k", 52)) times *= 1000
 
                                 let diff = mp.sub(amt).min(times)
 
@@ -14995,9 +15005,18 @@ addLayer("k", {
                                 return hasUpgrade("k", 53) || hasUnlockedPast("m")
                         }
                 }, // hasUpgrade("k", 54)
+                55: {
+                        title: "Kick",
+                        description: "You can complete 40 more <b>H</b> challenges and unlock the final <b>K</b> challenge",
+                        cost: new Decimal("1e120e9"),
+                        unlocked(){
+                                return hasUpgrade("k", 54) || hasUnlockedPast("m")
+                        }
+                }, // hasUpgrade("k", 55)
                 
                 /*
-                Karen [used]
+                Knight
+                kennedy
                 */
         },
         clickables: {
@@ -17263,11 +17282,13 @@ addLayer("k", {
                         display(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
-                                let a 
+                                let a = ""
                                 let b 
                                 let c 
                                 let id = 61
-                                a = "<h3 style='color: #AC4600'>Cost</h3>: " + formatWhole(tmp.k.clickables[id].cost) + "<br>"
+                                if (player.k.points.max(10).log10().lt(1e9)) { 
+                                        a = "<h3 style='color: #AC4600'>Cost</h3>: " + formatWhole(tmp.k.clickables[id].cost) + "<br>"
+                                }
                                 c = "<h3 style='color: #FF33CC'>Effect</h3>: (" + formatWhole(player.k.lock.repeatables[id]) +")<br>" + tmp.k.clickables[id].effectDescription + "<br>"
                                 return a + c
                         },
@@ -17334,11 +17355,13 @@ addLayer("k", {
                         display(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
-                                let a 
+                                let a = ""
                                 let b 
                                 let c 
                                 let id = 62
-                                a = "<h3 style='color: #AC4600'>Cost</h3>: " + formatWhole(tmp.k.clickables[id].cost) + "<br>"
+                                if (player.k.points.max(10).log10().lt(1e9)) { 
+                                        a = "<h3 style='color: #AC4600'>Cost</h3>: " + formatWhole(tmp.k.clickables[id].cost) + "<br>"
+                                }
                                 c = "<h3 style='color: #FF33CC'>Effect</h3>: (" + formatWhole(player.k.lock.repeatables[id]) +")<br>" + tmp.k.clickables[id].effectDescription + "<br>"
                                 return a + c
                         },
@@ -17405,11 +17428,13 @@ addLayer("k", {
                         display(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
-                                let a 
+                                let a = ""
                                 let b 
                                 let c 
                                 let id = 63
-                                a = "<h3 style='color: #AC4600'>Cost</h3>: " + formatWhole(tmp.k.clickables[id].cost) + "<br>"
+                                if (player.k.points.max(10).log10().lt(1e9)) { 
+                                        a = "<h3 style='color: #AC4600'>Cost</h3>: " + formatWhole(tmp.k.clickables[id].cost) + "<br>"
+                                }
                                 c = "<h3 style='color: #FF33CC'>Effect</h3>: (" + formatWhole(player.k.lock.repeatables[id]) +")<br>" + tmp.k.clickables[id].effectDescription + "<br>"
                                 return a + c
                         },
@@ -17477,11 +17502,13 @@ addLayer("k", {
                         display(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
-                                let a 
+                                let a = ""
                                 let b 
                                 let c 
                                 let id = 64
-                                a = "<h3 style='color: #AC4600'>Cost</h3>: " + formatWhole(tmp.k.clickables[id].cost) + "<br>"
+                                if (player.k.points.max(10).log10().lt(1e9)) { 
+                                        a = "<h3 style='color: #AC4600'>Cost</h3>: " + formatWhole(tmp.k.clickables[id].cost) + "<br>"
+                                }
                                 c = "<h3 style='color: #FF33CC'>Effect</h3>: (" + formatWhole(player.k.lock.repeatables[id]) +")<br>" + tmp.k.clickables[id].effectDescription + "<br>"
                                 return a + c
                         },
@@ -17548,11 +17575,13 @@ addLayer("k", {
                         display(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
-                                let a 
+                                let a = ""
                                 let b 
                                 let c 
                                 let id = 65
-                                a = "<h3 style='color: #AC4600'>Cost</h3>: " + formatWhole(tmp.k.clickables[id].cost) + "<br>"
+                                if (player.k.points.max(10).log10().lt(1e9)) { 
+                                        a = "<h3 style='color: #AC4600'>Cost</h3>: " + formatWhole(tmp.k.clickables[id].cost) + "<br>"
+                                }
                                 c = "<h3 style='color: #FF33CC'>Effect</h3>: (" + formatWhole(player.k.lock.repeatables[id]) +")<br>" + tmp.k.clickables[id].effectDescription + "<br>"
                                 return a + c
                         },
@@ -17619,11 +17648,13 @@ addLayer("k", {
                         display(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
-                                let a 
+                                let a = ""
                                 let b 
                                 let c 
                                 let id = 71
-                                a = "<h3 style='color: #AC4600'>Cost</h3>: " + formatWhole(tmp.k.clickables[id].cost) + "<br>"
+                                if (player.k.points.max(10).log10().lt(1e9)) { 
+                                        a = "<h3 style='color: #AC4600'>Cost</h3>: " + formatWhole(tmp.k.clickables[id].cost) + "<br>"
+                                }
                                 c = "<h3 style='color: #FF33CC'>Effect</h3>: (" + formatWhole(player.k.lock.repeatables[id]) +")<br>" + tmp.k.clickables[id].effectDescription + "<br>"
                                 return a + c
                         },
@@ -17690,11 +17721,13 @@ addLayer("k", {
                         display(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
-                                let a 
+                                let a = ""
                                 let b 
                                 let c 
                                 let id = 72
-                                a = "<h3 style='color: #AC4600'>Cost</h3>: " + formatWhole(tmp.k.clickables[id].cost) + "<br>"
+                                if (player.k.points.max(10).log10().lt(1e9)) { 
+                                        a = "<h3 style='color: #AC4600'>Cost</h3>: " + formatWhole(tmp.k.clickables[id].cost) + "<br>"
+                                }
                                 c = "<h3 style='color: #FF33CC'>Effect</h3>: (" + formatWhole(player.k.lock.repeatables[id]) +")<br>" + tmp.k.clickables[id].effectDescription + "<br>"
                                 return a + c
                         },
@@ -17761,11 +17794,13 @@ addLayer("k", {
                         display(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
-                                let a 
+                                let a = ""
                                 let b 
                                 let c 
                                 let id = 73
-                                a = "<h3 style='color: #AC4600'>Cost</h3>: " + formatWhole(tmp.k.clickables[id].cost) + "<br>"
+                                if (player.k.points.max(10).log10().lt(1e9)) { 
+                                        a = "<h3 style='color: #AC4600'>Cost</h3>: " + formatWhole(tmp.k.clickables[id].cost) + "<br>"
+                                }
                                 c = "<h3 style='color: #FF33CC'>Effect</h3>: (" + formatWhole(player.k.lock.repeatables[id]) +")<br>" + tmp.k.clickables[id].effectDescription + "<br>"
                                 return a + c
                         },
@@ -17833,11 +17868,13 @@ addLayer("k", {
                         display(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
-                                let a 
+                                let a = ""
                                 let b 
                                 let c 
                                 let id = 74
-                                a = "<h3 style='color: #AC4600'>Cost</h3>: " + formatWhole(tmp.k.clickables[id].cost) + "<br>"
+                                if (player.k.points.max(10).log10().lt(1e9)) { 
+                                        a = "<h3 style='color: #AC4600'>Cost</h3>: " + formatWhole(tmp.k.clickables[id].cost) + "<br>"
+                                }
                                 c = "<h3 style='color: #FF33CC'>Effect</h3>: (" + formatWhole(player.k.lock.repeatables[id]) +")<br>" + tmp.k.clickables[id].effectDescription + "<br>"
                                 return a + c
                         },
@@ -17905,11 +17942,13 @@ addLayer("k", {
                         display(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
-                                let a 
+                                let a = ""
                                 let b 
                                 let c 
                                 let id = 75
-                                a = "<h3 style='color: #AC4600'>Cost</h3>: " + formatWhole(tmp.k.clickables[id].cost) + "<br>"
+                                if (player.k.points.max(10).log10().lt(1e9)) { 
+                                        a = "<h3 style='color: #AC4600'>Cost</h3>: " + formatWhole(tmp.k.clickables[id].cost) + "<br>"
+                                }
                                 c = "<h3 style='color: #FF33CC'>Effect</h3>: (" + formatWhole(player.k.lock.repeatables[id]) +")<br>" + tmp.k.clickables[id].effectDescription + "<br>"
                                 return a + c
                         },
@@ -18203,6 +18242,37 @@ addLayer("k", {
                         currencyInternalName: "points",
                         completionLimit: 20,
                         countsAs: [11, 12],
+                },
+                22: {
+                        name: "Kenya",
+                        challengeDescription: "<b>Kerry</b> and remove <b>K</b> effect",
+                        rewardDescription: "Multiply base <b>M</b> gain",
+                        rewardEffect(){
+                                let c = challengeCompletions("k", 22)
+                                c = Math.max(0, c-2)
+                                ret = Decimal.pow(3, Math.pow(c, .8)) 
+                                return ret
+                        },
+                        goal(){
+                                let init = new Decimal(1)
+                                let c = challengeCompletions("k", 22)
+                                let raw = c
+                                if (hasUpgrade("m", 13)) c -= tmp.m.upgrades[13].effect.toNumber()
+
+                                c = Math.max(c, 0)
+                                if (c > 5 && hasUpgrade("k", 52)) c = (c+5)/2
+                                let factor = getChallengeFactor(c)
+                                if (factor.eq(1)) factor = new Decimal(0)
+                                let second = new Decimal(1e100)
+                                let exp = second.pow(factor).times(init)
+                                return Decimal.pow(10, exp.times(Decimal.pow(10, 4300)))
+                        },
+                        unlocked(){
+                                return hasUpgrade("k", 55) || hasUnlockedPast("m")
+                        },
+                        currencyInternalName: "points",
+                        completionLimit: 20,
+                        countsAs: [11, 12, 21],
                 },
         },
         shouldNotify(){
@@ -18929,6 +18999,9 @@ addLayer("m", {
         },
         getGainMultPre(){
                 let x = Decimal.pow(1000, -1)
+
+                x = x.times(tmp.k.challenges[22].rewardEffect)
+
                 return x
         },
         getGainMultPost(){

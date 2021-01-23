@@ -394,6 +394,20 @@ PROGRESSION_MILESTONES = {
 	278:()=> totalChallengeComps("k") >= 66              || hasAchievement("ach",405),
 	279:()=> totalChallengeComps("k") >= 78              || hasAchievement("ach",406),
 	280:()=> totalChallengeComps("h") >= 325             || hasAchievement("ach",407),
+	281:()=> player.k.lock.repeatables[82].gt(15)        || hasAchievement("ach",411),
+	282:()=> totalChallengeComps("h") >= 351             || hasAchievement("ach",412),
+	283:()=> player.k.lock.repeatables[82].gt(21)        || hasAchievement("ach",413),
+	284:()=> totalChallengeComps("h") >= 378             || hasAchievement("ach",414),
+	285:()=> player.k.lock.repeatables[82].gt(28)        || hasAchievement("ach",415),
+	286:()=> totalChallengeComps("h") >= 406             || hasAchievement("ach",416),
+	287:()=> player.k.lock.repeatables[82].gt(36)        || hasAchievement("ach",417),
+	288:()=> totalChallengeComps("h") >= 435             || hasAchievement("ach",421),
+	289:()=> player.k.lock.repeatables[82].gt(45)        || hasAchievement("ach",422),
+	290:()=> totalChallengeComps("h") >= 465             || hasAchievement("ach",423),
+	291:()=> player.k.lock.repeatables[82].gt(55)        || hasAchievement("ach",424),
+	292:()=> totalChallengeComps("h") >= 496             || hasAchievement("ach",425),
+	293:()=> player.k.lock.repeatables[82].gt(66)        || hasAchievement("ach",426),
+	294:()=> player.k.lock.repeatables[82].gt(78)        || hasAchievement("ach",427),
 }
 
 PROGRESSION_MILESTONES_TEXT = {
@@ -677,6 +691,20 @@ PROGRESSION_MILESTONES_TEXT = {
 	278:"66 Key challenge completions",
 	279:"78 Key challenge completions",
 	280:"325 Heart challenge completions",
+	281:"15 Diamond Keys",
+	282:"351 Heart challenge completions",
+	283:"21 Diamond Keys",
+	284:"378 Heart challenge completions",
+	285:"28 Diamond Keys",
+	286:"406 Heart challenge completions",
+	287:"36 Diamond Keys",
+	288:"435 Heart challenge completions",
+	289:"45 Diamond Keys",
+	290:"465 Heart challenge completions",
+	291:"55 Diamond Keys",
+	292:"496 Heart challenge completions",
+	293:"66 Diamond Keys",
+	294:"78 Diamond Keys",
 }
 
 

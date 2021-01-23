@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".8.7 Relief",
+	num: ".8.8 Resource",
 	name: "",
 }
 
@@ -81,7 +81,7 @@ var displayThings = [
 		return "(" + format(getPointGen()) + "/sec)"
 	},
 	function(){
-		let a = "Endgame: 1e77 Maps"
+		let a = "Endgame: 1e129 Maps"
 		return player.autosave ? a : a + ". Warning: autosave is off"
 	},
 	function(){
@@ -481,6 +481,11 @@ function getChangeLogText(){
 	bv3= "- Added a Key upgrade"
 	bv4= "- Changed Kate and Keith"
 	bv5= "- Fixed the error text display"
+	bw1= "v.8.8"
+	bw2= "- Hid more lock displays after 1ee9 Locks to aviod lag"
+	bw3= "- Added a Key challenge"
+	bw4= "- Added a Key upgrade"
+	bw5= "- Added two rows of achievements"
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
 	let part2 = [b1, b2, b3, b4, b5, "", b6, b7, "", b8, b9, b10, "", b11, b12, ""]

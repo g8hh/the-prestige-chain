@@ -314,6 +314,9 @@ function load() {
 	loadVue();
 	updateTemp()
 	updateTemp()
+	updateCurrentDepthValues()
+	updateGamesRewards()
+	updateTemp()
 }
 
 function exportSave() {
@@ -580,30 +583,10 @@ function buyUpg(layer, id) {
 	if (upg.onPurchase != undefined) upg.onPurchase()
 }
 
-/*
-function buyMaxBuyable(layer, id) {
-	if (!player[layer].unlocked) return
-	if (!tmp[layer].buyables[id].unlocked) return
-	if (!tmp[layer].buyables[id].canAfford) return
-	if (!layers[layer].buyables[id].buyMax) return
-
-	let arg 
-	if (layer == "i") arg = 100
-	layers[layer].buyables[id].buyMax(arg)
-	updateBuyableTemp(layer)
-}
-*/
-
 function buyBuyable(layer, id) {
 	if (!player[layer].unlocked) return
 	if (!tmp[layer].buyables[id].unlocked) return
 	if (!tmp[layer].buyables[id].canAfford) return
-	/*
-	if (layers[layer].buyables[id].buyMax && canBuyMax(layer, id)) {
-		buyMaxBuyable(layer, id)
-		return
-	}
-	*/
 
 	layers[layer].buyables[id].buy()
 	updateBuyableTemp(layer)
@@ -794,6 +777,6 @@ function prestigeButtonText(layer) {
 
 function isFunction(obj) {
 	return !!(obj && obj.constructor && obj.call && obj.apply);
-  };
+};
   
 document.title = modInfo.name
