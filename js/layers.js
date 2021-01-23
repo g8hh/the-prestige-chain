@@ -10651,6 +10651,7 @@ addLayer("h", {
                                 if (hasUpgrade("k", 21)) ret += 5
                                 if (hasMilestone("k", 10)) ret += player.k.milestones.length
                                 if (hasMilestone("l", 11)) ret += player.l.milestones.length
+                                if (hasUpgrade("k", 53)) ret += Math.floor(totalChallengeComps("k")/3)
 
                                 return ret
                         },
@@ -10683,6 +10684,7 @@ addLayer("h", {
                                 if (hasUpgrade("k", 21)) ret += 5
                                 if (hasMilestone("k", 10)) ret += player.k.milestones.length
                                 if (hasMilestone("l", 11)) ret += player.l.milestones.length
+                                if (hasUpgrade("k", 53)) ret += Math.floor(totalChallengeComps("k")/3)
 
                                 return ret
                         },
@@ -10717,6 +10719,7 @@ addLayer("h", {
                                 if (hasUpgrade("k", 21)) ret += 5
                                 if (hasMilestone("k", 10)) ret += player.k.milestones.length
                                 if (hasMilestone("l", 11)) ret += player.l.milestones.length
+                                if (hasUpgrade("k", 53)) ret += Math.floor(totalChallengeComps("k")/3)
 
                                 return ret
                         },
@@ -10752,6 +10755,7 @@ addLayer("h", {
                                 if (hasUpgrade("k", 21)) ret += 5
                                 if (hasMilestone("k", 10)) ret += player.k.milestones.length
                                 if (hasMilestone("l", 11)) ret += player.l.milestones.length
+                                if (hasUpgrade("k", 53)) ret += Math.floor(totalChallengeComps("k")/3)
 
                                 return ret
                         },
@@ -13212,6 +13216,7 @@ addLayer("j", {
 
                                 let times = 1
                                 if (hasUpgrade("l", 23)) times *= 10
+                                if (hasUpgrade("k", 52)) times *= 1000
 
                                 diff = diff.min(times)
                                 data.exp = data.exp.minus(tmp.j.clickables[35].cost)
@@ -13398,6 +13403,7 @@ addLayer("j", {
 
                                 let times = 1
                                 if (hasUpgrade("l", 23)) times *= 10
+                                if (hasUpgrade("k", 52)) times *= 1000
 
                                 diff = diff.min(times)
                                 data.exp = data.exp.minus(tmp.j.clickables[45].cost)
@@ -13591,6 +13597,7 @@ addLayer("j", {
 
                                 let times = 1
                                 if (hasUpgrade("l", 23)) times *= 10
+                                if (hasUpgrade("k", 52)) times *= 1000
 
                                 diff = diff.min(times)
                                 data.exp = data.exp.minus(tmp.j.clickables[55].cost)
@@ -13811,6 +13818,11 @@ addLayer("j", {
                         cost(){
                                 return Decimal.pow(10, 110600).times(Decimal.pow(10, 100).pow(player.j.puzzle.repeatables[71].pow(2)))
                         },
+                        getMaxPossible(){
+                                let amt = player.j.puzzle.knowledge.div(Decimal.pow(10, 110600))
+                                if (amt.lt(1)) return new Decimal(0)
+                                return amt.log(Decimal.pow(10, 100)).sqrt().floor().plus(1)
+                        },
                         canClick(){
                                 return player.j.puzzle.knowledge.gte(tmp.j.clickables[71].cost)
                         },
@@ -13829,8 +13841,16 @@ addLayer("j", {
                         onClick(){
                                 if (!this.canClick()) return
                                 let data = player.j.puzzle
-                                data.knowledge = data.knowledge.minus(tmp.j.clickables[71].cost).max(0)
-                                data.repeatables[71] = data.repeatables[71].plus(1)
+
+                                let mp = tmp.j.clickables[71].getMaxPossible
+                                let diff = mp.sub(data.repeatables[71])
+
+                                let times = 1
+                                if (hasUpgrade("k", 52)) times *= 1000
+
+                                diff = diff.min(times)
+                                data.exp = data.exp.minus(tmp.j.clickables[71].cost)
+                                data.repeatables[71] = data.repeatables[71].plus(diff)
                         },
                 },
                 72: {
@@ -13853,6 +13873,11 @@ addLayer("j", {
                         cost(){
                                 return Decimal.pow(10, 144700).times(Decimal.pow(10, 200).pow(player.j.puzzle.repeatables[72].pow(2)))
                         },
+                        getMaxPossible(){
+                                let amt = player.j.puzzle.knowledge.div(Decimal.pow(10, 144700))
+                                if (amt.lt(1)) return new Decimal(0)
+                                return amt.log(Decimal.pow(10, 200)).sqrt().floor().plus(1)
+                        },
                         canClick(){
                                 return player.j.puzzle.knowledge.gte(tmp.j.clickables[72].cost)
                         },
@@ -13871,8 +13896,16 @@ addLayer("j", {
                         onClick(){
                                 if (!this.canClick()) return
                                 let data = player.j.puzzle
-                                data.knowledge = data.knowledge.minus(tmp.j.clickables[72].cost).max(0)
-                                data.repeatables[72] = data.repeatables[72].plus(1)
+
+                                let mp = tmp.j.clickables[72].getMaxPossible
+                                let diff = mp.sub(data.repeatables[72])
+
+                                let times = 1
+                                if (hasUpgrade("k", 52)) times *= 1000
+
+                                diff = diff.min(times)
+                                data.exp = data.exp.minus(tmp.j.clickables[72].cost)
+                                data.repeatables[72] = data.repeatables[72].plus(diff)
                         },
                 },
                 73: {
@@ -13895,6 +13928,11 @@ addLayer("j", {
                         cost(){
                                 return Decimal.pow(10, 170e3).times(Decimal.pow(10, 300).pow(player.j.puzzle.repeatables[73].pow(2)))
                         },
+                        getMaxPossible(){
+                                let amt = player.j.puzzle.knowledge.div(Decimal.pow(10, 170e3))
+                                if (amt.lt(1)) return new Decimal(0)
+                                return amt.log(Decimal.pow(10, 300)).sqrt().floor().plus(1)
+                        },
                         canClick(){
                                 return player.j.puzzle.knowledge.gte(tmp.j.clickables[73].cost)
                         },
@@ -13912,8 +13950,16 @@ addLayer("j", {
                         onClick(){
                                 if (!this.canClick()) return
                                 let data = player.j.puzzle
-                                data.knowledge = data.knowledge.minus(tmp.j.clickables[73].cost).max(0)
-                                data.repeatables[73] = data.repeatables[73].plus(1)
+
+                                let mp = tmp.j.clickables[73].getMaxPossible
+                                let diff = mp.sub(data.repeatables[73])
+
+                                let times = 1
+                                if (hasUpgrade("k", 52)) times *= 1000
+
+                                diff = diff.min(times)
+                                data.exp = data.exp.minus(tmp.j.clickables[73].cost)
+                                data.repeatables[73] = data.repeatables[73].plus(diff)
                         },
                 },
                 74: {
@@ -13936,6 +13982,11 @@ addLayer("j", {
                         cost(){
                                 return Decimal.pow(10, 203600).times(Decimal.pow(10, 400).pow(player.j.puzzle.repeatables[74].pow(2)))
                         },
+                        getMaxPossible(){
+                                let amt = player.j.puzzle.knowledge.div(Decimal.pow(10, 203600))
+                                if (amt.lt(1)) return new Decimal(0)
+                                return amt.log(Decimal.pow(10, 400)).sqrt().floor().plus(1)
+                        },
                         canClick(){
                                 return player.j.puzzle.knowledge.gte(tmp.j.clickables[74].cost)
                         },
@@ -13952,8 +14003,16 @@ addLayer("j", {
                         onClick(){
                                 if (!this.canClick()) return
                                 let data = player.j.puzzle
-                                data.knowledge = data.knowledge.minus(tmp.j.clickables[74].cost).max(0)
-                                data.repeatables[74] = data.repeatables[74].plus(1)
+
+                                let mp = tmp.j.clickables[74].getMaxPossible
+                                let diff = mp.sub(data.repeatables[74])
+
+                                let times = 1
+                                if (hasUpgrade("k", 52)) times *= 1000
+
+                                diff = diff.min(times)
+                                data.exp = data.exp.minus(tmp.j.clickables[74].cost)
+                                data.repeatables[74] = data.repeatables[74].plus(diff)
                         },
                 },
                 75: {
@@ -14914,7 +14973,7 @@ addLayer("k", {
                 }, // hasUpgrade("k", 51)
                 52: {
                         title: "Keith",
-                        description: "<b>K</b> challenges after 5 are halved and unlock another <b>K</b> challenge",
+                        description: "<b>K</b> challenges after 5 are halved and unlock another <b>K</b> challenge and you buy 1000x Puzzle and Key content",
                         cost: new Decimal("1e495.5e6"),
                         unlocked(){
                                 return hasUpgrade("k", 51) || hasUnlockedPast("m")
@@ -14922,15 +14981,23 @@ addLayer("k", {
                 }, // hasUpgrade("k", 52)
                 53: {
                         title: "Kate",
-                        description: "<b>Tungsten Key</b> base effects <b>M</b> gain and [qol]",
+                        description: "<b>Tungsten Key</b> base effects <b>M</b> gain and you can complete 1 more <b>H</b> challenge per 3 <b>K</b> challenges",
                         cost: new Decimal("1e876e6"),
                         unlocked(){
                                 return hasUpgrade("k", 52) || hasUnlockedPast("m")
                         }
                 }, // hasUpgrade("k", 53)
+                54: {
+                        title: "Karen",
+                        description: "Raise <b>Aluminum Key</b> base effect to the number of <b>K</b> challenge completions and add 1 to the <b>M</b> gain exp",
+                        cost: new Decimal("1e1054e6"),
+                        unlocked(){
+                                return hasUpgrade("k", 53) || hasUnlockedPast("m")
+                        }
+                }, // hasUpgrade("k", 54)
                 
                 /*
-                Karen
+                Karen [used]
                 */
         },
         clickables: {
@@ -15016,6 +15083,7 @@ addLayer("k", {
                         display(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
+                                if (player.k.points.max(10).log10().gt(1e9)) return ""
                                 let a 
                                 let b 
                                 let c 
@@ -15107,6 +15175,7 @@ addLayer("k", {
                                 if (hasUpgrade("k", 44)) init *= 10
                                 if (hasMilestone("m", 2)) init *= 10
                                 if (hasMilestone("m", 4)) init *= 2
+                                if (hasUpgrade("k", 52)) init *= 1000
 
                                 diff = diff.min(init)
                                 
@@ -15124,6 +15193,7 @@ addLayer("k", {
                         display(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
+                                if (player.k.points.max(10).log10().gt(1e9)) return ""
                                 let a 
                                 let b 
                                 let c 
@@ -15209,6 +15279,7 @@ addLayer("k", {
                                 if (hasUpgrade("k", 44)) init *= 10
                                 if (hasMilestone("m", 2)) init *= 10
                                 if (hasMilestone("m", 4)) init *= 2
+                                if (hasUpgrade("k", 52)) init *= 1000
 
                                 diff = diff.min(init)
                                 
@@ -15226,6 +15297,7 @@ addLayer("k", {
                         display(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
+                                if (player.k.points.max(10).log10().gt(1e9)) return ""
                                 let a 
                                 let b 
                                 let c 
@@ -15313,6 +15385,7 @@ addLayer("k", {
                                 if (hasUpgrade("k", 44)) init *= 10
                                 if (hasMilestone("m", 2)) init *= 10
                                 if (hasMilestone("m", 4)) init *= 2
+                                if (hasUpgrade("k", 52)) init *= 1000
 
                                 diff = diff.min(init)
                                 
@@ -15330,6 +15403,7 @@ addLayer("k", {
                         display(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
+                                if (player.k.points.max(10).log10().gt(1e9)) return ""
                                 let a 
                                 let b 
                                 let c 
@@ -15415,6 +15489,7 @@ addLayer("k", {
                                 if (hasUpgrade("k", 44)) init *= 10
                                 if (hasMilestone("m", 2)) init *= 10
                                 if (hasMilestone("m", 4)) init *= 2
+                                if (hasUpgrade("k", 52)) init *= 1000
 
                                 diff = diff.min(init)
                                 
@@ -15432,6 +15507,7 @@ addLayer("k", {
                         display(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
+                                if (player.k.points.max(10).log10().gt(1e9)) return ""
                                 let a 
                                 let b 
                                 let c 
@@ -15517,6 +15593,7 @@ addLayer("k", {
                                 if (hasUpgrade("k", 44)) init *= 10
                                 if (hasMilestone("m", 2)) init *= 10
                                 if (hasMilestone("m", 4)) init *= 2
+                                if (hasUpgrade("k", 52)) init *= 1000
 
                                 diff = diff.min(init)
                                 
@@ -15534,6 +15611,7 @@ addLayer("k", {
                         display(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
+                                if (player.k.points.max(10).log10().gt(1e9)) return ""
                                 let a 
                                 let b 
                                 let c 
@@ -15619,6 +15697,7 @@ addLayer("k", {
                                 if (hasUpgrade("k", 44)) init *= 10
                                 if (hasMilestone("m", 2)) init *= 10
                                 if (hasMilestone("m", 4)) init *= 2
+                                if (hasUpgrade("k", 52)) init *= 1000
 
                                 diff = diff.min(init)
                                 
@@ -15636,6 +15715,7 @@ addLayer("k", {
                         display(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
+                                if (player.k.points.max(10).log10().gt(1e9)) return ""
                                 let a 
                                 let b 
                                 let c 
@@ -15721,6 +15801,7 @@ addLayer("k", {
                                 if (hasUpgrade("k", 44)) init *= 10
                                 if (hasMilestone("m", 2)) init *= 10
                                 if (hasMilestone("m", 4)) init *= 2
+                                if (hasUpgrade("k", 52)) init *= 1000
 
                                 diff = diff.min(init)
                                 
@@ -15738,6 +15819,7 @@ addLayer("k", {
                         display(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
+                                if (player.k.points.max(10).log10().gt(1e9)) return ""
                                 let a 
                                 let b 
                                 let c 
@@ -15824,6 +15906,7 @@ addLayer("k", {
                                 if (hasUpgrade("k", 44)) init *= 10
                                 if (hasMilestone("m", 2)) init *= 10
                                 if (hasMilestone("m", 4)) init *= 2
+                                if (hasUpgrade("k", 52)) init *= 1000
 
                                 diff = diff.min(init)
                                 
@@ -15841,6 +15924,7 @@ addLayer("k", {
                         display(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
+                                if (player.k.points.max(10).log10().gt(1e9)) return ""
                                 let a 
                                 let b 
                                 let c 
@@ -15931,6 +16015,7 @@ addLayer("k", {
                                 if (hasUpgrade("k", 44)) init *= 10
                                 if (hasMilestone("m", 2)) init *= 10
                                 if (hasMilestone("m", 4)) init *= 2
+                                if (hasUpgrade("k", 52)) init *= 1000
 
                                 diff = diff.min(init)
                                 
@@ -15948,6 +16033,7 @@ addLayer("k", {
                         display(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
+                                if (player.k.points.max(10).log10().gt(1e9)) return ""
                                 let a 
                                 let b 
                                 let c 
@@ -16033,6 +16119,7 @@ addLayer("k", {
                                 if (hasUpgrade("k", 44)) init *= 10
                                 if (hasMilestone("m", 2)) init *= 10
                                 if (hasMilestone("m", 4)) init *= 2
+                                if (hasUpgrade("k", 52)) init *= 1000
 
                                 diff = diff.min(init)
                                 
@@ -16050,6 +16137,7 @@ addLayer("k", {
                         display(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
+                                if (player.k.points.max(10).log10().gt(1e9)) return ""
                                 let a 
                                 let b 
                                 let c 
@@ -16107,6 +16195,7 @@ addLayer("k", {
                                 if (hasUpgrade("k", 44)) init *= 10
                                 if (hasMilestone("m", 2)) init *= 10
                                 if (hasMilestone("m", 4)) init *= 2
+                                if (hasUpgrade("k", 52)) init *= 1000
 
                                 diff = diff.min(init)
                                 
@@ -16124,6 +16213,7 @@ addLayer("k", {
                         display(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
+                                if (player.k.points.max(10).log10().gt(1e9)) return ""
                                 let a 
                                 let b 
                                 let c 
@@ -16180,6 +16270,7 @@ addLayer("k", {
                                 if (hasUpgrade("k", 44)) init *= 10
                                 if (hasMilestone("m", 2)) init *= 10
                                 if (hasMilestone("m", 4)) init *= 2
+                                if (hasUpgrade("k", 52)) init *= 1000
 
                                 diff = diff.min(init)
                                 
@@ -16197,6 +16288,7 @@ addLayer("k", {
                         display(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
+                                if (player.k.points.max(10).log10().gt(1e9)) return ""
                                 let a 
                                 let b 
                                 let c 
@@ -16254,6 +16346,7 @@ addLayer("k", {
                                 if (hasUpgrade("k", 44)) init *= 10
                                 if (hasMilestone("m", 2)) init *= 10
                                 if (hasMilestone("m", 4)) init *= 2
+                                if (hasUpgrade("k", 52)) init *= 1000
 
                                 diff = diff.min(init)
                                 
@@ -16271,6 +16364,7 @@ addLayer("k", {
                         display(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
+                                if (player.k.points.max(10).log10().gt(1e9)) return ""
                                 let a 
                                 let b 
                                 let c 
@@ -16328,6 +16422,7 @@ addLayer("k", {
                                 if (hasUpgrade("k", 44)) init *= 10
                                 if (hasMilestone("m", 2)) init *= 10
                                 if (hasMilestone("m", 4)) init *= 2
+                                if (hasUpgrade("k", 52)) init *= 1000
 
                                 diff = diff.min(init)
                                 
@@ -16345,6 +16440,7 @@ addLayer("k", {
                         display(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
+                                if (player.k.points.max(10).log10().gt(1e9)) return ""
                                 let a 
                                 let b 
                                 let c 
@@ -16404,6 +16500,7 @@ addLayer("k", {
                                 if (hasUpgrade("k", 44)) init *= 10
                                 if (hasMilestone("m", 2)) init *= 10
                                 if (hasMilestone("m", 4)) init *= 2
+                                if (hasUpgrade("k", 52)) init *= 1000
 
                                 diff = diff.min(init)
                                 
@@ -16421,6 +16518,7 @@ addLayer("k", {
                         display(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
+                                if (player.k.points.max(10).log10().gt(1e9)) return ""
                                 let a 
                                 let b 
                                 let c 
@@ -16477,6 +16575,7 @@ addLayer("k", {
                                 if (hasUpgrade("k", 44)) init *= 10
                                 if (hasMilestone("m", 2)) init *= 10
                                 if (hasMilestone("m", 4)) init *= 2
+                                if (hasUpgrade("k", 52)) init *= 1000
 
                                 diff = diff.min(init)
                                 
@@ -16494,6 +16593,7 @@ addLayer("k", {
                         display(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
+                                if (player.k.points.max(10).log10().gt(1e9)) return ""
                                 let a 
                                 let b 
                                 let c 
@@ -16551,6 +16651,7 @@ addLayer("k", {
                                 if (hasUpgrade("k", 44)) init *= 10
                                 if (hasMilestone("m", 2)) init *= 10
                                 if (hasMilestone("m", 4)) init *= 2
+                                if (hasUpgrade("k", 52)) init *= 1000
 
                                 diff = diff.min(init)
                                 
@@ -16568,6 +16669,7 @@ addLayer("k", {
                         display(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
+                                if (player.k.points.max(10).log10().gt(1e9)) return ""
                                 let a 
                                 let b 
                                 let c 
@@ -16623,6 +16725,7 @@ addLayer("k", {
                                 if (hasUpgrade("k", 44)) init *= 10
                                 if (hasMilestone("m", 2)) init *= 10
                                 if (hasMilestone("m", 4)) init *= 2
+                                if (hasUpgrade("k", 52)) init *= 1000
 
                                 diff = diff.min(init)
                                 
@@ -16640,6 +16743,7 @@ addLayer("k", {
                         display(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
+                                if (player.k.points.max(10).log10().gt(1e9)) return ""
                                 let a 
                                 let b 
                                 let c 
@@ -16696,6 +16800,7 @@ addLayer("k", {
                                 if (hasUpgrade("k", 44)) init *= 10
                                 if (hasMilestone("m", 2)) init *= 10
                                 if (hasMilestone("m", 4)) init *= 2
+                                if (hasUpgrade("k", 52)) init *= 1000
 
                                 diff = diff.min(init)
                                 
@@ -16713,6 +16818,7 @@ addLayer("k", {
                         display(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
+                                if (player.k.points.max(10).log10().gt(1e9)) return ""
                                 let a 
                                 let b 
                                 let c 
@@ -16769,6 +16875,7 @@ addLayer("k", {
                                 if (hasUpgrade("k", 44)) init *= 10
                                 if (hasMilestone("m", 2)) init *= 10
                                 if (hasMilestone("m", 4)) init *= 2
+                                if (hasUpgrade("k", 52)) init *= 1000
 
                                 diff = diff.min(init)
                                 
@@ -16842,6 +16949,7 @@ addLayer("k", {
                                 if (hasUpgrade("k", 44)) init *= 10
                                 if (hasMilestone("m", 2)) init *= 10
                                 if (hasMilestone("m", 4)) init *= 2
+                                if (hasUpgrade("k", 52)) init *= 1000
 
                                 diff = diff.min(init)
                                 
@@ -16915,6 +17023,7 @@ addLayer("k", {
                                 if (hasUpgrade("k", 44)) init *= 10
                                 if (hasMilestone("m", 2)) init *= 10
                                 if (hasMilestone("m", 4)) init *= 2
+                                if (hasUpgrade("k", 52)) init *= 1000
 
                                 diff = diff.min(init)
                                 
@@ -16988,6 +17097,7 @@ addLayer("k", {
                                 if (hasUpgrade("k", 44)) init *= 10
                                 if (hasMilestone("m", 2)) init *= 10
                                 if (hasMilestone("m", 4)) init *= 2
+                                if (hasUpgrade("k", 52)) init *= 1000
 
                                 diff = diff.min(init)
                                 
@@ -17061,6 +17171,7 @@ addLayer("k", {
                                 if (hasUpgrade("k", 44)) init *= 10
                                 if (hasMilestone("m", 2)) init *= 10
                                 if (hasMilestone("m", 4)) init *= 2
+                                if (hasUpgrade("k", 52)) init *= 1000
 
                                 diff = diff.min(init)
                                 
@@ -17134,6 +17245,7 @@ addLayer("k", {
                                 if (hasUpgrade("k", 44)) init *= 10
                                 if (hasMilestone("m", 2)) init *= 10
                                 if (hasMilestone("m", 4)) init *= 2
+                                if (hasUpgrade("k", 52)) init *= 1000
 
                                 diff = diff.min(init)
                                 
@@ -17204,6 +17316,7 @@ addLayer("k", {
                                 
                                 let init = 1
                                 if (hasMilestone("m", 4)) init *= 2
+                                if (hasUpgrade("k", 52)) init *= 1000
 
                                 diff = diff.min(init)
                                 
@@ -17274,6 +17387,7 @@ addLayer("k", {
                                 
                                 let init = 1
                                 if (hasMilestone("m", 4)) init *= 2
+                                if (hasUpgrade("k", 52)) init *= 1000
 
                                 diff = diff.min(init)
                                 
@@ -17345,6 +17459,7 @@ addLayer("k", {
                                 
                                 let init = 1
                                 if (hasMilestone("m", 4)) init *= 2
+                                if (hasUpgrade("k", 52)) init *= 1000
 
                                 diff = diff.min(init)
                                 
@@ -17415,6 +17530,7 @@ addLayer("k", {
                                 
                                 let init = 1
                                 if (hasMilestone("m", 4)) init *= 2
+                                if (hasUpgrade("k", 52)) init *= 1000
 
                                 diff = diff.min(init)
                                 
@@ -17485,6 +17601,7 @@ addLayer("k", {
                                 
                                 let init = 1
                                 if (hasMilestone("m", 4)) init *= 2
+                                if (hasUpgrade("k", 52)) init *= 1000
 
                                 diff = diff.min(init)
                                 
@@ -17555,6 +17672,7 @@ addLayer("k", {
                                 
                                 let init = 1
                                 if (hasMilestone("m", 4)) init *= 2
+                                if (hasUpgrade("k", 52)) init *= 1000
 
                                 diff = diff.min(init)
                                 
@@ -17625,6 +17743,7 @@ addLayer("k", {
                                 
                                 let init = 1
                                 if (hasMilestone("m", 4)) init *= 2
+                                if (hasUpgrade("k", 52)) init *= 1000
 
                                 diff = diff.min(init)
                                 
@@ -17696,6 +17815,7 @@ addLayer("k", {
                                 
                                 let init = 1
                                 if (hasMilestone("m", 4)) init *= 2
+                                if (hasUpgrade("k", 52)) init *= 1000
 
                                 diff = diff.min(init)
                                 
@@ -17743,6 +17863,7 @@ addLayer("k", {
                                 let amt = player.k.lock.repeatables[74]
                                 amt = amt.plus(layers.k.clickables.getBonusKeys(74))
                                 let ret = amt.pow(2).plus(1).pow(7)
+                                if (hasUpgrade("k", 54)) ret = ret.pow(Math.max(1, totalChallengeComps("k")))
                                 return ret
                         },
                         effectDescription(){
@@ -17766,6 +17887,7 @@ addLayer("k", {
                                 
                                 let init = 1
                                 if (hasMilestone("m", 4)) init *= 2
+                                if (hasUpgrade("k", 52)) init *= 1000
 
                                 diff = diff.min(init)
                                 
@@ -17836,6 +17958,7 @@ addLayer("k", {
                                 
                                 let init = 1
                                 if (hasMilestone("m", 4)) init *= 2
+                                if (hasUpgrade("k", 52)) init *= 1000
 
                                 diff = diff.min(init)
                                 
@@ -17906,6 +18029,7 @@ addLayer("k", {
                                 
                                 let init = 1
                                 if (hasMilestone("m", 4)) init *= 2
+                                if (hasUpgrade("k", 52)) init *= 1000
 
                                 diff = diff.min(init)
                                 
@@ -17977,6 +18101,7 @@ addLayer("k", {
                                 
                                 let init = 1
                                 if (hasMilestone("m", 4)) init *= 2
+                                if (hasUpgrade("k", 52)) init *= 1000
 
                                 diff = diff.min(init)
                                 
@@ -18164,6 +18289,7 @@ addLayer("k", {
                                 ["display-text", function(){
                                         if (player.tab != "k") return ""
                                         if (player.subtabs.k.mainTabs != "Lock") return ""
+                                        if (player.k.points.max(10).log10().gt(1e9)) return ""
                                         let data1 = player.k.lock.resources
                                         let a = "You have <bdi style='color: #" + getUndulatingColor(0) + "'>" + format(data1[11]) + " Iron</bdi>"
                                         let b = ", <bdi style='color: #" + getUndulatingColor(0.4) + "'>" + format(data1[12]) + " Silver</bdi>"
@@ -18798,6 +18924,7 @@ addLayer("m", {
                 let x = new Decimal(3)
                 if (hasUpgrade("m", 13)) x = x.plus(tmp.m.upgrades[13].effect)
                 x = x.plus(tmp.k.challenges[21].rewardEffect)
+                if (hasUpgrade("k", 54)) x = x.plus(1)
                 return x
         },
         getGainMultPre(){

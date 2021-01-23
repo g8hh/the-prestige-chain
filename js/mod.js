@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".8.6 Nautical",
+	num: ".8.7 Relief",
 	name: "",
 }
 
@@ -81,7 +81,7 @@ var displayThings = [
 		return "(" + format(getPointGen()) + "/sec)"
 	},
 	function(){
-		let a = "Endgame: 1e34 Maps"
+		let a = "Endgame: 1e77 Maps"
 		return player.autosave ? a : a + ". Warning: autosave is off"
 	},
 	function(){
@@ -476,6 +476,11 @@ function getChangeLogText(){
 	bu2= "- Added a Key upgrade"
 	bu3= "- Fixed above allowing for bulk rebirth purchases"
 	bu4= "- Fixed Keith cost and description"
+	bv1= "v.8.7"
+	bv2= "- Hid lots of lock displays after 1ee9 Locks to aviod lag"
+	bv3= "- Added a Key upgrade"
+	bv4= "- Changed Kate and Keith"
+	bv5= "- Fixed the error text display"
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
 	let part2 = [b1, b2, b3, b4, b5, "", b6, b7, "", b8, b9, b10, "", b11, b12, ""]
@@ -547,6 +552,8 @@ function getChangeLogText(){
 	let part68= [bs1,bs2,bs3,bs4, ""]
 	let part69= [bt1,bt2,bt3,bt4,bt5,bt6,bt7, "",bt8,bt9, ""]
 	let part70= [bu1,bu2,bu3,bu4, ""]
+	let part71= [bv1,bv2,bv3,bv4,bv5, ""]
+	
 	// MAKE SURE TO ADD THEM
 
 	let final1 = [part10,  part9,  part8,  part7,  part6,  part5,  part4,  part3,  part2,  part1]
@@ -556,7 +563,7 @@ function getChangeLogText(){
 	let final5 = [part50, part49, part48, part47, part46, part45, part44, part43, part42, part41]
 	let final6 = [part60, part59, part58, part57, part56, part55, part54, part53, part52, part51]
 	let final7 = [part70, part69, part68, part67, part66, part65, part64, part63, part62, part61]
-	let final8 = []
+	let final8 = [part71,]
 
 	let start = [["Hold Shift to see the full changelog!", shiftDown ? "" : "Currrently showing the 5 most recent entries", ""]]
 	let end = final8.concat(final7).concat(final6).concat(final5).concat(final4).concat(final3).concat(final2).concat(final1)
