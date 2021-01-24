@@ -10652,7 +10652,7 @@ addLayer("h", {
                                 if (hasMilestone("k", 10)) ret += player.k.milestones.length
                                 if (hasMilestone("l", 11)) ret += player.l.milestones.length
                                 if (hasUpgrade("k", 53)) ret += Math.floor(totalChallengeComps("k")/3)
-                                if (hasUpgrade("k", 55)) ret += 40
+                                if (hasUpgrade("k", 55)) ret += 75
 
                                 return ret
                         },
@@ -10686,7 +10686,7 @@ addLayer("h", {
                                 if (hasMilestone("k", 10)) ret += player.k.milestones.length
                                 if (hasMilestone("l", 11)) ret += player.l.milestones.length
                                 if (hasUpgrade("k", 53)) ret += Math.floor(totalChallengeComps("k")/3)
-                                if (hasUpgrade("k", 55)) ret += 40
+                                if (hasUpgrade("k", 55)) ret += 75
 
                                 return ret
                         },
@@ -10722,7 +10722,7 @@ addLayer("h", {
                                 if (hasMilestone("k", 10)) ret += player.k.milestones.length
                                 if (hasMilestone("l", 11)) ret += player.l.milestones.length
                                 if (hasUpgrade("k", 53)) ret += Math.floor(totalChallengeComps("k")/3)
-                                if (hasUpgrade("k", 55)) ret += 40
+                                if (hasUpgrade("k", 55)) ret += 75
 
                                 return ret
                         },
@@ -10759,7 +10759,7 @@ addLayer("h", {
                                 if (hasMilestone("k", 10)) ret += player.k.milestones.length
                                 if (hasMilestone("l", 11)) ret += player.l.milestones.length
                                 if (hasUpgrade("k", 53)) ret += Math.floor(totalChallengeComps("k")/3)
-                                if (hasUpgrade("k", 55)) ret += 40
+                                if (hasUpgrade("k", 55)) ret += 75
 
                                 return ret
                         },
@@ -15007,7 +15007,7 @@ addLayer("k", {
                 }, // hasUpgrade("k", 54)
                 55: {
                         title: "Kick",
-                        description: "You can complete 40 more <b>H</b> challenges and unlock the final <b>K</b> challenge",
+                        description: "You can complete 75 more <b>H</b> challenges and unlock the final <b>K</b> challenge",
                         cost: new Decimal("1e120e9"),
                         unlocked(){
                                 return hasUpgrade("k", 54) || hasUnlockedPast("m")
@@ -15091,6 +15091,7 @@ addLayer("k", {
                         if (hasUpgrade("m", 11) && id == 75) ret = ret.plus(player.m.upgrades.length)
                         if (hasUpgrade("m", 15) && id == 64) ret = ret.plus(totalChallengeComps("k"))
                         if (id == 82) ret = ret.plus(tmp.k.challenges[21].rewardEffect)
+                        if (hasUpgrade("l", 31) && id == 82) ret = ret.plus(tmp.k.challenges[11].rewardEffect)
                         return ret
                 },
                 11: {
@@ -17534,6 +17535,7 @@ addLayer("k", {
                                 let amt = player.k.lock.repeatables[64]
                                 amt = amt.plus(layers.k.clickables.getBonusKeys(64))
                                 let ret = Decimal.sub(.99, amt.div(100).plus(1).pow(-1).times(.99))
+                                if (hasUpgrade("l", 32)) ret = ret.sqrt()
                                 return ret
                         },
                         effectDescription(){
@@ -18575,12 +18577,14 @@ addLayer("l", {
                 if (hasUpgrade("j", 54)) x = x.plus(.04 * player.j.upgrades.length)
                 x = x.plus(tmp.k.clickables[55].effect)
                 if (hasUpgrade("l", 25)) x = x.plus(5 * totalChallengeComps("k"))
+                if (hasUpgrade("l", 31)) x = x.plus(tmp.k.clickables[65].effect)
                 return x
         },
         getGainMultPre(){
                 let x = Decimal.pow(150, -1)
                 if (hasUpgrade("j", 52)) x = x.times(Decimal.pow(1.25, player.l.upgrades.length))
                 if (hasUpgrade("l", 22)) x = x.times(1.5)
+                if (hasUpgrade("l", 31)) x = x.times(tmp.k.clickables[71].effect)
                 return x
         },
         getGainMultPost(){
@@ -18854,11 +18858,24 @@ addLayer("l", {
                                 return player.k.challenges[11] >= 5 || hasUnlockedPast("l")
                         }
                 }, // hasUpgrade("l", 25)
+                31: {
+                        title: "Library",
+                        description: "<b>Kiss</b> effects <b>Diamond Key</b>, <b>Copper Key</b> effects <b>L</b> gain exponent, and <b>Tin Key</b> effects base <b>L</b> gain",
+                        cost: new Decimal("1e72e5"),
+                        unlocked(){
+                                return hasUpgrade("k", 55) || hasUnlockedPast("m")
+                        }
+                }, // hasUpgrade("l", 31)
+                32: {
+                        title: "Looking",
+                        description: "<b>Kerry</b> effects <b>M</b> and square root <b>Coal Key</b> effect",
+                        cost: new Decimal("1e83e5"),
+                        unlocked(){
+                                return hasUpgrade("l", 31) || hasUnlockedPast("m")
+                        }
+                }, // hasUpgrade("l", 32)
 
                 /*
-                large
-                library
-                Looking
                 Less
                 */
         },
@@ -19015,6 +19032,7 @@ addLayer("m", {
                 if (hasUpgrade("m", 14)) x = x.times(Decimal.pow(1.01, totalChallengeComps("k") ** 2))
                 if (hasUpgrade("m", 15)) x = x.times(Decimal.pow(2, totalChallengeComps("k")))
                 if (hasUpgrade("k", 53)) x = x.times(tmp.k.clickables[73].effect)
+                if (hasUpgrade("l", 32)) x = x.times(tmp.k.challenges[12].rewardEffect)
 
                 return x
         },
