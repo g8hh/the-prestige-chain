@@ -99,9 +99,10 @@ function upperCase(s){
 
 function formatChances(v) {
 	v = new Decimal(v)
+	if (v.lt(Decimal.pow(10, -1e10))) return format(v)
 	if (v.gte(.1)) return format(v)
 	if (v.eq(0)) return "0.00"
-	let b = v.log10().times(-1).floor().plus(1).toNumber()
+	let b = v.log10().times(-1).floor().plus(1)
 	return format(v.times(Decimal.pow(10, b))) + "/10^" + formatWhole(b)
 }
 

@@ -10573,6 +10573,7 @@ addLayer("j", {
                                 let x = (data.currentX - 2 + data.currentY - 2) * 2
                                 if (data.found.corners < 4) return "Requires: 4 corners found"
                                 if (data.found.edges < x) return "Requires: " + formatWhole(x) + " edges found"
+                                if (tmp.j.clickables.getAttemptChance.lt(Decimal.pow(10, -1000))) return ""
                                 if (data.placed.corners < 4) {
                                         let left = 4 - data.placed.corners 
                                         return "Chance " + formatChances(tmp.j.clickables.getAttemptChance.div(left).min(1).times(100)) + "%"

@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".8.10 Weather",
+	num: ".8.10.1 Weather",
 	name: "",
 }
 
@@ -498,6 +498,8 @@ function getChangeLogText(){
 	by3= "- Created prestigeSupport.js and generalSupport.js"
 	by4= "- Moved a bunch of functions to help code readablility"
 	by5= "- Added a bunch of stuff to hopefully fix things going negative"
+	by6= "v.8.10.1"
+	by7= "- Fix a bug with displaying tiny chances"
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
 	let part2 = [b1, b2, b3, b4, b5, "", b6, b7, "", b8, b9, b10, "", b11, b12, ""]
@@ -572,7 +574,7 @@ function getChangeLogText(){
 	let part71= [bv1,bv2,bv3,bv4,bv5, ""]
 	let part72= [bw1,bw2,bw3,bw4,bw5, "",bw6,bw7,bw8,bw9, ""]
 	let part73= [bx1,bx2,bx3, ""]
-	let part74= [by1,by2,by3,by4,by5, ""]
+	let part74= [by1,by2,by3,by4,by5, "",by6,by7, ""]
 	
 	// MAKE SURE TO ADD THEM
 
