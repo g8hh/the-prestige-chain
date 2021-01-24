@@ -407,7 +407,14 @@ PROGRESSION_MILESTONES = {
 	291: ()=> player.k.lock.repeatables[82].gt(55),
 	292: ()=> totalChallengeComps("h") >= 496,
 	293: ()=> player.k.lock.repeatables[82].gt(66),
-	294: ()=> player.k.lock.repeatables[82].gt(78),
+	294: ()=> totalChallengeComps("h") >= 528,
+	295: ()=> totalChallengeComps("h") >= 561,
+	296: ()=> totalChallengeComps("h") >= 595,
+	297: ()=> totalChallengeComps("h") >= 630,
+	298: ()=> totalChallengeComps("h") >= 666,
+	299: ()=> totalChallengeComps("h") >= 703,
+	300: ()=> totalChallengeComps("h") >= 741,
+	301: ()=> totalChallengeComps("h") >= 780,
 }
 
 PROGRESSION_MILESTONES_TEXT = {
@@ -704,7 +711,14 @@ PROGRESSION_MILESTONES_TEXT = {
 	291: "55 Diamond Keys",
 	292: "496 Heart challenge completions",
 	293: "66 Diamond Keys",
-	294: "78 Diamond Keys",
+	294: "528 Heart challenge completions",
+	295: "561 Heart challenge completions",
+	296: "595 Heart challenge completions",
+	297: "630 Heart challenge completions",
+	298: "666 Heart challenge completions",
+	299: "703 Heart challenge completions",
+	300: "741 Heart challenge completions",
+	301: "780 Heart challenge completions",
 }
 
 

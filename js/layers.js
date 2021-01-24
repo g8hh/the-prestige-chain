@@ -8544,6 +8544,7 @@ addLayer("h", {
                         goal(){
                                 let init = new Decimal("1e3800e18")
                                 let c = challengeCompletions("h", 11)
+                                if (c > 200) c = c**2 / 200
                                 c = Math.max(0, c - tmp.h.challenges.totalSub)
                                 let factor = getChallengeFactor(c)
                                 if (factor.eq(1)) factor = new Decimal(0)
@@ -8561,6 +8562,7 @@ addLayer("h", {
                                 if (hasMilestone("l", 11)) ret += player.l.milestones.length
                                 if (hasUpgrade("k", 53)) ret += Math.floor(totalChallengeComps("k")/3)
                                 if (hasUpgrade("k", 55)) ret += 75
+                                if (hasUpgrade("l", 33)) ret += 2 * player.l.upgrades.length
 
                                 return ret
                         },
@@ -8578,6 +8580,7 @@ addLayer("h", {
                         goal(){
                                 let init = new Decimal("1e9525e18")
                                 let c = challengeCompletions("h", 12)
+                                if (c > 200) c = c**2 / 200
                                 c = Math.max(0, c - tmp.h.challenges.totalSub)
                                 let factor = getChallengeFactor(c)
                                 if (factor.eq(1)) factor = new Decimal(0)
@@ -8595,6 +8598,7 @@ addLayer("h", {
                                 if (hasMilestone("l", 11)) ret += player.l.milestones.length
                                 if (hasUpgrade("k", 53)) ret += Math.floor(totalChallengeComps("k")/3)
                                 if (hasUpgrade("k", 55)) ret += 75
+                                if (hasUpgrade("l", 33)) ret += 2 * player.l.upgrades.length
 
                                 return ret
                         },
@@ -8614,6 +8618,7 @@ addLayer("h", {
                         goal(){
                                 let init = new Decimal("1e2362e21")
                                 let c = challengeCompletions("h", 21)
+                                if (c > 200) c = c**2 / 200
                                 c = Math.max(0, c - tmp.h.challenges.totalSub)
                                 let factor = getChallengeFactor(c)
                                 if (factor.eq(1)) factor = new Decimal(0)
@@ -8631,6 +8636,7 @@ addLayer("h", {
                                 if (hasMilestone("l", 11)) ret += player.l.milestones.length
                                 if (hasUpgrade("k", 53)) ret += Math.floor(totalChallengeComps("k")/3)
                                 if (hasUpgrade("k", 55)) ret += 75
+                                if (hasUpgrade("l", 33)) ret += 2 * player.l.upgrades.length
 
                                 return ret
                         },
@@ -8650,6 +8656,7 @@ addLayer("h", {
                         goal(){
                                 let init = new Decimal("1e1099e28")
                                 let c = challengeCompletions("h", 22)
+                                if (c > 200) c = c**2 / 200
                                 c = Math.max(0, c - tmp.h.challenges.totalSub)
                                 if (c > 3 && !player.j.puzzle.upgrades.includes(64)) c = c * c / 3
                                 let factor = getChallengeFactor(c)
@@ -8668,6 +8675,7 @@ addLayer("h", {
                                 if (hasMilestone("l", 11)) ret += player.l.milestones.length
                                 if (hasUpgrade("k", 53)) ret += Math.floor(totalChallengeComps("k")/3)
                                 if (hasUpgrade("k", 55)) ret += 75
+                                if (hasUpgrade("l", 33)) ret += 2 * player.l.upgrades.length
 
                                 return ret
                         },
@@ -12756,7 +12764,7 @@ addLayer("k", {
                         display(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
-                                if (player.k.points.max(10).log10().gt(1e9)) return ""
+                                if (player.k.points.max(10).log10().gt(1e9)) return formatWhole(player.k.lock.repeatables[11])
                                 let a 
                                 let b 
                                 let c 
@@ -12867,7 +12875,7 @@ addLayer("k", {
                         display(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
-                                if (player.k.points.max(10).log10().gt(1e9)) return ""
+                                if (player.k.points.max(10).log10().gt(1e9)) return formatWhole(player.k.lock.repeatables[12])
                                 let a 
                                 let b 
                                 let c 
@@ -12972,7 +12980,7 @@ addLayer("k", {
                         display(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
-                                if (player.k.points.max(10).log10().gt(1e9)) return ""
+                                if (player.k.points.max(10).log10().gt(1e9)) return formatWhole(player.k.lock.repeatables[13])
                                 let a 
                                 let b 
                                 let c 
@@ -13079,7 +13087,7 @@ addLayer("k", {
                         display(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
-                                if (player.k.points.max(10).log10().gt(1e9)) return ""
+                                if (player.k.points.max(10).log10().gt(1e9)) return formatWhole(player.k.lock.repeatables[14])
                                 let a 
                                 let b 
                                 let c 
@@ -13184,7 +13192,7 @@ addLayer("k", {
                         display(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
-                                if (player.k.points.max(10).log10().gt(1e9)) return ""
+                                if (player.k.points.max(10).log10().gt(1e9)) return formatWhole(player.k.lock.repeatables[15])
                                 let a 
                                 let b 
                                 let c 
@@ -13289,7 +13297,7 @@ addLayer("k", {
                         display(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
-                                if (player.k.points.max(10).log10().gt(1e9)) return ""
+                                if (player.k.points.max(10).log10().gt(1e9)) return formatWhole(player.k.lock.repeatables[21])
                                 let a 
                                 let b 
                                 let c 
@@ -13394,7 +13402,7 @@ addLayer("k", {
                         display(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
-                                if (player.k.points.max(10).log10().gt(1e9)) return ""
+                                if (player.k.points.max(10).log10().gt(1e9)) return formatWhole(player.k.lock.repeatables[22])
                                 let a 
                                 let b 
                                 let c 
@@ -13499,7 +13507,7 @@ addLayer("k", {
                         display(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
-                                if (player.k.points.max(10).log10().gt(1e9)) return ""
+                                if (player.k.points.max(10).log10().gt(1e9)) return formatWhole(player.k.lock.repeatables[23])
                                 let a 
                                 let b 
                                 let c 
@@ -13605,7 +13613,7 @@ addLayer("k", {
                         display(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
-                                if (player.k.points.max(10).log10().gt(1e9)) return ""
+                                if (player.k.points.max(10).log10().gt(1e9)) return formatWhole(player.k.lock.repeatables[24])
                                 let a 
                                 let b 
                                 let c 
@@ -13715,7 +13723,7 @@ addLayer("k", {
                         display(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
-                                if (player.k.points.max(10).log10().gt(1e9)) return ""
+                                if (player.k.points.max(10).log10().gt(1e9)) return formatWhole(player.k.lock.repeatables[25])
                                 let a 
                                 let b 
                                 let c 
@@ -13820,7 +13828,7 @@ addLayer("k", {
                         display(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
-                                if (player.k.points.max(10).log10().gt(1e9)) return ""
+                                if (player.k.points.max(10).log10().gt(1e9)) return formatWhole(player.k.lock.repeatables[31])
                                 let a 
                                 let b 
                                 let c 
@@ -13897,7 +13905,7 @@ addLayer("k", {
                         display(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
-                                if (player.k.points.max(10).log10().gt(1e9)) return ""
+                                if (player.k.points.max(10).log10().gt(1e9)) return formatWhole(player.k.lock.repeatables[32])
                                 let a 
                                 let b 
                                 let c 
@@ -13973,7 +13981,7 @@ addLayer("k", {
                         display(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
-                                if (player.k.points.max(10).log10().gt(1e9)) return ""
+                                if (player.k.points.max(10).log10().gt(1e9)) return formatWhole(player.k.lock.repeatables[33])
                                 let a 
                                 let b 
                                 let c 
@@ -14050,7 +14058,7 @@ addLayer("k", {
                         display(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
-                                if (player.k.points.max(10).log10().gt(1e9)) return ""
+                                if (player.k.points.max(10).log10().gt(1e9)) return formatWhole(player.k.lock.repeatables[34])
                                 let a 
                                 let b 
                                 let c 
@@ -14127,7 +14135,7 @@ addLayer("k", {
                         display(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
-                                if (player.k.points.max(10).log10().gt(1e9)) return ""
+                                if (player.k.points.max(10).log10().gt(1e9)) return formatWhole(player.k.lock.repeatables[35])
                                 let a 
                                 let b 
                                 let c 
@@ -14205,7 +14213,7 @@ addLayer("k", {
                         display(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
-                                if (player.k.points.max(10).log10().gt(1e9)) return ""
+                                if (player.k.points.max(10).log10().gt(1e9)) return formatWhole(player.k.lock.repeatables[41])
                                 let a 
                                 let b 
                                 let c 
@@ -14281,7 +14289,7 @@ addLayer("k", {
                         display(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
-                                if (player.k.points.max(10).log10().gt(1e9)) return ""
+                                if (player.k.points.max(10).log10().gt(1e9)) return formatWhole(player.k.lock.repeatables[42])
                                 let a 
                                 let b 
                                 let c 
@@ -14358,7 +14366,7 @@ addLayer("k", {
                         display(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
-                                if (player.k.points.max(10).log10().gt(1e9)) return ""
+                                if (player.k.points.max(10).log10().gt(1e9)) return formatWhole(player.k.lock.repeatables[43])
                                 let a 
                                 let b 
                                 let c 
@@ -14433,7 +14441,7 @@ addLayer("k", {
                         display(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
-                                if (player.k.points.max(10).log10().gt(1e9)) return ""
+                                if (player.k.points.max(10).log10().gt(1e9)) return formatWhole(player.k.lock.repeatables[44])
                                 let a 
                                 let b 
                                 let c 
@@ -14509,7 +14517,7 @@ addLayer("k", {
                         display(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
-                                if (player.k.points.max(10).log10().gt(1e9)) return ""
+                                if (player.k.points.max(10).log10().gt(1e9)) return formatWhole(player.k.lock.repeatables[45])
                                 let a 
                                 let b 
                                 let c 
@@ -15136,6 +15144,8 @@ addLayer("k", {
                                 amt = amt.plus(layers.k.clickables.getBonusKeys(63))
                                 let ret = amt.sqrt().div(100).plus(1).ln().times(40)
                                 if (hasUpgrade("k", 45)) ret = ret.times(2)
+                                
+                                if (ret.gt(100)) ret = ret.log10().times(50)
                                 return ret
                         },
                         effectDescription(){
@@ -15867,7 +15877,12 @@ addLayer("k", {
                                 return player.j.puzzle.upgrades.includes(75) || hasUnlockedPast("l")
                         },
                         currencyInternalName: "points",
-                        completionLimit: 20,
+                        completionLimit(){
+                                let c = 20
+                                if (hasUpgrade("l", 33)) c += player.l.upgrades.length * 2
+                                
+                                return c
+                        },
                 },
                 12: {
                         name: "Kerry",
@@ -15896,7 +15911,12 @@ addLayer("k", {
                                 return hasUpgrade("l", 25) || hasUnlockedPast("l")
                         },
                         currencyInternalName: "points",
-                        completionLimit: 20,
+                        completionLimit(){
+                                let c = 20
+                                if (hasUpgrade("l", 33)) c += player.l.upgrades.length * 2
+                                
+                                return c
+                        },
                         countsAs: [11],
                 },
                 21: {
@@ -15926,7 +15946,12 @@ addLayer("k", {
                                 return hasUpgrade("k", 52) || hasUnlockedPast("m")
                         },
                         currencyInternalName: "points",
-                        completionLimit: 20,
+                        completionLimit(){
+                                let c = 20
+                                if (hasUpgrade("l", 33)) c += player.l.upgrades.length * 2
+                                
+                                return c
+                        },
                         countsAs: [11, 12],
                 },
                 22: {
@@ -15957,7 +15982,12 @@ addLayer("k", {
                                 return hasUpgrade("k", 55) || hasUnlockedPast("m")
                         },
                         currencyInternalName: "points",
-                        completionLimit: 20,
+                        completionLimit(){
+                                let c = 20
+                                if (hasUpgrade("l", 33)) c += player.l.upgrades.length * 2
+                                
+                                return c
+                        },
                         countsAs: [11, 12, 21],
                 },
         },
@@ -16325,6 +16355,7 @@ addLayer("l", {
                 if (data.autodevtime < 1) return
                 data.autodevtime += -1
                 if (data.autodevtime > 10) data.autodevtime = 10
+                if (hasUpgrade("l", 33)) completeMaxPossibleChallenges("h")
         },
         row: 11, 
         hotkeys: [
@@ -16542,7 +16573,7 @@ addLayer("l", {
                 31: {
                         title: "Library",
                         description: "<b>Kiss</b> effects <b>Diamond Key</b>, <b>Copper Key</b> effects <b>L</b> gain exponent, and <b>Tin Key</b> effects base <b>L</b> gain",
-                        cost: new Decimal("1e72e5"),
+                        cost: new Decimal("1e65e5"),
                         unlocked(){
                                 return hasUpgrade("k", 55) || hasUnlockedPast("m")
                         }
@@ -16550,11 +16581,19 @@ addLayer("l", {
                 32: {
                         title: "Looking",
                         description: "<b>Kerry</b> effects <b>M</b> and square root <b>Coal Key</b> effect",
-                        cost: new Decimal("1e83e5"),
+                        cost: new Decimal("1e77e5"),
                         unlocked(){
                                 return hasUpgrade("l", 31) || hasUnlockedPast("m")
                         }
                 }, // hasUpgrade("l", 32)
+                33: {
+                        title: "Less",
+                        description: "You can complete 2 more <b>K</b> and <b>H</b> challenges per upgrade and you automatically complete <b>H</b> challenges",
+                        cost: new Decimal("1e48e6"),
+                        unlocked(){
+                                return hasUpgrade("l", 32) || hasUnlockedPast("m")
+                        }
+                }, // hasUpgrade("l", 33)
 
                 /*
                 Less
