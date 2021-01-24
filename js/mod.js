@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".8.9 World",
+	num: ".8.10 Weather",
 	name: "",
 }
 
@@ -493,6 +493,11 @@ function getChangeLogText(){
 	bx1= "v.8.9"
 	bx2= "- Buffed Kick"
 	bx3= "- Added 2 Lemon upgrades"
+	by1= "v.8.10"
+	by2= "- Made the Figure, Games, and Heart upgrade autobuyers bulk buy"
+	by3= "- Created prestigeSupport.js and generalSupport.js"
+	by4= "- Moved a bunch of functions to help code readablility"
+	by5= "- Added a bunch of stuff to hopefully fix things going negative"
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
 	let part2 = [b1, b2, b3, b4, b5, "", b6, b7, "", b8, b9, b10, "", b11, b12, ""]
@@ -567,6 +572,7 @@ function getChangeLogText(){
 	let part71= [bv1,bv2,bv3,bv4,bv5, ""]
 	let part72= [bw1,bw2,bw3,bw4,bw5, "",bw6,bw7,bw8,bw9, ""]
 	let part73= [bx1,bx2,bx3, ""]
+	let part74= [by1,by2,by3,by4,by5, ""]
 	
 	// MAKE SURE TO ADD THEM
 
@@ -577,7 +583,7 @@ function getChangeLogText(){
 	let final5 = [part50, part49, part48, part47, part46, part45, part44, part43, part42, part41]
 	let final6 = [part60, part59, part58, part57, part56, part55, part54, part53, part52, part51]
 	let final7 = [part70, part69, part68, part67, part66, part65, part64, part63, part62, part61]
-	let final8 = [part73, part72, part71]
+	let final8 = [part74, part73, part72, part71]
 
 	let start = [["Hold Shift to see the full changelog!", shiftDown ? "" : "Currrently showing the 5 most recent entries", ""]]
 	let end = final8.concat(final7).concat(final6).concat(final5).concat(final4).concat(final3).concat(final2).concat(final1)

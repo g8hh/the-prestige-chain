@@ -3,15 +3,6 @@ key = [buyable layer][buyable id] i.e. a11 or b23
 data = [another key]: function
 */
 
-/*
-Check code
-for (i in [0,0,0 ,0,0,0, 0,0,0]) {
-    id = [11,12,13,21,22,23,31,32,33][i]
-    console.log(calcBuyableExtra("a", id).mag)
-    console.log(tmp.a.buyables[id].extra.mag)
-}
-replace "a" with another layer of choice
-*/
 var MAIN_BUYABLE_DATA = {
         a11: {
                 name: "All",
@@ -3397,16 +3388,6 @@ function formatBuyableCostBase(x){
         return format(x)
 }
 
-//NEW STUFFS
-
-function replaceString(s,find,replace){
-        let d = 1 + s.length - find.length
-        for (i = 0; i < d; i++){
-                if (s.slice(i, i + find.length) == find) return s.slice(0, i) + replace + s.slice(i + find.length, s.length)
-        }
-        return s 
-}
-
 function getGeneralizedBuyableData(layer, id, unlockedTF){
         let title = getBuyableName(layer+id)
         let display = function(){
@@ -3443,5 +3424,171 @@ function getGeneralizedBuyableData(layer, id, unlockedTF){
                 }
 }
 
+// GENERAL BUYABLE SUPPORT
 
+function isBuyableActive(layer, thang){
+        if (layer == "o") return true
+        if (layer == "n") return true
+        if (layer == "m") return true
+        if (layer == "l") return true
+        if (layer == "k") return true
+        if (inChallenge("k", 11)) return false
+        if (layer == "j") return true
+        if (layer == "i") return true
+        if (layer == "h") return true
+        if (inChallenge("h", 11)) return false
+        if (layer == "g") return true
+        if (layer == "f") return true
+        if (inChallenge("f", 11)) return false
+        if (layer == "e") return true
+        if (layer == "d") return true
+        let depth = getChallengeDepth(3)
+        if (depth > 2) return thang%10 != 1
+        if (layer == "c") return true
+        if (inChallenge("c", 11)) return false
+        if (depth > 1) return thang%10 != 1
+        if (layer == "b") return true
+        if (inChallenge("b", 11)) return false
+        if (depth > 0) return thang%10 != 1
+        if (layer == "a") return true
+        console.log(layer, thang)
+        return true
+}
+
+function getABBulk(layer){
+        let amt = new Decimal(1)
+        if (hasUpgrade("e", 11))           amt = amt.times(Decimal.max(player.ach.achievements.length, 1))
+        if (hasUpgrade("d", 35))           amt = amt.times(100)
+        if (hasUpgrade("e", 23))           amt = amt.times(100)
+        if (hasMilestone("ach", 4))        amt = amt.times(100)
+        if (hasMilestone("goalsii", 0))    amt = amt.times(10)
+        if (hasMilestone("goalsii", 1))    amt = amt.times(10)
+        if (hasMilestone("goalsii", 8))    amt = amt.times(player.goalsii.points.max(1))
+        if (hasMilestone("goalsii", 11))   amt = amt.times(Decimal.pow(2, player.goalsii.milestones.length))
+        if (layer == "a") {
+                if (hasUpgrade("a", 35)) amt = amt.times(10)
+                if (hasUpgrade("b", 21)) {
+                        amt = amt.times(2)
+                        if (hasUpgrade("b", 22)) amt = amt.times(2)
+                        if (hasUpgrade("b", 23)) amt = amt.times(2)
+                        if (hasUpgrade("b", 24)) amt = amt.times(2)
+                        if (hasUpgrade("b", 25)) amt = amt.times(2)
+                }
+                if (hasUpgrade("b", 32)) {
+                        amt = amt.times(2)
+                        if (hasUpgrade("b", 31)) amt = amt.times(2)
+                        if (hasUpgrade("b", 33)) amt = amt.times(2)
+                        if (hasUpgrade("b", 34)) amt = amt.times(2)
+                        if (hasUpgrade("b", 35)) amt = amt.times(2)
+                }
+                if (hasUpgrade("c", 41)) amt = amt.times(10)
+                return amt
+        }
+        if (layer == "b") {
+                if (hasUpgrade("b", 32)) {
+                        amt = amt.times(2)
+                        if (hasUpgrade("b", 31)) amt = amt.times(2)
+                        if (hasUpgrade("b", 33)) amt = amt.times(2)
+                        if (hasUpgrade("b", 34)) amt = amt.times(2)
+                        if (hasUpgrade("b", 35)) amt = amt.times(2)
+                }
+                if (hasUpgrade("c", 41)) amt = amt.times(2)
+                return amt
+        }
+        if (layer == "c"){
+                return amt
+        }
+        if (layer == "d"){
+                return amt
+        }
+        if (layer == "e"){
+                return amt
+        }
+        if (layer == "f"){
+                return amt
+        }
+        if (layer == "g"){
+                return amt
+        }
+        if (layer == "h"){
+                return amt
+        }
+        return amt
+}
+
+function getABSpeed(layer){
+        let diffmult = 1
+        if (hasUpgrade("e", 22)) diffmult *= 2
+        if (hasUpgrade("e", 24)) diffmult *= 3
+        if (hasMilestone("goalsii", 0)) diffmult *= 3
+        if (layer == "a"){
+                if (hasUpgrade("b", 45)) diffmult *= 2
+        }
+        if (layer == "b"){
+                if (hasUpgrade("b", 45)) diffmult *= 2
+        }
+        if (layer == "c"){
+                if (hasUpgrade("d", 41)) diffmult *= 3
+        }
+        if (layer == "d"){
+                if (hasUpgrade("e", 21)) diffmult *= 3
+        }
+        return diffmult/(player.devSpeed || 1)
+}
+
+function getMaxBuyablesAmount(layer){
+        let ret = Decimal.pow(10, 20)
+        if (layer == "a") {
+                ret = ret.times(CURRENT_BUYABLE_EFFECTS["h21"])
+                if (hasUpgrade("k", 32)) ret = ret.times(Decimal.pow(2, player.k.lock.repeatables[45]))
+        }
+        if (layer == "b") {
+                ret = ret.times(CURRENT_BUYABLE_EFFECTS["h21"])
+                if (hasUpgrade("k", 32)) ret = ret.times(Decimal.pow(2, player.k.lock.repeatables[45]))
+        }
+        if (layer == "c") {
+                ret = ret.times(CURRENT_BUYABLE_EFFECTS["h21"])
+                if (hasUpgrade("k", 32)) ret = ret.times(Decimal.pow(2, player.k.lock.repeatables[45]))
+        }
+        if (layer == "d") {
+                ret = ret.times(CURRENT_BUYABLE_EFFECTS["h21"])
+                if (hasUpgrade("k", 32)) ret = ret.times(Decimal.pow(2, player.k.lock.repeatables[45]))
+        }
+        if (layer == "e") {
+                ret = ret.times(CURRENT_BUYABLE_EFFECTS["h21"])
+                if (hasUpgrade("k", 32)) ret = ret.times(Decimal.pow(2, player.k.lock.repeatables[45]))
+        }
+        if (layer == "f") {
+                ret = ret.times(CURRENT_BUYABLE_EFFECTS["h21"])
+                if (hasUpgrade("k", 32)) ret = ret.times(Decimal.pow(2, player.k.lock.repeatables[45]))
+        }
+        if (layer == "g") {
+                ret = ret.times(CURRENT_BUYABLE_EFFECTS["h21"])
+                if (hasUpgrade("k", 32)) ret = ret.times(Decimal.pow(2, player.k.lock.repeatables[45]))
+        }
+        if (layer == "h"){
+                if (hasUpgrade("k", 32)) ret = ret.times(Decimal.pow(2, player.k.lock.repeatables[45]))
+                if (hasUpgrade("j", 52)) ret = ret.times(Decimal.pow(2.5, player.l.upgrades.length))
+        }
+        return ret
+}
+
+function handleGeneralizedBuyableAutobuy(diff, layer){
+        player[layer].abtime += diff * getABSpeed(layer)
+
+        if (player[layer].abtime > 10) player[layer].abtime = 10
+        if (player[layer].abtime > 1) {
+                player[layer].abtime += -1
+                let amt = getABBulk(layer)
+                if (tmp[layer].buyables[11] && tmp[layer].buyables[11].unlocked) layers[layer].buyables[11].buyMax(amt)
+                if (tmp[layer].buyables[12] && tmp[layer].buyables[12].unlocked) layers[layer].buyables[12].buyMax(amt)
+                if (tmp[layer].buyables[13] && tmp[layer].buyables[13].unlocked) layers[layer].buyables[13].buyMax(amt)
+                if (tmp[layer].buyables[21] && tmp[layer].buyables[21].unlocked) layers[layer].buyables[21].buyMax(amt)
+                if (tmp[layer].buyables[22] && tmp[layer].buyables[22].unlocked) layers[layer].buyables[22].buyMax(amt)
+                if (tmp[layer].buyables[23] && tmp[layer].buyables[23].unlocked) layers[layer].buyables[23].buyMax(amt)
+                if (tmp[layer].buyables[31] && tmp[layer].buyables[31].unlocked) layers[layer].buyables[31].buyMax(amt)
+                if (tmp[layer].buyables[32] && tmp[layer].buyables[32].unlocked) layers[layer].buyables[32].buyMax(amt)
+                if (tmp[layer].buyables[33] && tmp[layer].buyables[33].unlocked) layers[layer].buyables[33].buyMax(amt)
+        }
+}
 

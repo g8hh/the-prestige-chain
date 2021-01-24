@@ -1,12 +1,9 @@
-// ************ Number formatting ************
-
 function addCommas(s){
 	if (s.length <= 3) return s
 	let rem = s.length % 3
 	if (rem == 0) rem = 3
 	return s.slice(0, rem) + "," + addCommas(s.slice(rem))
 }
-
 
 function exponentialFormat(num, precision) {
 	let e = num.log10().floor()
@@ -271,17 +268,14 @@ function fixSave() {
 function fixData(defaultData, newData) {
 	for (item in defaultData){
 		if (defaultData[item] == null) {
-			if (newData[item] === undefined)
-				newData[item] = null
+			if (newData[item] === undefined) newData[item] = null
 		}
 		else if (Array.isArray(defaultData[item])) {
-			if (newData[item] === undefined)
-				newData[item] = defaultData[item]
+			if (newData[item] === undefined) newData[item] = defaultData[item]
 			else fixData(defaultData[item], newData[item])
 		}
 		else if (defaultData[item] instanceof Decimal) { // Convert to Decimal
-			if (newData[item] === undefined)
-				newData[item] = defaultData[item]
+			if (newData[item] === undefined) newData[item] = defaultData[item]
 			else newData[item] = new Decimal(newData[item])
 		}
 		else if ((!!defaultData[item]) && (typeof defaultData[item] === "object")) {
@@ -297,7 +291,7 @@ function fixData(defaultData, newData) {
 
 function load() {
 	let get = localStorage.getItem(modInfo.id);
-	if (get===null || get===undefined) player = getStartPlayer()
+	if (get === null || get === undefined) player = getStartPlayer()
 	else player = Object.assign(getStartPlayer(), JSON.parse(atob(get)))
 	fixSave()
 
@@ -341,7 +335,7 @@ function importSave(imported=undefined, forced=false) {
 	if (imported===undefined) imported = prompt("Paste your save here")
 	try {
 		tempPlr = Object.assign(getStartPlayer(), JSON.parse(atob(imported)))
-		if(tempPlr.versionType != modInfo.id && !forced && !confirm("This save appears to be for a different mod! Are you sure you want to import?")) // Wrong save (use "Forced" to force it to accept.)
+		if (tempPlr.versionType != modInfo.id && !forced && !confirm("This save appears to be for a different mod! Are you sure you want to import?")) // Wrong save (use "Forced" to force it to accept.)
 			return
 		player = tempPlr;
 		player.versionType = modInfo.id
@@ -378,8 +372,8 @@ function versionCheck() {
 }
 
 var saveInterval = setInterval(function() {
-	if (player===undefined) return;
-	if (gameEnded&&!player.keepGoing) return;
+	if (player === undefined) return;
+	if (gameEnded && !player.keepGoing) return;
 	if (player.autosave) save();
 }, 5000)
 
@@ -419,7 +413,7 @@ function switchTheme() {
 // ************ Options ************
 
 function toggleOpt(name) {
-	if (name == "oldStyle" && styleCooldown>0) return;
+	if (name == "oldStyle" && styleCooldown > 0) return;
 
 	player[name] = !player[name]
 	if (name == "hqTree") changeTreeQuality()
@@ -493,15 +487,15 @@ function canAffordUpgrade(layer, id) {
 }
 
 function hasUpgrade(layer, id){
-	return (player[layer].upgrades.includes(toNumber(id)) || player[layer].upgrades.includes(id.toString()))
+	return player[layer].upgrades.includes(toNumber(id)) || player[layer].upgrades.includes(id.toString())
 }
 
 function hasMilestone(layer, id){
-	return (player[layer].milestones.includes(toNumber(id)) || player[layer].milestones.includes(id.toString()))
+	return player[layer].milestones.includes(toNumber(id)) || player[layer].milestones.includes(id.toString())
 }
 
 function hasAchievement(layer, id){
-	return (player[layer].achievements.includes(toNumber(id)) || player[layer].achievements.includes(id.toString()))
+	return player[layer].achievements.includes(toNumber(id)) || player[layer].achievements.includes(id.toString())
 }
 
 function hasChallenge(layer, id){
@@ -509,11 +503,11 @@ function hasChallenge(layer, id){
 }
 
 function challengeCompletions(layer, id){
-	return (player[layer].challenges[id])
+	return player[layer].challenges[id]
 }
 
 function getBuyableAmount(layer, id){
-	return (player[layer].buyables[id])
+	return player[layer].buyables[id]
 }
 
 function setBuyableAmount(layer, id, amt){
@@ -521,7 +515,7 @@ function setBuyableAmount(layer, id, amt){
 }
 
 function getClickableState(layer, id){
-	return (player[layer].clickables[id])
+	return player[layer].clickables[id]
 }
 
 function setClickableState(layer, id, state){
@@ -529,23 +523,27 @@ function setClickableState(layer, id, state){
 }
 
 function upgradeEffect(layer, id){
-	return (tmp[layer].upgrades[id].effect)
+	return tmp[layer].upgrades[id].effect
 }
 
 function challengeEffect(layer, id){
-	return (tmp[layer].challenges[id].effect)
+	return tmp[layer].challenges[id].effect
 }
 
 function buyableEffect(layer, id){
-	return (tmp[layer].buyables[id].effect)
+	return tmp[layer].buyables[id].effect
 }
 
 function clickableEffect(layer, id){
-	return (tmp[layer].clickables[id].effect)
+	return tmp[layer].clickables[id].effect
 }
 
 function achievementEffect(layer, id){
-	return (tmp[layer].achievements[id].effect)
+	return tmp[layer].achievements[id].effect
+}
+
+function getBuyableEffect(layer, id){
+        return tmp[layer].buyables[id].effect
 }
 
 function canAffordPurchase(layer, thing, cost) {
@@ -723,11 +721,6 @@ function getKeyDesc1(key){
 	return s
 }
 
-function getKeyDesc2(key){
-	if (key == undefined) console.log(key)
-	return "Currently: " + (hotkeysOff[key.key] ? "Off" : "On" )
-}
-
 function fixHotkeyCode(s){
 	if (s.length == 1) return s.toLowerCase()
 	s = replaceString(s, "Shift", "shift")
@@ -737,16 +730,6 @@ function fixHotkeyCode(s){
 	s = replaceString(s, ".", ">")
 	s = replaceString(s, "0", ")")
 	return s
-}
-
-function dothingcooltoggle(s){
-	//<b style="color: rgb(204, 51, 51);">0: Puzzle Reset</b><br>Currently: On
-	antifront = s.slice(36)
-	idof = antifront.indexOf(":")
-	l = antifront.slice(0, idof)
-	l = fixHotkeyCode(l)
-	if (hotkeysOff[l] == undefined) hotkeysOff[l] = true
-	else hotkeysOff[l] = !hotkeysOff[l]
 }
 
 var logHotkey = false
@@ -785,9 +768,9 @@ function prestigeButtonText(layer) {
 	}
 }
 
-
-
-
+function toggleUndulating(){
+        player.undulating = !player.undulating
+}
 
 function isFunction(obj) {
 	return !!(obj && obj.constructor && obj.call && obj.apply);
