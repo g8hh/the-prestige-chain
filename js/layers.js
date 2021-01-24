@@ -15000,7 +15000,7 @@ addLayer("k", {
                 54: {
                         title: "Karen",
                         description: "Raise <b>Aluminum Key</b> base effect to the number of <b>K</b> challenge completions and add 1 to the <b>M</b> gain exp",
-                        cost: new Decimal("1e1054e6"),
+                        cost: new Decimal("1e1053.9e6"),
                         unlocked(){
                                 return hasUpgrade("k", 53) || hasUnlockedPast("m")
                         }
@@ -18245,7 +18245,7 @@ addLayer("k", {
                 },
                 22: {
                         name: "Kenya",
-                        challengeDescription: "<b>Kerry</b> and remove <b>K</b> effect",
+                        challengeDescription: "<b>Keeps</b> and remove <b>K</b> effect",
                         rewardDescription: "Multiply base <b>M</b> gain",
                         rewardEffect(){
                                 let c = challengeCompletions("k", 22)

@@ -51,6 +51,12 @@ function format(decimal, precision=2,) {
 		player.hasNaN = true;
 		console.log(decimal)
 		Decimal(0)
+		for (i in player){
+			if (player[i] == undefined) continue
+			if (player[i].points != undefined) {
+				if (isNaN(player[i].points.mag)) console.log(i + "'s points are NaN")
+			}
+		}
 		
 		return "NaN"
 	}
@@ -345,6 +351,14 @@ function importSave(imported=undefined, forced=false) {
 	} catch(e) {
 		return;
 	}
+}
+
+function IMPORT(){
+	importSave()
+}
+
+function EXPORT(){
+	exportSave()
 }
 
 function versionCheck() {
