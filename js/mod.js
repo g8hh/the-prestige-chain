@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".8.8.1 Resource",
+	num: ".8.8.2 Resource",
 	name: "",
 }
 
