@@ -895,7 +895,7 @@ var MAIN_BUYABLE_DATA = {
                 },
         },
         c32: {
-                name: "Catagory",
+                name: "Category",
                 func: "exp",
                 effects: "Circles",
                 base: {
