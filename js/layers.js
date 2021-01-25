@@ -9926,11 +9926,6 @@ addLayer("j", {
                                 return hasUpgrade("j", 54) || hasUnlockedPast("l")
                         }
                 }, // hasUpgrade("j", 55)
-
-                /*
-                Joel
-                Julie
-                */
         },
         buyables: {
                 rows: 3,
@@ -9952,6 +9947,15 @@ addLayer("j", {
                         }),
                 23: getGeneralizedBuyableData("j", 23, function(){
                         return hasUpgrade("l", 25) || hasUnlockedPast("l")
+                        }),
+                31: getGeneralizedBuyableData("j", 31, function(){
+                        return hasUpgrade("l", 32) || hasUnlockedPast("m")
+                        }),
+                32: getGeneralizedBuyableData("j", 32, function(){
+                        return hasUpgrade("l", 32) || hasUnlockedPast("m")
+                        }),
+                33: getGeneralizedBuyableData("j", 33, function(){
+                        return hasUpgrade("l", 32) || hasUnlockedPast("m")
                         }),
         },
         clickables: {
@@ -10128,6 +10132,7 @@ addLayer("j", {
                         if (hasUpgrade("j", 51)) ret = ret.times(tmp.j.clickables[45].effect.pow(.01))
                         if (hasUpgrade("k", 33)) ret = ret.times(player.j.puzzle.exp.max(1).pow(.5))
                         ret = ret.times(Decimal.pow(tmp.k.clickables[62].effect, tmp.k.clickables.totalKeys))
+                        ret = ret.times(CURRENT_BUYABLE_EFFECTS["j31"])
 
                         if (ret.max(10).log10().gt(36e8)) ret = ret.log10().sqrt().times(6e4).pow10()
                         return ret
@@ -16580,7 +16585,7 @@ addLayer("l", {
                 }, // hasUpgrade("l", 31)
                 32: {
                         title: "Looking",
-                        description: "<b>Kerry</b> effects <b>M</b> and square root <b>Coal Key</b> effect",
+                        description: "<b>Kerry</b> effects <b>M</b>, square root <b>Coal Key</b> effect, and unlock 3 <b>J</b> buyables",
                         cost: new Decimal("1e77e5"),
                         unlocked(){
                                 return hasUpgrade("l", 31) || hasUnlockedPast("m")

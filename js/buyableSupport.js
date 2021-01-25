@@ -2438,6 +2438,15 @@ var MAIN_BUYABLE_DATA = {
                 effects: "point and <b>A</b> gain",
                 base: {
                         initial: new Decimal(2),
+                        1: {
+                                active: function(){
+                                        return true
+                                },
+                                amount: function(){
+                                        return CURRENT_BUYABLE_EFFECTS["j32"]
+                                },
+                                type: "plus"
+                        }
                 },
                 bases(){
                         let b0 = Decimal.pow(10, 2e18)
@@ -2485,6 +2494,15 @@ var MAIN_BUYABLE_DATA = {
                 effects: "<b>I</b> gain exponent",
                 base: {
                         initial: new Decimal(1e5),
+                        1:{
+                                active:function(){
+                                        return true
+                                },
+                                amount: function(){
+                                        return CURRENT_BUYABLE_EFFECTS["j33"]
+                                },
+                                type: "plus"
+                        }
                 },
                 bases(){
                         let b0 = Decimal.pow(10, 5.7e11)
@@ -2543,6 +2561,48 @@ var MAIN_BUYABLE_DATA = {
                         let b0 = Decimal.pow(10, 7e16)
                         let b1 = Decimal.pow(10, 1e14)
                         let b2 = Decimal.pow(10, 1e12)
+                        return [b0, b1, b2]
+                },
+        },
+        j31: {
+                name: "Joel",
+                func: "exp_sqrt",
+                effects: "<b>Knowledge</b>",
+                base: {
+                        initial: new Decimal(1e10),
+                },
+                bases(){
+                        let b0 = Decimal.pow(10, 2.9e26)
+                        let b1 = Decimal.pow(10, 1e24)
+                        let b2 = Decimal.pow(10, 1e22)
+                        return [b0, b1, b2]
+                },
+        },
+        j32: {
+                name: "Julie",
+                func: "lin",
+                effects: "<b>Omnipotent IX</b> base",
+                base: {
+                        initial: new Decimal(.2),
+                },
+                bases(){
+                        let b0 = Decimal.pow(10, 2e40)
+                        let b1 = Decimal.pow(10, 1e44)
+                        let b2 = Decimal.pow(10, 1e42)
+                        return [b0, b1, b2]
+                },
+        },
+        j33: {
+                name: "Omnipotent X",
+                func: "lin",
+                effects: "<b>Jamica</b> base",
+                base: {
+                        initial: new Decimal(1e4),
+                },
+                bases(){
+                        let b0 = Decimal.pow(10, 7e56)
+                        let b1 = Decimal.pow(10, 1e54)
+                        let b2 = Decimal.pow(10, 1e52)
                         return [b0, b1, b2]
                 },
         },
