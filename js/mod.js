@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".8.13 Road",
+	num: ".8.13.1 Road",
 	name: "",
 }
 
@@ -518,6 +518,8 @@ function getChangeLogText(){
 	cb8= "- Added Key buyables"
 	cb9= "- Added a display for when knowledge gain is softcapped"
 	cb10="- Slightly changed the bugged out wording"
+	cb11="v.8.13.1"
+	cb12="- Made vue load from local so its easier to bugfix"
 	
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
@@ -596,7 +598,7 @@ function getChangeLogText(){
 	let part74= [by1,by2,by3,by4,by5, "",by6,by7, ""]
 	let part75= [bz1,bz2,bz3,bz4,bz5,bz6, ""]
 	let part76= [ca1,ca2, ""]
-	let part77= [cb1,cb2,cb3,cb4,cb5,cb6,cb7,cb8,cb9,cb10, ""]
+	let part77= [cb1,cb2,cb3,cb4,cb5,cb6,cb7,cb8,cb9,cb10, "",cb11,cb12, ""]
 	
 	// MAKE SURE TO ADD THEM
 
@@ -608,13 +610,6 @@ function getChangeLogText(){
 	let final6 = [part60, part59, part58, part57, part56, part55, part54, part53, part52, part51]
 	let final7 = [part70, part69, part68, part67, part66, part65, part64, part63, part62, part61]
 	let final8 = [part77, part76, part75, part74, part73, part72, part71]
-
-
-	/*
-	TODO!!!!
-	Try to find a way to have the Vue code stored in the files
-	so that it doesnt need to be pulled from the internet
-	*/
 
 	let entiresShown = 3
 	let start = [["Hold Shift to see the full changelog!", shiftDown ? "" : "Currrently showing the " + entiresShown + " most recent entries", ""]]
