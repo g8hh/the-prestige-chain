@@ -2566,10 +2566,10 @@ var MAIN_BUYABLE_DATA = {
         },
         j31: {
                 name: "Joel",
-                func: "exp_sqrt",
+                func: "exp",
                 effects: "<b>Knowledge</b>",
                 base: {
-                        initial: new Decimal(1e10),
+                        initial: Decimal.pow(10, 1e10),
                 },
                 bases(){
                         let b0 = Decimal.pow(10, 2.9e26)
@@ -2586,9 +2586,9 @@ var MAIN_BUYABLE_DATA = {
                         initial: new Decimal(.2),
                 },
                 bases(){
-                        let b0 = Decimal.pow(10, 2e40)
-                        let b1 = Decimal.pow(10, 1e44)
-                        let b2 = Decimal.pow(10, 1e42)
+                        let b0 = Decimal.pow(10, 4.3e26)
+                        let b1 = Decimal.pow(10, 5e24)
+                        let b2 = Decimal.pow(10, 3e22)
                         return [b0, b1, b2]
                 },
         },
@@ -2603,6 +2603,26 @@ var MAIN_BUYABLE_DATA = {
                         let b0 = Decimal.pow(10, 7e56)
                         let b1 = Decimal.pow(10, 1e54)
                         let b2 = Decimal.pow(10, 1e52)
+                        return [b0, b1, b2]
+                },
+        },
+        k11: {
+                name: "Knight",
+                func(a,x){
+                        let ret = Decimal.times(a, x).plus(1)
+                        return ret
+                },
+                identity: new Decimal(1),
+                effectSymbol: "*",
+                eFormula: "[base]*x+1",
+                effects: "<b>L</b> effect exponent",
+                base: {
+                        initial: new Decimal(2),
+                },
+                bases(){
+                        let b0 = Decimal.pow(10, 3e14)
+                        let b1 = Decimal.pow(10, 1e12)
+                        let b2 = Decimal.pow(10, 1e09)
                         return [b0, b1, b2]
                 },
         },

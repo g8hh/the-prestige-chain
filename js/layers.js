@@ -3264,17 +3264,31 @@ addLayer("ach", {
                                 return "<h3 style='color: #0033FF'>Hide the top row</h3>"
                         },
                         display(){
-                                return ""
+                                return shiftDown ? "Hides top layers until an unfinished layer" : ""
                         },
                         unlocked(){
                                 return true
                         },
                         canClick(){
+                                if (shiftDown) return true
                                 return player.ach.hiddenRows < Object.keys(PROGRESSION_MILESTONES).length/7
                         },
                         onClick(){
                                 if (!this.canClick()) return 
-                                player.ach.hiddenRows ++
+                                if (!shiftDown) {
+                                        player.ach.hiddenRows ++
+                                        return
+                                }
+                                player.ach.hiddenRows = 0
+                                let b = 0
+                                while (hasCompletedFirstNRows(player.ach.hiddenRows + 1)) {
+                                        b ++ 
+                                        player.ach.hiddenRows ++
+                                        if (b > 1000) {
+                                                console.log ('uh oh')
+                                                return 
+                                        }
+                                }
                         },
                 },
                 12: {
@@ -11918,12 +11932,13 @@ addLayer("j", {
                                                 a = "You are holding shift down to bulk buy and see effeciencies (hint: smaller is better)<br>"
                                         } else a = "You have " + formatWhole(player.j.points) + " jigsaws, causing a " + format(tmp.j.clickables.jigsawEffect, 4) + " speed multiplier<br>"
                                         let b = ""
-                                        if (data.exp.max(1).log10().gt(1e6)) b = b = "You have " + formatWhole(data.exp) + " experience, " + formatWhole(data.knowledge) + " knowledge<br>"
-                                        else b = "You have " + formatWhole(data.exp) + " experience, " + formatWhole(data.bankedExp) + " banked experience, " + formatWhole(data.knowledge) + " knowledge<br>"
+                                        if (data.exp.max(1).log10().gt(1e6)) b = b = "You have " + formatWhole(data.exp) + " experience, " + formatWhole(data.knowledge) + " knowledge"
+                                        else b = "You have " + formatWhole(data.exp) + " experience, " + formatWhole(data.bankedExp) + " banked experience, " + formatWhole(data.knowledge) + " knowledge"
+                                        if (data.knowledge.max(10).log10().gt(36e8)) b += " (softcapped)"
                                         let c = ""
                                         if (!shiftDown) c = "You are currently working on a <h3>" + data.currentX + "</h3>x<h3>" + data.currentY + "</h3> puzzle (" + formatWhole(data.finished) + " completed)<br>"
                                         else c = "Your bulk amount is " + formatWhole(tmp.j.clickables.getBulkAmount) + "<br>"
-                                        return a + b + c
+                                        return a + b + "<br>" + c
                                 }],
                                 ["clickables", [1,2]],
                                 ["display-text", function(){
@@ -12242,7 +12257,7 @@ addLayer("k", {
                                 data.times ++
                         }
                 }
-                if (false) {
+                if (hasUpgrade("l", 34)) {
                         handleGeneralizedBuyableAutobuy(diff, "k")
                 } else {
                         data.abtime = 0
@@ -12681,7 +12696,6 @@ addLayer("k", {
                 }, // hasUpgrade("k", 55)
                 
                 /*
-                Knight
                 Kennedy
                 */
         },
@@ -14598,6 +14612,7 @@ addLayer("k", {
                         display(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
+                                if (player.l.points.max(10).log10().gt(1e8)) return formatWhole(player.k.lock.repeatables[51])
                                 let a 
                                 let b 
                                 let c 
@@ -14672,6 +14687,7 @@ addLayer("k", {
                         display(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
+                                if (player.l.points.max(10).log10().gt(1e8)) return formatWhole(player.k.lock.repeatables[52])
                                 let a 
                                 let b 
                                 let c 
@@ -14746,6 +14762,7 @@ addLayer("k", {
                         display(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
+                                if (player.l.points.max(10).log10().gt(1e8)) return formatWhole(player.k.lock.repeatables[53])
                                 let a 
                                 let b 
                                 let c 
@@ -14820,6 +14837,7 @@ addLayer("k", {
                         display(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
+                                if (player.l.points.max(10).log10().gt(1e8)) return formatWhole(player.k.lock.repeatables[54])
                                 let a 
                                 let b 
                                 let c 
@@ -14894,6 +14912,7 @@ addLayer("k", {
                         display(){
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
+                                if (player.l.points.max(10).log10().gt(1e8)) return formatWhole(player.k.lock.repeatables[55])
                                 let a 
                                 let b 
                                 let c 
@@ -15000,6 +15019,7 @@ addLayer("k", {
                                 let amt = player.k.lock.repeatables[61]
                                 amt = amt.plus(layers.k.clickables.getBonusKeys(61))
                                 let ret = amt.pow(1.1).div(700).plus(1).ln().times(10).plus(1)
+                                if (hasUpgrade("m", 21)) ret = ret.pow(Math.max(1, totalChallengeComps("k")))
                                 return ret
                         },
                         effectDescription(){
@@ -15996,6 +16016,13 @@ addLayer("k", {
                         countsAs: [11, 12, 21],
                 },
         },
+        buyables: {
+                rows: 3,
+                cols: 3,
+                11: getGeneralizedBuyableData("k", 11, function(){
+                        return hasUpgrade("m", 21) || hasUnlockedPast("m")
+                        }),
+        },
         shouldNotify(){
                 for (id in tmp.k.clickables){
                         id = Number(id)
@@ -16054,7 +16081,7 @@ addLayer("k", {
                                 "blank", 
                                 "buyables"],
                         unlocked(){
-                                return false
+                                return hasUpgrade("m", 21) || hasUnlockedPast("m")
                         },
                 },
                 "Milestones": {
@@ -16328,7 +16355,11 @@ addLayer("l", {
 
                 let ret2 = amt.pow(exp2).max(1)
 
-                return ret.times(ret2)
+                ret = ret.times(ret2)
+
+                ret = ret.pow(CURRENT_BUYABLE_EFFECTS["k11"])
+
+                return ret
         },
         effectDescription(){
                 return getGeneralizedEffectDisplay("l")
@@ -16599,10 +16630,16 @@ addLayer("l", {
                                 return hasUpgrade("l", 32) || hasUnlockedPast("m")
                         }
                 }, // hasUpgrade("l", 33)
+                34: {
+                        title: "Login",
+                        description: "You autobuy <b>K</b> buyables and <b>Kerry</b> effects <b>M</b> gain",
+                        cost: new Decimal("1e350e6"),
+                        unlocked(){
+                                return hasUpgrade("m", 21) || hasUnlockedPast("m")
+                        }
+                }, // hasUpgrade("l", 34)
 
                 /*
-                Less
-                Login
                 Let
                 Legal
                 Language
@@ -16765,6 +16802,7 @@ addLayer("m", {
                 if (hasUpgrade("m", 15)) x = x.times(Decimal.pow(2, totalChallengeComps("k")))
                 if (hasUpgrade("k", 53)) x = x.times(tmp.k.clickables[73].effect)
                 if (hasUpgrade("l", 32)) x = x.times(tmp.k.challenges[12].rewardEffect)
+                if (hasUpgrade("l", 34)) x = x.times(tmp.k.challenges[12].rewardEffect)
 
                 return x
         },
@@ -16781,7 +16819,11 @@ addLayer("m", {
 
                 let ret2 = amt.pow(exp2).max(1)
 
-                return ret.times(ret2)
+                ret = ret.times(ret2)
+
+                if (hasUpgrade("m", 21)) ret = ret.pow(Math.max(1, totalChallengeComps("k")))
+
+                return ret
         },
         effectDescription(){
                 return getGeneralizedEffectDisplay("m")
@@ -16929,10 +16971,17 @@ addLayer("m", {
                                 return hasUpgrade("m", 14) || hasUnlockedPast("m")
                         }
                 }, // hasUpgrade("m", 15)
+                21: {
+                        title: "Management",
+                        description: "Raise <b>M</b> effect and <b>Iron Key</b> base to the number of <b>K</b> challenge completions and per upgrade in this row unlock a <b>K</b> buyable",
+                        cost: new Decimal(1e262),
+                        unlocked(){
+                                return hasUpgrade("l", 33) || hasUnlockedPast("m")
+                        }
+                }, // hasUpgrade("m", 21)
         
 
                 /*
-                Management
                 Must
                 Made
                 */

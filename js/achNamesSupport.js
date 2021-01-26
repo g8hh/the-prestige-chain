@@ -112,6 +112,17 @@ function getFirstNAchData(n){
         return obj
 }
 
+function hasCompletedFirstNRows(n){
+	for (i = 1; i <= n; i++){
+		for (j = 1; j <= 7; j++){
+			x = String(i) + String(j)
+			if (layers.ach.achievements[x] == undefined) return false
+			if (!hasAchievement("ach", x)) return false
+		}
+	}
+	return true
+}
+
 
 PROGRESSION_MILESTONES = {
 	1:   () => player.a.upgrades.length >= 1,
@@ -415,6 +426,13 @@ PROGRESSION_MILESTONES = {
 	299: ()=> totalChallengeComps("h") >= 703,
 	300: ()=> totalChallengeComps("h") >= 741,
 	301: ()=> totalChallengeComps("h") >= 780,
+	302: ()=> totalChallengeComps("h") >= 820,
+	303: ()=> totalChallengeComps("h") >= 861,
+	304: ()=> totalChallengeComps("h") >= 903,
+	305: ()=> totalChallengeComps("k") >= 091,
+	306: ()=> totalChallengeComps("k") >= 105,
+	307: ()=> totalChallengeComps("k") >= 120,
+	308: ()=> totalChallengeComps("k") >= 136,
 }
 
 PROGRESSION_MILESTONES_TEXT = {
@@ -719,6 +737,13 @@ PROGRESSION_MILESTONES_TEXT = {
 	299: "703 Heart challenge completions",
 	300: "741 Heart challenge completions",
 	301: "780 Heart challenge completions",
+	302: "820 Heart challenge completions",
+	303: "861 Heart challenge completions",
+	304: "903 Heart challenge completions",
+	305: "91 Key challenge completions",
+	306: "105 Key challenge completions",
+	307: "120 Key challenge completions",
+	308: "136 Key challenge completions",
 }
 
 

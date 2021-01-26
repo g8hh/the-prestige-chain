@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".8.12 Street",
+	num: ".8.13 Road",
 	name: "",
 }
 
@@ -508,6 +508,17 @@ function getChangeLogText(){
 	bz6= "- Added a way to passively do Heart challenges"
 	ca1= "v.8.12"
 	ca2= "- Added 3 Jigsaw buyables"
+	cb1= "v.8.13"
+	cb2= "- Added a Lemon upgrade"
+	cb3= "- Added a Map upgrade"
+	cb4= "- Buffed Joel effect"
+	cb5= "- Reduced Julie cost"
+	cb6= "- Added an achievement row"
+	cb7= "- Made a shift to hide the top completed layers"
+	cb8= "- Added Key buyables"
+	cb9= "- Added a display for when knowledge gain is softcapped"
+	cb10="- Slightly changed the bugged out wording"
+	
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
 	let part2 = [b1, b2, b3, b4, b5, "", b6, b7, "", b8, b9, b10, "", b11, b12, ""]
@@ -585,6 +596,7 @@ function getChangeLogText(){
 	let part74= [by1,by2,by3,by4,by5, "",by6,by7, ""]
 	let part75= [bz1,bz2,bz3,bz4,bz5,bz6, ""]
 	let part76= [ca1,ca2, ""]
+	let part77= [cb1,cb2,cb3,cb4,cb5,cb6,cb7,cb8,cb9,cb10, ""]
 	
 	// MAKE SURE TO ADD THEM
 
@@ -595,12 +607,20 @@ function getChangeLogText(){
 	let final5 = [part50, part49, part48, part47, part46, part45, part44, part43, part42, part41]
 	let final6 = [part60, part59, part58, part57, part56, part55, part54, part53, part52, part51]
 	let final7 = [part70, part69, part68, part67, part66, part65, part64, part63, part62, part61]
-	let final8 = [part76, part75, part74, part73, part72, part71]
+	let final8 = [part77, part76, part75, part74, part73, part72, part71]
 
-	let start = [["Hold Shift to see the full changelog!", shiftDown ? "" : "Currrently showing the 5 most recent entries", ""]]
+
+	/*
+	TODO!!!!
+	Try to find a way to have the Vue code stored in the files
+	so that it doesnt need to be pulled from the internet
+	*/
+
+	let entiresShown = 3
+	let start = [["Hold Shift to see the full changelog!", shiftDown ? "" : "Currrently showing the " + entiresShown + " most recent entries", ""]]
 	let end = final8.concat(final7).concat(final6).concat(final5).concat(final4).concat(final3).concat(final2).concat(final1)
 
-	if (!shiftDown) return start.concat(end.slice(0, 5))
+	if (!shiftDown) return start.concat(end.slice(0, entiresShown))
 
 	return start.concat(end)
 }
