@@ -34,11 +34,6 @@ function getPointGenExp(){
         return exp
 }
 
-//check if below can be removed
-function canBuyMax(layer, id) {
-	return false
-}
-
 // CHALLENGES
 function getChallengeFactor(comps){
         let b1 = new Decimal(comps).pow(1.5).plus(1)
@@ -615,7 +610,6 @@ addLayer("a", {
                 for (let j = 0; j < resetBuyables.length; j++) {
                         player.a.buyables[resetBuyables[j]] = new Decimal(0)
                 }
-
         },
 })
 
@@ -1149,7 +1143,6 @@ addLayer("b", {
                 for (let j = 0; j < resetBuyables.length; j++) {
                         player.b.buyables[resetBuyables[j]] = new Decimal(0)
                 }
-
         },
 })
 
@@ -1644,7 +1637,6 @@ addLayer("c", {
                 for (let j = 0; j < resetBuyables.length; j++) {
                         player.c.buyables[resetBuyables[j]] = new Decimal(0)
                 }
-
         },
 })
 
@@ -2108,7 +2100,6 @@ addLayer("d", {
                 for (let j = 0; j < resetBuyables.length; j++) {
                         player.d.buyables[resetBuyables[j]] = new Decimal(0)
                 }
-
         },
 })
 
@@ -2600,7 +2591,6 @@ addLayer("e", {
                 for (let j = 0; j < resetBuyables.length; j++) {
                         player.e.buyables[resetBuyables[j]] = new Decimal(0)
                 }
-
         },
 })
 
@@ -3185,7 +3175,6 @@ addLayer("f", {
                 for (let j = 0; j < resetBuyables.length; j++) {
                         player.f.buyables[resetBuyables[j]] = new Decimal(0)
                 }
-
         },
 })
 
@@ -3298,7 +3287,7 @@ addLayer("ach", {
                                 return "<h3 style='color: #0033FF'>Show a row</h3>"
                         },
                         display(){
-                                return ""
+                                return shiftDown ? "Show all rows" : ""
                         },
                         unlocked(){
                                 return true
@@ -3308,7 +3297,8 @@ addLayer("ach", {
                         },
                         onClick(){
                                 if (!this.canClick()) return 
-                                player.ach.hiddenRows --
+                                if (shiftDown) player.ach.hiddenRows = 0
+                                else player.ach.hiddenRows --
                         },
                 },
                 13: {

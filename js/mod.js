@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".8.13.1 Road",
+	num: ".8.13.2 Road",
 	name: "",
 }
 
@@ -81,7 +81,7 @@ var displayThings = [
 		return "(" + format(getPointGen()) + "/sec)"
 	},
 	function(){
-		let a = "Endgame: 1e234 Maps"
+		let a = "Endgame: 1e365 Maps"
 		return player.autosave ? a : a + ". Warning: autosave is off"
 	},
 	function(){
@@ -520,6 +520,8 @@ function getChangeLogText(){
 	cb10="- Slightly changed the bugged out wording"
 	cb11="v.8.13.1"
 	cb12="- Made vue load from local so its easier to bugfix"
+	cb13="v.8.13.2"
+	cb14="- Made a shift to show all rows"
 	
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
