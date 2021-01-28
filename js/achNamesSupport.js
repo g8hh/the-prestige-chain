@@ -632,7 +632,7 @@ PROGRESSION_MILESTONES_TEXT = {
 	194: "one Iron",
 	195: "one Silver",
 	196: "one Gold",
-	197: "one Bronze",
+	197: "one Coal",
 	198: "one Copper",
 	199: "one Tin",
 	200: "one Titanium",

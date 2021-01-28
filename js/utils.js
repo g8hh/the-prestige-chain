@@ -127,7 +127,7 @@ var logSave = false
 function save() {
 	let t = new Date().getTime()
 	if (logSave) console.log("saved at " + t)
-	player.lastSave = t
+	if (!(player === null)) player.lastSave = t
 	localStorage.setItem(modInfo.id, btoa(JSON.stringify(player)))
 }
 

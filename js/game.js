@@ -441,7 +441,7 @@ function gameLoop(diff) {
 		player.autosave = false;
 		NaNalert = true;
 
-		alert("PLEASE READ THE WHOLE MESSAGE: A corruption in your save has been detected. Please first reload and then click the fix save button before reporting this. If you want to be helpful, consider sending a screenshot of the console and posting your save in paste.ee !")
+		alert("PLEASE READ THE WHOLE MESSAGE: A corruption in your save has been detected. Please first reload and then click the fix save button before reporting this. If you want to be helpful, consider sending a screenshot of the console and posting your save in paste.ee; note that you can export it by running EXPORT().")
 	}
 }
 

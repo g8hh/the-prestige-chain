@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".8.14 Cadastral",
+	num: ".8.14.1 Cadastral",
 	name: "",
 }
 
@@ -525,6 +525,10 @@ function getChangeLogText(){
 	cc1= "v.8.14"
 	cc2= "- Added an Lemon upgrade"
 	cc3= "- Fixed 7 achs about Key challenge completions"
+	cc4= "v.8.14.1"
+	cc5= "- Fixed an achievement description"
+	cc6= "- Fixed hard resetting"
+	cc7= "- Changed the error message"
 	
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
@@ -604,7 +608,7 @@ function getChangeLogText(){
 	let part75= [bz1,bz2,bz3,bz4,bz5,bz6, ""]
 	let part76= [ca1,ca2, ""]
 	let part77= [cb1,cb2,cb3,cb4,cb5,cb6,cb7,cb8,cb9,cb10, "",cb11,cb12, ""]
-	let part78= [cc1,cc2,cc3, ""]
+	let part78= [cc1,cc2,cc3, "",cc4,cc5,cc6,cc7, ""]
 	
 	// MAKE SURE TO ADD THEM
 
