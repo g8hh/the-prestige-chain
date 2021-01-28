@@ -15458,6 +15458,7 @@ addLayer("k", {
                                 let amt = player.k.lock.repeatables[72]
                                 amt = amt.plus(layers.k.clickables.getBonusKeys(72))
                                 let ret = amt.div(10).plus(1).ln().times(4)
+                                if (hasUpgrade("l", 35)) ret = ret.pow(Math.sqrt(Math.max(1, player.l.upgrades.length)))
                                 return ret
                         },
                         effectDescription(){
@@ -16628,9 +16629,16 @@ addLayer("l", {
                                 return hasUpgrade("m", 21) || hasUnlockedPast("m")
                         }
                 }, // hasUpgrade("l", 34)
+                35: {
+                        title: "Let",
+                        description: "<bdi style='font-size:80%'> Raise <b>Titanium Key</b> effect to the sqrt(number of upgrades) and each <b>Diamond Key</b> squares <b>I</b> gain</bdi>",
+                        cost: new Decimal("1e480e6"),
+                        unlocked(){
+                                return hasUpgrade("l", 34) || hasUnlockedPast("m")
+                        }
+                }, // hasUpgrade("l", 35)
 
                 /*
-                Let
                 Legal
                 Language
                 Latest
