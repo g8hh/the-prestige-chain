@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".8.14.1 Cadastral",
+	num: ".8.15 Thematic",
 	name: "",
 }
 
@@ -81,7 +81,7 @@ var displayThings = [
 		return "(" + format(getPointGen()) + "/sec)"
 	},
 	function(){
-		let a = "Endgame: 298 Goals"
+		let a = "Endgame: 43 Diamond Keys (dk)"
 		return player.autosave ? a : a + ". Warning: autosave is off"
 	},
 	function(){
@@ -529,6 +529,9 @@ function getChangeLogText(){
 	cc5= "- Fixed an achievement description"
 	cc6= "- Fixed hard resetting"
 	cc7= "- Changed the error message"
+	cd1= "v.8.15"
+	cd2= "- Added a Map upgrade"
+	cd3= "- Balanced the final Jigsaw buyable"
 	
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
@@ -609,6 +612,7 @@ function getChangeLogText(){
 	let part76= [ca1,ca2, ""]
 	let part77= [cb1,cb2,cb3,cb4,cb5,cb6,cb7,cb8,cb9,cb10, "",cb11,cb12, ""]
 	let part78= [cc1,cc2,cc3, "",cc4,cc5,cc6,cc7, ""]
+	let part79= [cd1,cd2,cd3, ""]
 	
 	// MAKE SURE TO ADD THEM
 
@@ -619,11 +623,12 @@ function getChangeLogText(){
 	let final5 = [part50, part49, part48, part47, part46, part45, part44, part43, part42, part41]
 	let final6 = [part60, part59, part58, part57, part56, part55, part54, part53, part52, part51]
 	let final7 = [part70, part69, part68, part67, part66, part65, part64, part63, part62, part61]
-	let final8 = [part78, part77, part76, part75, part74, part73, part72, part71]
+	let final8 = [part79, part78, part77, part76, part75, part74, part73, part72, part71]
+	let final9 = []
 
 	let entiresShown = 3
 	let start = [["Hold Shift to see the full changelog!", shiftDown ? "" : "Currrently showing the " + entiresShown + " most recent entries", ""]]
-	let end = final8.concat(final7).concat(final6).concat(final5).concat(final4).concat(final3).concat(final2).concat(final1)
+	let end = final9.concat(final8).concat(final7).concat(final6).concat(final5).concat(final4).concat(final3).concat(final2).concat(final1)
 
 	if (!shiftDown) return start.concat(end.slice(0, entiresShown))
 

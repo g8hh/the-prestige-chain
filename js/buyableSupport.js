@@ -2600,9 +2600,9 @@ var MAIN_BUYABLE_DATA = {
                         initial: new Decimal(1e4),
                 },
                 bases(){
-                        let b0 = Decimal.pow(10, 7e56)
-                        let b1 = Decimal.pow(10, 1e54)
-                        let b2 = Decimal.pow(10, 1e52)
+                        let b0 = Decimal.pow(10, 5e29)
+                        let b1 = Decimal.pow(10, 1e26)
+                        let b2 = Decimal.pow(10, 1e23)
                         return [b0, b1, b2]
                 },
         },

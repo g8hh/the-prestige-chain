@@ -15865,6 +15865,12 @@ addLayer("k", {
         challenges: {
                 rows: 2,
                 cols: 2,
+                totalMinusEffectiveChallenges(){
+                        let c = 0
+                        if (hasUpgrade("m", 13)) c += tmp.m.upgrades[13].effect.toNumber()
+                        if (hasUpgrade("m", 22)) c += totalChallengeComps("h") * .01
+                        return c
+                },
                 11: {
                         name: "Kiss",
                         challengeDescription: "All previous layer buyables have no effect",
@@ -15878,7 +15884,7 @@ addLayer("k", {
                                 let init = new Decimal(24.252)
                                 let c = challengeCompletions("k", 11)
 
-                                if (hasUpgrade("m", 13)) c -= tmp.m.upgrades[13].effect.toNumber()
+                                c -= tmp.k.challenges.totalMinusEffectiveChallenges
 
                                 c = Math.max(c, 0)
                                 if (c > 5 && hasUpgrade("k", 52)) c = (c+5)/2
@@ -15913,7 +15919,8 @@ addLayer("k", {
                         goal(){
                                 let init = new Decimal(10.728)
                                 let c = challengeCompletions("k", 12)
-                                if (hasUpgrade("m", 13)) c -= tmp.m.upgrades[13].effect.toNumber()
+                                
+                                c -= tmp.k.challenges.totalMinusEffectiveChallenges
 
                                 c = Math.max(c, 0)
                                 if (c > 5 && hasUpgrade("k", 52)) c = (c+5)/2
@@ -15948,7 +15955,8 @@ addLayer("k", {
                                 let init = new Decimal(868)
                                 let c = challengeCompletions("k", 21)
                                 let raw = c
-                                if (hasUpgrade("m", 13)) c -= tmp.m.upgrades[13].effect.toNumber()
+                                
+                                c -= tmp.k.challenges.totalMinusEffectiveChallenges
 
                                 c = Math.max(c, 0)
                                 if (c > 5 && hasUpgrade("k", 52)) c = (c+5)/2
@@ -15983,8 +15991,8 @@ addLayer("k", {
                         goal(){
                                 let init = new Decimal(1)
                                 let c = challengeCompletions("k", 22)
-                                let raw = c
-                                if (hasUpgrade("m", 13)) c -= tmp.m.upgrades[13].effect.toNumber()
+                                
+                                c -= tmp.k.challenges.totalMinusEffectiveChallenges
 
                                 c = Math.max(c, 0)
                                 if (c > 5 && hasUpgrade("k", 52)) c = (c+5)/2
@@ -16977,10 +16985,18 @@ addLayer("m", {
                                 return hasUpgrade("l", 33) || hasUnlockedPast("m")
                         }
                 }, // hasUpgrade("m", 21)
+                22: {
+                        title: "Must",
+                        description: "[no buy yte] Per <b>H</b> challenge completion subtract .01 effective <b>K</b> challenges",
+                        cost: new Decimal("1e384"),
+                        unlocked(){
+                                return hasUpgrade("l", 35) || hasUnlockedPast("m")
+                        }
+                }, // hasUpgrade("m", 22)
+                //next makes Kiss not effect J buyables and some other qol shit
         
 
                 /*
-                Must
                 Made
                 */
         },
