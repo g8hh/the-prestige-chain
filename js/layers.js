@@ -11982,7 +11982,8 @@ addLayer("j", {
                                         Finishing at least one puzzle allows you to Reset (requires 2 initially)<br>
                                         Restarting makes you start at the first puzzle again and gives you your banked exp<br>
                                         It also resets your progress in the current puzzle, but is vital for progression<br>
-                                        Resetting has initially a 60 second cooldown, but this can be reduced later on<br><br>
+                                        Resetting has initially a 60 second cooldown, but this can be reduced later on<br>
+                                        To unlock more upgrades, buy more Larger Puzzle upgrades<br><br>
                                         `
                                         if (player.j.puzzle.repeatables[14].lt(20) && !player.j.puzzle.reset2.done) return a + b + "<br><br><br>"
                                         let c = `<h2 style='color:#FF3366'>Reset<sup>2</sup>:</h2><br>
@@ -12686,7 +12687,12 @@ addLayer("k", {
                 }, // hasUpgrade("k", 55)
                 
                 /*
-                Kennedy
+                Killing
+                Knife
+                Katrina
+                Killer
+                Kodak
+                Kingston
                 */
         },
         clickables: {
@@ -15902,6 +15908,7 @@ addLayer("k", {
                         completionLimit(){
                                 let c = 20
                                 if (hasUpgrade("l", 33)) c += player.l.upgrades.length * 2
+                                if (hasUpgrade("m", 23)) c += Math.floor(2*Math.sqrt(totalChallengeComps("h")))
                                 
                                 return c
                         },
@@ -15937,6 +15944,7 @@ addLayer("k", {
                         completionLimit(){
                                 let c = 20
                                 if (hasUpgrade("l", 33)) c += player.l.upgrades.length * 2
+                                if (hasUpgrade("m", 23)) c += Math.floor(2*Math.sqrt(totalChallengeComps("h")))
                                 
                                 return c
                         },
@@ -15973,6 +15981,7 @@ addLayer("k", {
                         completionLimit(){
                                 let c = 20
                                 if (hasUpgrade("l", 33)) c += player.l.upgrades.length * 2
+                                if (hasUpgrade("m", 23)) c += Math.floor(2*Math.sqrt(totalChallengeComps("h")))
                                 
                                 return c
                         },
@@ -16009,6 +16018,7 @@ addLayer("k", {
                         completionLimit(){
                                 let c = 20
                                 if (hasUpgrade("l", 33)) c += player.l.upgrades.length * 2
+                                if (hasUpgrade("m", 23)) c += Math.floor(2*Math.sqrt(totalChallengeComps("h")))
                                 
                                 return c
                         },
@@ -16020,6 +16030,9 @@ addLayer("k", {
                 cols: 3,
                 11: getGeneralizedBuyableData("k", 11, function(){
                         return hasUpgrade("m", 21) || hasUnlockedPast("m")
+                        }),
+                12: getGeneralizedBuyableData("k", 12, function(){
+                        return hasUpgrade("m", 22) || hasUnlockedPast("m")
                         }),
         },
         shouldNotify(){
@@ -16987,17 +17000,27 @@ addLayer("m", {
                 }, // hasUpgrade("m", 21)
                 22: {
                         title: "Must",
-                        description: "[no buy yte] Per <b>H</b> challenge completion subtract .01 effective <b>K</b> challenges",
+                        description: "Per <b>H</b> challenge completion subtract .01 effective <b>K</b> challenges",
                         cost: new Decimal("1e384"),
                         unlocked(){
                                 return hasUpgrade("l", 35) || hasUnlockedPast("m")
                         }
                 }, // hasUpgrade("m", 22)
+                23: {
+                        title: "Made",
+                        description: "<b>Kiss</b> no longer effects <b>J</b> buyables and you can complete 2*sqrt(<b>H</b> challenge completions) more <b>K</b> challenges [no buy yet]",
+                        cost: new Decimal("1e536"),
+                        unlocked(){
+                                return hasUpgrade("m", 22) || hasUnlockedPast("m")
+                        }
+                }, // hasUpgrade("m", 23)
                 //next makes Kiss not effect J buyables and some other qol shit
         
 
                 /*
-                Made
+                Member
+                Much
+                Members
                 */
         },
         tabFormat: {

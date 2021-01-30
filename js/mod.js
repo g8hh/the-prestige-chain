@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".8.15 Thematic",
+	num: ".8.16 Aeronautical",
 	name: "",
 }
 
@@ -532,6 +532,10 @@ function getChangeLogText(){
 	cd1= "v.8.15"
 	cd2= "- Added a Map upgrade"
 	cd3= "- Balanced the final Jigsaw buyable"
+	ce1= "v.8.16"
+	ce2= "- Added 3 achievement rows"
+	ce3= "- Added a Key buyable"
+	ce4= "- Added a Map upgrade"
 	
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
@@ -613,6 +617,7 @@ function getChangeLogText(){
 	let part77= [cb1,cb2,cb3,cb4,cb5,cb6,cb7,cb8,cb9,cb10, "",cb11,cb12, ""]
 	let part78= [cc1,cc2,cc3, "",cc4,cc5,cc6,cc7, ""]
 	let part79= [cd1,cd2,cd3, ""]
+	let part80= [ce1,ce2,ce3,ce4, ""]
 	
 	// MAKE SURE TO ADD THEM
 
@@ -623,7 +628,7 @@ function getChangeLogText(){
 	let final5 = [part50, part49, part48, part47, part46, part45, part44, part43, part42, part41]
 	let final6 = [part60, part59, part58, part57, part56, part55, part54, part53, part52, part51]
 	let final7 = [part70, part69, part68, part67, part66, part65, part64, part63, part62, part61]
-	let final8 = [part79, part78, part77, part76, part75, part74, part73, part72, part71]
+	let final8 = [part80, part79, part78, part77, part76, part75, part74, part73, part72, part71]
 	let final9 = []
 
 	let entiresShown = 3
