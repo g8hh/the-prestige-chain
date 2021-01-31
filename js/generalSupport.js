@@ -123,8 +123,15 @@ function getTimesRequiredDecimal(chance, r1){
 
 function changeDist(r1, t){
         // x -> 1/2 + (x-1/2)^(2t-1) * 2 ^ (2t-2)
-        if (t > 400) return .5
-        return 1/2 + ((r1-1/2)**(2*t-1)) * (2**(2*t-2))
+        if (t > 500) return .5
+        if (t < 50) return r1
+        return (1 + ((r1-1/2)**(t-40)) * (2**(t-40))) / 2
+}
+
+function roundRandom(r){
+        let a = r % 1
+        if (a < Math.random()) return Math.floor(r)
+        return Math.ceil(r)
 }
 
 function getNumFinished(chance, pleft, attempts, ptotal){
@@ -134,7 +141,7 @@ function getNumFinished(chance, pleft, attempts, ptotal){
         return [the number of pieces unfinished, moves left]
         */
         chance = new Decimal(chance)
-        if (attempts == 0) return [pleft, attempts]
+        if (attempts.eq(0)) return [pleft, attempts]
         if (chance.gte(1)) {
                 if (attempts.gt(pleft)) return [0, attempts.sub(pleft)]
                 return [pleft-attempts.toNumber(), new Decimal(0)]
@@ -188,7 +195,8 @@ function getNumFinished(chance, pleft, attempts, ptotal){
                 }
                 let l = pleft
                 RET = -1/2 + Math.sqrt(1/4 - 2 * STEPS + l * l + l)
-                RET = Math.ceil(RET)
+                RET = roundRandom(RET)
+                
                 return [RET, new Decimal(0)]
 
         } else {

@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".8.16 Aeronautical",
+	num: ".8.17 Aardvark",
 	name: "",
 }
 
@@ -81,7 +81,7 @@ var displayThings = [
 		return "(" + format(getPointGen()) + "/sec)"
 	},
 	function(){
-		let a = "Endgame: 43 Diamond Keys (dk)"
+		let a = "Endgame: 1e1764 Maps"
 		return player.autosave ? a : a + ". Warning: autosave is off"
 	},
 	function(){
@@ -536,6 +536,10 @@ function getChangeLogText(){
 	ce2= "- Added 3 achievement rows"
 	ce3= "- Added a Key buyable"
 	ce4= "- Added a Map upgrade"
+	cf1= "v.8.17"
+	cf2= "- Fixed a longstanding bug with puzzles"
+	cf3= "- Updated endgame"
+	cf4= "- Changed randomness slightly for smaller puzzles"
 	
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
