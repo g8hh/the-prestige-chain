@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".8.17 Aardvark",
+	num: ".8.18 Bear",
 	name: "",
 }
 
@@ -33,7 +33,7 @@ var doNotCallTheseFunctionsEveryTick = ["blowUpEverything",
 					]
 
 function getStartPoints(){
-    return new Decimal(modInfo.initialStartPoints)
+	return new Decimal(modInfo.initialStartPoints)
 }
 
 // Determines if it should show points/sec
@@ -53,6 +53,7 @@ function showCurrency(a){
 function addedPlayerData() { return {
 	undulating: true,
 	lastSave: new Date().getTime(),
+	toggleKeys: false,
 }}
 
 function progressReachedNum(){
@@ -540,6 +541,10 @@ function getChangeLogText(){
 	cf2= "- Fixed a longstanding bug with puzzles"
 	cf3= "- Updated endgame"
 	cf4= "- Changed randomness slightly for smaller puzzles"
+	cg1= "v.8.18"
+	cg2= "- Added a toggle mode for shift and control"
+	cg3= "- Added a Key buyable"
+	cg4= "- Made l31, l32, l33, l34, l35, m21, m22, m23 cheaper"
 	
 
 	let part1 = [a1, a2, a3, a4, a5, a6, ""]
@@ -622,6 +627,8 @@ function getChangeLogText(){
 	let part78= [cc1,cc2,cc3, "",cc4,cc5,cc6,cc7, ""]
 	let part79= [cd1,cd2,cd3, ""]
 	let part80= [ce1,ce2,ce3,ce4, ""]
+	let part81= [cf1,cf2,cf3,cf4, ""]
+	let part82= [cg1,cg2,cg3,cg4, ""]
 	
 	// MAKE SURE TO ADD THEM
 
@@ -633,7 +640,7 @@ function getChangeLogText(){
 	let final6 = [part60, part59, part58, part57, part56, part55, part54, part53, part52, part51]
 	let final7 = [part70, part69, part68, part67, part66, part65, part64, part63, part62, part61]
 	let final8 = [part80, part79, part78, part77, part76, part75, part74, part73, part72, part71]
-	let final9 = []
+	let final9 = [part82, part81]
 
 	let entiresShown = 3
 	let start = [["Hold Shift to see the full changelog!", shiftDown ? "" : "Currrently showing the " + entiresShown + " most recent entries", ""]]
@@ -648,11 +655,17 @@ var controlDown = false
 var shiftDown = false
 
 window.addEventListener('keydown', function(event) {
-	if (event.keyCode == 16) shiftDown = true;
-	if (event.keyCode == 17) controlDown = true;
+	if (player.toggleKeys) {
+		if (event.keyCode == 16) shiftDown = !shiftDown;
+		if (event.keyCode == 17) controlDown = !controlDown;
+	} else {
+		if (event.keyCode == 16) shiftDown = true;
+		if (event.keyCode == 17) controlDown = true;
+	}
 }, false);
 
 window.addEventListener('keyup', function(event) {
+	if (player.toggleKeys) return 
 	if (event.keyCode == 16) shiftDown = false;
 	if (event.keyCode == 17) controlDown = false;
 }, false);

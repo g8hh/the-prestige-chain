@@ -12687,7 +12687,6 @@ addLayer("k", {
                 }, // hasUpgrade("k", 55)
                 
                 /*
-                Killing
                 Knife
                 Katrina
                 Killer
@@ -16034,6 +16033,9 @@ addLayer("k", {
                 12: getGeneralizedBuyableData("k", 12, function(){
                         return hasUpgrade("m", 22) || hasUnlockedPast("m")
                         }),
+                13: getGeneralizedBuyableData("k", 13, function(){
+                        return hasUpgrade("m", 23) || hasUnlockedPast("m")
+                        }),
         },
         shouldNotify(){
                 for (id in tmp.k.clickables){
@@ -16621,7 +16623,7 @@ addLayer("l", {
                 31: {
                         title: "Library",
                         description: "<b>Kiss</b> effects <b>Diamond Key</b>, <b>Copper Key</b> effects <b>L</b> gain exponent, and <b>Tin Key</b> effects base <b>L</b> gain",
-                        cost: new Decimal("1e65e5"),
+                        cost: new Decimal("1e63e5"),
                         unlocked(){
                                 return hasUpgrade("k", 55) || hasUnlockedPast("m")
                         }
@@ -16629,7 +16631,7 @@ addLayer("l", {
                 32: {
                         title: "Looking",
                         description: "<b>Kerry</b> effects <b>M</b>, square root <b>Coal Key</b> effect, and unlock 3 <b>J</b> buyables",
-                        cost: new Decimal("1e77e5"),
+                        cost: new Decimal("1e72e5"),
                         unlocked(){
                                 return hasUpgrade("l", 31) || hasUnlockedPast("m")
                         }
@@ -16637,7 +16639,7 @@ addLayer("l", {
                 33: {
                         title: "Less",
                         description: "You can complete 2 more <b>K</b> and <b>H</b> challenges per upgrade and you automatically complete <b>H</b> challenges",
-                        cost: new Decimal("1e48e6"),
+                        cost: new Decimal("1e40e6"),
                         unlocked(){
                                 return hasUpgrade("l", 32) || hasUnlockedPast("m")
                         }
@@ -16645,7 +16647,7 @@ addLayer("l", {
                 34: {
                         title: "Login",
                         description: "You autobuy <b>K</b> buyables and <b>Kerry</b> effects <b>M</b> gain",
-                        cost: new Decimal("1e350e6"),
+                        cost: new Decimal("1e333333333"), // 333e6
                         unlocked(){
                                 return hasUpgrade("m", 21) || hasUnlockedPast("m")
                         }
@@ -16653,7 +16655,7 @@ addLayer("l", {
                 35: {
                         title: "Let",
                         description: "<bdi style='font-size:80%'> Raise <b>Titanium Key</b> effect to the sqrt(number of upgrades) and each <b>Diamond Key</b> squares <b>I</b> gain</bdi>",
-                        cost: new Decimal("1e480e6"),
+                        cost: new Decimal("1e444444444"), //444e6
                         unlocked(){
                                 return hasUpgrade("l", 34) || hasUnlockedPast("m")
                         }
@@ -16993,7 +16995,7 @@ addLayer("m", {
                 21: {
                         title: "Management",
                         description: "Raise <b>M</b> effect and <b>Iron Key</b> base to the number of <b>K</b> challenge completions and per upgrade in this row unlock a <b>K</b> buyable",
-                        cost: new Decimal(1e262),
+                        cost: new Decimal(1e246),
                         unlocked(){
                                 return hasUpgrade("l", 33) || hasUnlockedPast("m")
                         }
@@ -17001,15 +17003,15 @@ addLayer("m", {
                 22: {
                         title: "Must",
                         description: "Per <b>H</b> challenge completion subtract .01 effective <b>K</b> challenges",
-                        cost: new Decimal("1e384"),
+                        cost: new Decimal("1e370"),
                         unlocked(){
                                 return hasUpgrade("l", 35) || hasUnlockedPast("m")
                         }
                 }, // hasUpgrade("m", 22)
                 23: {
                         title: "Made",
-                        description: "<b>Kiss</b> no longer effects <b>J</b> buyables and you can complete 2*sqrt(<b>H</b> challenge completions) more <b>K</b> challenges [no buy yet]",
-                        cost: new Decimal("1e536"),
+                        description: "<b>Kiss</b> only effects <b>A</b> buyables and you can complete 2*sqrt(<b>H</b> challenge completions) more <b>K</b> challenges",
+                        cost: new Decimal("1e522"),
                         unlocked(){
                                 return hasUpgrade("m", 22) || hasUnlockedPast("m")
                         }

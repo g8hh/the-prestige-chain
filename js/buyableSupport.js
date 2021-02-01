@@ -2593,6 +2593,15 @@ var MAIN_BUYABLE_DATA = {
                 effects: "<b>Omnipotent IX</b> base",
                 base: {
                         initial: new Decimal(.2),
+                        1: {
+                                active: function(){
+                                        return true
+                                },
+                                amount: function(){
+                                        return CURRENT_BUYABLE_EFFECTS["k13"]
+                                },
+                                type: "times"
+                        }
                 },
                 bases(){
                         let b0 = Decimal.pow(10, 4.3e26)
@@ -2643,12 +2652,26 @@ var MAIN_BUYABLE_DATA = {
                         initial: Decimal.pow(10, 1e6),
                 },
                 bases(){
-                        let b0 = Decimal.pow(10, 5e15)
+                        let b0 = Decimal.pow(10, 4e15)
                         let b1 = Decimal.pow(10, 1e13)
                         let b2 = Decimal.pow(10, 1e10)
                         return [b0, b1, b2]
                 },
-        }
+        },
+        k13: {
+                name: "Killing",
+                func: "exp",
+                effects: "<b>Julie</b> base",
+                base: {
+                        initial: new Decimal(1.1),
+                },
+                bases(){
+                        let b0 = Decimal.pow(10, 6e15)
+                        let b1 = Decimal.pow(10, 3e13)
+                        let b2 = Decimal.pow(10, 1e11)
+                        return [b0, b1, b2]
+                },
+        },
 }
 
 var EXTRA_FREE_BUYABLE_DATA = {
@@ -3535,9 +3558,8 @@ function isBuyableActive(layer, thang){
         if (layer == "m") return true
         if (layer == "l") return true
         if (layer == "k") return true
-        if (inChallenge("k", 11)) return hasUpgrade("m", 23)
+        if (inChallenge("k", 11)) return hasUpgrade("m", 23) && layer != "a"
         if (layer == "j") return true
-        if (inChallenge("k", 11)) return false
         if (layer == "i") return true
         if (layer == "h") return true
         if (inChallenge("h", 11)) return false
