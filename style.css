@@ -208,6 +208,15 @@ h1, h2, h3, b, input {
 	font-size: 10px;
 }
 
+.maptile {
+	height: 70px;
+	width: 70px;
+	border-radius: 0%;
+	border: 2px solid;
+	border-color: rgba(0, 0, 0, 0.125);
+	font-size: 8px;
+}
+
 .achievement {
 	height: 90px;
 	width: 90px;

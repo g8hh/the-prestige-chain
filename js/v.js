@@ -158,6 +158,33 @@ function loadVue() {
 		`
 	})
 
+	Vue.component('maps', {
+		props: ['layer', 'data'],
+		template: `
+		<div v-if="tmp[layer].upgrades" class="upgTable">
+			<div v-for="row in getIntergerInterval(1,9)" class="upgRow">
+				<div v-for="col in getIntergerInterval(1,9)">
+					<map2 :layer = "layer" :data = "row*10+col" v-bind:style="tmp[layer].componentStyles.upgrade"></map2>
+				</div>
+			</div>
+			<br>
+		</div>
+		`
+	})
+
+	Vue.component('map2', {
+		props: ['layer', 'data'],
+		template: `
+		<button v-on:click="console.log(data)"
+			v-bind:style="{'background-color': getMapColor(player.m.army.tiles.type[data])}"
+			v-bind:class="{maptile: true}">
+			<span v-html="getTileNameDisp(data)"></span>
+			<span v-if="player.m.army.troopsMoving.active && player.m.army.troopsMoving.troopsTo == data"><br><bdi style='font-size:80%'>Troops are moving to here</bdi></span>
+			<span v-if="false || (player.m.army.troopsMoving.active && player.m.army.troopsMoving.troopsFrom == data)"><br><bdi style='font-size:80%'>Troops are moving from here</bdi></span>
+		</button>
+		`
+	})
+
 	Vue.component('milestones', {
 		props: ['layer'],
 		template: `

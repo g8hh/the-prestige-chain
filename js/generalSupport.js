@@ -241,9 +241,32 @@ function getGeneralizedEffectDisplay(layer){
         return a + format(eff) + "."
 }
 
+function randomFrom(items){
+        if (Array.isArray(items)) return items[Math.floor(Math.random() * items.length)]
+        return randomFrom(Object.keys(items))
+}
 
+function getMapColor(a){
+        return {
+                1: "#86C753",
+                2: "#664613",
+                3: "#212020",
+                4: "#41B5EC",
+        }[a]
+}
 
+function getMapName(a){
+        return {
+                1: "Plains",
+                2: "Mountains",
+                3: "Highway",
+                4: "Ocean",
+        }[a]
+}
 
+function getTileNameDisp(data){
+        return player.m.army.tiles.beaten[data] ? `<bdi style="color:#AA0000">Owned</bdi>` : 'Enemy'
+}
 
 
 
