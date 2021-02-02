@@ -2371,7 +2371,7 @@ var MAIN_BUYABLE_DATA = {
                 func: "exp",
                 effects: "base <b>Idea</b> gain",
                 base: {
-                        initial: Decimal.pow(10, 1e111),
+                        initial: Decimal.pow(10, 111),
                         1: {
                                 active: function(){
                                         return hasMilestone("k", 13)
