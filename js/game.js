@@ -484,6 +484,8 @@ function doPerSecondStuff(){
 	updateHotkeys()
 }
 
+var lastTenTicks = []
+
 var interval = setInterval(function() {
 	if (player===undefined||tmp===undefined) return;
 	if (ticking) return;
@@ -512,5 +514,7 @@ var interval = setInterval(function() {
 		perSecondCount += -1
 		doPerSecondStuff()
 	}
+	lastTenTicks.push(Date.now()-now)
+	if (lastTenTicks.length > 10) lastTenTicks = lastTenTicks.slice(1,)
 	ticking = false
 }, 50)

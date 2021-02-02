@@ -719,7 +719,7 @@ var MAIN_BUYABLE_DATA = {
                 func: "exp_sqrt",
                 effects: "Circle effect",
                 base: {
-                        initial: new Decimal("1e1624"),
+                        initial: Decimal.pow(10, 1624),
                         1: {
                                 active: function(){
                                         return true
@@ -2021,7 +2021,7 @@ var MAIN_BUYABLE_DATA = {
                 func: "exp",
                 effects: "<b>H</b> gain",
                 base: {
-                        initial: new Decimal("1e1000"),
+                        initial: Decimal.pow(10, 1000),
                         1: {
                                 active: function(){
                                         return hasUpgrade("h", 51)
@@ -2063,7 +2063,7 @@ var MAIN_BUYABLE_DATA = {
                 func: "exp_sqrt",
                 effects: "all prior buyable limit",
                 base: {
-                        initial: new Decimal("2"),
+                        initial: new Decimal(2),
                         1: {
                                 active: function(){
                                         return hasUpgrade("i", 42)
@@ -2123,7 +2123,7 @@ var MAIN_BUYABLE_DATA = {
                 func: "lin",
                 effects: "<b>H</b> gain exponent",
                 base: {
-                        initial: new Decimal("1"),
+                        initial: new Decimal(1),
                         1: {
                                 active: function(){
                                         return hasUpgrade("i", 35)
@@ -2178,7 +2178,7 @@ var MAIN_BUYABLE_DATA = {
                 func: "lin",
                 effects: "<b>I</b> effect exponent",
                 base: {
-                        initial: new Decimal("1"),
+                        initial: new Decimal(1),
                         1: {
                                 active: function(){
                                         return true
@@ -2211,7 +2211,7 @@ var MAIN_BUYABLE_DATA = {
                 func: "exp",
                 effects: "base <b>G</b> gain",
                 base: {
-                        initial: new Decimal("1e10"),
+                        initial: new Decimal(1e10),
                 },
                 bases(){
                         let b0 = Decimal.pow(10, 51e9)
@@ -2230,7 +2230,7 @@ var MAIN_BUYABLE_DATA = {
                 func: "lin",
                 effects: "<b>Guys</b> base",
                 base: {
-                        initial: new Decimal(".001"),
+                        initial: new Decimal(.001),
                 },
                 bases(){
                         let b0 = Decimal.pow(10, 119e9)
@@ -2245,7 +2245,7 @@ var MAIN_BUYABLE_DATA = {
                 effects: "<b>E</b> effect exponent",
                 effectSymbol: "^",
                 base: {
-                        initial: new Decimal("1.1"),
+                        initial: new Decimal(1.1),
                         1: {
                                 active: function(){
                                         return true
@@ -2268,7 +2268,7 @@ var MAIN_BUYABLE_DATA = {
                 func: "lin",
                 effects: "<b>Happy</b> base",
                 base: {
-                        initial: new Decimal("1"),
+                        initial: new Decimal(1),
                         1: {
                                 active: function(){
                                         return true
@@ -2296,7 +2296,7 @@ var MAIN_BUYABLE_DATA = {
                 func: "lin",
                 effects: "<b>Investment</b> base",
                 base: {
-                        initial: new Decimal(".01"),
+                        initial: new Decimal(.01),
                         1: {
                                 active: function(){
                                         return true
@@ -2329,7 +2329,7 @@ var MAIN_BUYABLE_DATA = {
                 func: "exp",
                 effects: "base <b>H</b> gain",
                 base: {
-                        initial: new Decimal("1ee5"),
+                        initial: Decimal.pow(10, 1e5),
                         1: {
                                 active: function(){
                                         return true
@@ -2357,7 +2357,7 @@ var MAIN_BUYABLE_DATA = {
                 func: "lin",
                 effects: "<b>Huge</b> base",
                 base: {
-                        initial: new Decimal("1e5"),
+                        initial: new Decimal(1e5),
                 },
                 bases(){
                         let b0 = Decimal.pow(10, 11600e6)
@@ -2371,7 +2371,7 @@ var MAIN_BUYABLE_DATA = {
                 func: "exp",
                 effects: "base <b>Idea</b> gain",
                 base: {
-                        initial: new Decimal("1e111"),
+                        initial: Decimal.pow(10, 1e111),
                         1: {
                                 active: function(){
                                         return hasMilestone("k", 13)
@@ -2394,7 +2394,7 @@ var MAIN_BUYABLE_DATA = {
                 func: "exp",
                 effects: "<b>Inn</b> base",
                 base: {
-                        initial: new Decimal("1e1000"),
+                        initial: Decimal.pow(10, 1000),
                         1: {
                                 active: function(){
                                         return true
@@ -2417,7 +2417,7 @@ var MAIN_BUYABLE_DATA = {
                 func: "lin",
                 effects: "<b>Generated</b> base",
                 base: {
-                        initial: new Decimal("1"),
+                        initial: new Decimal(1),
                 },
                 bases(){
                         let b0 = Decimal.pow(10, 10e13)

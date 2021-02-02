@@ -448,7 +448,7 @@ addLayer("a", {
                 44: {
                         title: "Author",
                         description: "Square <b>And</b> exponent",
-                        cost: new Decimal("5e524"),
+                        cost: Decimal.pow(10, 524),
                         unlocked(){
                                 return hasUpgrade("a", 43) || hasUnlockedPast("b")
                         }, //hasUpgrade("a", 44)
@@ -456,7 +456,7 @@ addLayer("a", {
                 45: {
                         title: "Around",
                         description: "Each <b>Account</b> adds .01 to its base and double <b>B</b> gain",
-                        cost: new Decimal("1e568"),
+                        cost: Decimal.pow(10, 568),
                         unlocked(){
                                 return hasUpgrade("a", 44) || hasUnlockedPast("b")
                         }, //hasUpgrade("a", 45)
@@ -464,7 +464,7 @@ addLayer("a", {
                 51: {
                         title: "Air",
                         description: "Each <b>Access</b> adds .01 to the <b>Any</b> base",
-                        cost: new Decimal("5e1228"),
+                        cost: Decimal.pow(10, 1228),
                         unlocked(){
                                 return hasUpgrade("c", 11) || hasUnlockedPast("c")
                         }, //hasUpgrade("a", 51)
@@ -472,7 +472,7 @@ addLayer("a", {
                 52: {
                         title: "Accessories",
                         description: "<b>Account</b> adds levels to <b>After</b>",
-                        cost: new Decimal("1e1654"),
+                        cost: Decimal.pow(10, 1654),
                         unlocked(){
                                 return hasUpgrade("a", 51) || hasUnlockedPast("c")
                         }, //hasUpgrade("a", 52)
@@ -480,7 +480,7 @@ addLayer("a", {
                 53: {
                         title: "Application",
                         description: "Unlock a seventh Amoeba buyable and raise <b>A</b> to the number of Amoeba upgrades",
-                        cost: new Decimal("1e1797"),
+                        cost: Decimal.pow(10, 1797),
                         unlocked(){
                                 return hasUpgrade("a", 52) || hasUnlockedPast("c")
                         }, //hasUpgrade("a", 53)
@@ -488,7 +488,7 @@ addLayer("a", {
                 54: {
                         title: "Again",
                         description: "<b>Advanced</b> gives free levels to <b>Account</b>",
-                        cost: new Decimal("1e1948"),
+                        cost: Decimal.pow(10, 1948),
                         unlocked(){
                                 return hasUpgrade("a", 53) || hasUnlockedPast("c")
                         }, //hasUpgrade("a", 54)
@@ -496,7 +496,7 @@ addLayer("a", {
                 55: {
                         title: "Act",
                         description: "Unlock a second Bacteria buyable and remove the second Amoeba effect softcap",
-                        cost: new Decimal("1e4256"),
+                        cost: Decimal.pow(10, 4256),
                         unlocked(){
                                 return hasUpgrade("a", 53) || hasUnlockedPast("c")
                         }, //hasUpgrade("a", 55)
@@ -3328,7 +3328,7 @@ addLayer("ach", {
                                 if (player.subtabs.ach.mainTabs != "Milestones") return ""
                                 return "<b>Life</b><br>Requires: " + formatWhole(tmp.ach.milestones[1].req) + " Goals"
                         }, 
-                        effectDescription: "You permanently keep all <b>A</b> upgrades",
+                        effectDescription: "You keep <b>A</b> upgrades",
                         done(){
                                 return player.ach.points.gte(tmp.ach.milestones[1].req)
                         },
@@ -3347,7 +3347,7 @@ addLayer("ach", {
                                 if (player.subtabs.ach.mainTabs != "Milestones") return ""
                                 return "<b>The Universe</b><br>Requires: " + formatWhole(tmp.ach.milestones[2].req) + " Goals"
                         }, 
-                        effectDescription: "You permanently keep all <b>B</b> upgrades",
+                        effectDescription: "You keep <b>B</b> upgrades",
                         done(){
                                 return player.ach.points.gte(tmp.ach.milestones[2].req)
                         },
@@ -3366,7 +3366,7 @@ addLayer("ach", {
                                 if (player.subtabs.ach.mainTabs != "Milestones") return ""
                                 return "<b>And Everything</b><br>Requires: " + formatWhole(tmp.ach.milestones[3].req) + " Goals"
                         }, 
-                        effectDescription: "You permanently keep all <b>C</b> upgrades",
+                        effectDescription: "You keep <b>C</b> upgrades",
                         done(){
                                 return player.ach.points.gte(tmp.ach.milestones[3].req)
                         },
@@ -3404,7 +3404,7 @@ addLayer("ach", {
                                 if (player.subtabs.ach.mainTabs != "Milestones") return ""
                                 return "<b>Teach me and I remember</b><br>Requires: " + formatWhole(tmp.ach.milestones[5].req) + " Goals"
                         }, 
-                        effectDescription: "You permanently keep all <b>D</b> upgrades",
+                        effectDescription: "You keep <b>D</b> upgrades",
                         done(){
                                 return player.ach.points.gte(tmp.ach.milestones[5].req)
                         },
@@ -3423,7 +3423,7 @@ addLayer("ach", {
                                 if (player.subtabs.ach.mainTabs != "Milestones") return ""
                                 return "<b>Involve me and I learn</b><br>Requires: " + formatWhole(tmp.ach.milestones[6].req) + " Goals (needs Eighty or in Challenge 4)"
                         }, 
-                        effectDescription: "You permanently keep all <b>E</b> upgrades and add 1.5 to the <b>F</b> gain exponent",
+                        effectDescription: "You keep <b>E</b> upgrades and add 1.5 to the <b>F</b> gain exponent",
                         done(){
                                 return player.ach.points.gte(tmp.ach.milestones[6].req) && (getChallengeDepth(4) > 0 || hasAchievement("ach", 123))
                         },
@@ -16952,15 +16952,264 @@ addLayer("m", {
                                                 99: false,
                                         },
                                 },
-                                troops: {
-                                        commanders: 1,
-                                        generals: 1,
-                                        soldiers: 1,
+                                commandersPlaced: {
+                                        11: 0,
+                                        12: 0,
+                                        13: 0,
+                                        14: 0,
+                                        15: 0,
+                                        16: 0,
+                                        17: 0,
+                                        18: 0,
+                                        19: 0,
+                                        21: 0,
+                                        22: 0,
+                                        23: 0,
+                                        24: 0,
+                                        25: 0,
+                                        26: 0,
+                                        27: 0,
+                                        28: 0,
+                                        29: 0,
+                                        31: 0,
+                                        32: 0,
+                                        33: 0,
+                                        34: 0,
+                                        35: 0,
+                                        36: 0,
+                                        37: 0,
+                                        38: 0,
+                                        39: 0,
+                                        41: 0,
+                                        42: 0,
+                                        43: 0,
+                                        44: 0,
+                                        45: 0,
+                                        46: 0,
+                                        47: 0,
+                                        48: 0,
+                                        49: 0,
+                                        51: 0,
+                                        52: 0,
+                                        53: 0,
+                                        54: 0,
+                                        55: 0,
+                                        56: 0,
+                                        57: 0,
+                                        58: 0,
+                                        59: 0,
+                                        61: 0,
+                                        62: 0,
+                                        63: 0,
+                                        64: 0,
+                                        65: 0,
+                                        66: 0,
+                                        67: 0,
+                                        68: 0,
+                                        69: 0,
+                                        71: 0,
+                                        72: 0,
+                                        73: 0,
+                                        74: 0,
+                                        75: 0,
+                                        76: 0,
+                                        77: 0,
+                                        78: 0,
+                                        79: 0,
+                                        81: 0,
+                                        82: 0,
+                                        83: 0,
+                                        84: 0,
+                                        85: 0,
+                                        86: 0,
+                                        87: 0,
+                                        88: 0,
+                                        89: 0,
+                                        91: 0,
+                                        92: 0,
+                                        93: 0,
+                                        94: 0,
+                                        95: 0,
+                                        96: 0,
+                                        97: 0,
+                                        98: 0,
+                                        99: 0,
+                                },
+                                generalsPlaced: {
+                                        11: 0,
+                                        12: 0,
+                                        13: 0,
+                                        14: 0,
+                                        15: 0,
+                                        16: 0,
+                                        17: 0,
+                                        18: 0,
+                                        19: 0,
+                                        21: 0,
+                                        22: 0,
+                                        23: 0,
+                                        24: 0,
+                                        25: 0,
+                                        26: 0,
+                                        27: 0,
+                                        28: 0,
+                                        29: 0,
+                                        31: 0,
+                                        32: 0,
+                                        33: 0,
+                                        34: 0,
+                                        35: 0,
+                                        36: 0,
+                                        37: 0,
+                                        38: 0,
+                                        39: 0,
+                                        41: 0,
+                                        42: 0,
+                                        43: 0,
+                                        44: 0,
+                                        45: 0,
+                                        46: 0,
+                                        47: 0,
+                                        48: 0,
+                                        49: 0,
+                                        51: 0,
+                                        52: 0,
+                                        53: 0,
+                                        54: 0,
+                                        55: 0,
+                                        56: 0,
+                                        57: 0,
+                                        58: 0,
+                                        59: 0,
+                                        61: 0,
+                                        62: 0,
+                                        63: 0,
+                                        64: 0,
+                                        65: 0,
+                                        66: 0,
+                                        67: 0,
+                                        68: 0,
+                                        69: 0,
+                                        71: 0,
+                                        72: 0,
+                                        73: 0,
+                                        74: 0,
+                                        75: 0,
+                                        76: 0,
+                                        77: 0,
+                                        78: 0,
+                                        79: 0,
+                                        81: 0,
+                                        82: 0,
+                                        83: 0,
+                                        84: 0,
+                                        85: 0,
+                                        86: 0,
+                                        87: 0,
+                                        88: 0,
+                                        89: 0,
+                                        91: 0,
+                                        92: 0,
+                                        93: 0,
+                                        94: 0,
+                                        95: 0,
+                                        96: 0,
+                                        97: 0,
+                                        98: 0,
+                                        99: 0,
+                                },
+                                soldiersPlaced: {
+                                        11: 0,
+                                        12: 0,
+                                        13: 0,
+                                        14: 0,
+                                        15: 0,
+                                        16: 0,
+                                        17: 0,
+                                        18: 0,
+                                        19: 0,
+                                        21: 0,
+                                        22: 0,
+                                        23: 0,
+                                        24: 0,
+                                        25: 0,
+                                        26: 0,
+                                        27: 0,
+                                        28: 0,
+                                        29: 0,
+                                        31: 0,
+                                        32: 0,
+                                        33: 0,
+                                        34: 0,
+                                        35: 0,
+                                        36: 0,
+                                        37: 0,
+                                        38: 0,
+                                        39: 0,
+                                        41: 0,
+                                        42: 0,
+                                        43: 0,
+                                        44: 0,
+                                        45: 0,
+                                        46: 0,
+                                        47: 0,
+                                        48: 0,
+                                        49: 0,
+                                        51: 0,
+                                        52: 0,
+                                        53: 0,
+                                        54: 0,
+                                        55: 0,
+                                        56: 0,
+                                        57: 0,
+                                        58: 0,
+                                        59: 0,
+                                        61: 0,
+                                        62: 0,
+                                        63: 0,
+                                        64: 0,
+                                        65: 0,
+                                        66: 0,
+                                        67: 0,
+                                        68: 0,
+                                        69: 0,
+                                        71: 0,
+                                        72: 0,
+                                        73: 0,
+                                        74: 0,
+                                        75: 0,
+                                        76: 0,
+                                        77: 0,
+                                        78: 0,
+                                        79: 0,
+                                        81: 0,
+                                        82: 0,
+                                        83: 0,
+                                        84: 0,
+                                        85: 0,
+                                        86: 0,
+                                        87: 0,
+                                        88: 0,
+                                        89: 0,
+                                        91: 0,
+                                        92: 0,
+                                        93: 0,
+                                        94: 0,
+                                        95: 0,
+                                        96: 0,
+                                        97: 0,
+                                        98: 0,
+                                        99: 0,
                                 },
                                 immuneTroops: {
                                         commanders: 2,
                                         generals: 20,
                                         soldiers: 1000,
+                                },
+                                troopsBank: {
+                                        commanders: 1,
+                                        generals: 1,
+                                        soldiers: 1,
                                 },
                                 time: 0,
                                 timeNeeded: 10,
@@ -16972,6 +17221,20 @@ addLayer("m", {
                                         active: false,
                                         troopsTo: 11,
                                         troopsFrom: 11,
+                                },
+                                troopsAttacking:{
+                                        active: false,
+                                        troopsTo: 11,
+                                        troopsFrom: 11
+                                },
+                                troopsPlacing: {
+                                        active: false,
+                                        troopsTo: 11,
+                                },
+                                lastClicked: 11,
+                                mode: {
+                                        active: 0,
+                                        all: ["attack", "move", "place"], //more maybe?
                                 },
                         },
                 } //no comma here
@@ -17048,6 +17311,10 @@ addLayer("m", {
                 let data = player.m.army
                 let data2 = data.tiles
 
+                if (hasUpgrade("m", 23)) data.unlocked = true
+
+                if (!data.unlocked) return 
+
                 if (!data2.generated) {
                         // generate the new stuff
                         for (i in data2.type){
@@ -17059,7 +17326,6 @@ addLayer("m", {
                 for (i in data2.beaten){
                         if (data2.beaten[i] && !isNaN(Number(i))) wonOnce = true
                 }
-                console.log(wonOnce)
                 if (wonOnce == false){
                         data2.beaten[randomFrom(data2.beaten)] = true
                 }
@@ -17067,6 +17333,8 @@ addLayer("m", {
                 data.time += diff
 
                 if (data.time < data.timeNeeded) return
+
+                data.time -= data.timeNeeded
                         
                 if (data.time > data.timeNeeded * 10) data.time = data.timeNeeded * 10
                 
@@ -17075,6 +17343,22 @@ addLayer("m", {
                 // deal with moving
                 
                 // deal with retiring  
+
+                /*
+                Each commander can command 10 generals and each general can command 50 soldiers
+                up to 100 soldiers/10% can move in/out of each tile and 
+                each enemy tile has a 5% chance to attack an adj allied tile
+                if you get attacked, the enemy gets a 1.3x surprise factor
+                each tick .5% of your troops retire (rounded down, and 2/20/1000 are immune from retiring)
+
+
+                there are a couple of types of tiles
+                1. Plains (square law remaining troops)
+                2. Mountains (.5x moving)
+                3. Highway (you can move 2x as much)
+                4. Ocean (easier to defend, get 2x defending bonus)
+
+                */
         },
         update(diff){
                 let data = player.m
@@ -17239,7 +17523,7 @@ addLayer("m", {
                 }, // hasUpgrade("m", 22)
                 23: {
                         title: "Made",
-                        description: "<b>Kiss</b> only effects <b>A</b> buyables and you can complete 2*sqrt(<b>H</b> challenge completions) more <b>K</b> challenges",
+                        description: "<b>Kiss</b> only effects <b>A</b> buyables, you can complete 2*sqrt(<b>H</b> challenge completions) more <b>K</b> challenges, and unlock a feature",
                         cost: new Decimal("1e522"),
                         unlocked(){
                                 return hasUpgrade("m", 22) || hasUnlockedPast("m")
@@ -17298,9 +17582,12 @@ addLayer("m", {
                         },
                 },
                 "Maps":{
-                        content: ["maps"],
+                        content: [
+                                "maps",
+                                ["microtabs", "maps"]
+                        ],
                         unlocked(){
-                                return player.m.army.unlocked || true
+                                return player.m.army.unlocked
                         },
                 },
                 "Milestones": {
@@ -17310,6 +17597,77 @@ addLayer("m", {
                         ],
                         unlocked(){
                                 return true
+                        },
+                },
+        },
+        microtabs: {
+                maps: {
+                        "Stats":{
+                                content: [
+                                        ["display-text",
+                                                function() {
+                                                        return "Clicking will currently " + player.m.army.mode.all[player.m.army.mode.active] + "."
+                                                },
+                                        ],
+                                        ["clickables", [1,1]], //toggle mode foreward/backwards
+                                        ["display-text",
+                                                function() {
+                                                        if (player.tab != "m") return ""
+                                                        if (player.subtabs.m.mainTabs != "Maps") return ""
+                                                        let data = player.m.army
+                                                        let data2 = data.troopsBank
+                                                        let data3 = data.troopsMoving
+                                                        let data4 = data.troopsAttacking
+                                                        let data5 = data.troopsPlacing
+                                                        let a = "Time until next tick: " + formatWhole(Math.max(0, data.timeNeeded - data.time)) + "s.<br>"
+                                                        let b = "You have completed " + formatWhole(data.tilesCompleted) + " tiles, "
+                                                        let c = formatWhole(data.mapsCompleted) + " maps, and " + formatWhole(data.worldsCompleted) + " worlds.<br>"
+                                                        let d = "You have " + formatWhole(data2.commanders) + " unplaced commanders, "
+                                                        let e = formatWhole(data2.generals) + " unplaced generals, and " + formatWhole(data2.soldiers) + " unplaced soldiers.<br>"
+                                                        let f = "Currently, your troops are" + (data3.active ? "" : "n't") + " moving"
+                                                        let g = (data3.active ? " from " + data3.troopsFrom + " to " + data3.troopsTo : "") + ".<br>"
+                                                        let h = "Currently, your troops are" + (data4.active ? "" : "n't") + " attacking"
+                                                        let i = (data4.active ? " from " + data4.troopsFrom + " to " + data4.troopsTo : "") + ".<br>"
+                                                        let j = "Currently, your troops are" + (data5.active ? "" : "n't") + " being placed"
+                                                        let k = (data4.active ? " in " + data4.troopsTo : "") + ".<br>"
+
+
+                                                        return a + b + c + d + e + f + g + h + i + j + k 
+                                                        
+                                                },
+                                        ],
+                                        // completed stats, unused stats
+                                        // moving from/to for 3 diff things
+                                        // button for switiching what you are doing
+                                        /*
+                                        troopsMoving: {
+                                                active: false,
+                                                troopsTo: 11,
+                                                troopsFrom: 11,
+                                        },
+                                        troopsAttacking:{
+                                                active: false,
+                                                troopsTo: 11,
+                                                troopsFrom: 11
+                                        },
+                                        troopsPlacing: {
+                                                active: false,
+                                                troopsTo: 11,
+                                        },
+                                        lastClicked: 11,
+                                        */
+                                ],
+                                unlocked(){
+                                        return true
+                                },
+                        },
+                        "Details": {
+                                content: [
+                                        "main-display", //display text
+                                ],
+                                unlocked(){
+                                        return true
+                                },
                         },
                 },
         },

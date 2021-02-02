@@ -268,6 +268,9 @@ function getTileNameDisp(data){
         return player.m.army.tiles.beaten[data] ? `<bdi style="color:#AA0000">Owned</bdi>` : 'Enemy'
 }
 
-
+function mod(a,b){
+        if (a >= 0) return a % b
+        return (a % b) + b
+}
 
 
