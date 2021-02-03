@@ -180,8 +180,7 @@ function loadVue() {
 			v-bind:style="{'background-color': getMapColor(player.m.army.tiles.type[data])}"
 			v-bind:class="{maptile: true}">
 			<span v-html="getTileNameDisp(data)"></span>
-			<span v-if="player.m.army.troopsMoving.active && player.m.army.troopsMoving.troopsTo == data"><br><bdi style='font-size:80%'>Troops are moving to here</bdi></span>
-			<span v-if="false || (player.m.army.troopsMoving.active && player.m.army.troopsMoving.troopsFrom == data)"><br><bdi style='font-size:80%'>Troops are moving from here</bdi></span>
+			<span v-html="getTimeAmountsDisp(data)"></span>
 		</button>
 		`
 	})

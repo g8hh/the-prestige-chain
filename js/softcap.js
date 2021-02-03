@@ -235,7 +235,7 @@ var softcap_data = {
 	c_buy31: {
 		1: {
 			func: "log",
-			start: new Decimal("1e500"),
+			start: Decimal.pow(10, 500),
 			pow: 500 / Math.log10(500),
 		},
 	},
@@ -254,7 +254,7 @@ var softcap_data = {
 	d_buy21:{
 		1: {
 			func: "log",
-			start: new Decimal("1e150"),
+			start: new Decimal(1e150),
 			pow: 150 / Math.log10(150),
 			active(){
 				return !hasMilestone("goalsii", 21) 
@@ -262,18 +262,9 @@ var softcap_data = {
 		},
 		2: {
 			func: "pow",
-			start: new Decimal("1e150"),
+			start: new Decimal(1e150),
 			pow: .99,
 		},
-	},
-	d_buy22:{
-		/*
-		1: {
-			func: "log",
-			start: new Decimal("1e100"),
-			pow: 50,
-		},
-		*/
 	},
 	d_buy33:{
 		1: {

@@ -867,7 +867,7 @@ addLayer("b", {
                 43: {
                         title: "Better",
                         description: "Unlock the eighth Amoeba buyable",
-                        cost: new Decimal("5e415"),
+                        cost: Decimal.pow(10, 415),
                         unlocked(){
                                 return hasUpgrade("b", 42) || hasUnlockedPast("c")
                         }, //hasUpgrade("b", 43)
@@ -875,7 +875,7 @@ addLayer("b", {
                 44: {
                         title: "Below",
                         description: "<b>Above</b> gives free <b>Access</b> levels",
-                        cost: new Decimal("5e425"),
+                        cost: Decimal.pow(10, 425),
                         unlocked(){
                                 return hasUpgrade("b", 43) || hasUnlockedPast("c")
                         }, //hasUpgrade("b", 44)
@@ -883,7 +883,7 @@ addLayer("b", {
                 45: {
                         title: "Blog",
                         description: "<b>A</b> and <b>B</b> autobuyers trigger twice as often",
-                        cost: new Decimal("5e476"),
+                        cost: Decimal.pow(10, 476),
                         unlocked(){
                                 return (hasUpgrade("b", 44) && hasUpgrade("c", 15)) || hasUnlockedPast("c")
                         }, //hasUpgrade("b", 45)
@@ -891,7 +891,7 @@ addLayer("b", {
                 51: {
                         title: "Browse",
                         description: "Unlock the final <b>A</b> buyable, <b>Omnipotent I</b>, which gives free levels to all <b>A</b> buyables",
-                        cost: new Decimal("1e1104"),
+                        cost: Decimal.pow(10, 1104),
                         unlocked(){
                                 return hasUpgrade("c", 12) || hasUnlockedPast("d")
                         }, //hasUpgrade("b", 51)
@@ -899,7 +899,7 @@ addLayer("b", {
                 52: {
                         title: "Building",
                         description: "Each <b>C</b> upgrade adds .2 to the <b>C</b> gain exponent and <b>B</b> buyables cost nothing",
-                        cost: new Decimal("1e1252"),
+                        cost: Decimal.pow(10, 1252),
                         unlocked(){
                                 return hasUpgrade("b", 51) || hasUnlockedPast("d")
                         }, //hasUpgrade("b", 52)
@@ -907,7 +907,7 @@ addLayer("b", {
                 53: {
                         title: "Blue",
                         description: "Unlock two <b>B</b> buyables and each <b>B</b> challenge completion adds .1 to the <b>Omnipotent I</b> base",
-                        cost: new Decimal("1e1259"),
+                        cost: Decimal.pow(10, 1259),
                         unlocked(){
                                 return hasUpgrade("b", 52) || hasUnlockedPast("d")
                         }, //hasUpgrade("b", 53)
@@ -915,7 +915,7 @@ addLayer("b", {
                 54: {
                         title: "Bill",
                         description: "<b>Become</b> gives free <b>Based</b> and <b>Because</b> levels",
-                        cost: new Decimal("1e7576"),
+                        cost: Decimal.pow(10, 7576),
                         unlocked(){
                                 return hasUpgrade("c", 34) || hasUnlockedPast("d")
                         }, //hasUpgrade("b", 54)
@@ -923,7 +923,7 @@ addLayer("b", {
                 55: {
                         title: "Bad",
                         description: "Unlock two new <b>B</b> buyables which both give free levels to <b>Baby</b>",
-                        cost: new Decimal("1e10964"),
+                        cost: Decimal.pow(10, 10964),
                         unlocked(){
                                 return hasUpgrade("c", 35) || hasUnlockedPast("d")
                         }, //hasUpgrade("b", 55)
@@ -974,7 +974,7 @@ addLayer("b", {
                                 return Math.floor(ret)
                         },
                         goal(){
-                                let init = new Decimal("1e2456")
+                                let init = Decimal.pow(10, 2456)
                                 let factor = getChallengeFactor(challengeCompletions("b", 11))
                                 return init.pow(factor)
                         },
@@ -995,7 +995,7 @@ addLayer("b", {
                                 return Math.floor(ret)
                         },
                         goal(){
-                                let init = new Decimal("1e4992")
+                                let init = Decimal.pow(10, 4992)
                                 let factor = getChallengeFactor(challengeCompletions("b", 12))
                                 return init.pow(factor)
                         },
@@ -1017,7 +1017,7 @@ addLayer("b", {
                                 return Math.floor(ret)
                         },
                         goal(){
-                                let init = new Decimal("1e14538")
+                                let init = Decimal.pow(10, 14538)
                                 let factor = getChallengeFactor(challengeCompletions("b", 21))
                                 factor = factor.pow(.9636)
                                 return init.pow(factor)
@@ -1375,7 +1375,7 @@ addLayer("c", {
                 41: {
                         title: "Computer",
                         description: "<b>Basic</b> gives free <b>Bank</b> and <b>Beauty</b> levels and <b>B</b> and <b>A</b> autobuyers can buy 10x more",
-                        cost: new Decimal("1e584"),
+                        cost: Decimal.pow(10, 584),
                         unlocked(){ 
                                 return player.ach.achievements.includes("53") || hasUnlockedPast("d")
                         }, //hasUpgrade("c", 41)
@@ -1383,7 +1383,7 @@ addLayer("c", {
                 42: {
                         title: "Current",
                         description: "<b>Bank</b> gives free <b>Become</b> levels",
-                        cost: new Decimal("1e685"),
+                        cost: Decimal.pow(10, 685),
                         unlocked(){ 
                                 return hasUpgrade("d", 24) || hasUnlockedPast("d")
                         }, //hasUpgrade("c", 42)
@@ -1391,7 +1391,7 @@ addLayer("c", {
                 43: {
                         title: "Control",
                         description: "<b>Basic</b> gives free <b>Baby</b> levels and unlock a <b>C</b> challenge",
-                        cost: new Decimal("1e942"),
+                        cost: Decimal.pow(10, 942),
                         unlocked(){ 
                                 return hasUpgrade("c", 42) || hasUnlockedPast("d")
                         }, //hasUpgrade("c", 43)
@@ -1399,7 +1399,7 @@ addLayer("c", {
                 44: {
                         title: "Class",
                         description: "<b>Basic</b> gives free <b>Omntipotent I</b> levels and unlock a <b>B</b> buyable",
-                        cost: new Decimal("1e1046"),
+                        cost: Decimal.pow(10, 1046),
                         unlocked(){ 
                                 return hasUpgrade("c", 43) || hasUnlockedPast("d")
                         }, //hasUpgrade("c", 44)
@@ -1407,7 +1407,7 @@ addLayer("c", {
                 45: {
                         title: "Children",
                         description: "<b>Brand</b> gives free <b>Basic</b> and <b>Beauty</b> levels and unlock a <b>C</b> buyable",
-                        cost: new Decimal("2e1151"),
+                        cost: Decimal.pow(10, 1151),
                         unlocked(){ 
                                 return hasUpgrade("c", 44) || hasUnlockedPast("d")
                         }, //hasUpgrade("c", 45)
@@ -1415,7 +1415,7 @@ addLayer("c", {
                 51: {
                         title: "Content",
                         description: "Unlock <b>Omnipotent II</b> which gives free levels to all <b>B</b> buyables, unlock the final <b>B</b> challenge, and gain 100x points",
-                        cost: new Decimal("2e2674"),
+                        cost: Decimal.pow(10, 2674),
                         unlocked(){ 
                                 return hasAchievement("ach", 62) || hasUnlockedPast("e")
                         }, //hasUpgrade("c", 51)
@@ -1423,7 +1423,7 @@ addLayer("c", {
                 52: {
                         title: "Customer",
                         description: "<b>Country</b> gives free levels to <b>Call</b> and <b>Case</b>",
-                        cost: new Decimal("1e5443"),
+                        cost: Decimal.pow(10, 5443),
                         unlocked(){ 
                                 return hasUpgrade("d", 31) || hasUnlockedPast("e")
                         }, //hasUpgrade("c", 52)
@@ -1431,7 +1431,7 @@ addLayer("c", {
                 53: {
                         title: "College",
                         description: "<b>Compare</b> gives free levels to <b>Call</b> and <b>Case</b>",
-                        cost: new Decimal("1e34974"),
+                        cost: Decimal.pow(10, 34974),
                         unlocked(){ 
                                 return hasUpgrade("d", 32) || hasUnlockedPast("e")
                         }, //hasUpgrade("c", 53)
@@ -1439,7 +1439,7 @@ addLayer("c", {
                 54: {
                         title: "Course",
                         description: "<b>Card</b> gives free levels to <b>Omnipotent II</b> and <b>Compare</b>",
-                        cost: new Decimal("1e100012"),
+                        cost: Decimal.pow(10, 100012),
                         unlocked(){ 
                                 return hasUpgrade("d", 33) || hasUnlockedPast("e")
                         }, //hasUpgrade("c", 54)
@@ -1447,7 +1447,7 @@ addLayer("c", {
                 55: {
                         title: "Credit",
                         description: "<b>Canada</b> gives free levels to <b>Omnipotent II</b> and <b>Compare</b> and unlock a <b>C</b> challenge",
-                        cost: new Decimal("1e826733"),
+                        cost: Decimal.pow(10, 826733),
                         unlocked(){ 
                                 return hasUpgrade("d", 35) || hasUnlockedPast("e")
                         }, //hasUpgrade("c", 55)
@@ -1864,7 +1864,7 @@ addLayer("d", {
                 35: {
                         title: "Digital",
                         description: "<b>Canada</b> gives free <b>Card</b> levels and all autobuyers buy 100x more",
-                        cost: new Decimal("1e314"),
+                        cost: Decimal.pow(10, 314),
                         unlocked(){ 
                                 return player.ach.achievements.includes("71") || hasUnlockedPast("e")
                         }, //hasUpgrade("d", 35)
@@ -1872,7 +1872,7 @@ addLayer("d", {
                 41: {
                         title: "Description",
                         description: "<b>Department</b> gives free <b>Brand</b> levels and <b>C</b> autobuyers buy 3x faster",
-                        cost: new Decimal("1e619"),
+                        cost: Decimal.pow(10, 619),
                         unlocked(){ 
                                 return player.ach.achievements.includes("74") || hasUnlockedPast("e")
                         }, //hasUpgrade("d", 41)
@@ -1880,7 +1880,7 @@ addLayer("d", {
                 42: {
                         title: "Different",
                         description: "<b>Department</b> gives free <b>Basic</b> and <b>Beauty</b> levels",
-                        cost: new Decimal("1e619"),
+                        cost: Decimal.pow(10, 619),
                         unlocked(){ 
                                 return hasUpgrade("d", 41) || hasUnlockedPast("e")
                         }, //hasUpgrade("d", 42)
@@ -1888,7 +1888,7 @@ addLayer("d", {
                 43: {
                         title: "Discussion",
                         description: "<b>Conditions</b> gives free <b>Card</b> and <b>Canada</b> levels",
-                        cost: new Decimal("1e778"),
+                        cost: Decimal.pow(10, 778),
                         unlocked(){ 
                                 return hasUpgrade("d", 42) || hasUnlockedPast("e")
                         }, //hasUpgrade("d", 43)
@@ -1896,7 +1896,7 @@ addLayer("d", {
                 44: {
                         title: "Display",
                         description: "<b>Delivery</b> gives free <b>December</b> levels",
-                        cost: new Decimal("5e1667"),
+                        cost: Decimal.pow(10, 1667),
                         unlocked(){ 
                                 return hasUpgrade("e", 14) || hasUnlockedPast("e")
                         }, //hasUpgrade("d", 44)
@@ -1904,7 +1904,7 @@ addLayer("d", {
                 45: {
                         title: "Daily",
                         description: "<b>Director</b> gives free <b>Delivery</b> levels",
-                        cost: new Decimal("1e2333"),
+                        cost: Decimal.pow(10, 2333),
                         unlocked(){ 
                                 return hasUpgrade("e", 15) || hasUnlockedPast("e")
                         }, //hasUpgrade("d", 45)
@@ -1912,7 +1912,7 @@ addLayer("d", {
                 51: {
                         title: "Done",
                         description: "Unlock a <b>D</b> buyable",
-                        cost: new Decimal("1e305977"),
+                        cost: Decimal.pow(10, 305977),
                         currencyLayer: "f",
                         currencyInternalName: "points",
                         currencyDisplayName: "Features",
@@ -1923,7 +1923,7 @@ addLayer("d", {
                 52: {
                         title: "District",
                         description: "Each upgrade multiplies base <b>G</b> gain by 1.01",
-                        cost: new Decimal("1e305999"),
+                        cost: Decimal.pow(10, 305999),
                         currencyLayer: "f",
                         currencyInternalName: "points",
                         currencyDisplayName: "Features",
@@ -1934,7 +1934,7 @@ addLayer("d", {
                 53: {
                         title: "Downloads",
                         description: "Raise charge gain ^1.1",
-                        cost: new Decimal("1e307059"),
+                        cost: Decimal.pow(10, 307059),
                         currencyLayer: "f",
                         currencyInternalName: "points",
                         currencyDisplayName: "Features",
@@ -1945,7 +1945,7 @@ addLayer("d", {
                 54: {
                         title: "Document",
                         description: "Increase the <b>G</b> effect exponent by +.1",
-                        cost: new Decimal("1e307113"),
+                        cost: Decimal.pow(10, 307113),
                         currencyLayer: "f",
                         currencyInternalName: "points",
                         currencyDisplayName: "Features",
@@ -1956,7 +1956,7 @@ addLayer("d", {
                 55: {
                         title: "Deals",
                         description: "Raise charge gain ^1.1",
-                        cost: new Decimal("1e310424"),
+                        cost: Decimal.pow(10, 310424),
                         currencyLayer: "f",
                         currencyInternalName: "points",
                         currencyDisplayName: "Features",
@@ -2302,7 +2302,7 @@ addLayer("e", {
                 31: {
                         title: "Edition",
                         description: "Each upgrade multiplies base <b>G</b> gain by 1.1",
-                        cost: new Decimal("1e32684"),
+                        cost: Decimal.pow(10, 32684),
                         currencyLayer: "g",
                         currencyInternalName: "points",
                         currencyDisplayName: "Games",
@@ -2313,7 +2313,7 @@ addLayer("e", {
                 32: {
                         title: "Electronics",
                         description: "Unlock a fully completed effect",
-                        cost: new Decimal("1e34851"),
+                        cost: Decimal.pow(10, 34851),
                         currencyLayer: "g",
                         currencyInternalName: "points",
                         currencyDisplayName: "Games",
@@ -2324,7 +2324,7 @@ addLayer("e", {
                 33: {
                         title: "Environment",
                         description: "Square <b>Edition</b>",
-                        cost: new Decimal("1e38276"),
+                        cost: Decimal.pow(10, 38276),
                         currencyLayer: "g",
                         currencyInternalName: "points",
                         currencyDisplayName: "Games",
@@ -2335,7 +2335,7 @@ addLayer("e", {
                 34: {
                         title: "Ever",
                         description: "Square <b>Edition</b>",
-                        cost: new Decimal("1e39436"),
+                        cost: Decimal.pow(10, 39436),
                         currencyLayer: "g",
                         currencyInternalName: "points",
                         currencyDisplayName: "Games",
@@ -2346,7 +2346,7 @@ addLayer("e", {
                 35: {
                         title: "Early",
                         description: "Gain one free Rebirth level",
-                        cost: new Decimal("1e45201"),
+                        cost: Decimal.pow(10, 45201),
                         currencyLayer: "g",
                         currencyInternalName: "points",
                         currencyDisplayName: "Games",
@@ -2357,7 +2357,7 @@ addLayer("e", {
                 41: {
                         title: "Either",
                         description: "Raise Charge gain ^1.1",
-                        cost: new Decimal("1e46297"),
+                        cost: Decimal.pow(10, 46297),
                         currencyLayer: "g",
                         currencyInternalName: "points",
                         currencyDisplayName: "Games",
@@ -2368,7 +2368,7 @@ addLayer("e", {
                 42: {
                         title: "Else",
                         description: "Raise the successfully deved boosted to Features to the 20",
-                        cost: new Decimal("1e46653"),
+                        cost: Decimal.pow(10, 46653),
                         currencyLayer: "g",
                         currencyInternalName: "points",
                         currencyDisplayName: "Games",
@@ -2379,7 +2379,7 @@ addLayer("e", {
                 43: {
                         title: "Europe",
                         description: "Square the successfully deved boosted to Max Charges",
-                        cost: new Decimal("1e47094"),
+                        cost: Decimal.pow(10, 47094),
                         currencyLayer: "g",
                         currencyInternalName: "points",
                         currencyDisplayName: "Games",
@@ -2390,7 +2390,7 @@ addLayer("e", {
                 44: {
                         title: "Edit",
                         description: "Raise charge gain ^1.1",
-                        cost: new Decimal("1e49220"),
+                        cost: Decimal.pow(10, 49220),
                         currencyLayer: "g",
                         currencyInternalName: "points",
                         currencyDisplayName: "Games",
@@ -2401,7 +2401,7 @@ addLayer("e", {
                 45: {
                         title: "Economic",
                         description: "Raise charge gain ^1.1",
-                        cost: new Decimal("1e49590"),
+                        cost: Decimal.pow(10,  49590),
                         currencyLayer: "g",
                         currencyInternalName: "points",
                         currencyDisplayName: "Games",
@@ -2412,7 +2412,7 @@ addLayer("e", {
                 51: {
                         title: "Everything",
                         description: "Unlock an <b>E</b> buyable",
-                        cost: new Decimal("1e50660"),
+                        cost: Decimal.pow(10, 50660),
                         currencyLayer: "g",
                         currencyInternalName: "points",
                         currencyDisplayName: "Games",
@@ -2423,7 +2423,7 @@ addLayer("e", {
                 52: {
                         title: "Error",
                         description: "Raise charge gain ^1.1",
-                        cost: new Decimal("1e53691"),
+                        cost: Decimal.pow(10, 53691),
                         currencyLayer: "g",
                         currencyInternalName: "points",
                         currencyDisplayName: "Games",
@@ -2434,7 +2434,7 @@ addLayer("e", {
                 53: {
                         title: "Engineering",
                         description: "Raise charge gain ^1.1",
-                        cost: new Decimal("1e54074"),
+                        cost: Decimal.pow(10, 54074),
                         currencyLayer: "g",
                         currencyInternalName: "points",
                         currencyDisplayName: "Games",
@@ -2445,7 +2445,7 @@ addLayer("e", {
                 54: {
                         title: "Enough",
                         description: "ln(Charges) multiplies base <b>G</b> gain",
-                        cost: new Decimal("1e54456"),
+                        cost: Decimal.pow(10, 54456),
                         currencyLayer: "g",
                         currencyInternalName: "points",
                         currencyDisplayName: "Games",
@@ -2456,7 +2456,7 @@ addLayer("e", {
                 55: {
                         title: "Effects",
                         description: "Each <b>G</b> upgrade multiplies base medal gain by 12 and adds 34 to the exponent",
-                        cost: new Decimal("1e54456"),
+                        cost: Decimal.pow(10, 54456),
                         currencyLayer: "g",
                         currencyInternalName: "points",
                         currencyDisplayName: "Games",
@@ -2729,7 +2729,7 @@ addLayer("f", {
                 11: {
                         title: "For",
                         description: "Keep this upgrade and make <b>G</b> gain based on best <b>F</b>",
-                        cost: new Decimal("1e10533"),
+                        cost: Decimal.pow(10, 10533),
                         unlocked(){ 
                                 return player.g.rebirths[1] >= 16 || hasUnlockedPast("g")
                         }, // hasUpgrade("f", 11)
@@ -2737,7 +2737,7 @@ addLayer("f", {
                 12: {
                         title: "From",
                         description: "Remove the successful dev boost to Feature gain softcap",
-                        cost: new Decimal("1e13524"),
+                        cost: Decimal.pow(10, 13524),
                         unlocked(){ 
                                 return hasUpgrade("f", 11) || hasUnlockedPast("g")
                         }, // hasUpgrade("f", 12)
@@ -2745,7 +2745,7 @@ addLayer("f", {
                 13: {
                         title: "Free",
                         description: "Remove the successful dev boost to Medal gain softcap",
-                        cost: new Decimal("1e14099"),
+                        cost: Decimal.pow(10, 14099),
                         unlocked(){ 
                                 return hasUpgrade("f", 12) || hasUnlockedPast("g")
                         }, // hasUpgrade("f", 13)
@@ -2753,7 +2753,7 @@ addLayer("f", {
                 14: {
                         title: "First",
                         description: "Remove the successful dev boost to Game gain softcap",
-                        cost: new Decimal("1e14746"),
+                        cost: Decimal.pow(10, 14746),
                         unlocked(){ 
                                 return hasUpgrade("f", 13) || hasUnlockedPast("g")
                         }, // hasUpgrade("f", 14)
@@ -2761,7 +2761,7 @@ addLayer("f", {
                 15: {
                         title: "Find",
                         description: "Multiply base <b>G</b> gain by 1.15",
-                        cost: new Decimal("1e26221"),
+                        cost: Decimal.pow(10, 26221),
                         unlocked(){ 
                                 return hasUpgrade("f", 14) || hasUnlockedPast("g")
                         }, // hasUpgrade("f", 15)
@@ -2769,7 +2769,7 @@ addLayer("f", {
                 21: {
                         title: "Full",
                         description: "Each upgrade in this row unlocks a rebirth reward",
-                        cost: new Decimal("1e28545"),
+                        cost: Decimal.pow(10, 28545),
                         unlocked(){ 
                                 return hasUpgrade("f", 15) || hasUnlockedPast("g")
                         }, // hasUpgrade("f", 21)
@@ -2777,7 +2777,7 @@ addLayer("f", {
                 22: {
                         title: "Forum",
                         description: "Raise charge gain ^1.1",
-                        cost: new Decimal("1e45342"),
+                        cost: Decimal.pow(10, 45342),
                         unlocked(){ 
                                 return hasUpgrade("f", 21) || hasUnlockedPast("g")
                         }, // hasUpgrade("f", 22)
@@ -2785,7 +2785,7 @@ addLayer("f", {
                 23: {
                         title: "Family",
                         description: "Raise charge gain ^1.1 and buff Base G gain from rebirths",
-                        cost: new Decimal("1e53420"),
+                        cost: Decimal.pow(10, 53420),
                         unlocked(){ 
                                 return hasUpgrade("f", 22) || hasUnlockedPast("g")
                         }, // hasUpgrade("f", 23)
@@ -2793,7 +2793,7 @@ addLayer("f", {
                 24: {
                         title: "File",
                         description: "Per upgrade squared add one to <b>G</b> gain exponent",
-                        cost: new Decimal("1e61495"),
+                        cost: Decimal.pow(10, 61495),
                         unlocked(){ 
                                 return hasUpgrade("f", 23) || hasUnlockedPast("g")
                         }, // hasUpgrade("f", 24)
@@ -2801,7 +2801,7 @@ addLayer("f", {
                 25: {
                         title: "Found",
                         description: "Per upgrade squared add one to <b>F</b> gain exponent",
-                        cost: new Decimal("1e78988"),
+                        cost: Decimal.pow(10, 78988),
                         unlocked(){ 
                                 return hasUpgrade("f", 24) || hasUnlockedPast("g")
                         }, // hasUpgrade("f", 25)
@@ -2809,7 +2809,7 @@ addLayer("f", {
                 31: {
                         title: "Following",
                         description: "Per upgrade multiply base <b>G</b> gain by 1.01",
-                        cost: new Decimal("1e99330"),
+                        cost: Decimal.pow(10, 99330),
                         unlocked(){ 
                                 return hasUpgrade("f", 25) || hasUnlockedPast("g")
                         }, // hasUpgrade("f", 31)
@@ -2817,7 +2817,7 @@ addLayer("f", {
                 32: {
                         title: "Form",
                         description: "Remove the G gain exponent softcap",
-                        cost: new Decimal("1e109555"),
+                        cost: Decimal.pow(10, 109555),
                         unlocked(){ 
                                 return hasUpgrade("f", 31) || hasUnlockedPast("g")
                         }, // hasUpgrade("f", 32)
@@ -2825,7 +2825,7 @@ addLayer("f", {
                 33: {
                         title: "Food",
                         description: "Once per second attempt to Rebirth I",
-                        cost: new Decimal("1e130130"),
+                        cost: Decimal.pow(10, 130130),
                         unlocked(){ 
                                 return hasUpgrade("f", 32) || hasUnlockedPast("g")
                         }, // hasUpgrade("f", 33)
@@ -2833,7 +2833,7 @@ addLayer("f", {
                 34: {
                         title: "Features",
                         description: "You can also autobuy the first four games",
-                        cost: new Decimal("1e136640"),
+                        cost: Decimal.pow(10, 136640),
                         unlocked(){ 
                                 return hasUpgrade("f", 33) || hasUnlockedPast("g")
                         }, // hasUpgrade("f", 34)
@@ -2841,7 +2841,7 @@ addLayer("f", {
                 35: {
                         title: "Forums",
                         description: "Goals multiply base <b>G</b> gain",
-                        cost: new Decimal("1e149215"),
+                        cost: Decimal.pow(10, 149215),
                         unlocked(){ 
                                 return hasUpgrade("f", 34) || hasUnlockedPast("g")
                         }, // hasUpgrade("f", 35)
@@ -2849,7 +2849,7 @@ addLayer("f", {
                 41: {
                         title: "Friend",
                         description: "Raise charge gain ^1.1",
-                        cost: new Decimal("1e190803"),
+                        cost: Decimal.pow(10, 190803),
                         unlocked(){ 
                                 return hasUpgrade("f", 35) || hasUnlockedPast("g")
                         }, // hasUpgrade("f", 41)
@@ -2857,7 +2857,7 @@ addLayer("f", {
                 42: {
                         title: "Feedback",
                         description: "Each upgrade adds 1 to the Medal gain exponent",
-                        cost: new Decimal("1e206577"),
+                        cost: Decimal.pow(10, 206577),
                         unlocked(){ 
                                 return hasUpgrade("f", 41) || hasUnlockedPast("g")
                         }, // hasUpgrade("f", 42)
@@ -2865,7 +2865,7 @@ addLayer("f", {
                 43: {
                         title: "Financial",
                         description: "Always act as if you are in medal challenge 00",
-                        cost: new Decimal("1e216218"),
+                        cost: Decimal.pow(10, 216218),
                         unlocked(){ 
                                 return hasUpgrade("f", 42) || hasUnlockedPast("g")
                         }, // hasUpgrade("f", 43)
@@ -2873,7 +2873,7 @@ addLayer("f", {
                 44: {
                         title: "Field",
                         description: "Per upgrade squared multiply base <b>G</b> gain by 1.001",
-                        cost: new Decimal("1e226195"),
+                        cost: Decimal.pow(10, 226195),
                         unlocked(){ 
                                 return hasUpgrade("f", 43) || hasUnlockedPast("g")
                         }, // hasUpgrade("f", 44)
@@ -2881,7 +2881,7 @@ addLayer("f", {
                 45: {
                         title: "Few",
                         description: "log(Games) boosts base medal gain",
-                        cost: new Decimal("1e245725"),
+                        cost: Decimal.pow(10, 245725),
                         unlocked(){ 
                                 return hasUpgrade("f", 44) || hasUnlockedPast("g")
                         }, // hasUpgrade("f", 45)
@@ -2889,7 +2889,7 @@ addLayer("f", {
                 51: {
                         title: "Fax",
                         description: "<b>February</b> gives free <b>Four</b> levels",
-                        cost: new Decimal("1e1147300"),
+                        cost: Decimal.pow(10, 1147300),
                         unlocked(){ 
                                 return hasUpgrade("f", 45) || hasUnlockedPast("h")
                         }, // hasUpgrade("f", 51)
@@ -2897,7 +2897,7 @@ addLayer("f", {
                 52: {
                         title: "Format",
                         description: "<b>Future</b> gives free <b>Four</b> levels and unlock an <b>F</b> buyable",
-                        cost: new Decimal("1e2134765"),
+                        cost: Decimal.pow(10, 2134765),
                         unlocked(){ 
                                 return hasUpgrade("g", 34) || hasUnlockedPast("h")
                         }, // hasUpgrade("f", 52)
@@ -2905,7 +2905,7 @@ addLayer("f", {
                 53: {
                         title: "Fun",
                         description: "Raise the rebirth to Games effect ^50",
-                        cost: new Decimal("1e7082300"),
+                        cost: Decimal.pow(10, 7082300),
                         unlocked(){ 
                                 return hasUpgrade("h", 23) || hasUnlockedPast("h")
                         }, // hasUpgrade("f", 53)
@@ -2913,7 +2913,7 @@ addLayer("f", {
                 54: {
                         title: "Five",
                         description: "Per <b>F</b> challenge act as if you have .5% less rebirths",
-                        cost: new Decimal("1e41236e3"),
+                        cost: Decimal.pow(10, 41236e3),
                         unlocked(){ 
                                 return hasUpgrade("g", 45) || hasUnlockedPast("h")
                         }, // hasUpgrade("f", 54)
@@ -2921,7 +2921,7 @@ addLayer("f", {
                 55: {
                         title: "France",
                         description: "Raise rebirth base Game gain effect ^1.5 and act as if you have 20% less rebirths",
-                        cost: new Decimal("1e63758400"),
+                        cost: Decimal.pow(10, 63758400),
                         unlocked(){ 
                                 return hasUpgrade("f", 54) || hasUnlockedPast("h")
                         }, // hasUpgrade("f", 55)
@@ -2971,10 +2971,10 @@ addLayer("f", {
                                 return Math.floor(ret)
                         },
                         goal(){
-                                let init = new Decimal("1e114270e3")
+                                let init = Decimal.pow(10, 114270e3)
                                 let factor = getChallengeFactor(challengeCompletions("f", 11))
                                 if (factor.eq(1)) factor = new Decimal(0)
-                                return init.times(Decimal.pow("1e3975e3", factor))
+                                return init.times(Decimal.pow(Decimal.pow(10, 3975e3), factor))
                         },
                         unlocked(){
                                 return hasUpgrade("h", 15) || hasUnlockedPast("h")
@@ -3003,10 +3003,10 @@ addLayer("f", {
                                 return ret
                         },
                         goal(){
-                                let init = new Decimal("1e20876e3")
+                                let init = Decimal.pow(10, 20876e3)
                                 let factor = getChallengeFactor(challengeCompletions("f", 12))
                                 if (factor.eq(1)) factor = new Decimal(0)
-                                return init.times(Decimal.pow("1e4012e3", factor))
+                                return init.times(Decimal.pow(Decimal.pow(10, 4012e3), factor))
                         },
                         unlocked(){
                                 return hasUpgrade("g", 33) || hasUnlockedPast("h")
@@ -3033,10 +3033,10 @@ addLayer("f", {
                                 return ret
                         },
                         goal(){
-                                let init = new Decimal("1e18560e3")
+                                let init = Decimal.pow(10, 18560e3)
                                 let factor = getChallengeFactor(challengeCompletions("f", 21))
                                 if (factor.eq(1)) factor = new Decimal(0)
-                                return init.times(Decimal.pow("1e1602e3", factor))
+                                return init.times(Decimal.pow(Decimal.pow(10, 1602e3), factor))
                         },
                         unlocked(){
                                 return hasUpgrade("g", 35) || hasUnlockedPast("h")
@@ -3066,11 +3066,11 @@ addLayer("f", {
                         },
                         goal(){
                                 let c = challengeCompletions("f", 22)
-                                let init = new Decimal("1e160154e3")
+                                let init = Decimal.pow(10, 160154e3)
                                 let factor = getChallengeFactor(c)
                                 if (factor.eq(1)) factor = new Decimal(0)
                                 if (c == 2) factor = new Decimal(3.788)
-                                return init.times(Decimal.pow("1e3820e3", factor))
+                                return init.times(Decimal.pow(Decimal.pow(10, 3820e3), factor))
                         },
                         unlocked(){
                                 return hasUpgrade("i", 12) || hasUnlockedPast("i")
@@ -4655,10 +4655,10 @@ addLayer("goalsii", {
                         toggles: [["goalsii", "autobuyD"]]
                 }, // hasMilestone("goalsii", 5)
                 6: {
-                        requirementDescription: "<b>ήτα (Eta)</b><br>Requires: 15 Medals", 
+                        requirementDescription: "<b>ήτα (Eta)</b><br>Requires: 13 Medals", 
                         effectDescription: "Automatically buy <b>E</b> upgrades, keep <b>Every</b>, and double Medal effect",
                         done(){
-                                return player.goalsii.points.gte(15)
+                                return player.goalsii.points.gte(13)
                         },
                         unlocked(){
                                 return hasMilestone("goalsii", 5) || player.g.best.gt(0) || hasUnlockedPast("g")
@@ -4666,10 +4666,10 @@ addLayer("goalsii", {
                         toggles: [["goalsii", "autobuyE"]]
                 }, // hasMilestone("goalsii", 6)
                 7: {
-                        requirementDescription: "<b>θήτα (Theta)</b><br>Requires: 22 Medals", 
+                        requirementDescription: "<b>θήτα (Theta)</b><br>Requires: 17 Medals", 
                         effectDescription: "The first five <b>Goal</b> milestones require half as many goals to unlock",
                         done(){
-                                return player.goalsii.points.gte(22)
+                                return player.goalsii.points.gte(17)
                         },
                         unlocked(){
                                 return hasMilestone("goalsii", 6) || player.g.best.gt(0) || hasUnlockedPast("g")
@@ -4677,7 +4677,7 @@ addLayer("goalsii", {
                 }, // hasMilestone("goalsii", 7)
                 8: {
                         requirementDescription: "<b>ιώτα (Iota)</b><br>Requires: 1 11 Token", 
-                        effectDescription: "The above autobuyers can bulk and unlock a <b>C</b> buyable and buyable autobuyers bulk is multiplied by medals",
+                        effectDescription: "The above autobuyers can bulk, unlock a <b>C</b> buyable, and buyable autobuyers bulk is multiplied by medals",
                         done(){
                                 return player.goalsii.tokens.best["11"].gte(1)
                         },
@@ -4707,7 +4707,7 @@ addLayer("goalsii", {
                 }, // hasMilestone("goalsii", 10)
                 11: {
                         requirementDescription: "<b>μυ (Mu)</b><br>Requires: 20 03 Tokens", 
-                        effectDescription: "Per milestone squared add .01 to the <b>E</b> gain exponent and each milestone lets the buyable autobuyer buy 2x more",
+                        effectDescription: "Per milestone squared add .01 to the <b>E</b> gain exponent and each milestone allows buyable autobuyers to buy 2x more",
                         done(){
                                 return player.goalsii.tokens.best["03"].gte(20)
                         },
@@ -4717,7 +4717,7 @@ addLayer("goalsii", {
                 }, // hasMilestone("goalsii", 11)
                 12: {
                         requirementDescription: "<b>νυ (Nu)</b><br>Requires: 20 13 Tokens", 
-                        effectDescription: "Upon completing a challenge you get tokens for all challenges to the left and above",
+                        effectDescription: "Upon completing a challenge you get tokens for all challenges to the left and above of it",
                         done(){
                                 return player.goalsii.tokens.best["13"].gte(20)
                         },
@@ -4762,7 +4762,7 @@ addLayer("goalsii", {
                 }, // hasMilestone("goalsii", 15)
                 16: {
                         requirementDescription: "<b>ρώ (Rho)</b><br>Requires: 20 32 Tokens", 
-                        effectDescription: "Each milestone adds .1 to the <b>Omnipotent III</b> base and gives two free levels",
+                        effectDescription: "Each milestone gives two free <b>Omnipotent III</b> and adds .1 to the <b>Omnipotent III</b> base",
                         done(){
                                 return player.goalsii.tokens.best["32"].gte(20)
                         },
@@ -5008,7 +5008,7 @@ addLayer("goalsii", {
                 31: {
                         title: "Kempe",
                         description: "The 16 games that give progress bulk complete automatically so long as you have the games",
-                        cost: new Decimal("1e4098"),
+                        cost: Decimal.pow(10, 4098),
                         currencyDisplayName: "<br><b style='color: #6600FF'>00</b> Tokens",
                         currencyLocation(){
                                 return player.goalsii.tokens.copy
@@ -5023,7 +5023,7 @@ addLayer("goalsii", {
                 32: {
                         title: "Laplace",
                         description: "Each upgrade multiplies base <b>G</b> gain by 1.1 and double <b>Gold</b> speed",
-                        cost: new Decimal("1e4099"),
+                        cost: Decimal.pow(10, 4099),
                         currencyDisplayName: "<br><b style='color: #6600FF'>00</b> Tokens",
                         currencyLocation(){
                                 return player.goalsii.tokens.copy
@@ -5038,7 +5038,7 @@ addLayer("goalsii", {
                 33: {
                         title: "Mandelbrot",
                         description: "Each upgrade raises charge gain ^1.1 and double <b>Gold</b> speed",
-                        cost: new Decimal("1e4125"),
+                        cost: Decimal.pow(10, 1e4125),
                         currencyDisplayName: "<br><b style='color: #6600FF'>00</b> Tokens",
                         currencyLocation(){
                                 return player.goalsii.tokens.copy
@@ -5053,7 +5053,7 @@ addLayer("goalsii", {
                 34: {
                         title: "Noether",
                         description: "Unlock an <b>F</b> buyable, double <b>Gold</b> speed, and gain 10x medals",
-                        cost: new Decimal("1e4128"),
+                        cost: Decimal.pow(10, 1e4128),
                         currencyDisplayName: "<br><b style='color: #6600FF'>00</b> Tokens",
                         currencyLocation(){
                                 return player.goalsii.tokens.copy
@@ -5068,7 +5068,7 @@ addLayer("goalsii", {
                 35: {
                         title: "Oppenheim",
                         description: "<b>Four</b> gives free <b>Omnipotent V</b> levels",
-                        cost: new Decimal("1e4129"),
+                        cost: Decimal.pow(10, 1e4129),
                         currencyDisplayName: "<br><b style='color: #6600FF'>00</b> Tokens",
                         currencyLocation(){
                                 return player.goalsii.tokens.copy
@@ -5083,7 +5083,7 @@ addLayer("goalsii", {
                 41: {
                         title: "Poisson",
                         description: "Per upgrade add 1 to the <b>H</b> gain exponent",
-                        cost: new Decimal("5e186621"),
+                        cost: Decimal.pow(10, 186621),
                         currencyDisplayName: "<br><b style='color: #6600FF'>00</b> Tokens",
                         currencyLocation(){
                                 return player.goalsii.tokens.copy
@@ -5098,7 +5098,7 @@ addLayer("goalsii", {
                 42: {
                         title: "Russell",
                         description: "Per upgrade act as if you have 2% less rebirths",
-                        cost: new Decimal("1e186645"),
+                        cost: Decimal.pow(10, 186645),
                         currencyDisplayName: "<br><b style='color: #6600FF'>00</b> Tokens",
                         currencyLocation(){
                                 return player.goalsii.tokens.copy
@@ -5113,7 +5113,7 @@ addLayer("goalsii", {
                 43: {
                         title: "Schrier",
                         description: "Unlock Rebirth III",
-                        cost: new Decimal("1e14159e3"),
+                        cost: Decimal.pow(10, 14159e3),
                         currencyDisplayName: "<br><b style='color: #6600FF'>00</b> Tokens",
                         currencyLocation(){
                                 return player.goalsii.tokens.copy
@@ -5128,7 +5128,7 @@ addLayer("goalsii", {
                 44: {
                         title: "Turing",
                         description: "<b>Goal</b> gives free <b>Guidelines</b> levels and unlock an <b>F</b> buyable",
-                        cost: new Decimal("1e23266e3"),
+                        cost: Decimal.pow(10, 23266e3),
                         unlocked(){ 
                                 return hasUpgrade("goalsii", 43) || hasUnlockedPast("i")
                         }, // hasUpgrade("goalsii", 44)
@@ -5136,7 +5136,7 @@ addLayer("goalsii", {
                 45: {
                         title: "Ufimtsev",
                         description: "Automatically bulk buy Rebirth II and unlock an <b>F</b> buyable",
-                        cost: new Decimal("1e28689e3"),
+                        cost: Decimal.pow(10, 28689e3),
                         unlocked(){ 
                                 return hasUpgrade("goalsii", 44) || hasUnlockedPast("i")
                         }, // hasUpgrade("goalsii", 45)
@@ -7625,7 +7625,7 @@ addLayer("g", {
                 11: {
                         title: "Girl",
                         description: "Each upgrade adds 1 to effective rebirths",
-                        cost: new Decimal("1e26697"),
+                        cost: Decimal.pow(10, 26697),
                         unlocked(){
                                 return hasUpgrade("f", 45) || hasUnlockedPast("g")
                         },
@@ -7633,7 +7633,7 @@ addLayer("g", {
                 12: {
                         title: "Golf",
                         description: "Max charges ^1.3",
-                        cost: new Decimal("1e26697"),
+                        cost: Decimal.pow(10, 26697),
                         unlocked(){
                                 return hasUpgrade("g", 11) || hasUnlockedPast("g")
                         },
@@ -7641,7 +7641,7 @@ addLayer("g", {
                 13: {
                         title: "Google",
                         description: "Per upgrade double base <b>G</b> gain",
-                        cost: new Decimal("1e26697"),
+                        cost: Decimal.pow(10, 26697),
                         unlocked(){
                                 return hasUpgrade("g", 12) || hasUnlockedPast("g")
                         },
@@ -7649,7 +7649,7 @@ addLayer("g", {
                 14: {
                         title: "Growth",
                         description: "Keep all Medal upgrades, milestones, and tokens",
-                        cost: new Decimal("1e29511"),
+                        cost: Decimal.pow(10, 29511),
                         unlocked(){
                                 return hasUpgrade("g", 13) || hasUnlockedPast("g")
                         },
@@ -7657,7 +7657,7 @@ addLayer("g", {
                 15: {
                         title: "Gas",
                         description: "Unlock a row of <b>D</b> upgrades",
-                        cost: new Decimal("2e30086"),
+                        cost: Decimal.pow(10, 30086),
                         unlocked(){
                                 return hasUpgrade("g", 14) || hasUnlockedPast("g")
                         },
@@ -7665,7 +7665,7 @@ addLayer("g", {
                 21: {
                         title: "Glass",
                         description: "Unlock a row of <b>E</b> upgrades and <b>Tetris</b> no longer costs games",
-                        cost: new Decimal("1e32090"),
+                        cost: Decimal.pow(10, 32090),
                         unlocked(){
                                 return hasUpgrade("d", 55) || hasUnlockedPast("g")
                         },
@@ -7673,7 +7673,7 @@ addLayer("g", {
                 22: {
                         title: "Ground",
                         description: "Unlock another row of <b>E</b> upgrades",
-                        cost: new Decimal("1e45604"),
+                        cost: Decimal.pow(10, 45604),
                         unlocked(){
                                 return hasUpgrade("e", 35) || hasUnlockedPast("g")
                         },
@@ -7681,7 +7681,7 @@ addLayer("g", {
                 23: {
                         title: "Guides",
                         description: "Unlock another row of <b>E</b> upgrades",
-                        cost: new Decimal("1e49960"),
+                        cost: Decimal.pow(10, 49960),
                         unlocked(){
                                 return hasUpgrade("e", 45) || hasUnlockedPast("g")
                         },
@@ -7689,7 +7689,7 @@ addLayer("g", {
                 24: {
                         title: "Grand",
                         description: "Square the successfully deved boost to Max Charges",
-                        cost: new Decimal("1e64436"),
+                        cost: Decimal.pow(10, 64436),
                         unlocked(){
                                 return hasUpgrade("e", 55) || hasUnlockedPast("g")
                         },
@@ -7697,7 +7697,7 @@ addLayer("g", {
                 25: {
                         title: "Greater",
                         description: "Per <b>G</b> upgrade multiply base <b>G</b> gain by 5 and add 6 to the <b>G</b> gain exponent",
-                        cost: new Decimal("1e65250"),
+                        cost: Decimal.pow(10, 65250),
                         unlocked(){
                                 return hasUpgrade("g", 24) || hasUnlockedPast("g")
                         },
@@ -7705,7 +7705,7 @@ addLayer("g", {
                 31: {
                         title: "Guest",
                         description: "<b>Future</b> gives free <b>February</b> levels and each <b>Files</b> completion gives a free <b>Future</b> level",
-                        cost: new Decimal("1e123123"),
+                        cost: Decimal.pow(10, 123123),
                         unlocked(){
                                 return hasUpgrade("h", 22) || hasUnlockedPast("h")
                         },
@@ -7713,7 +7713,7 @@ addLayer("g", {
                 32: {
                         title: "Graphics",
                         description: "Unlock <b>Rebirth II</b>",
-                        cost: new Decimal("1e131820"),
+                        cost: Decimal.pow(10, 131820),
                         unlocked(){
                                 return hasUpgrade("g", 31) || hasUnlockedPast("h")
                         },
@@ -7721,7 +7721,7 @@ addLayer("g", {
                 33: {
                         title: "Grade",
                         description: "Unlock a second <b>F</b> challenge and each <b>F</b> challenge completion multiplies base <b>G</b> gain by 2",
-                        cost: new Decimal("1e142444"),
+                        cost: Decimal.pow(10, 142444),
                         unlocked(){
                                 return hasUpgrade("g", 32) || hasUnlockedPast("h")
                         },
@@ -7729,7 +7729,7 @@ addLayer("g", {
                 34: {
                         title: "German",
                         description: "Each <b>Film</b> gives an effective rebirth",
-                        cost: new Decimal("1e165350"),
+                        cost: Decimal.pow(10, 165350),
                         unlocked(){
                                 return hasUpgrade("g", 33) || hasUnlockedPast("h")
                         },
@@ -7737,7 +7737,7 @@ addLayer("g", {
                 35: {
                         title: "Goods",
                         description: "Upgrades multiply <b>Future</b> base and add .1 to <b>February</b> base and unlock a new <b>F</b> challenge",
-                        cost: new Decimal("1e172721"),
+                        cost: Decimal.pow(10, 172721),
                         unlocked(){
                                 return hasUpgrade("g", 34) || hasUnlockedPast("h")
                         },
@@ -7745,7 +7745,7 @@ addLayer("g", {
                 41: {
                         title: "Gets",
                         description: "<b>Friends</b> gives free <b>Future</b> levels and raise completed games to Features boost ^500",
-                        cost: new Decimal("1e333777"),
+                        cost: Decimal.pow(10, 333777),
                         unlocked(){
                                 return hasUpgrade("f", 53) || hasUnlockedPast("h")
                         },
@@ -7753,7 +7753,7 @@ addLayer("g", {
                 42: {
                         title: "Georgia",
                         description: "<b>Friends</b> gives free <b>February</b> levels and raise completed games to Games boost ^50",
-                        cost: new Decimal("1e360300"),
+                        cost: Decimal.pow(10, 360300),
                         unlocked(){
                                 return hasUpgrade("g", 41) || hasUnlockedPast("h")
                         },
@@ -7761,7 +7761,7 @@ addLayer("g", {
                 43: {
                         title: "Grant",
                         description: "Each rebirth I adds .01 to <b>Friends</b> base and gives a free <b>Friends</b> level",
-                        cost: new Decimal("1e418100"),
+                        cost: Decimal.pow(10, 418100),
                         unlocked(){
                                 return hasUpgrade("g", 42) || hasUnlockedPast("h")
                         },
@@ -7769,7 +7769,7 @@ addLayer("g", {
                 44: {
                         title: "Goes",
                         description: "Per <b>H</b> upgrade act as if you have 2% less rebirths",
-                        cost: new Decimal("1e474400"),
+                        cost: Decimal.pow(10, 474400),
                         unlocked(){
                                 return hasUpgrade("g", 43) || hasUnlockedPast("h")
                         },
@@ -7777,7 +7777,7 @@ addLayer("g", {
                 45: {
                         title: "Galleries",
                         description: "Start with (9 * Rebirth II) Rebirth I upon reset",
-                        cost: new Decimal("1e781400"),
+                        cost: Decimal.pow(10, 781400),
                         unlocked(){
                                 return hasUpgrade("g", 44) || hasUnlockedPast("h")
                         },
@@ -7785,7 +7785,7 @@ addLayer("g", {
                 51: {
                         title: "Guy",
                         description: "Automatically buy <b>G</b> buyables and <b>Rebirth II</b>",
-                        cost: new Decimal("1e3525e3"),
+                        cost: Decimal.pow(10, 3525e3),
                         unlocked(){
                                 return hasUpgrade("i", 11) || hasUnlockedPast("i")
                         },
@@ -7793,7 +7793,7 @@ addLayer("g", {
                 52: {
                         title: "Gear",
                         description: "Each <b>I</b> upgrade adds .001 to the <b>Guidelines</b> base",
-                        cost: new Decimal("1e5157e3"),
+                        cost: Decimal.pow(10, 5157e3),
                         unlocked(){
                                 return hasUpgrade("i", 12) || hasUnlockedPast("i")
                         },
@@ -7801,7 +7801,7 @@ addLayer("g", {
                 53: {
                         title: "Giving",
                         description: "<b>Guidelines</b> gives free <b>Gives</b> levels and <b>Front</b> gives free <b>Friends</b> levels",
-                        cost: new Decimal("1e7072e3"),
+                        cost: Decimal.pow(10, 7072e3),
                         unlocked(){
                                 return hasUpgrade("g", 52) || hasUnlockedPast("i")
                         },
@@ -7809,7 +7809,7 @@ addLayer("g", {
                 54: {
                         title: "Graduate",
                         description: "Act as if you have 10% less rebirths and unlock a row of medal upgrades",
-                        cost: new Decimal("1e11048e3"),
+                        cost: Decimal.pow(10, 11048e3),
                         unlocked(){
                                 return hasUpgrade("i", 13) || hasUnlockedPast("i")
                         },
@@ -7817,7 +7817,7 @@ addLayer("g", {
                 55: {
                         title: "Generally",
                         description: "You can complete 5 more of each <b>F</b> challenge",
-                        cost: new Decimal("1e222807e3"),
+                        cost: Decimal.pow(10, 222807e3),
                         unlocked(){
                                 return hasUpgrade("g", 54) || hasUnlockedPast("i")
                         },
@@ -8114,7 +8114,7 @@ addLayer("h", {
                 return getGeneralizedPrestigeGain("h")
         },
         getBaseDiv(){
-                let x = new Decimal("1e93358")
+                let x = Decimal.pow(10, 93358)
                 return x
         },
         getGainExp(){
@@ -8375,7 +8375,7 @@ addLayer("h", {
                 31: {
                         title: "Human",
                         description: "Each upgrade adds .1 to the <b>I</b> gain exponent",
-                        cost: new Decimal("1e687"),
+                        cost: Decimal.pow(10, 687),
                         unlocked(){
                                 return hasUpgrade("g", 55) || hasUnlockedPast("i")
                         }
@@ -8383,7 +8383,7 @@ addLayer("h", {
                 32: {
                         title: "Hot",
                         description: "Automatically <b>Rebirth III</b> and each <b>Rebirth III</b> doubles base <b>H</b> gain",
-                        cost: new Decimal("1e835"),
+                        cost: Decimal.pow(10, 835),
                         unlocked(){
                                 return (hasUpgrade("h", 31) && totalChallengeComps("f") >= 85) || hasUnlockedPast("i")
                         }
@@ -8391,7 +8391,7 @@ addLayer("h", {
                 33: {
                         title: "Hard",
                         description: "Per <b>F</b> challenge completion act as if you have .2% less rebirths and unlock an <b>F</b> buyable",
-                        cost: new Decimal("1e1850"),
+                        cost: Decimal.pow(10, 1850),
                         unlocked(){
                                 return hasUpgrade("i", 22) || hasUnlockedPast("i")
                         }
@@ -8399,7 +8399,7 @@ addLayer("h", {
                 34: {
                         title: "Hand",
                         description: "Per <b>I</b> upgrade increase <b>F</b> challenge completion limit by 1 and unlock an <b>F</b> buyable",
-                        cost: new Decimal("1e2075"),
+                        cost: Decimal.pow(10, 2075),
                         unlocked(){
                                 return hasUpgrade("h", 33) || hasUnlockedPast("i")
                         }
@@ -8407,7 +8407,7 @@ addLayer("h", {
                 35: {
                         title: "Head",
                         description: "<b>F</b> challenges completed multiplies base <b>H</b> gain and unlock a <b>G</b> buyable",
-                        cost: new Decimal("1e2200"),
+                        cost: Decimal.pow(10, 2200),
                         unlocked(){
                                 return hasUpgrade("h", 34) || hasUnlockedPast("i")
                         }
@@ -8415,7 +8415,7 @@ addLayer("h", {
                 41: {
                         title: "Having",
                         description: "<b>Growing</b> and <b>Guarantee</b> give free <b>Goal</b> and <b>Generation</b> levels",
-                        cost: new Decimal("1e2410"),
+                        cost: Decimal.pow(10, 2410),
                         unlocked(){
                                 return hasUpgrade("h", 35) || hasUnlockedPast("i")
                         }
@@ -8423,7 +8423,7 @@ addLayer("h", {
                 42: {
                         title: "Hosting",
                         description: "<b>Growing</b> gives free <b>Guarantee</b> levels and per upgrade add .001 to the <b>Growing</b> base",
-                        cost: new Decimal("1e2540"),
+                        cost: Decimal.pow(10, 2540),
                         unlocked(){
                                 return hasUpgrade("h", 41) || hasUnlockedPast("i")
                         }
@@ -8431,7 +8431,7 @@ addLayer("h", {
                 43: {
                         title: "Heart",
                         description: "Each <b>I</b> upgrade adds .001 to the <b>Generated</b> base and adds .2 to the <b>I</b> gain exponent",
-                        cost: new Decimal("1e5475"),
+                        cost: Decimal.pow(10, 5475),
                         unlocked(){
                                 return totalChallengeComps("f") >= 111 || hasUnlockedPast("i")
                         }
@@ -8439,7 +8439,7 @@ addLayer("h", {
                 44: {
                         title: "Half",
                         description: "Each upgrade adds .01 to the <b>Omnipotent VI</b> base and unlock a <b>G</b> buyable",
-                        cost: new Decimal("1e6666"),
+                        cost: Decimal.pow(10, 6666),
                         unlocked(){
                                 return hasUpgrade("i", 24) || hasUnlockedPast("i")
                         }
@@ -8447,7 +8447,7 @@ addLayer("h", {
                 45: {
                         title: "Hardware",
                         description: "<b>Rebirth II</b> and <b>Guys</b> give free <b>Generated</b> buyables",
-                        cost: new Decimal("1e6789"),
+                        cost: Decimal.pow(10, 6789),
                         unlocked(){
                                 return hasUpgrade("h", 44) || hasUnlockedPast("i")
                         }
@@ -8455,7 +8455,7 @@ addLayer("h", {
                 51: {
                         title: "Homepage",
                         description: "Raise <b>Hope</b> effect to the square root of the number of <b>I</b> upgrades and <b>Hope</b> give free <b>Held</b> buyables",
-                        cost: new Decimal("1e1204e3"),
+                        cost: Decimal.pow(10, 1204e3),
                         unlocked(){
                                 return player.j.puzzle.upgrades.includes(33) || player.j.puzzle.reset2.done || hasUnlockedPast("j")
                         }
@@ -8463,7 +8463,7 @@ addLayer("h", {
                 52: {
                         title: "Homes",
                         description: "Best knowledge multiplies <b>J</b> gain and automatically bulk <b>Rebirth III</b>",
-                        cost: new Decimal("1e417e6"),
+                        cost: Decimal.pow(10, 417e6),
                         unlocked(){
                                 return player.j.puzzle.repeatables[14].gte(10) || player.j.puzzle.reset2.done || hasUnlockedPast("j")
                         }
@@ -8471,7 +8471,7 @@ addLayer("h", {
                 53: {
                         title: "Hill",
                         description: "Unlock a <b>H</b> challenge and best experience multiplies base <b>I</b> gain",
-                        cost: new Decimal("1e530e6"),
+                        cost: Decimal.pow(10, 530e6),
                         unlocked(){
                                 return hasUpgrade("i", 41) || hasUnlockedPast("j")
                         }
@@ -8479,7 +8479,7 @@ addLayer("h", {
                 54: {
                         title: "Hall",
                         description: "<b>Happy</b> gives free <b>Huge</b> and <b>Hour</b> levels",
-                        cost: new Decimal("1e1258e6"),
+                        cost: Decimal.pow(10, 1258e6),
                         unlocked(){
                                 return hasUpgrade("i", 42) || hasUnlockedPast("j")
                         }
@@ -8487,7 +8487,7 @@ addLayer("h", {
                 55: {
                         title: "Hospital",
                         description: "<b>Happy</b> effects <b>Guys</b> at a logarithimic rate",
-                        cost: new Decimal("1e4414e6"),
+                        cost: Decimal.pow(10, 4414e6),
                         unlocked(){
                                 return hasUpgrade("h", 54) || hasUnlockedPast("j")
                         }
@@ -8546,13 +8546,13 @@ addLayer("h", {
                                 return Math.floor(ret)
                         },
                         goal(){
-                                let init = new Decimal("1e3800e18")
+                                let init = Decimal.pow(10, 3800e18)
                                 let c = challengeCompletions("h", 11)
                                 if (c > 200) c = c**2 / 200
                                 c = Math.max(0, c - tmp.h.challenges.totalSub)
                                 let factor = getChallengeFactor(c)
                                 if (factor.eq(1)) factor = new Decimal(0)
-                                return init.times(Decimal.pow("1e11e18", factor))
+                                return init.times(Decimal.pow(Decimal.pow(10, 11e18), factor))
                         },
                         unlocked(){
                                 return player.j.puzzle.upgrades.includes(52) || player.j.puzzle.reset2.done || hasUnlockedPast("j")
@@ -8582,13 +8582,13 @@ addLayer("h", {
                                 return Decimal.pow(base, Math.sqrt(c))
                         },
                         goal(){
-                                let init = new Decimal("1e9525e18")
+                                let init = Decimal.pow(10, 9525e18)
                                 let c = challengeCompletions("h", 12)
                                 if (c > 200) c = c**2 / 200
                                 c = Math.max(0, c - tmp.h.challenges.totalSub)
                                 let factor = getChallengeFactor(c)
                                 if (factor.eq(1)) factor = new Decimal(0)
-                                return init.times(Decimal.pow("1e1624e18", factor))
+                                return init.times(Decimal.pow(Decimal.pow(10, 1624e18), factor))
                         },
                         unlocked(){
                                 return hasUpgrade("h", 53) || hasUnlockedPast("j")
@@ -8620,13 +8620,13 @@ addLayer("h", {
                                 return Decimal.pow(base, c)
                         },
                         goal(){
-                                let init = new Decimal("1e2362e21")
+                                let init = Decimal.pow(10, 2362e21)
                                 let c = challengeCompletions("h", 21)
                                 if (c > 200) c = c**2 / 200
                                 c = Math.max(0, c - tmp.h.challenges.totalSub)
                                 let factor = getChallengeFactor(c)
                                 if (factor.eq(1)) factor = new Decimal(0)
-                                return init.times(Decimal.pow("1e587e21", factor))
+                                return init.times(Decimal.pow(Decimal.pow(10, 587e21), factor))
                         },
                         unlocked(){
                                 return hasMilestone("k", 4) || hasUnlockedPast("k")
@@ -8658,14 +8658,14 @@ addLayer("h", {
                                 return init.times(.02)
                         },
                         goal(){
-                                let init = new Decimal("1e1099e28")
+                                let init = Decimal.pow(10, 1099e28)
                                 let c = challengeCompletions("h", 22)
                                 if (c > 200) c = c**2 / 200
                                 c = Math.max(0, c - tmp.h.challenges.totalSub)
                                 if (c > 3 && !player.j.puzzle.upgrades.includes(64)) c = c * c / 3
                                 let factor = getChallengeFactor(c)
                                 if (factor.eq(1)) factor = new Decimal(0)
-                                return init.times(Decimal.pow("1e191e28", factor))
+                                return init.times(Decimal.pow(Decimal.pow(10, 191e28), factor))
                         },
                         unlocked(){
                                 return hasUpgrade("j", 41) || hasUnlockedPast("k")
@@ -8820,7 +8820,7 @@ addLayer("i", {
                 return getGeneralizedPrestigeGain("i")
         },
         getBaseDiv(){
-                let x = new Decimal("1e10")
+                let x = new Decimal(1e10)
                 return x
         },
         getGainExp(){
@@ -9110,7 +9110,7 @@ addLayer("i", {
                 31: {
                         title: "Industry",
                         description: "Multiply knowledge gain by the number of <b>I</b> upgrades",
-                        cost: new Decimal("1e8642"),
+                        cost: Decimal.pow(10, 8642),
                         unlocked(){
                                 return player.j.puzzle.upgrades.includes(41) || player.j.puzzle.reset2.done || hasUnlockedPast("j")
                         }
@@ -9118,7 +9118,7 @@ addLayer("i", {
                 32: {
                         title: "Issues",
                         description: "Upon placing all corners and edges while building the edge automatically start buidling the center",
-                        cost: new Decimal("1e40e3"),
+                        cost: Decimal.pow(10, 40e3),
                         unlocked(){
                                 return player.j.puzzle.repeatables[14].gte(3) || player.j.puzzle.reset2.done || hasUnlockedPast("j")
                         }
@@ -9126,7 +9126,7 @@ addLayer("i", {
                 33: {
                         title: "Important",
                         description: "Remove the ability to prestige for Jigsaws but gain 100% of Jigsaws upon prestige per second",
-                        cost: new Decimal("1e41e3"),
+                        cost: Decimal.pow(10, 41e3),
                         unlocked(){
                                 return player.j.puzzle.repeatables[14].gte(5) || player.j.puzzle.reset2.done || hasUnlockedPast("j")
                         }
@@ -9134,7 +9134,7 @@ addLayer("i", {
                 34: {
                         title: "Issue",
                         description: "If you do not have the requirements for the current puzzle mode then automatically start filtering",
-                        cost: new Decimal("1e43210"),
+                        cost: Decimal.pow(10, 43210),
                         unlocked(){
                                 return player.j.puzzle.repeatables[14].gte(6) || player.j.puzzle.reset2.done || hasUnlockedPast("j")
                         }
@@ -9142,7 +9142,7 @@ addLayer("i", {
                 35: {
                         title: "Interest",
                         description: "Levels of Japan multiply <b>Huge</b> base and base <b>J</b> gain",
-                        cost: new Decimal("1e54321"),
+                        cost: Decimal.pow(10, 54321),
                         unlocked(){
                                 return player.j.puzzle.repeatables[14].gte(8) || player.j.puzzle.reset2.done || hasUnlockedPast("j")
                         }
@@ -9150,7 +9150,7 @@ addLayer("i", {
                 41: {
                         title: "Images",
                         description: "Make the puzzle reset cooldown 20 seconds and log10([best knowledge]) adds to <b>Generated</b> base",
-                        cost: new Decimal("1e100000"),
+                        cost: Decimal.pow(10, 100000),
                         unlocked(){
                                 return player.j.puzzle.repeatables[14].gte(11) || player.j.puzzle.reset2.done || hasUnlockedPast("j")
                         }
@@ -9158,7 +9158,7 @@ addLayer("i", {
                 42: {
                         title: "Includes",
                         description: "Per upgrade add .01 to the <b>Hour</b> base",
-                        cost: new Decimal("1e118000"),
+                        cost: Decimal.pow(10, 118000),
                         unlocked(){
                                 return player.j.puzzle.repeatables[14].gte(12) || player.j.puzzle.reset2.done || hasUnlockedPast("j")
                         }
@@ -9166,7 +9166,7 @@ addLayer("i", {
                 43: {
                         title: "Island",
                         description: "Per upgrade multiply base <b>I</b> gain by the number of upgrades",
-                        cost: new Decimal("1e120000"),
+                        cost: Decimal.pow(10, 120000),
                         unlocked(){
                                 return hasUpgrade("h", 55) || player.j.puzzle.reset2.done || hasUnlockedPast("j")
                         }
@@ -9174,7 +9174,7 @@ addLayer("i", {
                 44: {
                         title: "Individual",
                         description: "Per <b>F</b> challenge completion multiply base <b>I</b> gain by the number of <b>F</b> challenge completions",
-                        cost: new Decimal("1e140000"),
+                        cost: Decimal.pow(10, 140000),
                         unlocked(){
                                 return hasUpgrade("i", 43) || player.j.puzzle.reset2.done || hasUnlockedPast("j")
                         }
@@ -9182,7 +9182,7 @@ addLayer("i", {
                 45: {
                         title: "Included",
                         description: "Square <b>Huge</b> base and unlock <b>J</b> upgrades",
-                        cost: new Decimal("1e477000"),
+                        cost: Decimal.pow(10, 477000),
                         unlocked(){
                                 return hasUpgrade("i", 44) || player.j.puzzle.reset2.done || hasUnlockedPast("j")
                         }
@@ -9190,7 +9190,7 @@ addLayer("i", {
                 51: {
                         title: "India",
                         description: "You start at 90% of your best puzzles finished this <b>K</b> and get resources as if you did them",
-                        cost: new Decimal("1e1234567"),
+                        cost: Decimal.pow(10, 1234567),
                         unlocked(){
                                 return hasMilestone("k", 4) || hasUnlockedPast("k")
                         }
@@ -9198,7 +9198,7 @@ addLayer("i", {
                 52: {
                         title: "Income",
                         description: "Keep success chance levels and unlock a <b>K</b> milestone",
-                        cost: new Decimal("1e1444444"),
+                        cost: Decimal.pow(10, 1444444),
                         unlocked(){
                                 return hasUpgrade("i", 51) || hasUnlockedPast("k")
                         }
@@ -9206,7 +9206,7 @@ addLayer("i", {
                 53: {
                         title: "Institute",
                         description: "Once per second get Attempt Speed levels as if you bought max but it doesn't cost Knowledge",
-                        cost: new Decimal("1e5500e3"),
+                        cost: Decimal.pow(10, 5500e3),
                         unlocked(){
                                 return hasUpgrade("i", 52) || hasUnlockedPast("k")
                         }
@@ -9214,7 +9214,7 @@ addLayer("i", {
                 54: {
                         title: "Inside",
                         description: "Once per second get attempt to Reset<sup>2</sup> and per <b>J</b> upgrade multiply base <b>J</b> gain by bulk amount",
-                        cost: new Decimal("1e6000e3"),
+                        cost: Decimal.pow(10, 6000e3),
                         unlocked(){
                                 return hasUpgrade("i", 53) || hasUnlockedPast("k")
                         }
@@ -9222,7 +9222,7 @@ addLayer("i", {
                 55: {
                         title: "Islands",
                         description: "Each Reset<sup>2</sup> doubles base <b>K</b> gain and multiplies Knowledge gain by 10",
-                        cost: new Decimal("1e7777e3"),
+                        cost: Decimal.pow(10, 7777e3),
                         unlocked(){
                                 return hasUpgrade("i", 54) || hasUnlockedPast("k")
                         }
@@ -9425,7 +9425,7 @@ addLayer("j", {
                 return getGeneralizedPrestigeGain("j")
         },
         getBaseDiv(){
-                let x = new Decimal("3e30")
+                let x = new Decimal(3e30)
                 return x
         },
         getGainExp(){
@@ -9813,7 +9813,7 @@ addLayer("j", {
                 31: {
                         title: "Jane",
                         description: "Raise <b>Jose</b> effect to the number of <b>Reset<sup>2</sup></b>'s and halve reset cooldown",
-                        cost: new Decimal("1e1750"),
+                        cost: Decimal.pow(10, 1750),
                         unlocked(){
                                 return hasMilestone("k", 7) || hasUnlockedPast("k")
                         }
@@ -9821,7 +9821,7 @@ addLayer("j", {
                 32: {
                         title: "Journey",
                         description: "Add one to the <b>K</b> gain exponent and if you can buy a level of Bulk Amount you do so for free once per second",
-                        cost: new Decimal("1e5432"),
+                        cost: Decimal.pow(10, 5432),
                         unlocked(){
                                 return hasUpgrade("j", 31) || hasUnlockedPast("k")
                         }
@@ -9829,7 +9829,7 @@ addLayer("j", {
                 33: {
                         title: "Jewellery",
                         description: "Each upgrade adds .1 to the <b>Housing</b> base and you can complete one more <b>H</b> challenge",
-                        cost: new Decimal("1e9876"),
+                        cost: Decimal.pow(10, 9876),
                         unlocked(){
                                 return hasUpgrade("j", 32) || hasUnlockedPast("k")
                         }
@@ -9837,7 +9837,7 @@ addLayer("j", {
                 34: {
                         title: "Jay",
                         description: "Buff <b>India</b> to all but 5 and add .1 to the <b>Japan</b> base",
-                        cost: new Decimal("1e24680"),
+                        cost: Decimal.pow(10, 24680),
                         unlocked(){
                                 return hasUpgrade("j", 33) || hasUnlockedPast("k")
                         }
@@ -9845,7 +9845,7 @@ addLayer("j", {
                 35: {
                         title: "Jacket",
                         description: "Each <b>K</b> milestone adds .1 to the <b>K</b> gain exponent and .01 to the <b>Japan</b> base",
-                        cost: new Decimal("1e27272"),
+                        cost: Decimal.pow(10, 27272),
                         unlocked(){
                                 return hasUpgrade("j", 34) || hasUnlockedPast("k")
                         }
@@ -9853,7 +9853,7 @@ addLayer("j", {
                 41: {
                         title: "Jet",
                         description: "Per upgrade in this row unlock an <b>I</b> buyable and unlock the final <b>H</b> challenge",
-                        cost: new Decimal("1e357e3"),
+                        cost: Decimal.pow(10, 357e3),
                         unlocked(){
                                 return hasUpgrade("k", 22) || hasUnlockedPast("k")
                         }
@@ -9861,7 +9861,7 @@ addLayer("j", {
                 42: {
                         title: "Joy",
                         description: "Automatically buy <b>I</b> buyables, each upgrade doubles base <b>K</b> gain, and you buy 10x Bulk Amount levels",
-                        cost: new Decimal("1e458e3"),
+                        cost: Decimal.pow(10, 458e3),
                         unlocked(){
                                 return hasUpgrade("j", 41) || hasUnlockedPast("k")
                         }
@@ -9869,7 +9869,7 @@ addLayer("j", {
                 43: {
                         title: "Jon",
                         description: "Remove <b>Hit</b> effect softcap and <b>Housing</b> effects <b>K</b> gain",
-                        cost: new Decimal("1e701e3"),
+                        cost: Decimal.pow(10, 701e3),
                         unlocked(){
                                 return hasUpgrade("j", 42) || hasUnlockedPast("k")
                         }
@@ -9877,7 +9877,7 @@ addLayer("j", {
                 44: {
                         title: "Judgment",
                         description: "Autobuy <b>Japan</b>, <b>Jack</b>, and <b>Junior</b> once per second and add one to <b>K</b> gain exponent",
-                        cost: new Decimal("1e897e3"),
+                        cost: Decimal.pow(10, 897e3),
                         unlocked(){
                                 return hasUpgrade("j", 43) || hasUnlockedPast("k")
                         }
@@ -9885,7 +9885,7 @@ addLayer("j", {
                 45: {
                         title: "Jokes",
                         description: "<b>Industrial</b> gives free <b>Inn</b> and <b>Ideas</b> levels and <b>Inn</b> gives free <b>Ideas</b> and <b>Investment</b> levels",
-                        cost: new Decimal("1e912e3"),
+                        cost: Decimal.pow(10, 912e3),
                         unlocked(){
                                 return hasUpgrade("j", 44) || hasUnlockedPast("k")
                         }
@@ -9893,7 +9893,7 @@ addLayer("j", {
                 51: {
                         title: "Jimmy",
                         description: "Per <b>H</b> challenge past 150 add .01 to the <b>L</b> gain exponent and <b>Jack</b><sup>.01</sup> effects Knowledge",
-                        cost: new Decimal("1e4438e6"),
+                        cost: Decimal.pow(10, 4438e6),
                         unlocked(){
                                 return hasUpgrade("k", 32) || hasUnlockedPast("l")
                         }
@@ -9901,7 +9901,7 @@ addLayer("j", {
                 52: {
                         title: "Jurisdiction",
                         description: "Per <b>L</b> upgrade multiply base <b>L</b> gain by 1.25 and the <b>H</b> buyable limit is 2.5x",
-                        cost: new Decimal("1e8851e6"),
+                        cost: Decimal.pow(10, 8851e6),
                         unlocked(){
                                 return hasUpgrade("j", 51) || hasUnlockedPast("l")
                         }
@@ -9909,7 +9909,7 @@ addLayer("j", {
                 53: {
                         title: "Jam",
                         description: "<b>Iron Mines</b> produce <b>Osmium Mines</b> at a logarithmic rate and you can reset 5x as often",
-                        cost: new Decimal("1e9946e6"),
+                        cost: Decimal.pow(10, 9946e6),
                         unlocked(){
                                 return hasUpgrade("j", 52) || hasUnlockedPast("l")
                         }
@@ -9917,7 +9917,7 @@ addLayer("j", {
                 54: {
                         title: "Judicial",
                         description: "Per upgrade add .04 to the <b>Hour</b> base and <b>L</b> gain exponent",
-                        cost: new Decimal("1e10288e6"),
+                        cost: Decimal.pow(10, 10288e6),
                         unlocked(){
                                 return hasUpgrade("j", 53) || hasUnlockedPast("l")
                         }
@@ -9925,7 +9925,7 @@ addLayer("j", {
                 55: {
                         title: "Jeans",
                         description: "Raise <b>Copper Lock</b> effect to 2*sqrt(<b>L</b> upgrades)",
-                        cost: new Decimal("1e10875e6"),
+                        cost: Decimal.pow(10, 10875e6),
                         unlocked(){
                                 return hasUpgrade("j", 54) || hasUnlockedPast("l")
                         }
@@ -11381,7 +11381,7 @@ addLayer("j", {
                                 return player.j.puzzle.exp.gte(tmp.j.clickables[61].cost) && !player.j.puzzle.upgrades.includes(61)
                         },
                         cost(){
-                                return new Decimal("2e385")
+                                return Decimal.pow(10, 385)
                         },
                         style(){
                                 return {
@@ -11415,7 +11415,7 @@ addLayer("j", {
                                 return player.j.puzzle.exp.gte(tmp.j.clickables[62].cost) && !player.j.puzzle.upgrades.includes(62)
                         },
                         cost(){
-                                return new Decimal("5e420")
+                                return Decimal.pow(10, 420).times(2)
                         },
                         style(){
                                 return {
@@ -11449,7 +11449,7 @@ addLayer("j", {
                                 return player.j.puzzle.exp.gte(tmp.j.clickables[63].cost) && !player.j.puzzle.upgrades.includes(63)
                         },
                         cost(){
-                                return new Decimal("1e456")
+                                return Decimal.pow(10, 456)
                         },
                         style(){
                                 return {
@@ -11483,7 +11483,7 @@ addLayer("j", {
                                 return player.j.puzzle.exp.gte(tmp.j.clickables[64].cost) && !player.j.puzzle.upgrades.includes(64)
                         },
                         cost(){
-                                return new Decimal("1e686")
+                                return Decimal.pow(10, 686)
                         },
                         style(){
                                 return {
@@ -11738,7 +11738,7 @@ addLayer("j", {
                                 return player.j.puzzle.exp.gte(tmp.j.clickables[75].cost) && !player.j.puzzle.upgrades.includes(75)
                         },
                         cost(){
-                                return new Decimal("1e923333")
+                                return Decimal.pow(10, 923333)
                         },
                         style(){
                                 return {
@@ -12177,7 +12177,7 @@ addLayer("k", {
                 return getGeneralizedPrestigeGain("k")
         },
         getBaseDiv(){
-                let x = new Decimal("1e55")
+                let x = new Decimal(1e55)
                 return x
         },
         getGainExp(){
@@ -12544,7 +12544,7 @@ addLayer("k", {
                 23: {
                         title: "Kill",
                         description: "Each <b>Osmium Lock</b> gives 100x <b>K</b> and Knowledge",
-                        cost: new Decimal("1e1216"),
+                        cost: Decimal.pow(10, 1216),
                         unlocked(){
                                 return player.k.lock.repeatables[45].gt(0) || hasUnlockedPast("k")
                         }
@@ -12552,7 +12552,7 @@ addLayer("k", {
                 24: {
                         title: "Knows",
                         description: "Each upgrade multiplies mine gain by 10 and you can buy 10x Bulk Amount",
-                        cost: new Decimal("1e1382"),
+                        cost: Decimal.pow(10, 1382),
                         unlocked(){
                                 return hasUpgrade("k", 23) || hasUnlockedPast("k")
                         }
@@ -12560,7 +12560,7 @@ addLayer("k", {
                 25: {
                         title: "Kevin",
                         description: "Each <b>Osmium Mine</b> adds 1 to the <b>K</b> gain exponent and multiply Osmium gain by the number of reset<sup>2</sup>",
-                        cost: new Decimal("1e1674"),
+                        cost: Decimal.pow(10, 1674),
                         unlocked(){
                                 return hasUpgrade("k", 24) || hasUnlockedPast("k")
                         }
@@ -12568,7 +12568,7 @@ addLayer("k", {
                 31: {
                         title: "Keys",
                         description: "<b>Hit</b> multiplicatively effects <b>Japan</b> base and unlock another Lock",
-                        cost: new Decimal("1e13700"),
+                        cost: Decimal.pow(10, 13700),
                         unlocked(){
                                 return hasUpgrade("j", 14) || hasUnlockedPast("l")
                         }
@@ -12576,7 +12576,7 @@ addLayer("k", {
                 32: {
                         title: "Killed",
                         description: "Each <b>Osmium Lock</b> allows you to buy twice as many buyables from <b>H</b> and before",
-                        cost: new Decimal("1e17900"),
+                        cost: Decimal.pow(10, 17900),
                         unlocked(){
                                 return hasUpgrade("k", 31) || hasUnlockedPast("l")
                         }
@@ -12584,7 +12584,7 @@ addLayer("k", {
                 33: {
                         title: "Kid",
                         description: "The square root of your exp multiplies knowledge gain and unlock another lock",
-                        cost: new Decimal("1e29300"),
+                        cost: Decimal.pow(10, 29300),
                         unlocked(){
                                 return hasUpgrade("j", 55) || hasUnlockedPast("l")
                         }
@@ -12592,7 +12592,7 @@ addLayer("k", {
                 34: {
                         title: "Kernel",
                         description: "<b>Hit</b> multiplcatively effects <b>Japan</b> base and <b>Gold Lock</b> base",
-                        cost: new Decimal("1e43000"),
+                        cost: Decimal.pow(10, 43000),
                         unlocked(){
                                 return hasUpgrade("k", 33) || hasUnlockedPast("l")
                         }
@@ -12600,7 +12600,7 @@ addLayer("k", {
                 35: {
                         title: "Keyboard",
                         description: "Raise <b>Iron Lock</b> base to the number of <b>L</b> upgrades and triple <b>Titanium Lock</b> effect",
-                        cost: new Decimal("1e53500"),
+                        cost: Decimal.pow(10, 53500),
                         unlocked(){
                                 return hasUpgrade("k", 34) || hasUnlockedPast("l")
                         }
@@ -12608,7 +12608,7 @@ addLayer("k", {
                 41: {
                         title: "Kim",
                         description: "Per <b>H</b> challenge completion past 170 get 4x <b>L</b> gain and per completion past 178 get an effective lock",
-                        cost: new Decimal("1e238500"),
+                        cost: Decimal.pow(10, 238500),
                         unlocked(){
                                 return hasUpgrade("l", 24) || hasUnlockedPast("l")
                         }
@@ -12616,7 +12616,7 @@ addLayer("k", {
                 42: {
                         title: "Ken",
                         description: "<bdi style='font-size:80%'><b>Juice</b> gives free <b>Jamaica</b> and <b>Jacksonville</b> levels and each <b>H</b> challenge completion gives a free <b>Omnipotent IX</b> level</bdi>",
-                        cost: new Decimal("1e248500"),
+                        cost: Decimal.pow(10, 248500),
                         unlocked(){
                                 return hasUpgrade("k", 41) || hasUnlockedPast("l")
                         }
@@ -12624,7 +12624,7 @@ addLayer("k", {
                 43: {
                         title: "Korean",
                         description: "Autobuy the last row of locks, each <b>Master Lock</b> raises point gain ^1.15, and unlock <b>Keys</b>",
-                        cost: new Decimal("1e280000"),
+                        cost: Decimal.pow(10, 280000),
                         unlocked(){
                                 return hasUpgrade("k", 42) || hasUnlockedPast("l")
                         }
@@ -12632,7 +12632,7 @@ addLayer("k", {
                 44: {
                         title: "Kings",
                         description: "You can bulk mines and locks 10x and </b>Master Lock</b> effects <b>K</b> gain exponent",
-                        cost: new Decimal("1e1360e3"),
+                        cost: Decimal.pow(10, 1360e3),
                         unlocked(){
                                 return player.k.lock.repeatables[71].gt(2) || hasUnlockedPast("l")
                         }
@@ -12640,7 +12640,7 @@ addLayer("k", {
                 45: {
                         title: "Kent",
                         description: "<bdi style='font-size:80%'>Double <b>Osmium Lock</b> and <b>Gold Key</b> effects, -.05 effective <b>H</b> challenge completions per <b>L</b> upgrade, and unlock a <b>J</b> buyable</bdi>",
-                        cost: new Decimal("1e1822e3"),
+                        cost: Decimal.pow(10, 1822e3),
                         unlocked(){
                                 return player.k.lock.repeatables[73].gt(1) || hasUnlockedPast("l")
                         }
@@ -12648,7 +12648,7 @@ addLayer("k", {
                 51: {
                         title: "Knowing",
                         description: "Each Key raises point gain to 1 + [Diamond Keys] / 100 and triple lock autobuyer speed",
-                        cost: new Decimal("1e337e6"),
+                        cost: Decimal.pow(10, 337e6),
                         unlocked(){
                                 return hasUpgrade("m", 15) || hasUnlockedPast("m")
                         }
@@ -12656,7 +12656,7 @@ addLayer("k", {
                 52: {
                         title: "Keith",
                         description: "<b>K</b> challenges after 5 are halved and unlock another <b>K</b> challenge and you buy 1000x Puzzle and Key content",
-                        cost: new Decimal("1e495.5e6"),
+                        cost: Decimal.pow(10, 495.5e6),
                         unlocked(){
                                 return hasUpgrade("k", 51) || hasUnlockedPast("m")
                         }
@@ -12664,7 +12664,7 @@ addLayer("k", {
                 53: {
                         title: "Kate",
                         description: "<b>Tungsten Key</b> base effects <b>M</b> gain and you can complete 1 more <b>H</b> challenge per 3 <b>K</b> challenges",
-                        cost: new Decimal("1e876e6"),
+                        cost: Decimal.pow(10, 876e6),
                         unlocked(){
                                 return hasUpgrade("k", 52) || hasUnlockedPast("m")
                         }
@@ -12672,7 +12672,7 @@ addLayer("k", {
                 54: {
                         title: "Karen",
                         description: "Raise <b>Aluminum Key</b> base effect to the number of <b>K</b> challenge completions and add 1 to the <b>M</b> gain exp",
-                        cost: new Decimal("1e1053e6"),
+                        cost: Decimal.pow(10, 1053e6),
                         unlocked(){
                                 return hasUpgrade("k", 53) || hasUnlockedPast("m")
                         }
@@ -12680,7 +12680,7 @@ addLayer("k", {
                 55: {
                         title: "Kick",
                         description: "You can complete 75 more <b>H</b> challenges and unlock the final <b>K</b> challenge",
-                        cost: new Decimal("1e120e9"),
+                        cost: Decimal.pow(10, 120e9),
                         unlocked(){
                                 return hasUpgrade("k", 54) || hasUnlockedPast("m")
                         }
@@ -12819,7 +12819,7 @@ addLayer("k", {
                                 return data.mines[11].plus(data.repeatables[11])
                         },
                         bases(){
-                                return [new Decimal("1e171"), new Decimal(10)]
+                                return [Decimal.pow(10, 171), new Decimal(10)]
                         },
                         cost(){
                                 let bases = tmp.k.clickables[11].bases
@@ -12932,7 +12932,7 @@ addLayer("k", {
                                 return data.mines[12].plus(data.repeatables[12])
                         },
                         bases(){
-                                return [new Decimal("1e172"), new Decimal(100)]
+                                return [Decimal.pow(10, 172), new Decimal(100)]
                         },
                         cost(){
                                 let bases = tmp.k.clickables[12].bases
@@ -13037,7 +13037,7 @@ addLayer("k", {
                                 return data.mines[13].plus(data.repeatables[13])
                         },
                         bases(){
-                                return [new Decimal("1e176"), new Decimal(200)]
+                                return [Decimal.pow(10, 176), new Decimal(200)]
                         },
                         cost(){
                                 let bases = tmp.k.clickables[13].bases
@@ -13144,7 +13144,7 @@ addLayer("k", {
                                 return data.mines[14].plus(data.repeatables[14])
                         },
                         bases(){
-                                return [new Decimal("1e202"), new Decimal("1e3")]
+                                return [Decimal.pow(10, 202), new Decimal(1e3)]
                         },
                         cost(){
                                 let bases = tmp.k.clickables[14].bases
@@ -13249,7 +13249,7 @@ addLayer("k", {
                                 return data.mines[15].plus(data.repeatables[15])
                         },
                         bases(){
-                                return [new Decimal("1e239"), new Decimal("1e5")]
+                                return [Decimal.pow(10, 239), new Decimal(1e5)]
                         },
                         cost(){
                                 let bases = tmp.k.clickables[15].bases
@@ -13353,7 +13353,7 @@ addLayer("k", {
                                 return data.mines[21].plus(data.repeatables[21])
                         },
                         bases(){
-                                return [new Decimal("2e302"), new Decimal("1e8")]
+                                return [Decimal.pow(10, 302).times(2), new Decimal(1e8)]
                         },
                         cost(){
                                 let bases = tmp.k.clickables[21].bases
@@ -13458,7 +13458,7 @@ addLayer("k", {
                                 return data.mines[22].plus(data.repeatables[22])
                         },
                         bases(){
-                                return [new Decimal("1e449"), new Decimal("1e13")]
+                                return [Decimal.pow(10, 449), new Decimal(1e13)]
                         },
                         cost(){
                                 let bases = tmp.k.clickables[22].bases
@@ -13563,7 +13563,7 @@ addLayer("k", {
                                 return data.mines[23].plus(data.repeatables[23])
                         },
                         bases(){
-                                return [new Decimal("1e584"), new Decimal("1e21")]
+                                return [Decimal.pow(10, 584), new Decimal(1e21)]
                         },
                         cost(){
                                 let bases = tmp.k.clickables[23].bases
@@ -13669,7 +13669,7 @@ addLayer("k", {
                                 return data.mines[24].plus(data.repeatables[24])
                         },
                         bases(){
-                                return [new Decimal("1e681"), new Decimal("1e34")]
+                                return [Decimal.pow(10, 681), Decimal.pow(10, 34)]
                         },
                         cost(){
                                 let bases = tmp.k.clickables[24].bases
@@ -13780,7 +13780,7 @@ addLayer("k", {
                                 return data.mines[25].plus(data.repeatables[25])
                         },
                         bases(){
-                                return [new Decimal("1e935"), new Decimal("1e55")]
+                                return [Decimal.pow(10, 935), Decimal.pow(10, 55)]
                         },
                         cost(){
                                 let bases = tmp.k.clickables[25].bases
@@ -13857,7 +13857,7 @@ addLayer("k", {
                                 return player.k.lock.repeatables[12].gt(0) || hasUnlockedPast("k")
                         },
                         bases(){
-                                return [new Decimal("500"), new Decimal(2)]
+                                return [new Decimal(500), new Decimal(2)]
                         },
                         cost(){
                                 let bases = tmp.k.clickables[31].bases
@@ -13934,7 +13934,7 @@ addLayer("k", {
                                 return player.k.lock.repeatables[31].gt(1) || hasUnlockedPast("k")
                         },
                         bases(){
-                                return [new Decimal("500"), new Decimal(2)]
+                                return [new Decimal(500), new Decimal(2)]
                         },
                         cost(){
                                 let bases = tmp.k.clickables[32].bases
@@ -14010,7 +14010,7 @@ addLayer("k", {
                                 return player.k.lock.repeatables[32].gt(1) || hasUnlockedPast("k")
                         },
                         bases(){
-                                return [new Decimal("500"), new Decimal(2)]
+                                return [new Decimal(500), new Decimal(2)]
                         },
                         cost(){
                                 let bases = tmp.k.clickables[33].bases
@@ -14087,7 +14087,7 @@ addLayer("k", {
                                 return player.k.lock.repeatables[33].gt(1) || hasUnlockedPast("k")
                         },
                         bases(){
-                                return [new Decimal("5e4"), new Decimal(2)]
+                                return [new Decimal(5e4), new Decimal(2)]
                         },
                         cost(){
                                 let bases = tmp.k.clickables[34].bases
@@ -14164,7 +14164,7 @@ addLayer("k", {
                                 return player.k.lock.repeatables[34].gt(1) || hasUnlockedPast("k")
                         },
                         bases(){
-                                return [new Decimal("3e9"), new Decimal(3)]
+                                return [new Decimal(3e9), new Decimal(3)]
                         },
                         cost(){
                                 let bases = tmp.k.clickables[35].bases
@@ -14242,7 +14242,7 @@ addLayer("k", {
                                 return player.k.lock.repeatables[35].gt(1) || hasUnlockedPast("k")
                         },
                         bases(){
-                                return [new Decimal("1e17"), new Decimal(4)]
+                                return [new Decimal(1e17), new Decimal(4)]
                         },
                         cost(){
                                 let bases = tmp.k.clickables[41].bases
@@ -14318,7 +14318,7 @@ addLayer("k", {
                                 return player.k.lock.repeatables[41].gt(1) || hasUnlockedPast("k")
                         },
                         bases(){
-                                return [new Decimal("1e13"), new Decimal(5)]
+                                return [new Decimal(1e13), new Decimal(5)]
                         },
                         cost(){
                                 let bases = tmp.k.clickables[42].bases
@@ -14395,7 +14395,7 @@ addLayer("k", {
                                 return player.k.lock.repeatables[42].gt(1) || hasUnlockedPast("k")
                         },
                         bases(){
-                                return [new Decimal("1e19"), new Decimal(6)]
+                                return [new Decimal(1e19), new Decimal(6)]
                         },
                         cost(){
                                 let bases = tmp.k.clickables[43].bases
@@ -14470,7 +14470,7 @@ addLayer("k", {
                                 return player.k.lock.repeatables[43].gt(1) || hasUnlockedPast("k")
                         },
                         bases(){
-                                return [new Decimal("1e22"), new Decimal(8)]
+                                return [new Decimal(1e22), new Decimal(8)]
                         },
                         cost(){
                                 let bases = tmp.k.clickables[44].bases
@@ -14546,7 +14546,7 @@ addLayer("k", {
                                 return player.k.lock.repeatables[44].gt(1) || hasUnlockedPast("k")
                         },
                         bases(){
-                                return [new Decimal("1e25"), new Decimal(11)]
+                                return [new Decimal(1e25), new Decimal(11)]
                         },
                         cost(){
                                 let bases = tmp.k.clickables[45].bases
@@ -14622,7 +14622,7 @@ addLayer("k", {
                                 return hasUpgrade("l", 11) || hasUnlockedPast("l")
                         },
                         bases(){
-                                return [new Decimal("2e9"), new Decimal(2)]
+                                return [new Decimal(2e9), new Decimal(2)]
                         },
                         cost(){
                                 let bases = tmp.k.clickables[51].bases
@@ -14697,7 +14697,7 @@ addLayer("k", {
                                 return hasUpgrade("l", 13) || hasUnlockedPast("l")
                         },
                         bases(){
-                                return [new Decimal("1e11"), new Decimal(2)]
+                                return [new Decimal(1e11), new Decimal(2)]
                         },
                         cost(){
                                 let bases = tmp.k.clickables[52].bases
@@ -14772,7 +14772,7 @@ addLayer("k", {
                                 return hasUpgrade("k", 31) || hasUnlockedPast("l")
                         },
                         bases(){
-                                return [new Decimal("1e27"), new Decimal(5e4)]
+                                return [new Decimal(1e27), new Decimal(5e4)]
                         },
                         cost(){
                                 let bases = tmp.k.clickables[53].bases
@@ -14847,7 +14847,7 @@ addLayer("k", {
                                 return hasUpgrade("k", 33) || hasUnlockedPast("l")
                         },
                         bases(){
-                                return [new Decimal("1e94"), new Decimal(2)]
+                                return [new Decimal(1e94), new Decimal(2)]
                         },
                         cost(){
                                 let bases = tmp.k.clickables[54].bases
@@ -14922,7 +14922,7 @@ addLayer("k", {
                                 return hasUpgrade("l", 15) || hasUnlockedPast("l")
                         },
                         bases(){
-                                return [new Decimal("1e193"), new Decimal(2e18)]
+                                return [new Decimal(1e193), new Decimal(2e18)]
                         },
                         cost(){
                                 let bases = tmp.k.clickables[55].bases
@@ -16324,7 +16324,7 @@ addLayer("l", {
                 return getGeneralizedPrestigeGain("l")
         },
         getBaseDiv(){
-                let x = new Decimal("1e1904")
+                let x = Decimal.pow(10, 1904)
                 return x
         },
         getGainExp(){
@@ -16599,7 +16599,7 @@ addLayer("l", {
                 23: {
                         title: "Look",
                         description: "<b>Housing</b> effects <b>L</b> gain and you buy 10x puzzle buyables",
-                        cost: new Decimal("1e350"),
+                        cost: Decimal.pow(10, 350),
                         unlocked(){
                                 return hasUpgrade("l", 22) || hasUnlockedPast("l")
                         }
@@ -16607,7 +16607,7 @@ addLayer("l", {
                 24: {
                         title: "Left",
                         description: "<b>Hi</b> effects <b>Improve</b> and unlock the last <b>I</b> buyable",
-                        cost: new Decimal("1e512"),
+                        cost: Decimal.pow(10, 512),
                         unlocked(){
                                 return hasUpgrade("l", 23) || hasUnlockedPast("l")
                         }
@@ -16615,7 +16615,7 @@ addLayer("l", {
                 25: {
                         title: "Large",
                         description: "Unlock a <b>K</b> challenge and each <b>K</b> challenge completion adds 5 to the <b>L</b> gain exponent",
-                        cost: new Decimal("1e31827"),
+                        cost: Decimal.pow(10, 31827),
                         unlocked(){
                                 return player.k.challenges[11] >= 5 || hasUnlockedPast("l")
                         }
@@ -16623,7 +16623,7 @@ addLayer("l", {
                 31: {
                         title: "Library",
                         description: "<b>Kiss</b> effects <b>Diamond Key</b>, <b>Copper Key</b> effects <b>L</b> gain exponent, and <b>Tin Key</b> effects base <b>L</b> gain",
-                        cost: new Decimal("1e63e5"),
+                        cost: Decimal.pow(10, 63e5),
                         unlocked(){
                                 return hasUpgrade("k", 55) || hasUnlockedPast("m")
                         }
@@ -16631,7 +16631,7 @@ addLayer("l", {
                 32: {
                         title: "Looking",
                         description: "<b>Kerry</b> effects <b>M</b>, square root <b>Coal Key</b> effect, and unlock 3 <b>J</b> buyables",
-                        cost: new Decimal("1e72e5"),
+                        cost: Decimal.pow(10, 72e5),
                         unlocked(){
                                 return hasUpgrade("l", 31) || hasUnlockedPast("m")
                         }
@@ -16639,7 +16639,7 @@ addLayer("l", {
                 33: {
                         title: "Less",
                         description: "You can complete 2 more <b>K</b> and <b>H</b> challenges per upgrade and you automatically complete <b>H</b> challenges",
-                        cost: new Decimal("1e40e6"),
+                        cost: Decimal.pow(10, 40e6),
                         unlocked(){
                                 return hasUpgrade("l", 32) || hasUnlockedPast("m")
                         }
@@ -16647,7 +16647,7 @@ addLayer("l", {
                 34: {
                         title: "Login",
                         description: "You autobuy <b>K</b> buyables and <b>Kerry</b> effects <b>M</b> gain",
-                        cost: new Decimal("1e333333333"), // 333e6
+                        cost: Decimal.pow(10, 333333333), // 333e6
                         unlocked(){
                                 return hasUpgrade("m", 21) || hasUnlockedPast("m")
                         }
@@ -16655,7 +16655,7 @@ addLayer("l", {
                 35: {
                         title: "Let",
                         description: "<bdi style='font-size:80%'> Raise <b>Titanium Key</b> effect to the sqrt(number of upgrades) and each <b>Diamond Key</b> squares <b>I</b> gain</bdi>",
-                        cost: new Decimal("1e444444444"), //444e6
+                        cost: Decimal.pow(10, 444444444), //444e6
                         unlocked(){
                                 return hasUpgrade("l", 34) || hasUnlockedPast("m")
                         }
@@ -17232,7 +17232,7 @@ addLayer("m", {
                                         troopsTo: 11,
                                 },
                                 lastClicked: [11,12,13],
-                                clicksSinceToggle: 0,
+                                clicksSinceDecl: 10,
                                 mode: {
                                         active: 0,
                                         all: ["attack", "move", "place", "do nothing"], //more maybe?
@@ -17254,7 +17254,7 @@ addLayer("m", {
                 return getGeneralizedPrestigeGain("m")
         },
         getBaseDiv(){
-                let x = new Decimal("1e44546")
+                let x = Decimal.pow(10, 44546)
                 return x
         },
         getGainExp(){
@@ -17312,9 +17312,13 @@ addLayer("m", {
         updateArmy(diff){
                 let data = player.m.army
                 let data2 = data.tiles
+                let data3 = data.troopsAttacking
+                let data4 = data.troopsMoving
+                let data5 = data.troopsPlacing
                 let dataCom = data.commandersPlaced
                 let dataGen = data.generalsPlaced
                 let dataSol = data.soldiersPlaced
+                let dataBnk = data.troopsBank
 
                 if (hasUpgrade("m", 23)) data.unlocked = true
 
@@ -17328,11 +17332,32 @@ addLayer("m", {
                         data2.generated = true
                 }
                 wonOnce = false
+                wonTwice = false
                 for (i in data2.beaten){
+                        if (wonOnce && data2.beaten[i] && !isNaN(Number(i))) wonTwice = true
                         if (data2.beaten[i] && !isNaN(Number(i))) wonOnce = true
                 }
                 if (wonOnce == false){
                         data2.beaten[randomFrom(data2.beaten)] = true
+                }
+
+                if ([1, 2].includes(data.clicksSinceDecl)){
+                        // checking if things are declared properly
+                        if (data.mode.active == 0 && data.clicksSinceDecl == 2){
+                                data.clicksSinceDecl = 3
+                                data3.active = true
+                                data3.troopsTo = data.lastClicked[0]
+                                data3.troopsFrom = data.lastClicked[1]
+                        } else if (data.mode.active == 1 && data.clicksSinceDecl == 2){
+                                data.clicksSinceDecl = 3
+                                data4.active = true
+                                data4.troopsTo = data.lastClicked[0]
+                                data4.troopsFrom = data.lastClicked[1]
+                        } else if (data.mode.active == 2 && data.clicksSinceDecl == 1){
+                                data.clicksSinceDecl = 3
+                                data5.active = true
+                                data5.troopsTo = data.lastClicked[0]
+                        }
                 }
                 
                 if (!data.active) return 
@@ -17344,12 +17369,20 @@ addLayer("m", {
                 data.time -= data.timeNeeded
                         
                 if (data.time > data.timeNeeded * 10) data.time = data.timeNeeded * 10
+
                 
-                // deal with attacks
-                let data3 = data.troopsAttacking
+                // deal with attacks 
+                if (data3.active){
+                        let from1 = data3.troopsFrom
+                        let to1 = data3.troopsTo
+                        if (isAdjacent(from1, to1) && data2.beaten[from1] && !data2.beaten[to1]) {
+                                //actually do the attack
+                        } else {
+                                data3.active = false
+                        }
+                }
 
                 // deal with moving
-                let data4 = data.troopsMoving
                 if (data4.active) {
                         let from2 = data4.troopsFrom
                         let to2 = data4.troopsTo
@@ -17378,29 +17411,51 @@ addLayer("m", {
                                 move3 = roundRandom(move3) //now an integer
                                 dataSol[from2] -= move3
                                 dataSol[to2] += move3
+                        } else {
+                                data4.active = false 
                         }
                 }
-                
-                // deal with retiring  
 
                 // deal with placing
+                if (data5.active) {
+                        let to3 = data4.troopsTo
+                        let tot1 = dataBnk.commanders
+                        let tot2 = dataBnk.generals
+                        let tot3 = dataBnk.soldiers
+                        if (data2.beaten[to3] && (tot1 + tot2 + tot3 > 0)) {
+                                // we own the tile where we are placing and 
+                                // have at least one troop to place
 
-                /*
-                troopsMoving: {
-                                        active: false,
-                                        troopsTo: 11,
-                                        troopsFrom: 11,
-                                },
-                                troopsAttacking:{
-                                        active: false,
-                                        troopsTo: 11,
-                                        troopsFrom: 11
-                                },
-                                troopsPlacing: {
-                                        active: false,
-                                        troopsTo: 11,
-                                },
+                                //deal with commanders
                                 
+                                let move1 = Math.min(100, tot1 * .1)
+                                if (move1 < 1) move1 = Math.sqrt(move1)
+                                move1 = roundRandom(move1) //now an integer
+                                dataCom[to3] += move1
+
+                                //deal with generals
+                                
+                                let move2 = Math.min(100, tot2 * .1)
+                                if (move2 < 1) move2 = Math.sqrt(move2)
+                                move2 = roundRandom(move2) //now an integer
+                                dataGen[to3] += move2
+
+                                //deal with soldiers
+                                
+                                let move3 = Math.min(100, tot2 * .1)
+                                if (move3 < 1) move3 = Math.sqrt(move3)
+                                move3 = roundRandom(move3) //now an integer
+                                dataSol[to3] += move3
+                        } else {
+                                data5.active = false 
+                        }
+                }
+
+                // deal with being attacked (only do if wonTwice is true)
+
+                // deal with retiring
+
+                /*                
                 Each commander can command 10 generals and each general can command 50 soldiers
                 up to 100 soldiers/10% can move in/out of each tile (minimum of the pair) and 
                 each enemy tile has a 5% chance to attack an adj allied tile
@@ -17415,7 +17470,6 @@ addLayer("m", {
                 2. Mountains (.5x moving)
                 3. Highway (you can move 2x as much)
                 4. Ocean (easier to defend, get 2x defending bonus)
-
                 */
         },
         update(diff){
@@ -17574,7 +17628,7 @@ addLayer("m", {
                 22: {
                         title: "Must",
                         description: "Per <b>H</b> challenge completion subtract .01 effective <b>K</b> challenges",
-                        cost: new Decimal("1e370"),
+                        cost: Decimal.pow(10, 370),
                         unlocked(){
                                 return hasUpgrade("l", 35) || hasUnlockedPast("m")
                         }
@@ -17582,7 +17636,7 @@ addLayer("m", {
                 23: {
                         title: "Made",
                         description: "<b>Kiss</b> only effects <b>A</b> buyables, you can complete 2*sqrt(<b>H</b> challenge completions) more <b>K</b> challenges, and unlock a feature",
-                        cost: new Decimal("1e522"),
+                        cost: Decimal.pow(10, 522),
                         unlocked(){
                                 return hasUpgrade("m", 22) || hasUnlockedPast("m")
                         }
@@ -17613,15 +17667,36 @@ addLayer("m", {
                                 return true
                         },
                         canClick(){
-                                return true
+                                return player.m.army.clicksSinceDecl >= 3
                         },
                         onClick(){
                                 let data = player.m.army
                                 data.mode.active = (data.mode.active + 1) % data.mode.all.length
-                                data.clicksSinceToggle = 0
                         },
                 },
                 12: {
+                        title(){
+                                return ""
+                        },
+                        display(){
+                                if (player.tab != "m") return ""
+                                if (player.subtabs.m.mainTabs != "Maps") return ""
+                                let data = player.m.army
+
+                                return "Toggle Click Setting<br>Next click will cause clicking to " + data.mode.all[mod(data.mode.active - 1, data.mode.all.length)]
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        canClick(){
+                                return player.m.army.clicksSinceDecl >= 3
+                        },
+                        onClick(){
+                                let data = player.m.army
+                                data.mode.active = mod(data.mode.active - 1, data.mode.all.length)
+                        },
+                },
+                13: {
                         title(){
                                 return ""
                         },
@@ -17649,12 +17724,12 @@ addLayer("m", {
                                 let data = player.m.army
                                 let data2 = data.mode.active
                                 if (data2 == 3) return 
-                                if (data2 == 0) {
-                                        data.troopsAttacking.active = false
-                                }
+                                if (data2 == 0) data.troopsAttacking.active = false
+                                if (data2 == 1) data.troopsMoving.active = false
+                                if (data2 == 2) data.troopsPlacing.active = false
                         },
                 },
-                13: {
+                14: {
                         title(){
                                 return ""
                         },
@@ -17677,7 +17752,39 @@ addLayer("m", {
                                 let data = player.m.army
                                 data.active = !data.active
                         },
-                },
+                }, 
+                15: {
+                        title(){
+                                return "Selection"
+                        },
+                        display(){
+                                if (player.tab != "m") return ""
+                                if (player.subtabs.m.mainTabs != "Maps") return ""
+
+                                let data = player.m.army
+                                let a = ""
+                                if (data.clicksSinceDecl == 0) a = "Click this to reset clicks<br>"
+                                if (data.mode.active == 0) return a + "Clicking will make the next 2 map clicks define where you are attacking"
+                                if (data.mode.active == 1) return a + "Clicking will make the next 2 map clicks define where you are moving"
+                                if (data.mode.active == 2) return a + "Clicking will make the next map click define where you are placing"
+                                if (data.mode.active == 3) return a || "Clicking will do nothing"
+
+                                
+                                console.log("bug")
+                                return ""
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        canClick(){
+                                return true
+                        },
+                        onClick(){
+                                let data = player.m.army
+                                if (data.clicksSinceDecl == 0) data.clicksSinceDecl = 3
+                                else data.clicksSinceDecl = 0
+                        },
+                }, 
         },
         tabFormat: {
                 "Upgrades": {
@@ -17772,7 +17879,7 @@ addLayer("m", {
                                                         let h = "Currently, your troops are" + (data4.active ? "" : "n't") + " attacking"
                                                         let i = (data4.active ? " from " + data4.troopsFrom + " to " + data4.troopsTo : "") + ".<br>"
                                                         let j = "Currently, your troops are" + (data5.active ? "" : "n't") + " being placed"
-                                                        let k = (data4.active ? " in " + data4.troopsTo : "") + ".<br>"
+                                                        let k = (data5.active ? " in " + data5.troopsTo : "") + ".<br>"
                                                         let l = "The last three tiles clicked are " + data6[0] + ", "
                                                         let m = data6[1] + " and, " + data6[2] + ".<br>"
                                                         let n = "Currently, there are " + formatWhole(data.commandersPlaced[data6[0]]) + " commanders, "

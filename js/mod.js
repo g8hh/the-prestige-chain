@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".8.21 Elephant", // flying fish, gorilla
+	num: ".8.22 Flying Fish", // gorilla
 	name: "",
 }
 
@@ -571,11 +571,18 @@ function getChangeLogText(){
 	cj7 = "- Created a stats tab that displays the number of tiles, maps, and worlds completed, unplaced troops"
 	cj8 = "whether troops are moving or not, and if so whereto (likewise with attacking and placing)"
 	cj9 = "and details on the last tabs clicked as well as the troops on a given tile"
-	cj10="- Added a play/pause feature"
-	cj11="- Made 4 modes (attack, move, place, nothing) for you to be in"
-	cj12="- Added a display of time till next tick"
-	cj13="- Added a way to deactivate the current function"
-	cj14="- Implemented the moving troops feature"
+	cj10= "- Added a play/pause feature"
+	cj11= "- Made 4 modes (attack, move, place, nothing) for you to be in"
+	cj12= "- Added a display of time till next tick"
+	cj13= "- Added a way to deactivate the current function"
+	cj14= "- Implemented the moving troops feature"
+	ck1 = "v.8.22"
+	ck2 = "- Made a couple goal milestones cheaper (15, 22) -> (13, 17)"
+	ck3 = "- Implemented selection"
+	ck4 = "- Fixed a small display bug with placing"
+	ck5 = "- Added a display on tiles for how many allied troops there are"
+	ck6 = "- Implemeneted placing"
+	ck7 = "- Removed all remaining instances of defining a Decimal based on a string to improve performance"
 	
 
 	let part1  = [a1,  a2,  a3,  a4,  a5,  a6,  ""]
@@ -663,6 +670,7 @@ function getChangeLogText(){
 	let part83 = [ch1, ch2, ch3,  ""]
 	let part84 = [ci1, ci2, ci3, ci4, ci5, ""]
 	let part85 = [cj1, cj2, cj3, cj4, cj5, cj6, cj7, cj8, cj9, cj10, cj11, cj12, cj13, cj14, ""]
+	let part86 = [ck1, ck2, ck3, ck4, ck5, ck6, ck7,  ""]
 	// MAKE SURE TO ADD THEM
 
 	let final1 = [part10,  part9,  part8,  part7,  part6,  part5,  part4,  part3,  part2,  part1]
@@ -673,11 +681,12 @@ function getChangeLogText(){
 	let final6 = [part60, part59, part58, part57, part56, part55, part54, part53, part52, part51]
 	let final7 = [part70, part69, part68, part67, part66, part65, part64, part63, part62, part61]
 	let final8 = [part80, part79, part78, part77, part76, part75, part74, part73, part72, part71]
-	let final9 = [part85, part84, part83, part82, part81]
+	let final9 = [part86, part85, part84, part83, part82, part81]
+	let final10= []
 
 	let entiresShown = 3
 	let start = [["Hold Shift to see the full changelog!", shiftDown ? "" : "Currrently showing the " + entiresShown + " most recent entries", ""]]
-	let end = final9.concat(final8).concat(final7).concat(final6).concat(final5).concat(final4).concat(final3).concat(final2).concat(final1)
+	let end = final10.concat(final9).concat(final8).concat(final7).concat(final6).concat(final5).concat(final4).concat(final3).concat(final2).concat(final1)
 
 	if (!shiftDown) return start.concat(end.slice(0, entiresShown))
 

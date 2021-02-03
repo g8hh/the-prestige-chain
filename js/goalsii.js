@@ -151,7 +151,7 @@ var GOALS_REWARD_FUNCTIONS = {
 var CURRENT_GOALS_EFFECTS = {}
 
 function getMaximumTokens(c){
-        if (c == "44") return new Decimal("1e999")
+        if (c == "44") return Decimal.pow(10, 999)
         if (c.includes("4")) return new Decimal(1e4)
         if (c.includes("3")) return new Decimal(1e5)
         if (c.includes("2")) return new Decimal(3e5)

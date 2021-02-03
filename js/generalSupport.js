@@ -265,7 +265,15 @@ function getMapName(a){
 }
 
 function getTileNameDisp(data){
-        return player.m.army.tiles.beaten[data] ? `<bdi style="color:#AA0000">Owned</bdi>` : 'Enemy'
+        return player.m.army.tiles.beaten[data] ? `<bdi style="color:#AA0000">Owned</bdi><br>` : 'Enemy<br>'
+}
+
+function getTimeAmountsDisp(id){
+        let data = player.m.army
+        if (!data.tiles.beaten[id]) return ""
+        let a = '<bdi style="color:#AA0000">C:' + formatWhole(data.commandersPlaced[id]) + " G:" 
+        let b = formatWhole(data.generalsPlaced[id]) + " S:" + formatWhole(data.soldiersPlaced[id])
+        return a + b + "<br>"
 }
 
 function mod(a,b){
@@ -274,7 +282,7 @@ function mod(a,b){
 }
 
 function clickTile(id){
-        player.m.army.clicksSinceToggle ++
+        player.m.army.clicksSinceDecl ++
         player.m.army.lastClicked = [id].concat(player.m.army.lastClicked).slice(0,3)
 }
 
@@ -283,6 +291,18 @@ function getTileMovementFactor(id){
         if (x == 2) return .5
         if (x == 3) return 2
         return 1
+}
+
+function getDistance(a,b){
+        let w = a % 10
+        let x = (a-w)/10
+        let y = b % 10
+        let z = (b-y) / 10
+        return Math.abs(w-y)+Math.abs(x-z)
+}
+
+function isAdjacent(a,b){
+        return getDistance(a,b) == 1
 }
 
 /*
