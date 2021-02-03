@@ -3492,7 +3492,7 @@ function getBuyableDisplay(layer, id){
         let cost3 = "</b><br>"
         let cost2a = bases[0].eq(1) ? "" :  "(" + formatBuyableCostBase(bases[0]) + ")"
         let cost2b = bases[1].eq(1) ? "" : "*(" + formatBuyableCostBase(bases[1]) + "^x)"
-        let cost2c = bases[2].eq(1) ? "" : "*(" + formatBuyableCostBase(bases[2]) + "^x^2)" 
+        let cost2c = bases[2].eq(1) ? "" : "*(" + formatBuyableCostBase(bases[2]) + "^x<sup>2</sup>)" 
         let cost2 = cost2a + cost2b + cost2c
         if (cost2.slice(0,1) == "*") cost2 = cost2.slice(1) //removes the star if its the first character
         let allCost = cost1 + cost2 + cost3

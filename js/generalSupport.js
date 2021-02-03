@@ -273,4 +273,32 @@ function mod(a,b){
         return (a % b) + b
 }
 
+function clickTile(id){
+        player.m.army.clicksSinceToggle ++
+        player.m.army.lastClicked = [id].concat(player.m.army.lastClicked).slice(0,3)
+}
+
+function getTileMovementFactor(id){
+        let x = player.m.army.tiles.type[id]
+        if (x == 2) return .5
+        if (x == 3) return 2
+        return 1
+}
+
+/*
+1. Plains (square law remaining troops)
+2. Mountains (.5x moving)
+3. Highway (you can move 2x as much)
+4. Ocean (easier to defend, get 2x defending bonus)
+*/
+
+
+
+
+
+
+
+
+
+
 

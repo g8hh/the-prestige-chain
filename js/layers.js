@@ -17231,11 +17231,13 @@ addLayer("m", {
                                         active: false,
                                         troopsTo: 11,
                                 },
-                                lastClicked: 11,
+                                lastClicked: [11,12,13],
+                                clicksSinceToggle: 0,
                                 mode: {
                                         active: 0,
-                                        all: ["attack", "move", "place"], //more maybe?
+                                        all: ["attack", "move", "place", "do nothing"], //more maybe?
                                 },
+                                active: true,
                         },
                 } //no comma here
         },
@@ -17310,6 +17312,9 @@ addLayer("m", {
         updateArmy(diff){
                 let data = player.m.army
                 let data2 = data.tiles
+                let dataCom = data.commandersPlaced
+                let dataGen = data.generalsPlaced
+                let dataSol = data.soldiersPlaced
 
                 if (hasUpgrade("m", 23)) data.unlocked = true
 
@@ -17329,6 +17334,8 @@ addLayer("m", {
                 if (wonOnce == false){
                         data2.beaten[randomFrom(data2.beaten)] = true
                 }
+                
+                if (!data.active) return 
 
                 data.time += diff
 
@@ -17339,17 +17346,68 @@ addLayer("m", {
                 if (data.time > data.timeNeeded * 10) data.time = data.timeNeeded * 10
                 
                 // deal with attacks
+                let data3 = data.troopsAttacking
 
                 // deal with moving
+                let data4 = data.troopsMoving
+                if (data4.active) {
+                        let from2 = data4.troopsFrom
+                        let to2 = data4.troopsTo
+                        if (from2 != to2 && data2.beaten[from2] && data2.beaten[to2]) {
+                                // they are different and we own both tiles
+                                let f1 = getTileMovementFactor(from2)
+                                let f2 = getTileMovementFactor(to2)
+
+                                //deal with commanders
+                                let tot1 = dataCom[from2]
+                                let move1 = Math.min(100, tot1 * .1) * f1 * f2
+                                move1 = roundRandom(move1) //now an integer
+                                dataCom[from2] -= move1
+                                dataCom[to2] += move1
+
+                                //deal with generals
+                                let tot2 = dataGen[from2]
+                                let move2 = Math.min(100, tot2 * .1) * f1 * f2
+                                move2 = roundRandom(move2) //now an integer
+                                dataGen[from2] -= move2
+                                dataGen[to2] += move2
+
+                                //deal with soldiers
+                                let tot3 = dataSol[from2]
+                                let move3 = Math.min(100, tot2 * .1) * f1 * f2
+                                move3 = roundRandom(move3) //now an integer
+                                dataSol[from2] -= move3
+                                dataSol[to2] += move3
+                        }
+                }
                 
                 // deal with retiring  
 
+                // deal with placing
+
                 /*
+                troopsMoving: {
+                                        active: false,
+                                        troopsTo: 11,
+                                        troopsFrom: 11,
+                                },
+                                troopsAttacking:{
+                                        active: false,
+                                        troopsTo: 11,
+                                        troopsFrom: 11
+                                },
+                                troopsPlacing: {
+                                        active: false,
+                                        troopsTo: 11,
+                                },
+                                
                 Each commander can command 10 generals and each general can command 50 soldiers
-                up to 100 soldiers/10% can move in/out of each tile and 
+                up to 100 soldiers/10% can move in/out of each tile (minimum of the pair) and 
                 each enemy tile has a 5% chance to attack an adj allied tile
                 if you get attacked, the enemy gets a 1.3x surprise factor
-                each tick .5% of your troops retire (rounded down, and 2/20/1000 are immune from retiring)
+                you can only get attacked once per tick
+                each tick .5% of your troops retire 
+                (rounded down, and 2/20/1000 are immune from retiring on each tile/in bank)
 
 
                 there are a couple of types of tiles
@@ -17529,7 +17587,6 @@ addLayer("m", {
                                 return hasUpgrade("m", 22) || hasUnlockedPast("m")
                         }
                 }, // hasUpgrade("m", 23)
-                //next makes Kiss not effect J buyables and some other qol shit
         
 
                 /*
@@ -17537,6 +17594,90 @@ addLayer("m", {
                 Much
                 Members
                 */
+        },
+        clickables: {
+                rows: 8,
+                cols: 5,
+                11: {
+                        title(){
+                                return ""
+                        },
+                        display(){
+                                if (player.tab != "m") return ""
+                                if (player.subtabs.m.mainTabs != "Maps") return ""
+                                let data = player.m.army
+
+                                return "Toggle Click Setting<br>Next click will cause clicking to " + data.mode.all[(data.mode.active + 1)%data.mode.all.length]
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        canClick(){
+                                return true
+                        },
+                        onClick(){
+                                let data = player.m.army
+                                data.mode.active = (data.mode.active + 1) % data.mode.all.length
+                                data.clicksSinceToggle = 0
+                        },
+                },
+                12: {
+                        title(){
+                                return ""
+                        },
+                        display(){
+                                if (player.tab != "m") return ""
+                                if (player.subtabs.m.mainTabs != "Maps") return ""
+                                let data = player.m.army
+                                if (data.mode.active == 3) return "Clicking will do nothing"
+
+                                return "Clicking will make your troops not " + data.mode.all[data.mode.active]
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        canClick(){
+                                let data = player.m.army
+                                if (data.mode.active == 3) return false
+                                if (data.mode.active == 0) return data.troopsAttacking.active
+                                if (data.mode.active == 1) return data.troopsMoving.active
+                                if (data.mode.active == 2) return data.troopsPlacing.active
+                                console.log("oops")
+                                return false
+                        },
+                        onClick(){
+                                let data = player.m.army
+                                let data2 = data.mode.active
+                                if (data2 == 3) return 
+                                if (data2 == 0) {
+                                        data.troopsAttacking.active = false
+                                }
+                        },
+                },
+                13: {
+                        title(){
+                                return ""
+                        },
+                        display(){
+                                if (player.tab != "m") return ""
+                                if (player.subtabs.m.mainTabs != "Maps") return ""
+
+                                let a = "Clicking will toggle pause<br>Currently: "
+                                let b = player.m.army.active ? "Playing" : "Paused"
+
+                                return a + b
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        canClick(){
+                                return true
+                        },
+                        onClick(){
+                                let data = player.m.army
+                                data.active = !data.active
+                        },
+                },
         },
         tabFormat: {
                 "Upgrades": {
@@ -17619,6 +17760,8 @@ addLayer("m", {
                                                         let data3 = data.troopsMoving
                                                         let data4 = data.troopsAttacking
                                                         let data5 = data.troopsPlacing
+                                                        let data6 = data.lastClicked
+                                                        if (typeof data6 == "number") data.lastClicked = [11,12,13]
                                                         let a = "Time until next tick: " + formatWhole(Math.max(0, data.timeNeeded - data.time)) + "s.<br>"
                                                         let b = "You have completed " + formatWhole(data.tilesCompleted) + " tiles, "
                                                         let c = formatWhole(data.mapsCompleted) + " maps, and " + formatWhole(data.worldsCompleted) + " worlds.<br>"
@@ -17630,40 +17773,62 @@ addLayer("m", {
                                                         let i = (data4.active ? " from " + data4.troopsFrom + " to " + data4.troopsTo : "") + ".<br>"
                                                         let j = "Currently, your troops are" + (data5.active ? "" : "n't") + " being placed"
                                                         let k = (data4.active ? " in " + data4.troopsTo : "") + ".<br>"
+                                                        let l = "The last three tiles clicked are " + data6[0] + ", "
+                                                        let m = data6[1] + " and, " + data6[2] + ".<br>"
+                                                        let n = "Currently, there are " + formatWhole(data.commandersPlaced[data6[0]]) + " commanders, "
+                                                        let o = formatWhole(data.generalsPlaced[data6[0]]) + " generals and, " + formatWhole(data.soldiersPlaced[data6[0]])
+                                                        let p = " soldiers placed in " + data6[0] + ".<br>"
 
-
-                                                        return a + b + c + d + e + f + g + h + i + j + k 
+                                                        return a + b + c + d + e + f + g + h + i + j + k + l + m + n + o + p
                                                         
                                                 },
                                         ],
-                                        // completed stats, unused stats
                                         // moving from/to for 3 diff things
-                                        // button for switiching what you are doing
-                                        /*
-                                        troopsMoving: {
-                                                active: false,
-                                                troopsTo: 11,
-                                                troopsFrom: 11,
-                                        },
-                                        troopsAttacking:{
-                                                active: false,
-                                                troopsTo: 11,
-                                                troopsFrom: 11
-                                        },
-                                        troopsPlacing: {
-                                                active: false,
-                                                troopsTo: 11,
-                                        },
-                                        lastClicked: 11,
-                                        */
                                 ],
                                 unlocked(){
                                         return true
                                 },
                         },
-                        "Details": {
+                        "Army": {
                                 content: [
-                                        "main-display", //display text
+                                        ["display-text",
+                                                function() {
+                                                        if (player.tab != "m") return ""
+                                                        if (player.subtabs.m.mainTabs != "Maps") return ""
+                                                        let data = player.m.army
+
+                                                        let a = "This will allow you to buy troops (eventually)<br>"
+                                                        let b = "Troops cost grows double-exponentially, Soldiers: 1e1000*2^2^x<br>"
+                                                        let c = "Generals: 1e1700*3^3^x"
+                                                        let d = ", Commanders: 1e1750*10^10^x<br>"
+
+                                                        return a + b + c + d
+                                                },
+                                        ],
+                                        ["clickables", [2,2]], //buy troops here
+                                        ["display-text",
+                                                function() {
+                                                        if (player.tab != "m") return ""
+                                                        if (player.subtabs.m.mainTabs != "Maps") return ""
+                                                        let data = player.m.army
+
+                                                        let a = "Eventually buying each type of troops will be automated<br>"
+                                                        let b = "Oceans get a 2x defense bonus for both you and the enemy<br>"
+                                                        let c = "When you get attacked the enemies have a 1.3x attack bonus<br>"
+                                                        let d = "Each enemy adjacent to your tile has a 1% chance to attack each tick<br>"
+                                                        let e = "However only one of your tiles may be attacked on any tick<br>"
+                                                        let f = "Commanders can command 10 generals, and each general can command 50 soldiers<br>"
+                                                        let g = "<bdi style='font-size:50%'>Hint: You need at least one Commander and one General to fight!</bdi><br>"
+                                                        let h = "<h2><bdi style='color:#990000'>Attacking</bdi>:</h2><br>"
+                                                        let i = "When attacking or attacked, your troops and the enemy troops<br>"
+                                                        let j = "get a random attack factor from .5 to 1.5 (uniformly)<br>"
+                                                        let k = "The soldiers then fight, and the remaining prevailing troops stay alive unharmed<br>"
+                                                        let l = "The fighting happens instantly. Upon a win, 10% of the troops on that tile retire<br>"
+                                                        let m = "Finally, 2% of troops retired on each tick (2/20/1000 immune on either a tile or unplaced)<br>"
+
+                                                        return a + b + c + d + e + f + g + h + i + j + k + l + m
+                                                },
+                                        ],
                                 ],
                                 unlocked(){
                                         return true
