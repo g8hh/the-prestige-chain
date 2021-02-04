@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".8.22 Flying Fish", // gorilla
+	num: ".8.23 Gorilla", // Hyena
 	name: "",
 }
 
@@ -583,6 +583,10 @@ function getChangeLogText(){
 	ck5 = "- Added a display on tiles for how many allied troops there are"
 	ck6 = "- Implemeneted placing"
 	ck7 = "- Removed all remaining instances of defining a Decimal based on a string to improve performance"
+	cl1 = "v.8.23"
+	cl2 = "- Implemented retiring"
+	cl3 = "- Implemented getting attacked [except the battle part]"
+	
 	
 
 	let part1  = [a1,  a2,  a3,  a4,  a5,  a6,  ""]

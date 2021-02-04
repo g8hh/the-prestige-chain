@@ -17452,13 +17452,74 @@ addLayer("m", {
                 }
 
                 // deal with being attacked (only do if wonTwice is true)
+                if (wonTwice){
+                        attackBool = false
+                        attackedLocation = 11
+                        for (i in data2.beaten){
+                                if (!data2.beaten[i]) continue
+                                if (attackBool) {
+                                        console.log( "uhoh")
+                                        break
+                                }
+
+                                if (i % 10 != 1) { //do to the left
+                                        if (!data2.beaten[i-1] && Math.random() < .01) {
+                                                attackBool = true
+                                                attackedLocation = i
+                                                break
+                                        } 
+                                }
+                                if (i % 10 != 9) { //do to the right
+                                        if (!data2.beaten[i+1] && Math.random() < .01) {
+                                                attackBool = true
+                                                attackedLocation = i
+                                                break
+                                        } 
+                                }
+                                if (i-(i%10) != 9) { //do below
+                                        if (!data2.beaten[i+10] && Math.random() < .01) {
+                                                attackBool = true
+                                                attackedLocation = i
+                                                break
+                                        } 
+                                }
+                                if (i-(i%10) != 1) { //do below
+                                        if (!data2.beaten[i-10] && Math.random() < .01) {
+                                                attackBool = true
+                                                attackedLocation = i
+                                                break
+                                        } 
+                                }
+                        }
+                        if (attackedBool){
+                                // deal with attack at attackedLocation
+                        }
+                }
 
                 // deal with retiring
+                if (true){
+                        //retireRemaining(amt, safe, .005)
+                        /*
+                        let dataCom = data.commandersPlaced
+                        let dataGen = data.generalsPlaced
+                        let dataSol = data.soldiersPlaced
+                        let dataBnk = data.troopsBank
+                        */
+                        for (i in dataCom){
+                                if (dataCom[i] == undefined) continue
+                                dataCom[i] = retireRemaining(dataCom[i],    2, .005)
+                                dataGen[i] = retireRemaining(dataGen[i],   20, .005)
+                                dataSol[i] = retireRemaining(dataSol[i], 1000, .005)
+                        }
+                        dataBnk.commanders = retireRemaining(dataBnk.commanders,    2, .005)
+                        dataBnk.generals   = retireRemaining(dataBnk.generals  ,   20, .005)
+                        dataBnk.soldiers   = retireRemaining(dataBnk.soldiers  , 1000, .005)                        
+                }
 
                 /*                
                 Each commander can command 10 generals and each general can command 50 soldiers
                 up to 100 soldiers/10% can move in/out of each tile (minimum of the pair) and 
-                each enemy tile has a 5% chance to attack an adj allied tile
+                each enemy tile has a 1% chance to attack an adj allied tile
                 if you get attacked, the enemy gets a 1.3x surprise factor
                 you can only get attacked once per tick
                 each tick .5% of your troops retire 

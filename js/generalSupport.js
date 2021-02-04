@@ -312,6 +312,10 @@ function isAdjacent(a,b){
 4. Ocean (easier to defend, get 2x defending bonus)
 */
 
+function retireRemaining(a,save,chance){
+        if (a <= save) return a
+        return a + roundRandom((a-save)*(1-chance))
+}
 
 
 
