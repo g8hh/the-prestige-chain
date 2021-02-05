@@ -18108,18 +18108,23 @@ addLayer("m", {
                                                         let d = "You have " + formatWhole(data2.commanders) + " unplaced commanders, "
                                                         let e = formatWhole(data2.generals) + " unplaced generals, and " + formatWhole(data2.soldiers) + " unplaced soldiers.<br>"
                                                         let f = "Currently, your troops are" + (data3.active ? "" : "n't") + " moving"
-                                                        let g = (data3.active ? " from " + data3.troopsFrom + " to " + data3.troopsTo : "") + ".<br>"
+                                                        let g = (data3.active ? " from T" + data3.troopsFrom + " to T" + data3.troopsTo : "") + ".<br>"
                                                         let h = "Currently, your troops are" + (data4.active ? "" : "n't") + " attacking"
-                                                        let i = (data4.active ? " from " + data4.troopsFrom + " to " + data4.troopsTo : "") + ".<br>"
+                                                        let i = (data4.active ? " from T" + data4.troopsFrom + " to T" + data4.troopsTo : "") + ".<br>"
                                                         let j = "Currently, your troops are" + (data5.active ? "" : "n't") + " being placed"
-                                                        let k = (data5.active ? " in " + data5.troopsTo : "") + ".<br>"
+                                                        let k = (data5.active ? " in T" + data5.troopsTo : "") + ".<br>"
                                                         let l = "The last three tiles clicked are " + data6[0] + ", "
                                                         let m = data6[1] + " and, " + data6[2] + ".<br>"
-                                                        let n = "Currently, there are " + formatWhole(data.commandersPlaced[data6[0]]) + " commanders, "
-                                                        let o = formatWhole(data.generalsPlaced[data6[0]]) + " generals and, " + formatWhole(data.soldiersPlaced[data6[0]])
-                                                        let p = " soldiers placed in " + data6[0] + ".<br>"
+                                                        let n = "You do not own " + data6[0] + ".<br>"
+                                                        let o = ""
+                                                        let p = ""
+                                                        if (data.tiles.beaten[data6[0]]) {
+                                                                n = "Currently, there are " + formatWhole(data.commandersPlaced[data6[0]]) + " commanders, "
+                                                                o = formatWhole(data.generalsPlaced[data6[0]]) + " generals and, " + formatWhole(data.soldiersPlaced[data6[0]])
+                                                                p = " soldiers placed in T" + data6[0] + ".<br>"
+                                                        }
 
-                                                        return a + b + c + d + e + f + g + h + i + j + k + l + m + n + o + p
+                                                        return a + b + c + d + e + f + g + h + i + j + k + /*l + m + */ n + o + p
                                                         
                                                 },
                                         ],
@@ -18159,14 +18164,17 @@ addLayer("m", {
                                                         let e = "However only one of your tiles may be attacked on any tick<br>"
                                                         let f = "Commanders can command 10 generals, and each general can command 50 soldiers<br>"
                                                         let g = "<bdi style='font-size:50%'>Hint: You need at least one Commander and one General to fight!</bdi><br>"
-                                                        let h = "<h2><bdi style='color:#990000'>Attacking</bdi>:</h2><br>"
+                                                        let h = "<br><h2><bdi style='color:#990000'>Attacking</bdi>:</h2><br>"
                                                         let i = "When attacking or attacked, your troops and the enemy troops<br>"
                                                         let j = "get a random attack factor from .5 to 1.5 (uniformly)<br>"
                                                         let k = "The soldiers then fight, and the remaining prevailing troops stay alive unharmed<br>"
                                                         let l = "The fighting happens instantly. Upon a win, 10% of the troops on that tile retire<br>"
-                                                        let m = "Finally, 2% of troops retired on each tick (2/20/1000 immune on either a tile or unplaced)<br>"
+                                                        let m = "Finally, .5% of troops retired on each tick (2/20/1000 immune on either a tile or unplaced)<br>"
+                                                        let n = "<br><h2><bdi style='color:#990000'>How to</bdi>:</h2><br>"
+                                                        let o = "To place, move, or attack click the fifth button <b>Selection</b><br>"
+                                                        let p = "Then click either 1 or 2 tiles to target where you are placing, moving or attacking<br>"
 
-                                                        return a + b + c + d + e + f + g + h + i + j + k + l + m
+                                                        return a + b + c + d + e + f + g + h + i + j + k + l + m + n + o + p
                                                 },
                                         ],
                                 ],

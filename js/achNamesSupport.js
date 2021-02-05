@@ -93,10 +93,15 @@ function getAchStuffFromNumber(n){
                         if (player.ach.hiddenRows >= n/7) return false
                         return hasUnlockedPast("k")
                 }
-        } else if (n <= Infinity) {
+        } else if (n <= 336) {
                 unlocked = function(){
                         if (player.ach.hiddenRows >= n/7) return false
                         return hasUnlockedPast("l")
+                }
+        } else if (n <= Infinity) {
+                unlocked = function(){
+                        if (player.ach.hiddenRows >= n/7) return false
+                        return hasUpgrade("m", 23) || hasUnlockedPast("m")
                 }
         } 
         return {name: name, done: done, tooltip: tooltip, unlocked: unlocked}
@@ -454,6 +459,13 @@ PROGRESSION_MILESTONES = {
 	327: ()=> player.k.lock.repeatables[82].gte(136),
 	328: ()=> player.k.lock.repeatables[82].gte(153),
 	329: ()=> player.k.lock.repeatables[82].gte(171),
+	330: ()=> hasUpgrade("m", 23),
+	331: ()=> player.m.army.troopsBank.soldiers >= 10,
+	332: ()=> player.m.army.tilesBeaten >= 1,
+	333: ()=> player.m.army.tilesBeaten >= 3,
+	334: ()=> player.m.army.tilesBeaten >= 6,
+	335: ()=> player.m.army.tilesBeaten >= 10,
+	336: ()=> player.m.army.tilesBeaten >= 15,
 }
 
 PROGRESSION_MILESTONES_TEXT = {
@@ -786,6 +798,13 @@ PROGRESSION_MILESTONES_TEXT = {
 	327: "136 Diamond Keys",
 	328: "153 Diamond Keys",
 	329: "171 Diamond Keys",
+	330: "an army",
+	331: "20 banked soldiers",
+	332: "a tile conquored",
+	333: "3 tiles conquored",
+	334: "6 tiles conquored",
+	335: "10 tiles conquored",
+	336: "15 tiles conquored",
 }
 
 

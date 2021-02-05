@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".8.24.1 Hyena", // giraffe
+	num: ".8.25 Iguana", // Jellyfish
 	name: "",
 }
 
@@ -593,9 +593,13 @@ function getChangeLogText(){
 	cm5 = "- Added getting attacked"
 	cm6 = "- Added the ability to buy troops"
 	cm7 = "- Fixed a bug with placement that it did not remove troops"
-	cm8 = "- Fixed a bufg with formatWhole that it did not deal well with negatives"
+	cm8 = "- Fixed a bug with formatWhole that it did not deal well with negatives"
 	cm9 = "v.8.24.1"
 	cm10= "- Fixed a bug with Mandelbrot"
+	cn1 = "v.8.25"
+	cn2 = "- Actually fixed the formatWhole button"
+	cn3 = "- Added a row of achievements"
+	cn4 = "- Minor display changes"
 
 	let part1  = [a1,  a2,  a3,  a4,  a5,  a6,  ""]
 	let part2  = [b1,  b2,  b3,  b4,  b5,  "",  b6,  b7,  "",  b8,  b9,  b10,  "",  b11,  b12,  ""]

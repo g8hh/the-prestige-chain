@@ -79,7 +79,7 @@ function format(decimal, precision=2,) {
 
 function formatWhole(decimal) {
 	decimal = new Decimal(decimal)
-	if (decimal.lt(0)) return "-" + formatWhole(decimal)
+	if (decimal.lt(0)) return "-" + formatWhole(decimal.neg())
 	if (decimal.gte(1e9)) return format(decimal, 2)
 	if (decimal.lt(10) && decimal.neq(decimal.floor())) return format(decimal, 2)
 	return addCommas(decimal.floor().mag.toString())
