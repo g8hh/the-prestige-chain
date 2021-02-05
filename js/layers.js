@@ -5038,7 +5038,7 @@ addLayer("goalsii", {
                 33: {
                         title: "Mandelbrot",
                         description: "Each upgrade raises charge gain ^1.1 and double <b>Gold</b> speed",
-                        cost: Decimal.pow(10, 1e4125),
+                        cost: Decimal.pow(10, 4125),
                         currencyDisplayName: "<br><b style='color: #6600FF'>00</b> Tokens",
                         currencyLocation(){
                                 return player.goalsii.tokens.copy
@@ -5053,7 +5053,7 @@ addLayer("goalsii", {
                 34: {
                         title: "Noether",
                         description: "Unlock an <b>F</b> buyable, double <b>Gold</b> speed, and gain 10x medals",
-                        cost: Decimal.pow(10, 1e4128),
+                        cost: Decimal.pow(10, 4128),
                         currencyDisplayName: "<br><b style='color: #6600FF'>00</b> Tokens",
                         currencyLocation(){
                                 return player.goalsii.tokens.copy
@@ -5068,7 +5068,7 @@ addLayer("goalsii", {
                 35: {
                         title: "Oppenheim",
                         description: "<b>Four</b> gives free <b>Omnipotent V</b> levels",
-                        cost: Decimal.pow(10, 1e4129),
+                        cost: Decimal.pow(10, 4129),
                         currencyDisplayName: "<br><b style='color: #6600FF'>00</b> Tokens",
                         currencyLocation(){
                                 return player.goalsii.tokens.copy

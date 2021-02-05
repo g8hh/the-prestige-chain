@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".8.24 Hyena", // giraffe
+	num: ".8.24.1 Hyena", // giraffe
 	name: "",
 }
 
@@ -594,6 +594,8 @@ function getChangeLogText(){
 	cm6 = "- Added the ability to buy troops"
 	cm7 = "- Fixed a bug with placement that it did not remove troops"
 	cm8 = "- Fixed a bufg with formatWhole that it did not deal well with negatives"
+	cm9 = "v.8.24.1"
+	cm10= "- Fixed a bug with Mandelbrot"
 
 	let part1  = [a1,  a2,  a3,  a4,  a5,  a6,  ""]
 	let part2  = [b1,  b2,  b3,  b4,  b5,  "",  b6,  b7,  "",  b8,  b9,  b10,  "",  b11,  b12,  ""]
@@ -681,6 +683,7 @@ function getChangeLogText(){
 	let part84 = [ci1, ci2, ci3, ci4, ci5, ""]
 	let part85 = [cj1, cj2, cj3, cj4, cj5, cj6, cj7, cj8, cj9, cj10, cj11, cj12, cj13, cj14, ""]
 	let part86 = [ck1, ck2, ck3, ck4, ck5, ck6, ck7,  ""]
+	let part87 = [cm1, cm2, cm3, cm4, cm5, cm6, cm7, cm8,  "",  cm9, cm10, ""]
 	// MAKE SURE TO ADD THEM
 
 	let final1 = [part10,  part9,  part8,  part7,  part6,  part5,  part4,  part3,  part2,  part1]
@@ -691,7 +694,7 @@ function getChangeLogText(){
 	let final6 = [part60, part59, part58, part57, part56, part55, part54, part53, part52, part51]
 	let final7 = [part70, part69, part68, part67, part66, part65, part64, part63, part62, part61]
 	let final8 = [part80, part79, part78, part77, part76, part75, part74, part73, part72, part71]
-	let final9 = [part86, part85, part84, part83, part82, part81]
+	let final9 = [part87, part86, part85, part84, part83, part82, part81]
 	let final10= []
 
 	let entiresShown = 3
