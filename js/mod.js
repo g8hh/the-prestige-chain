@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".8.25 Iguana", // Jellyfish
+	num: ".8.25.1 Iguana", // Jellyfish
 	name: "",
 }
 
@@ -600,6 +600,8 @@ function getChangeLogText(){
 	cn2 = "- Actually fixed the formatWhole button"
 	cn3 = "- Added a row of achievements"
 	cn4 = "- Minor display changes"
+	cn5 = "v.8.25.1"
+	cn6 = "- Fixed a bug with placing when moving was not the same"
 
 	let part1  = [a1,  a2,  a3,  a4,  a5,  a6,  ""]
 	let part2  = [b1,  b2,  b3,  b4,  b5,  "",  b6,  b7,  "",  b8,  b9,  b10,  "",  b11,  b12,  ""]
@@ -688,6 +690,7 @@ function getChangeLogText(){
 	let part85 = [cj1, cj2, cj3, cj4, cj5, cj6, cj7, cj8, cj9, cj10, cj11, cj12, cj13, cj14, ""]
 	let part86 = [ck1, ck2, ck3, ck4, ck5, ck6, ck7,  ""]
 	let part87 = [cm1, cm2, cm3, cm4, cm5, cm6, cm7, cm8,  "",  cm9, cm10, ""]
+	let part88 = [cn1, cn2, cn3, cn4,  "", cn5, cn6,  ""]
 	// MAKE SURE TO ADD THEM
 
 	let final1 = [part10,  part9,  part8,  part7,  part6,  part5,  part4,  part3,  part2,  part1]
@@ -698,7 +701,7 @@ function getChangeLogText(){
 	let final6 = [part60, part59, part58, part57, part56, part55, part54, part53, part52, part51]
 	let final7 = [part70, part69, part68, part67, part66, part65, part64, part63, part62, part61]
 	let final8 = [part80, part79, part78, part77, part76, part75, part74, part73, part72, part71]
-	let final9 = [part87, part86, part85, part84, part83, part82, part81]
+	let final9 = [part88, part87, part86, part85, part84, part83, part82, part81]
 	let final10= []
 
 	let entiresShown = 3

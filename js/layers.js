@@ -17464,7 +17464,7 @@ addLayer("m", {
 
                 // deal with placing
                 if (data5.active) {
-                        let to3 = data4.troopsTo
+                        let to3 = data5.troopsTo
                         let tot1 = dataBnk.commanders
                         let tot2 = dataBnk.generals
                         let tot3 = dataBnk.soldiers
@@ -18173,8 +18173,9 @@ addLayer("m", {
                                                         let n = "<br><h2><bdi style='color:#990000'>How to</bdi>:</h2><br>"
                                                         let o = "To place, move, or attack click the fifth button <b>Selection</b><br>"
                                                         let p = "Then click either 1 or 2 tiles to target where you are placing, moving or attacking<br>"
+                                                        let q = "The game only updates every tick, and time until next tick can be viewed in the other screen.<br>"
 
-                                                        return a + b + c + d + e + f + g + h + i + j + k + l + m + n + o + p
+                                                        return a + b + c + d + e + f + g + h + i + j + k + l + m + n + o + p + q
                                                 },
                                         ],
                                 ],
