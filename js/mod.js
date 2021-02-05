@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".8.23 Gorilla", // Hyena
+	num: ".8.24 Hyena", // giraffe
 	name: "",
 }
 
@@ -586,8 +586,14 @@ function getChangeLogText(){
 	cl1 = "v.8.23"
 	cl2 = "- Implemented retiring"
 	cl3 = "- Implemented getting attacked [except the battle part]"
-	
-	
+	cm1 = "v.8.24"
+	cm2 = "- Fixed a bug with retirment over the immune threshold"
+	cm3 = "- Created deterministic but rather random strength function for enemy tiles"
+	cm4 = "- Added attacking"
+	cm5 = "- Added getting attacked"
+	cm6 = "- Added the ability to buy troops"
+	cm7 = "- Fixed a bug with placement that it did not remove troops"
+	cm8 = "- Fixed a bufg with formatWhole that it did not deal well with negatives"
 
 	let part1  = [a1,  a2,  a3,  a4,  a5,  a6,  ""]
 	let part2  = [b1,  b2,  b3,  b4,  b5,  "",  b6,  b7,  "",  b8,  b9,  b10,  "",  b11,  b12,  ""]

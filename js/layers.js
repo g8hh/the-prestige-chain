@@ -17211,6 +17211,12 @@ addLayer("m", {
                                         generals: 1,
                                         soldiers: 1,
                                 },
+                                bankTicks: 0,
+                                boughtThisTick: {
+                                        commanders: 0,
+                                        generals: 0,
+                                        soldiers: 0,
+                                },
                                 time: 0,
                                 timeNeeded: 10,
                                 strength: 1,
@@ -17367,16 +17373,56 @@ addLayer("m", {
                 if (data.time < data.timeNeeded) return
 
                 data.time -= data.timeNeeded
+                data.bankTicks ++
+                if (data.bankTicks >= 10){
+                        data.bankTicks = 0
+                        data.boughtThisTick = {
+                                commanders: 0,
+                                generals: 0,
+                                soldiers: 0,
+                        }
+                }
                         
                 if (data.time > data.timeNeeded * 10) data.time = data.timeNeeded * 10
 
-                
                 // deal with attacks 
                 if (data3.active){
                         let from1 = data3.troopsFrom
                         let to1 = data3.troopsTo
-                        if (isAdjacent(from1, to1) && data2.beaten[from1] && !data2.beaten[to1]) {
-                                //actually do the attack
+                        if (isAdjacent(from1, to1) && data2.beaten[from1] && !data2.beaten[to1] && dataCom[from1] > 1) {
+                                let x = {
+                                        commanders: Math.floor(dataCom[from1]/2),
+                                        generals:   Math.floor(dataGen[from1]/2),
+                                        soldiers:   Math.floor(dataSol[from1]/2),
+                                }
+                                let result = getAttackingResult(x, to1)
+
+                                dataCom[from1] -= Math.floor(dataCom[from1]/2)
+                                dataGen[from1] -= Math.floor(dataGen[from1]/2)
+                                dataSol[from1] -= Math.floor(dataSol[from1]/2)
+                                
+                                if (x.win){
+                                        dataSol[to1] = Math.floor(dataCom[from1]/2)
+                                        dataCom[to1] = Math.floor(dataGen[from1]/2)
+                                        dataGen[to1] = Math.floor(dataSol[from1]/2) 
+                                        //set troops
+                                        data2.beaten[to1] = true // own the city
+                                        data.tilesCompleted ++ //we own one more city
+
+                                        //retire 10% of both forces
+
+                                        dataCom[to1]   = retireRemaining(dataCom[to1],      2, .1)
+                                        dataGen[to1]   = retireRemaining(dataGen[to1],     20, .1)
+                                        dataSol[to1]   = retireRemaining(dataSol[to1],   1000, .1)
+                                        dataCom[from1] = retireRemaining(dataCom[from1],    2, .1)
+                                        dataGen[from1] = retireRemaining(dataGen[from1],   20, .1)
+                                        dataSol[from1] = retireRemaining(dataSol[from1], 1000, .1)
+                                } else {
+                                        //uh oh we lost, just lose the troops
+                                        // and we've already done that
+                                        
+                                        
+                                }
                         } else {
                                 data3.active = false
                         }
@@ -17432,6 +17478,7 @@ addLayer("m", {
                                 if (move1 < 1) move1 = Math.sqrt(move1)
                                 move1 = roundRandom(move1) //now an integer
                                 dataCom[to3] += move1
+                                dataBnk.commanders -= move1
 
                                 //deal with generals
                                 
@@ -17439,6 +17486,7 @@ addLayer("m", {
                                 if (move2 < 1) move2 = Math.sqrt(move2)
                                 move2 = roundRandom(move2) //now an integer
                                 dataGen[to3] += move2
+                                dataBnk.generals -= move2
 
                                 //deal with soldiers
                                 
@@ -17446,6 +17494,7 @@ addLayer("m", {
                                 if (move3 < 1) move3 = Math.sqrt(move3)
                                 move3 = roundRandom(move3) //now an integer
                                 dataSol[to3] += move3
+                                dataBnk.soldiers -= move3
                         } else {
                                 data5.active = false 
                         }
@@ -17455,6 +17504,7 @@ addLayer("m", {
                 if (wonTwice){
                         attackBool = false
                         attackedLocation = 11
+                        fromLocation = 11
                         for (i in data2.beaten){
                                 if (!data2.beaten[i]) continue
                                 if (attackBool) {
@@ -17466,6 +17516,7 @@ addLayer("m", {
                                         if (!data2.beaten[i-1] && Math.random() < .01) {
                                                 attackBool = true
                                                 attackedLocation = i
+                                                fromLocation = i - 1
                                                 break
                                         } 
                                 }
@@ -17473,6 +17524,7 @@ addLayer("m", {
                                         if (!data2.beaten[i+1] && Math.random() < .01) {
                                                 attackBool = true
                                                 attackedLocation = i
+                                                fromLocation = i + 1
                                                 break
                                         } 
                                 }
@@ -17480,6 +17532,7 @@ addLayer("m", {
                                         if (!data2.beaten[i+10] && Math.random() < .01) {
                                                 attackBool = true
                                                 attackedLocation = i
+                                                fromLocation = i + 10
                                                 break
                                         } 
                                 }
@@ -17487,24 +17540,34 @@ addLayer("m", {
                                         if (!data2.beaten[i-10] && Math.random() < .01) {
                                                 attackBool = true
                                                 attackedLocation = i
+                                                fromLocation = i - 10
                                                 break
                                         } 
                                 }
                         }
-                        if (attackedBool){
-                                // deal with attack at attackedLocation
+                        if (attackedBool){ // if we got attacked
+                                let x = getAttackedResult({
+                                        commanders: dataCom[attackedLocation],
+                                        generals: dataGen[attackedLocation],
+                                        soldiers: dataSol[attackedLocation]
+                                },attackedLocation, fromLocation)
+                                if (x.win) {
+                                        dataSol[attackedLocation] = x.soldiers // update soldiers
+                                        // yay we won
+                                } else {
+                                        // uh oh we lost
+                                        dataSol[attackedLocation] = 0
+                                        dataCom[attackedLocation] = 0
+                                        dataGen[attackedLocation] = 0 //reset troops
+                                        data2.beaten[attackedLocation] = false //dont own the city
+                                        data.tilesCompleted -- //we own one less city
+                                }
                         }
                 }
 
                 // deal with retiring
                 if (true){
                         //retireRemaining(amt, safe, .005)
-                        /*
-                        let dataCom = data.commandersPlaced
-                        let dataGen = data.generalsPlaced
-                        let dataSol = data.soldiersPlaced
-                        let dataBnk = data.troopsBank
-                        */
                         for (i in dataCom){
                                 if (dataCom[i] == undefined) continue
                                 dataCom[i] = retireRemaining(dataCom[i],    2, .005)
@@ -17516,7 +17579,8 @@ addLayer("m", {
                         dataBnk.soldiers   = retireRemaining(dataBnk.soldiers  , 1000, .005)                        
                 }
 
-                /*                
+                /* 
+                getAttackingResult(attackingForce, id){ // getAttackedResult(attackingForce, id, fromid){     
                 Each commander can command 10 generals and each general can command 50 soldiers
                 up to 100 soldiers/10% can move in/out of each tile (minimum of the pair) and 
                 each enemy tile has a 1% chance to attack an adj allied tile
@@ -17524,6 +17588,9 @@ addLayer("m", {
                 you can only get attacked once per tick
                 each tick .5% of your troops retire 
                 (rounded down, and 2/20/1000 are immune from retiring on each tile/in bank)
+
+                If you attack you take half your troops rounded down, 
+                and you only can attack if you have >= two commanders on the tile
 
 
                 there are a couple of types of tiles
@@ -17846,6 +17913,111 @@ addLayer("m", {
                                 else data.clicksSinceDecl = 0
                         },
                 }, 
+                21: {
+                        title(){
+                                return "Buy Commanders"
+                        },
+                        display(){
+                                if (player.tab != "m") return ""
+                                if (player.subtabs.m.mainTabs != "Maps") return ""
+
+                                if (player.m.army.boughtThisTick.commanders == 1000) return "Maxed!"
+
+                                return "Buy a commander!<br>Requires: " + format(tmp.m.clickables[21].cost)
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        cost(){
+                                let x = player.m.army.boughtThisTick.commanders
+                                return Decimal.pow(10, Decimal.plus(1750, Decimal.pow(10, x)))
+                        },
+                        canClick(){
+                                return player.m.points.gt(tmp.m.clickables[21].cost)
+                        },
+                        maxPoss(){
+                                let x = player.m.points
+                                let a = Decimal.pow(10, 1750).times(10)
+                                if (x.lt(a)) return new Decimal(0)
+                                return x.div(a).times(10).log(10).log(10).floor().plus(1).max(1000).toNumber()
+                        },
+                        onClick(){
+                                let data = player.m.army
+                                if (!this.canClick()) return 
+                                data.boughtThisTick.commanders ++ 
+                                data.troopsBank.commanders ++
+                        },
+                },
+                22: {
+                        title(){
+                                return "Buy Generals"
+                        },
+                        display(){
+                                if (player.tab != "m") return ""
+                                if (player.subtabs.m.mainTabs != "Maps") return ""
+
+                                if (player.m.army.boughtThisTick.generals == 1000) return "Maxed!"
+
+                                return "Buy a general!<br>Requires: " + format(tmp.m.clickables[22].cost)
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        cost(){
+                                let x = player.m.army.boughtThisTick.generals
+                                return Decimal.pow(10, 1700).times(Decimal.pow(3,Decimal.pow(3,x)))
+                        },
+                        canClick(){
+                                return player.m.points.gt(tmp.m.clickables[22].cost)
+                        },
+                        maxPoss(){
+                                let x = player.m.points
+                                let a = Decimal.pow(10, 1700).times(3)
+                                if (x.lt(a)) return new Decimal(0)
+                                return x.div(a).times(3).log(3).log(3).floor().plus(1).max(1000).toNumber()
+                        },
+                        onClick(){
+                                let data = player.m.army
+                                if (!this.canClick()) return 
+                                data.boughtThisTick.generals ++ 
+                                data.troopsBank.generals ++
+                        },
+                },
+                23: {
+                        title(){
+                                return "Buy Soldiers"
+                        },
+                        display(){
+                                if (player.tab != "m") return ""
+                                if (player.subtabs.m.mainTabs != "Maps") return ""
+
+                                if (player.m.army.boughtThisTick.soldiers == 1000) return "Maxed!"
+
+                                return "Buy a general!<br>Requires: " + format(tmp.m.clickables[23].cost)
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        cost(){
+                                let x = player.m.army.boughtThisTick.soldiers
+                                return Decimal.pow(10, 1000).times(Decimal.pow(2,Decimal.pow(2,x)))
+                        },
+                        canClick(){
+                                return player.m.points.gt(tmp.m.clickables[23].cost)
+                        },
+                        maxPoss(){
+                                let x = player.m.points
+                                let a = Decimal.pow(10, 1000).times(2)
+                                if (x.lt(a)) return new Decimal(0)
+                                return x.div(a).times(2).log(2).log(2).floor().plus(1).max(1000).toNumber()
+                        },
+                        onClick(){
+                                let data = player.m.army
+                                if (!this.canClick()) return 
+                                data.boughtThisTick.soldiers ++ 
+                                data.troopsBank.soldiers ++
+                        },
+                },
         },
         tabFormat: {
                 "Upgrades": {
@@ -17965,8 +18137,8 @@ addLayer("m", {
                                                         if (player.subtabs.m.mainTabs != "Maps") return ""
                                                         let data = player.m.army
 
-                                                        let a = "This will allow you to buy troops (eventually)<br>"
-                                                        let b = "Troops cost grows double-exponentially, Soldiers: 1e1000*2^2^x<br>"
+                                                        let a = "This will allow you to buy troops (resets cost in " + formatWhole(10-data.bankTicks) + " ticks)<br>"
+                                                        let b = "Troops cost grows double-exponentially and reset every 10 ticks, Soldiers: 1e1000*2^2^x<br>"
                                                         let c = "Generals: 1e1700*3^3^x"
                                                         let d = ", Commanders: 1e1750*10^10^x<br>"
 

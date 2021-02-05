@@ -268,9 +268,12 @@ function getTileNameDisp(data){
         return player.m.army.tiles.beaten[data] ? `<bdi style="color:#AA0000">Owned</bdi><br>` : 'Enemy<br>'
 }
 
-function getTimeAmountsDisp(id){
+function getSecondMapData(id){
         let data = player.m.army
-        if (!data.tiles.beaten[id]) return ""
+        if (!data.tiles.beaten[id]) {
+                //getSquareStrength
+                return "Strength: " + formatWhole(getSquareStrength(id))
+        }
         let a = '<bdi style="color:#AA0000">C:' + formatWhole(data.commandersPlaced[id]) + " G:" 
         let b = formatWhole(data.generalsPlaced[id]) + " S:" + formatWhole(data.soldiersPlaced[id])
         return a + b + "<br>"
@@ -314,10 +317,75 @@ function isAdjacent(a,b){
 
 function retireRemaining(a,save,chance){
         if (a <= save) return a
-        return a + roundRandom((a-save)*(1-chance))
+        return save + roundRandom((a-save)*(1-chance))
 }
 
+function getSquareStrength(id){
+        let x = player.m.army.mapsCompleted
+        let y = player.m.army.tilesCompleted
+        let init = Math.sqrt(x + 1) * 20
+        let a = id % 10
+        let b = (id - a) / 10
+        let f1 = mod(a,b) + mod(b,a) + mod(x,b) + mod(x,a) + mod(a, x+1) + mod(b, x+1)
+        let f2 = mod(10-a, b) + mod(10-b,a) + mod(x, 10-b) + b + a
+        let f3 = mod(y,a) + mod(y,b) + mod(x+1,y+2)
 
+        let main = init*(f1+f2)*f3
+        main = main / (y + 5)
+        if (main > 100) main = Math.sqrt(main/100) * 100
+
+        return Math.floor(main * (y+5))
+}
+
+function getAttackedResult(attackingForce, id, fromid){
+        let enemyFactor = 1.3 * (.5 + Math.random())
+        let alliedFactor = (player.m.army.tiles.type[id] == 4 ? 2 : 1) * (.5 + Math.random())
+
+        let alliedBaseStrength = Math.min(500 * attackingForce.commanders,
+                                           50 * attackingForce.generals,
+                                           attackingForce.soldiers)
+        let alliedTotalStrength = alliedFactor * alliedBaseStrength
+        let enemyTotalStrength = getSquareStrength(fromid)
+
+        if (enemyTotalStrength > alliedTotalStrength) {
+                return {
+                        commanders: 0,
+                        generals: 0,
+                        soldiers: 0,
+                        win: false,
+                }
+        }
+        let remFactor = Math.sqrt(1 - (enemyTotalStrength/alliedTotalStrength)**2)
+        return {
+                commanders: attackingForce.commanders,
+                generals: attackingForce.generals,
+                soldiers: roundRandom(remFactor * attackingForce.soldiers),
+                win: true,
+        }
+}
+
+function getAttackingResult(attackingForce, id){ 
+        let enemyFactor = (player.m.army.tiles.type[id] == 4 ? 2 : 1) * (.5 + Math.random())
+        let alliedFactor = (.5 + Math.random())
+
+        let alliedBaseStrength = Math.min(500 * attackingForce.commanders,
+                                           50 * attackingForce.generals,
+                                           attackingForce.soldiers)
+        let alliedTotalStrength = alliedFactor * alliedBaseStrength
+        let enemyTotalStrength = getSquareStrength(id)
+
+        if (enemyTotalStrength > alliedTotalStrength) {
+                return {
+                        soldiers: 0,
+                        win: false,
+                }
+        }
+        let remFactor = Math.sqrt(1 - (enemyTotalStrength/alliedTotalStrength)**2)
+        return {
+                soldiers: roundRandom(remFactor * attackingForce.soldiers),
+                win: true,
+        }
+}
 
 
 

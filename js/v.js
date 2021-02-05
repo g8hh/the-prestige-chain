@@ -180,7 +180,7 @@ function loadVue() {
 			v-bind:style="{'background-color': getMapColor(player.m.army.tiles.type[data])}"
 			v-bind:class="{maptile: true}">
 			<span v-html="getTileNameDisp(data)"></span>
-			<span v-html="getTimeAmountsDisp(data)"></span>
+			<span v-html="getSecondMapData(data)"></span>
 		</button>
 		`
 	})
