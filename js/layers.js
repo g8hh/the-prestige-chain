@@ -17243,6 +17243,7 @@ addLayer("m", {
                                         active: 0,
                                         all: ["attack", "move", "place", "do nothing"], //more maybe?
                                 },
+                                attackLog: [],
                                 active: true,
                         },
                 } //no comma here
@@ -17551,8 +17552,13 @@ addLayer("m", {
                                         generals: dataGen[attackedLocation],
                                         soldiers: dataSol[attackedLocation]
                                 },attackedLocation, fromLocation)
+                                let newAttackLog = {}
+                                newAttackLog.win = x.win
+                                newAttackLog.attacker = "You got attacked on T" + attackedLocation
+                                newAttackLog.troopsRemaining = x.soldiers
                                 if (x.win) {
                                         dataSol[attackedLocation] = x.soldiers // update soldiers
+                                        newAttackLog.troopsRemaining += dataGen[attackedLocation] + dataSol[attackedLocation]
                                         // yay we won
                                 } else {
                                         // uh oh we lost
@@ -17562,8 +17568,13 @@ addLayer("m", {
                                         data2.beaten[attackedLocation] = false //dont own the city
                                         data.tilesCompleted -- //we own one less city
                                 }
+                                data.attackLog.push(newAttackLog)
                         }
                 }
+
+                if (data.attackLog.length > 3) {
+                        data.attackLog = data.attackLog.slice(data.attackLog.length - 3, )
+                } // take only the last three elements
 
                 // deal with retiring
                 if (true){
@@ -17890,12 +17901,18 @@ addLayer("m", {
                                 if (player.subtabs.m.mainTabs != "Maps") return ""
 
                                 let data = player.m.army
-                                let a = ""
-                                if (data.clicksSinceDecl == 0) a = "Click this to reset clicks<br>"
-                                if (data.mode.active == 0) return a + "Clicking will make the next 2 map clicks define where you are attacking"
-                                if (data.mode.active == 1) return a + "Clicking will make the next 2 map clicks define where you are moving"
-                                if (data.mode.active == 2) return a + "Clicking will make the next map click define where you are placing"
-                                if (data.mode.active == 3) return a || "Clicking will do nothing"
+                                if (data.mode.active == 0) {
+                                        if (data.clicksSinceDecl == 1) return "Click where you want to attack"
+                                        return "Click this to reset clicks<br>Click where you want to take troops from to attack"
+                                }
+                                if (data.mode.active == 1) {
+                                        if (data.clicksSinceDecl == 1) return "Click where you want to move troops"
+                                        return "Click this to reset clicks<br>Click where you want to move troops from"
+                                }
+                                if (data.mode.active == 2){
+                                         return "Click this to reset clicks<br>Click where you want to place troops"
+                                }
+                                if (data.mode.active == 3) return "Clicking will do nothing"
 
                                 
                                 console.log("bug")
@@ -18166,16 +18183,38 @@ addLayer("m", {
                                                         let g = "<bdi style='font-size:50%'>Hint: You need at least one Commander and one General to fight!</bdi><br>"
                                                         let h = "<br><h2><bdi style='color:#990000'>Attacking</bdi>:</h2><br>"
                                                         let i = "When attacking or attacked, your troops and the enemy troops<br>"
-                                                        let j = "get a random attack factor from .5 to 1.5 (uniformly)<br>"
+                                                        let j = "both get a random attack factor from .5 to 1.5 (uniformly)<br>"
+                                                        let j2= "When you attack you take half your troops from a tile (which has to be adjacent)<br>"
+                                                        let j3= "Your strength is the number of soldiers commanded<br>Enemy strength is displayed on the tile<br>"
                                                         let k = "The soldiers then fight, and the remaining prevailing troops stay alive unharmed<br>"
                                                         let l = "The fighting happens instantly. Upon a win, 10% of the troops on that tile retire<br>"
-                                                        let m = "Finally, .5% of troops retired on each tick (2/20/1000 immune on either a tile or unplaced)<br>"
+                                                        let m = "Additionally, .5% of troops retire on each tick<br>For all types of retiring 2/20/1000 troops are immune to retiring<br>"
                                                         let n = "<br><h2><bdi style='color:#990000'>How to</bdi>:</h2><br>"
                                                         let o = "To place, move, or attack click the fifth button <b>Selection</b><br>"
                                                         let p = "Then click either 1 or 2 tiles to target where you are placing, moving or attacking<br>"
-                                                        let q = "The game only updates every tick, and time until next tick can be viewed in the other screen.<br>"
+                                                        let q = "The game only updates every tick<br>Time until next tick can be viewed in the <b>Stats</b> page<br>"
+                                                        let r = ""
+                                                        let s1= ""
+                                                        let s2= ""
+                                                        let s3= ""
+                                                        let s4= ""
+                                                        let s5= ""
+                                                        let s6= ""
+                                                        if (data.attackLog[0] != undefined) {
+                                                                r = "<br><h2><bdi style='color:#990000'>Attack Log</bdi>:</h2><br>"
+                                                                s1= data.attackLog[0].attacker + ". You had " 
+                                                                s2= formatWhole(data.attackLog[0].troopsRemaining) + " soldiers remaining, meaning you " + (data.attackLog[0].win ? "won" : "lost") + ".<br>"
+                                                        }
+                                                        if (data.attackLog[1] != undefined) {
+                                                                s3= data.attackLog[1].attacker + ". You had " 
+                                                                s4= formatWhole(data.attackLog[1].troopsRemaining) + " soldiers remaining, meaning you " + (data.attackLog[1].win ? "won" : "lost") + ".<br>"
+                                                        }
+                                                        if (data.attackLog[2] != undefined) {
+                                                                s5= data.attackLog[2].attacker + ". You had " 
+                                                                s6= formatWhole(data.attackLog[2].troopsRemaining) + " soldiers remaining, meaning you " + (data.attackLog[2].win ? "won" : "lost") + ".<br>"
+                                                        }
 
-                                                        return a + b + c + d + e + f + g + h + i + j + k + l + m + n + o + p + q
+                                                        return a + b + c + d + e + f + g + h + j2 + j3 + i + j + k + l + m + n + o + p + q + r + s1 + s2 + s3 + s4 + s5 + s6
                                                 },
                                         ],
                                 ],
@@ -18183,6 +18222,28 @@ addLayer("m", {
                                         return true
                                 },
                         },
+                        "Rewards": {
+                                content: [
+                                        ["display-text",
+                                                function() {
+                                                        if (player.tab != "m") return ""
+                                                        if (player.subtabs.m.mainTabs != "Maps") return ""
+                                                        let data = player.m.army
+
+                                                        let a = "You have completed " + formatWhole(data.tilesCompleted) + " tiles,<br>"
+                                                        let b = formatWhole(data.mapsCompleted) + " maps, and " + formatWhole(data.worldsCompleted) + " worlds.<br>"
+                                                        let c = "<br><h2><bdi style='color:#990000'>Rewards for Tiles</bdi>:</h2><br>"
+                                                        let d = "LULW YOU THINK I CODED THIS? <br>[by the way this is a test thing and itll disappear soon}"
+
+
+                                                        return a + b + c + d
+                                                },
+                                        ],
+                                ],
+                                unlocked(){
+                                        return player.m.army.tilesCompleted > 0 || true
+                                },
+                        }, // attackLog
                 },
         },
         doReset(layer){

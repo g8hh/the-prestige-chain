@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".8.25.2 Iguana", // Jellyfish
+	num: ".8.25.3 Iguana", // Jellyfish
 	name: "",
 }
 
@@ -604,6 +604,9 @@ function getChangeLogText(){
 	cn6 = "- Fixed a bug with placing when moving was not the same"
 	cn7 = "v.8.25.2"
 	cn8 = "- Fixed a bug with soliders being placed based on general amount"
+	cn9 = "v.8.25.3"
+	cn10= "- Made an attack log"
+	cn11= "- Started a reward display feature"
 
 	let part1  = [a1,  a2,  a3,  a4,  a5,  a6,  ""]
 	let part2  = [b1,  b2,  b3,  b4,  b5,  "",  b6,  b7,  "",  b8,  b9,  b10,  "",  b11,  b12,  ""]
