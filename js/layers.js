@@ -17490,7 +17490,7 @@ addLayer("m", {
 
                                 //deal with soldiers
                                 
-                                let move3 = Math.min(100, tot2 * .1)
+                                let move3 = Math.min(100, tot3 * .1)
                                 if (move3 < 1) move3 = Math.sqrt(move3)
                                 move3 = roundRandom(move3) //now an integer
                                 dataSol[to3] += move3

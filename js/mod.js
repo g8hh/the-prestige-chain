@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".8.25.1 Iguana", // Jellyfish
+	num: ".8.25.2 Iguana", // Jellyfish
 	name: "",
 }
 
@@ -602,6 +602,8 @@ function getChangeLogText(){
 	cn4 = "- Minor display changes"
 	cn5 = "v.8.25.1"
 	cn6 = "- Fixed a bug with placing when moving was not the same"
+	cn7 = "v.8.25.2"
+	cn8 = "- Fixed a bug with soliders being placed based on general amount"
 
 	let part1  = [a1,  a2,  a3,  a4,  a5,  a6,  ""]
 	let part2  = [b1,  b2,  b3,  b4,  b5,  "",  b6,  b7,  "",  b8,  b9,  b10,  "",  b11,  b12,  ""]
@@ -690,7 +692,7 @@ function getChangeLogText(){
 	let part85 = [cj1, cj2, cj3, cj4, cj5, cj6, cj7, cj8, cj9, cj10, cj11, cj12, cj13, cj14, ""]
 	let part86 = [ck1, ck2, ck3, ck4, ck5, ck6, ck7,  ""]
 	let part87 = [cm1, cm2, cm3, cm4, cm5, cm6, cm7, cm8,  "",  cm9, cm10, ""]
-	let part88 = [cn1, cn2, cn3, cn4,  "", cn5, cn6,  ""]
+	let part88 = [cn1, cn2, cn3, cn4,  "", cn5, cn6,  "", cn7, cn8, ""]
 	// MAKE SURE TO ADD THEM
 
 	let final1 = [part10,  part9,  part8,  part7,  part6,  part5,  part4,  part3,  part2,  part1]
