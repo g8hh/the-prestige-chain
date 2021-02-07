@@ -17221,8 +17221,11 @@ addLayer("m", {
                                 timeNeeded: 10,
                                 strength: 1,
                                 tilesCompleted: 0,
+                                bestTilesCompleted: 0,
                                 mapsCompleted: 0,
+                                bestMapsCompleted: 0,
                                 worldsCompleted: 0,
+                                bestWorldsCompleted: 0,
                                 troopsMoving: {
                                         active: false,
                                         troopsTo: 11,
@@ -17291,6 +17294,7 @@ addLayer("m", {
                 if (hasUpgrade("k", 53)) x = x.times(tmp.k.clickables[73].effect)
                 if (hasUpgrade("l", 32)) x = x.times(tmp.k.challenges[12].rewardEffect)
                 if (hasUpgrade("l", 34)) x = x.times(tmp.k.challenges[12].rewardEffect)
+                x = x.times(tmp.m.armyRewards.tiles[1].effect)
 
                 return x
         },
@@ -17366,6 +17370,9 @@ addLayer("m", {
                                 data5.troopsTo = data.lastClicked[0]
                         }
                 }
+                data.bestTilesCompleted = Math.max(data.bestTilesCompleted, data.tilesCompleted)
+                data.bestMapsCompleted  = Math.max(data.bestMapsCompleted,  data.mapsCompleted)
+                data.bestWorldsCompleted= Math.max(data.bestWorldsCompleted,data.worldsCompleted)
                 
                 if (!data.active) return 
 
@@ -17401,11 +17408,17 @@ addLayer("m", {
                                 dataCom[from1] -= Math.floor(dataCom[from1]/2)
                                 dataGen[from1] -= Math.floor(dataGen[from1]/2)
                                 dataSol[from1] -= Math.floor(dataSol[from1]/2)
-                                
-                                if (x.win){
-                                        dataSol[to1] = Math.floor(dataCom[from1]/2)
-                                        dataCom[to1] = Math.floor(dataGen[from1]/2)
-                                        dataGen[to1] = Math.floor(dataSol[from1]/2) 
+                                let newAttackLog = {}
+                                newAttackLog.win = result.win
+                                console.log(result)
+                                newAttackLog.attacker = "You attacked T" + to1
+                                newAttackLog.troopsRemaining = result.soldiers
+                                data.attackLog.push(newAttackLog)
+
+                                if (result.win){
+                                        dataSol[to1] = result.soldiers
+                                        dataCom[to1] = Math.floor(dataCom[from1]/2)
+                                        dataGen[to1] = Math.floor(dataGen[from1]/2)
                                         //set troops
                                         data2.beaten[to1] = true // own the city
                                         data.tilesCompleted ++ //we own one more city
@@ -17546,7 +17559,7 @@ addLayer("m", {
                                         } 
                                 }
                         }
-                        if (attackedBool){ // if we got attacked
+                        if (attackBool){ // if we got attacked
                                 let x = getAttackedResult({
                                         commanders: dataCom[attackedLocation],
                                         generals: dataGen[attackedLocation],
@@ -17656,6 +17669,25 @@ addLayer("m", {
         },
         canReset(){
                 return player.m.time >= 2 && !hasMilestone("m", 5) && tmp.m.getResetGain.gt(0)
+        },
+        armyRewards: {
+                tiles: {
+                        1: {
+                                prefix: "You gain ",
+                                suffix: "x Maps",
+                                effect(){
+                                        let x = player.m.army.bestTilesCompleted
+                                        let ret = Decimal.pow(x + 3, Math.sqrt(x)).pow(20)
+
+                                        return ret
+                                },
+                                isDefault(){
+                                        return player.m.army.bestTilesCompleted == 0
+                                },
+                        },
+                },
+                maps: {},
+                worlds: {},
         },
         milestones: {
                 //2^^n
@@ -17903,17 +17935,19 @@ addLayer("m", {
                                 let data = player.m.army
                                 if (data.mode.active == 0) {
                                         if (data.clicksSinceDecl == 1) return "Click where you want to attack"
-                                        return "Click this to reset clicks<br>Click where you want to take troops from to attack"
+                                        if (data.clicksSinceDecl == 0) return "Click this to stop specifying<br>Click where you want to take troops from to attack"
+                                        return "Click this to specify where you want to attack"
                                 }
                                 if (data.mode.active == 1) {
                                         if (data.clicksSinceDecl == 1) return "Click where you want to move troops"
-                                        return "Click this to reset clicks<br>Click where you want to move troops from"
+                                        if (data.clicksSinceDecl == 0) return "Click this to stop specifying<br>Click where you want to move troops from"
+                                        return "Click this to specify where you want to move"
                                 }
                                 if (data.mode.active == 2){
-                                         return "Click this to reset clicks<br>Click where you want to place troops"
+                                        if (data.clicksSinceDecl == 0) return "Click this to stop specifying<br>Click where you want to place troops"
+                                        return "Click this to specify where you want to place"
                                 }
                                 if (data.mode.active == 3) return "Clicking will do nothing"
-
                                 
                                 console.log("bug")
                                 return ""
@@ -18230,10 +18264,21 @@ addLayer("m", {
                                                         if (player.subtabs.m.mainTabs != "Maps") return ""
                                                         let data = player.m.army
 
-                                                        let a = "You have completed " + formatWhole(data.tilesCompleted) + " tiles,<br>"
-                                                        let b = formatWhole(data.mapsCompleted) + " maps, and " + formatWhole(data.worldsCompleted) + " worlds.<br>"
+                                                        let a = "You have completed " + formatWhole(data.bestTilesCompleted) + " tiles,<br>"
+                                                        let b = formatWhole(data.bestMapsCompleted) + " maps, and " + formatWhole(data.bestWorldsCompleted) + " worlds.<br>"
                                                         let c = "<br><h2><bdi style='color:#990000'>Rewards for Tiles</bdi>:</h2><br>"
-                                                        let d = "LULW YOU THINK I CODED THIS? <br>[by the way this is a test thing and itll disappear soon}"
+                                                        let d = ""
+                                                        let data2 = tmp.m.armyRewards
+                                                        let dataT = data2.tiles
+                                                        for (i in dataT){
+                                                                j = dataT[i]
+                                                                if (j.isDefault) continue
+                                                                d += "•" + j.prefix
+                                                                d += format(j.effect) 
+                                                                d += j.suffix
+                                                                d += "<br>"
+                                                        }
+                                                        d += "<br>"
 
 
                                                         return a + b + c + d
@@ -18241,7 +18286,7 @@ addLayer("m", {
                                         ],
                                 ],
                                 unlocked(){
-                                        return player.m.army.tilesCompleted > 0 || true
+                                        return player.m.army.bestTilesCompleted > 0 
                                 },
                         }, // attackLog
                 },
