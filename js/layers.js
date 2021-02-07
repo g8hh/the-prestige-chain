@@ -16868,7 +16868,6 @@ addLayer("m", {
                                                 99: 0,
                                         },
                                         beaten: {
-                                                list: [11],
                                                 11: false,
                                                 12: false,
                                                 13: false,
@@ -17521,6 +17520,7 @@ addLayer("m", {
                         fromLocation = 11
                         for (i in data2.beaten){
                                 if (!data2.beaten[i]) continue
+                                if (isNaN(Number(i))) continue
                                 if (attackBool) {
                                         console.log( "uhoh")
                                         break
