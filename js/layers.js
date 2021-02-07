@@ -17603,8 +17603,7 @@ addLayer("m", {
                         dataBnk.soldiers   = retireRemaining(dataBnk.soldiers  , 1000, .005)                        
                 }
 
-                /* 
-                getAttackingResult(attackingForce, id){ // getAttackedResult(attackingForce, id, fromid){     
+                /*    
                 Each commander can command 10 generals and each general can command 50 soldiers
                 up to 100 soldiers/10% can move in/out of each tile (minimum of the pair) and 
                 each enemy tile has a 1% chance to attack an adj allied tile
@@ -17832,7 +17831,7 @@ addLayer("m", {
                                 if (player.subtabs.m.mainTabs != "Maps") return ""
                                 let data = player.m.army
 
-                                return "Toggle Click Setting<br>Next click will cause clicking to " + data.mode.all[(data.mode.active + 1)%data.mode.all.length]
+                                return "<h2 style='color:#990033'><<br>" + data.mode.all[(data.mode.active + 1)%data.mode.all.length] + "</h2>"
                         },
                         unlocked(){
                                 return true
@@ -17845,7 +17844,7 @@ addLayer("m", {
                                 data.mode.active = (data.mode.active + 1) % data.mode.all.length
                         },
                 },
-                12: {
+                13: {
                         title(){
                                 return ""
                         },
@@ -17854,7 +17853,7 @@ addLayer("m", {
                                 if (player.subtabs.m.mainTabs != "Maps") return ""
                                 let data = player.m.army
 
-                                return "Toggle Click Setting<br>Next click will cause clicking to " + data.mode.all[mod(data.mode.active - 1, data.mode.all.length)]
+                                return "<h2 style='color:#990033'>><br>" + data.mode.all[mod(data.mode.active - 1, data.mode.all.length)] + "</h2>"
                         },
                         unlocked(){
                                 return true
@@ -17867,7 +17866,7 @@ addLayer("m", {
                                 data.mode.active = mod(data.mode.active - 1, data.mode.all.length)
                         },
                 },
-                13: {
+                12: {
                         title(){
                                 return ""
                         },
@@ -18044,7 +18043,7 @@ addLayer("m", {
 
                                 if (player.m.army.boughtThisTick.soldiers == 1000) return "Maxed!"
 
-                                return "Buy a general!<br>Requires: " + format(tmp.m.clickables[23].cost)
+                                return "Buy a soldier!<br>Requires: " + format(tmp.m.clickables[23].cost)
                         },
                         unlocked(){
                                 return true

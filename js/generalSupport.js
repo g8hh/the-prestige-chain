@@ -322,13 +322,12 @@ function retireRemaining(a,save,chance){
 
 function getSquareStrength(id){
         let x = player.m.army.mapsCompleted
-        let y = player.m.army.tilesCompleted
         let init = Math.sqrt(x + 1) / 2
         let a = id % 10
         let b = (id - a) / 10
         let f1 = mod(a,b) + mod(b,a) + mod(x,b) + mod(x,a) + mod(a, x+1) + mod(b, x+1) + 20 - a - b
         let f2 = mod(10-a, b) + mod(10-b,a) + mod(x, 10-b) + b + a + mod(-a, b) + mod(-b, a)
-        let f3 = mod(y,a) + mod(y,b) + mod(x+1,y+2) + Math.sin(a)**2 + Math.cos(b)**2 + Math.sin(y)**2
+        let f3 = mod(x+1,2) + Math.sin(a)**2 + Math.cos(b)**2
 
         let main = init*(f1+f2)*f3
         main = main / (x + 5)

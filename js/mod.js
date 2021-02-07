@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".8.26 Jellyfish", // Kangaroo
+	num: ".8.27 Kangaroo", // Lion
 	name: "",
 }
 
@@ -612,6 +612,12 @@ function getChangeLogText(){
 	co3 = "- Fixed attacking calling x.win instead of result.win i.e. you never won battles"
 	co4 = "- Made the base enemy strength 20x less"
 	co5 = "- Added the first reward and a reward display"
+	cp1 = "v.8.27"
+	cp2 = "- Fixed some wording errors"
+	cp3 = "- Changed the layerout of the initial maps buttons"
+	cp4 = "- Fixed a bug with achievements not being rewarded"
+	cp5 = "- Fixed tiles getting stronger based on tiles beaten"
+
 
 	let part1  = [a1,  a2,  a3,  a4,  a5,  a6,  ""]
 	let part2  = [b1,  b2,  b3,  b4,  b5,  "",  b6,  b7,  "",  b8,  b9,  b10,  "",  b11,  b12,  ""]
@@ -702,6 +708,7 @@ function getChangeLogText(){
 	let part87 = [cm1, cm2, cm3, cm4, cm5, cm6, cm7, cm8,  "",  cm9, cm10, ""]
 	let part88 = [cn1, cn2, cn3, cn4,  "", cn5, cn6,  "", cn7, cn8, ""]
 	let part89 = [co1, co2, co3, co4, co5,  ""]
+	let part90 = [cp1, cp2, cp3, cp4, cp5,  ""]
 	// MAKE SURE TO ADD THEM
 
 	let final1 = [part10,  part9,  part8,  part7,  part6,  part5,  part4,  part3,  part2,  part1]
@@ -712,7 +719,7 @@ function getChangeLogText(){
 	let final6 = [part60, part59, part58, part57, part56, part55, part54, part53, part52, part51]
 	let final7 = [part70, part69, part68, part67, part66, part65, part64, part63, part62, part61]
 	let final8 = [part80, part79, part78, part77, part76, part75, part74, part73, part72, part71]
-	let final9 = [part89, part88, part87, part86, part85, part84, part83, part82, part81]
+	let final9 = [part90, part89, part88, part87, part86, part85, part84, part83, part82, part81]
 	let final10= []
 
 	let entiresShown = 3

@@ -461,11 +461,11 @@ PROGRESSION_MILESTONES = {
 	329: ()=> player.k.lock.repeatables[82].gte(171),
 	330: ()=> hasUpgrade("m", 23),
 	331: ()=> player.m.army.troopsBank.soldiers >= 10,
-	332: ()=> player.m.army.tilesBeaten >= 1,
-	333: ()=> player.m.army.tilesBeaten >= 3,
-	334: ()=> player.m.army.tilesBeaten >= 6,
-	335: ()=> player.m.army.tilesBeaten >= 10,
-	336: ()=> player.m.army.tilesBeaten >= 15,
+	332: ()=> player.m.army.bestTilesCompleted >= 1,
+	333: ()=> player.m.army.bestTilesCompleted >= 3,
+	334: ()=> player.m.army.bestTilesCompleted >= 6,
+	335: ()=> player.m.army.bestTilesCompleted >= 10,
+	336: ()=> player.m.army.bestTilesCompleted >= 15,
 }
 
 PROGRESSION_MILESTONES_TEXT = {
