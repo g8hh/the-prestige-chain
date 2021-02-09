@@ -17339,13 +17339,16 @@ addLayer("m", {
                         for (i in data2.type){
                                 data2.type[i] = randomFrom(data2.possibilities)
                         }
+                        // if 4 tiles around a tile are all the same, make that tile it?
                         data2.generated = true
                 }
                 wonOnce = false
                 wonTwice = false
                 for (i in data2.beaten){
-                        if (wonOnce && data2.beaten[i] && !isNaN(Number(i))) wonTwice = true
-                        if (data2.beaten[i] && !isNaN(Number(i))) wonOnce = true
+                        if (data2.beaten[i] && !isNaN(Number(i))) {
+                                if (wonOnce) wonTwice = true
+                                wonOnce = true
+                        }
                 }
                 if (wonOnce == false){
                         data2.beaten[randomFrom(data2.beaten)] = true
@@ -17550,7 +17553,7 @@ addLayer("m", {
                                                 break
                                         } 
                                 }
-                                if (i-(i%10) != 1) { //do below
+                                if (i-(i%10) != 1) { //do above
                                         if (!data2.beaten[i-10] && Math.random() < .01) {
                                                 attackBool = true
                                                 attackedLocation = i

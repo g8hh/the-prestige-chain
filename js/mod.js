@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".8.27.2 Kangaroo", // Lion
+	num: ".8.27.3 Kangaroo", // Lion
 	name: "",
 }
 

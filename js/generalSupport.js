@@ -348,16 +348,13 @@ function getAttackedResult(attackingForce, id, fromid){
 
         if (enemyTotalStrength > alliedTotalStrength) {
                 return {
-                        commanders: 0,
-                        generals: 0,
                         soldiers: 0,
                         win: false,
                 }
         }
         let remFactor = Math.sqrt(1 - (enemyTotalStrength/alliedTotalStrength)**2)
+        if (isNaN(remFactor)) console.log("bug please tell me if this occurs :(")
         return {
-                commanders: attackingForce.commanders,
-                generals: attackingForce.generals,
                 soldiers: roundRandom(remFactor * attackingForce.soldiers),
                 win: true,
         }
@@ -380,6 +377,7 @@ function getAttackingResult(attackingForce, id){
                 }
         }
         let remFactor = Math.sqrt(1 - (enemyTotalStrength/alliedTotalStrength)**2)
+        if (isNaN(remFactor)) console.log("bug please tell me if this occurs :(")
         return {
                 soldiers: roundRandom(remFactor * attackingForce.soldiers),
                 win: true,
