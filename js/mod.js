@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".8.27.3 Kangaroo", // Lion
+	num: ".8.27.4 Kangaroo", // Lion
 	name: "",
 }
 
@@ -622,6 +622,8 @@ function getChangeLogText(){
 	cp8 = "- Maybe fixed the scrolling issue?"
 	cp9 = "v.8.27.2"
 	cp10= "- Fixed a bug with pickign who attacks you"
+	cp11= "v.8.27.4"
+	cp12= "- Removed getting attacked"
 
 
 	let part1  = [a1,  a2,  a3,  a4,  a5,  a6,  ""]
@@ -713,7 +715,7 @@ function getChangeLogText(){
 	let part87 = [cm1, cm2, cm3, cm4, cm5, cm6, cm7, cm8,  "",  cm9, cm10, ""]
 	let part88 = [cn1, cn2, cn3, cn4,  "", cn5, cn6,  "", cn7, cn8, ""]
 	let part89 = [co1, co2, co3, co4, co5,  ""]
-	let part90 = [cp1, cp2, cp3, cp4, cp5,  "", cp6, cp7, cp8,  "", cp9, cp10, ""]
+	let part90 = [cp1, cp2, cp3, cp4, cp5,  "", cp6, cp7, cp8,  "", cp9, cp10, "", cp11, cp12]
 	// MAKE SURE TO ADD THEM
 
 	let final1 = [part10,  part9,  part8,  part7,  part6,  part5,  part4,  part3,  part2,  part1]

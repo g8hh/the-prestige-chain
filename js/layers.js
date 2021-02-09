@@ -17407,12 +17407,8 @@ addLayer("m", {
                                 }
                                 let result = getAttackingResult(x, to1)
 
-                                dataCom[from1] -= Math.floor(dataCom[from1]/2)
-                                dataGen[from1] -= Math.floor(dataGen[from1]/2)
-                                dataSol[from1] -= Math.floor(dataSol[from1]/2)
                                 let newAttackLog = {}
                                 newAttackLog.win = result.win
-                                console.log(result)
                                 newAttackLog.attacker = "You attacked T" + to1
                                 newAttackLog.troopsRemaining = result.soldiers
                                 data.attackLog.push(newAttackLog)
@@ -17425,6 +17421,10 @@ addLayer("m", {
                                         data2.beaten[to1] = true // own the city
                                         data.tilesCompleted ++ //we own one more city
 
+                                        dataCom[from1] -= Math.floor(dataCom[from1]/2)
+                                        dataGen[from1] -= Math.floor(dataGen[from1]/2)
+                                        dataSol[from1] -= Math.floor(dataSol[from1]/2)
+
                                         //retire 10% of both forces
 
                                         dataCom[to1]   = retireRemaining(dataCom[to1],      2, .1)
@@ -17434,10 +17434,9 @@ addLayer("m", {
                                         dataGen[from1] = retireRemaining(dataGen[from1],   20, .1)
                                         dataSol[from1] = retireRemaining(dataSol[from1], 1000, .1)
                                 } else {
-                                        //uh oh we lost, just lose the troops
-                                        // and we've already done that
-                                        
-                                        
+                                        dataCom[from1] -= Math.floor(dataCom[from1]/2)
+                                        dataGen[from1] -= Math.floor(dataGen[from1]/2)
+                                        dataSol[from1] -= Math.floor(dataSol[from1]/2)
                                 }
                         } else {
                                 data3.active = false
@@ -17517,7 +17516,7 @@ addLayer("m", {
                 }
 
                 // deal with being attacked (only do if wonTwice is true)
-                if (wonTwice){
+                if (wonTwice && false){
                         attackBool = false
                         attackedLocation = 11
                         fromLocation = 11
@@ -17936,17 +17935,17 @@ addLayer("m", {
 
                                 let data = player.m.army
                                 if (data.mode.active == 0) {
-                                        if (data.clicksSinceDecl == 1) return "Click where you want to attack"
-                                        if (data.clicksSinceDecl == 0) return "Click this to stop specifying<br>Click where you want to take troops from to attack"
+                                        if (data.clicksSinceDecl == 1) return "Click on the map where you want to attack"
+                                        if (data.clicksSinceDecl == 0) return "Click this to stop specifying<br>Click on the map where you want to take troops from to attack"
                                         return "Click this to specify where you want to attack"
                                 }
                                 if (data.mode.active == 1) {
-                                        if (data.clicksSinceDecl == 1) return "Click where you want to move troops"
-                                        if (data.clicksSinceDecl == 0) return "Click this to stop specifying<br>Click where you want to move troops from"
+                                        if (data.clicksSinceDecl == 1) return "Click on the map where you want to move troops"
+                                        if (data.clicksSinceDecl == 0) return "Click this to stop specifying<br>Click on the map where you want to move troops from"
                                         return "Click this to specify where you want to move"
                                 }
                                 if (data.mode.active == 2){
-                                        if (data.clicksSinceDecl == 0) return "Click this to stop specifying<br>Click where you want to place troops"
+                                        if (data.clicksSinceDecl == 0) return "Click this to stop specifying<br>Click on the map where you want to place troops"
                                         return "Click this to specify where you want to place"
                                 }
                                 if (data.mode.active == 3) return "Clicking will do nothing"
@@ -18250,7 +18249,7 @@ addLayer("m", {
                                                                 s6= formatWhole(data.attackLog[2].troopsRemaining) + " soldiers remaining, meaning you " + (data.attackLog[2].win ? "won" : "lost") + ".<br>"
                                                         }
 
-                                                        return a + b + c + d + e + f + g + h + j2 + j3 + i + j + k + l + m + n + o + p + q + r + s1 + s2 + s3 + s4 + s5 + s6
+                                                        return a + b + /*c + d + e +*/ f + g + h + j2 + j3 + i + j + k + l + m + n + o + p + q + r + s1 + s2 + s3 + s4 + s5 + s6
                                                 },
                                         ],
                                 ],
