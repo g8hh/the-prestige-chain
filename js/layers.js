@@ -15806,7 +15806,7 @@ addLayer("k", {
                                 let b 
                                 let c 
                                 let id = 82
-                                let costbit = tmp.k.clickables[id].cost.lt("1e900") ? " Maps" : ""
+                                let costbit = tmp.k.clickables[id].cost.lt("1e900") ? " Missions" : ""
                                 a = "<h3 style='color: #AC4600'>Cost</h3>: " + formatWhole(tmp.k.clickables[id].cost) + costbit + "<br>"
                                 c = "<h3 style='color: #FF33CC'>Effect</h3>: (" + formatWhole(player.k.lock.repeatables[id]) +")<br>" + tmp.k.clickables[id].effectDescription + "<br>"
                                 return a + c
@@ -16765,7 +16765,7 @@ addLayer("l", {
 })
 
 addLayer("m", {
-        name: "Maps",
+        name: "Missions",
         symbol: "M",
         position: 0,
         startData() { 
@@ -16779,481 +16779,22 @@ addLayer("m", {
                         times: 0,
                         autotimes: 0,
                         autodevtime: 0,
-                        army: {
-                                unlocked: false,
-                                tiles: {
-                                        generated: false,
-                                        possibilities: [1,2,3,4],
-                                        type: {
-                                                11: 0,
-                                                12: 0,
-                                                13: 0,
-                                                14: 0,
-                                                15: 0,
-                                                16: 0,
-                                                17: 0,
-                                                18: 0,
-                                                19: 0,
-                                                21: 0,
-                                                22: 0,
-                                                23: 0,
-                                                24: 0,
-                                                25: 0,
-                                                26: 0,
-                                                27: 0,
-                                                28: 0,
-                                                29: 0,
-                                                31: 0,
-                                                32: 0,
-                                                33: 0,
-                                                34: 0,
-                                                35: 0,
-                                                36: 0,
-                                                37: 0,
-                                                38: 0,
-                                                39: 0,
-                                                41: 0,
-                                                42: 0,
-                                                43: 0,
-                                                44: 0,
-                                                45: 0,
-                                                46: 0,
-                                                47: 0,
-                                                48: 0,
-                                                49: 0,
-                                                51: 0,
-                                                52: 0,
-                                                53: 0,
-                                                54: 0,
-                                                55: 0,
-                                                56: 0,
-                                                57: 0,
-                                                58: 0,
-                                                59: 0,
-                                                61: 0,
-                                                62: 0,
-                                                63: 0,
-                                                64: 0,
-                                                65: 0,
-                                                66: 0,
-                                                67: 0,
-                                                68: 0,
-                                                69: 0,
-                                                71: 0,
-                                                72: 0,
-                                                73: 0,
-                                                74: 0,
-                                                75: 0,
-                                                76: 0,
-                                                77: 0,
-                                                78: 0,
-                                                79: 0,
-                                                81: 0,
-                                                82: 0,
-                                                83: 0,
-                                                84: 0,
-                                                85: 0,
-                                                86: 0,
-                                                87: 0,
-                                                88: 0,
-                                                89: 0,
-                                                91: 0,
-                                                92: 0,
-                                                93: 0,
-                                                94: 0,
-                                                95: 0,
-                                                96: 0,
-                                                97: 0,
-                                                98: 0,
-                                                99: 0,
-                                        },
-                                        beaten: {
-                                                11: false,
-                                                12: false,
-                                                13: false,
-                                                14: false,
-                                                15: false,
-                                                16: false,
-                                                17: false,
-                                                18: false,
-                                                19: false,
-                                                21: false,
-                                                22: false,
-                                                23: false,
-                                                24: false,
-                                                25: false,
-                                                26: false,
-                                                27: false,
-                                                28: false,
-                                                29: false,
-                                                31: false,
-                                                32: false,
-                                                33: false,
-                                                34: false,
-                                                35: false,
-                                                36: false,
-                                                37: false,
-                                                38: false,
-                                                39: false,
-                                                41: false,
-                                                42: false,
-                                                43: false,
-                                                44: false,
-                                                45: false,
-                                                46: false,
-                                                47: false,
-                                                48: false,
-                                                49: false,
-                                                51: false,
-                                                52: false,
-                                                53: false,
-                                                54: false,
-                                                55: false,
-                                                56: false,
-                                                57: false,
-                                                58: false,
-                                                59: false,
-                                                61: false,
-                                                62: false,
-                                                63: false,
-                                                64: false,
-                                                65: false,
-                                                66: false,
-                                                67: false,
-                                                68: false,
-                                                69: false,
-                                                71: false,
-                                                72: false,
-                                                73: false,
-                                                74: false,
-                                                75: false,
-                                                76: false,
-                                                77: false,
-                                                78: false,
-                                                79: false,
-                                                81: false,
-                                                82: false,
-                                                83: false,
-                                                84: false,
-                                                85: false,
-                                                86: false,
-                                                87: false,
-                                                88: false,
-                                                89: false,
-                                                91: false,
-                                                92: false,
-                                                93: false,
-                                                94: false,
-                                                95: false,
-                                                96: false,
-                                                97: false,
-                                                98: false,
-                                                99: false,
-                                        },
+                        missions: {
+                                completed: {
+                                        list: [],
+                                        total: 0,
                                 },
-                                commandersPlaced: {
-                                        11: 0,
-                                        12: 0,
-                                        13: 0,
-                                        14: 0,
-                                        15: 0,
-                                        16: 0,
-                                        17: 0,
-                                        18: 0,
-                                        19: 0,
-                                        21: 0,
-                                        22: 0,
-                                        23: 0,
-                                        24: 0,
-                                        25: 0,
-                                        26: 0,
-                                        27: 0,
-                                        28: 0,
-                                        29: 0,
-                                        31: 0,
-                                        32: 0,
-                                        33: 0,
-                                        34: 0,
-                                        35: 0,
-                                        36: 0,
-                                        37: 0,
-                                        38: 0,
-                                        39: 0,
-                                        41: 0,
-                                        42: 0,
-                                        43: 0,
-                                        44: 0,
-                                        45: 0,
-                                        46: 0,
-                                        47: 0,
-                                        48: 0,
-                                        49: 0,
-                                        51: 0,
-                                        52: 0,
-                                        53: 0,
-                                        54: 0,
-                                        55: 0,
-                                        56: 0,
-                                        57: 0,
-                                        58: 0,
-                                        59: 0,
-                                        61: 0,
-                                        62: 0,
-                                        63: 0,
-                                        64: 0,
-                                        65: 0,
-                                        66: 0,
-                                        67: 0,
-                                        68: 0,
-                                        69: 0,
-                                        71: 0,
-                                        72: 0,
-                                        73: 0,
-                                        74: 0,
-                                        75: 0,
-                                        76: 0,
-                                        77: 0,
-                                        78: 0,
-                                        79: 0,
-                                        81: 0,
-                                        82: 0,
-                                        83: 0,
-                                        84: 0,
-                                        85: 0,
-                                        86: 0,
-                                        87: 0,
-                                        88: 0,
-                                        89: 0,
-                                        91: 0,
-                                        92: 0,
-                                        93: 0,
-                                        94: 0,
-                                        95: 0,
-                                        96: 0,
-                                        97: 0,
-                                        98: 0,
-                                        99: 0,
-                                },
-                                generalsPlaced: {
-                                        11: 0,
-                                        12: 0,
-                                        13: 0,
-                                        14: 0,
-                                        15: 0,
-                                        16: 0,
-                                        17: 0,
-                                        18: 0,
-                                        19: 0,
-                                        21: 0,
-                                        22: 0,
-                                        23: 0,
-                                        24: 0,
-                                        25: 0,
-                                        26: 0,
-                                        27: 0,
-                                        28: 0,
-                                        29: 0,
-                                        31: 0,
-                                        32: 0,
-                                        33: 0,
-                                        34: 0,
-                                        35: 0,
-                                        36: 0,
-                                        37: 0,
-                                        38: 0,
-                                        39: 0,
-                                        41: 0,
-                                        42: 0,
-                                        43: 0,
-                                        44: 0,
-                                        45: 0,
-                                        46: 0,
-                                        47: 0,
-                                        48: 0,
-                                        49: 0,
-                                        51: 0,
-                                        52: 0,
-                                        53: 0,
-                                        54: 0,
-                                        55: 0,
-                                        56: 0,
-                                        57: 0,
-                                        58: 0,
-                                        59: 0,
-                                        61: 0,
-                                        62: 0,
-                                        63: 0,
-                                        64: 0,
-                                        65: 0,
-                                        66: 0,
-                                        67: 0,
-                                        68: 0,
-                                        69: 0,
-                                        71: 0,
-                                        72: 0,
-                                        73: 0,
-                                        74: 0,
-                                        75: 0,
-                                        76: 0,
-                                        77: 0,
-                                        78: 0,
-                                        79: 0,
-                                        81: 0,
-                                        82: 0,
-                                        83: 0,
-                                        84: 0,
-                                        85: 0,
-                                        86: 0,
-                                        87: 0,
-                                        88: 0,
-                                        89: 0,
-                                        91: 0,
-                                        92: 0,
-                                        93: 0,
-                                        94: 0,
-                                        95: 0,
-                                        96: 0,
-                                        97: 0,
-                                        98: 0,
-                                        99: 0,
-                                },
-                                soldiersPlaced: {
-                                        11: 0,
-                                        12: 0,
-                                        13: 0,
-                                        14: 0,
-                                        15: 0,
-                                        16: 0,
-                                        17: 0,
-                                        18: 0,
-                                        19: 0,
-                                        21: 0,
-                                        22: 0,
-                                        23: 0,
-                                        24: 0,
-                                        25: 0,
-                                        26: 0,
-                                        27: 0,
-                                        28: 0,
-                                        29: 0,
-                                        31: 0,
-                                        32: 0,
-                                        33: 0,
-                                        34: 0,
-                                        35: 0,
-                                        36: 0,
-                                        37: 0,
-                                        38: 0,
-                                        39: 0,
-                                        41: 0,
-                                        42: 0,
-                                        43: 0,
-                                        44: 0,
-                                        45: 0,
-                                        46: 0,
-                                        47: 0,
-                                        48: 0,
-                                        49: 0,
-                                        51: 0,
-                                        52: 0,
-                                        53: 0,
-                                        54: 0,
-                                        55: 0,
-                                        56: 0,
-                                        57: 0,
-                                        58: 0,
-                                        59: 0,
-                                        61: 0,
-                                        62: 0,
-                                        63: 0,
-                                        64: 0,
-                                        65: 0,
-                                        66: 0,
-                                        67: 0,
-                                        68: 0,
-                                        69: 0,
-                                        71: 0,
-                                        72: 0,
-                                        73: 0,
-                                        74: 0,
-                                        75: 0,
-                                        76: 0,
-                                        77: 0,
-                                        78: 0,
-                                        79: 0,
-                                        81: 0,
-                                        82: 0,
-                                        83: 0,
-                                        84: 0,
-                                        85: 0,
-                                        86: 0,
-                                        87: 0,
-                                        88: 0,
-                                        89: 0,
-                                        91: 0,
-                                        92: 0,
-                                        93: 0,
-                                        94: 0,
-                                        95: 0,
-                                        96: 0,
-                                        97: 0,
-                                        98: 0,
-                                        99: 0,
-                                },
-                                immuneTroops: {
-                                        commanders: 2,
-                                        generals: 20,
-                                        soldiers: 1000,
-                                },
-                                troopsBank: {
-                                        commanders: 1,
-                                        generals: 1,
-                                        soldiers: 1,
-                                },
-                                bankTicks: 0,
-                                boughtThisTick: {
-                                        commanders: 0,
-                                        generals: 0,
-                                        soldiers: 0,
-                                },
-                                time: 0,
-                                timeNeeded: 10,
-                                strength: 1,
-                                tilesCompleted: 0,
-                                bestTilesCompleted: 0,
-                                mapsCompleted: 0,
-                                bestMapsCompleted: 0,
-                                worldsCompleted: 0,
-                                bestWorldsCompleted: 0,
-                                troopsMoving: {
-                                        active: false,
-                                        troopsTo: 11,
-                                        troopsFrom: 11,
-                                },
-                                troopsAttacking:{
-                                        active: false,
-                                        troopsTo: 11,
-                                        troopsFrom: 11
-                                },
-                                troopsPlacing: {
-                                        active: false,
-                                        troopsTo: 11,
-                                },
-                                lastClicked: [11,12,13],
-                                clicksSinceDecl: 10,
-                                mode: {
-                                        active: 0,
-                                        all: ["attack", "move", "place", "do nothing"], //more maybe?
-                                },
-                                attackLog: [],
-                                active: true,
+                                maxMissions: 1,
+                                currentMissions: [],
+                                money: new Decimal(0),
+                                moneyPassive: new Decimal(0),
                         },
                 } //no comma here
         },
         color: "#FFDFA7",
         branches: ["l"],
         requires: new Decimal(0),
-        resource: "Maps",
+        resource: "Missions",
         baseResource: "Lemons",
         baseAmount() {
                 return player.l.best
@@ -17293,7 +16834,6 @@ addLayer("m", {
                 if (hasUpgrade("k", 53)) x = x.times(tmp.k.clickables[73].effect)
                 if (hasUpgrade("l", 32)) x = x.times(tmp.k.challenges[12].rewardEffect)
                 if (hasUpgrade("l", 34)) x = x.times(tmp.k.challenges[12].rewardEffect)
-                x = x.times(tmp.m.armyRewards.tiles[1].effect)
 
                 return x
         },
@@ -17319,312 +16859,6 @@ addLayer("m", {
         effectDescription(){
                 return getGeneralizedEffectDisplay("m")
         },
-        updateArmy(diff){
-                let data = player.m.army
-                let data2 = data.tiles
-                let data3 = data.troopsAttacking
-                let data4 = data.troopsMoving
-                let data5 = data.troopsPlacing
-                let dataCom = data.commandersPlaced
-                let dataGen = data.generalsPlaced
-                let dataSol = data.soldiersPlaced
-                let dataBnk = data.troopsBank
-
-                if (hasUpgrade("m", 23)) data.unlocked = true
-
-                if (!data.unlocked) return 
-
-                if (!data2.generated) {
-                        // generate the new stuff
-                        for (i in data2.type){
-                                data2.type[i] = randomFrom(data2.possibilities)
-                        }
-                        // if 4 tiles around a tile are all the same, make that tile it?
-                        data2.generated = true
-                }
-                wonOnce = false
-                wonTwice = false
-                for (i in data2.beaten){
-                        if (data2.beaten[i] && !isNaN(Number(i))) {
-                                if (wonOnce) wonTwice = true
-                                wonOnce = true
-                        }
-                }
-                if (wonOnce == false){
-                        data2.beaten[randomFrom(data2.beaten)] = true
-                }
-
-                if ([1, 2].includes(data.clicksSinceDecl)){
-                        // checking if things are declared properly
-                        if (data.mode.active == 0 && data.clicksSinceDecl == 2){
-                                data.clicksSinceDecl = 3
-                                data3.active = true
-                                data3.troopsTo = data.lastClicked[0]
-                                data3.troopsFrom = data.lastClicked[1]
-                        } else if (data.mode.active == 1 && data.clicksSinceDecl == 2){
-                                data.clicksSinceDecl = 3
-                                data4.active = true
-                                data4.troopsTo = data.lastClicked[0]
-                                data4.troopsFrom = data.lastClicked[1]
-                        } else if (data.mode.active == 2 && data.clicksSinceDecl == 1){
-                                data.clicksSinceDecl = 3
-                                data5.active = true
-                                data5.troopsTo = data.lastClicked[0]
-                        }
-                }
-                data.bestTilesCompleted = Math.max(data.bestTilesCompleted, data.tilesCompleted)
-                data.bestMapsCompleted  = Math.max(data.bestMapsCompleted,  data.mapsCompleted)
-                data.bestWorldsCompleted= Math.max(data.bestWorldsCompleted,data.worldsCompleted)
-                
-                if (!data.active) return 
-
-                data.time += diff
-
-                if (data.time < data.timeNeeded) return
-
-                data.time -= data.timeNeeded
-                data.bankTicks ++
-                if (data.bankTicks >= 10){
-                        data.bankTicks = 0
-                        data.boughtThisTick = {
-                                commanders: 0,
-                                generals: 0,
-                                soldiers: 0,
-                        }
-                }
-                        
-                if (data.time > data.timeNeeded * 10) data.time = data.timeNeeded * 10
-
-                // deal with attacks 
-                if (data3.active){
-                        let from1 = data3.troopsFrom
-                        let to1 = data3.troopsTo
-                        if (isAdjacent(from1, to1) && data2.beaten[from1] && !data2.beaten[to1] && dataCom[from1] > 1) {
-                                let x = {
-                                        commanders: Math.floor(dataCom[from1]/2),
-                                        generals:   Math.floor(dataGen[from1]/2),
-                                        soldiers:   Math.floor(dataSol[from1]/2),
-                                }
-                                let result = getAttackingResult(x, to1)
-
-                                let newAttackLog = {}
-                                newAttackLog.win = result.win
-                                newAttackLog.attacker = "You attacked T" + to1
-                                newAttackLog.troopsRemaining = result.soldiers
-                                data.attackLog.push(newAttackLog)
-
-                                if (result.win){
-                                        dataSol[to1] = result.soldiers
-                                        dataCom[to1] = Math.floor(dataCom[from1]/2)
-                                        dataGen[to1] = Math.floor(dataGen[from1]/2)
-                                        //set troops
-                                        data2.beaten[to1] = true // own the city
-                                        data.tilesCompleted ++ //we own one more city
-
-                                        dataCom[from1] -= Math.floor(dataCom[from1]/2)
-                                        dataGen[from1] -= Math.floor(dataGen[from1]/2)
-                                        dataSol[from1] -= Math.floor(dataSol[from1]/2)
-
-                                        //retire 10% of both forces
-
-                                        dataCom[to1]   = retireRemaining(dataCom[to1],      2, .1)
-                                        dataGen[to1]   = retireRemaining(dataGen[to1],     20, .1)
-                                        dataSol[to1]   = retireRemaining(dataSol[to1],   1000, .1)
-                                        dataCom[from1] = retireRemaining(dataCom[from1],    2, .1)
-                                        dataGen[from1] = retireRemaining(dataGen[from1],   20, .1)
-                                        dataSol[from1] = retireRemaining(dataSol[from1], 1000, .1)
-                                } else {
-                                        dataCom[from1] -= Math.floor(dataCom[from1]/2)
-                                        dataGen[from1] -= Math.floor(dataGen[from1]/2)
-                                        dataSol[from1] -= Math.floor(dataSol[from1]/2)
-                                }
-                        } else {
-                                data3.active = false
-                        }
-                }
-
-                // deal with moving
-                if (data4.active) {
-                        let from2 = data4.troopsFrom
-                        let to2 = data4.troopsTo
-                        if (from2 != to2 && data2.beaten[from2] && data2.beaten[to2]) {
-                                // they are different and we own both tiles
-                                let f1 = getTileMovementFactor(from2)
-                                let f2 = getTileMovementFactor(to2)
-
-                                //deal with commanders
-                                let tot1 = dataCom[from2]
-                                let move1 = Math.min(100, tot1 * .1) * f1 * f2
-                                move1 = roundRandom(move1) //now an integer
-                                dataCom[from2] -= move1
-                                dataCom[to2] += move1
-
-                                //deal with generals
-                                let tot2 = dataGen[from2]
-                                let move2 = Math.min(100, tot2 * .1) * f1 * f2
-                                move2 = roundRandom(move2) //now an integer
-                                dataGen[from2] -= move2
-                                dataGen[to2] += move2
-
-                                //deal with soldiers
-                                let tot3 = dataSol[from2]
-                                let move3 = Math.min(100, tot2 * .1) * f1 * f2
-                                move3 = roundRandom(move3) //now an integer
-                                dataSol[from2] -= move3
-                                dataSol[to2] += move3
-                        } else {
-                                data4.active = false 
-                        }
-                }
-
-                // deal with placing
-                if (data5.active) {
-                        let to3 = data5.troopsTo
-                        let tot1 = dataBnk.commanders
-                        let tot2 = dataBnk.generals
-                        let tot3 = dataBnk.soldiers
-                        if (data2.beaten[to3] && (tot1 + tot2 + tot3 > 0)) {
-                                // we own the tile where we are placing and 
-                                // have at least one troop to place
-
-                                //deal with commanders
-                                
-                                let move1 = Math.min(100, tot1 * .1)
-                                if (move1 < 1) move1 = Math.sqrt(move1)
-                                move1 = roundRandom(move1) //now an integer
-                                dataCom[to3] += move1
-                                dataBnk.commanders -= move1
-
-                                //deal with generals
-                                
-                                let move2 = Math.min(100, tot2 * .1)
-                                if (move2 < 1) move2 = Math.sqrt(move2)
-                                move2 = roundRandom(move2) //now an integer
-                                dataGen[to3] += move2
-                                dataBnk.generals -= move2
-
-                                //deal with soldiers
-                                
-                                let move3 = Math.min(100, tot3 * .1)
-                                if (move3 < 1) move3 = Math.sqrt(move3)
-                                move3 = roundRandom(move3) //now an integer
-                                dataSol[to3] += move3
-                                dataBnk.soldiers -= move3
-                        } else {
-                                data5.active = false 
-                        }
-                }
-
-                // deal with being attacked (only do if wonTwice is true)
-                if (wonTwice && false){
-                        attackBool = false
-                        attackedLocation = 11
-                        fromLocation = 11
-                        for (i in data2.beaten){
-                                if (!data2.beaten[i]) continue
-                                if (isNaN(Number(i))) continue
-                                if (attackBool) {
-                                        console.log( "uhoh")
-                                        break
-                                }
-
-                                if (i % 10 != 1) { //do to the left
-                                        if (!data2.beaten[i-1] && Math.random() < .01) {
-                                                attackBool = true
-                                                attackedLocation = i
-                                                fromLocation = i - 1
-                                                break
-                                        } 
-                                }
-                                if (i % 10 != 9) { //do to the right
-                                        if (!data2.beaten[i+1] && Math.random() < .01) {
-                                                attackBool = true
-                                                attackedLocation = i
-                                                fromLocation = i + 1
-                                                break
-                                        } 
-                                }
-                                if (i-(i%10) != 9) { //do below
-                                        if (!data2.beaten[i+10] && Math.random() < .01) {
-                                                attackBool = true
-                                                attackedLocation = i
-                                                fromLocation = i + 10
-                                                break
-                                        } 
-                                }
-                                if (i-(i%10) != 1) { //do above
-                                        if (!data2.beaten[i-10] && Math.random() < .01) {
-                                                attackBool = true
-                                                attackedLocation = i
-                                                fromLocation = i - 10
-                                                break
-                                        } 
-                                }
-                        }
-                        if (attackBool){ // if we got attacked
-                                let x = getAttackedResult({
-                                        commanders: dataCom[attackedLocation],
-                                        generals: dataGen[attackedLocation],
-                                        soldiers: dataSol[attackedLocation]
-                                },attackedLocation, fromLocation)
-                                let newAttackLog = {}
-                                newAttackLog.win = x.win
-                                newAttackLog.attacker = "You got attacked on T" + attackedLocation
-                                newAttackLog.troopsRemaining = x.soldiers
-                                if (x.win) {
-                                        dataSol[attackedLocation] = x.soldiers // update soldiers
-                                        newAttackLog.troopsRemaining += dataGen[attackedLocation] + dataSol[attackedLocation]
-                                        // yay we won
-                                } else {
-                                        // uh oh we lost
-                                        dataSol[attackedLocation] = 0
-                                        dataCom[attackedLocation] = 0
-                                        dataGen[attackedLocation] = 0 //reset troops
-                                        data2.beaten[attackedLocation] = false //dont own the city
-                                        data.tilesCompleted -- //we own one less city
-                                }
-                                data.attackLog.push(newAttackLog)
-                        }
-                }
-
-                if (data.attackLog.length > 3) {
-                        data.attackLog = data.attackLog.slice(data.attackLog.length - 3, )
-                } // take only the last three elements
-
-                // deal with retiring
-                if (true){
-                        //retireRemaining(amt, safe, .005)
-                        for (i in dataCom){
-                                if (dataCom[i] == undefined) continue
-                                dataCom[i] = retireRemaining(dataCom[i],    2, .005)
-                                dataGen[i] = retireRemaining(dataGen[i],   20, .005)
-                                dataSol[i] = retireRemaining(dataSol[i], 1000, .005)
-                        }
-                        dataBnk.commanders = retireRemaining(dataBnk.commanders,    2, .005)
-                        dataBnk.generals   = retireRemaining(dataBnk.generals  ,   20, .005)
-                        dataBnk.soldiers   = retireRemaining(dataBnk.soldiers  , 1000, .005)                        
-                }
-
-                /*    
-                Each commander can command 10 generals and each general can command 50 soldiers
-                up to 100 soldiers/10% can move in/out of each tile (minimum of the pair) and 
-                each enemy tile has a 1% chance to attack an adj allied tile
-                if you get attacked, the enemy gets a 1.3x surprise factor
-                you can only get attacked once per tick
-                each tick .5% of your troops retire 
-                (rounded down, and 2/20/1000 are immune from retiring on each tile/in bank)
-
-                If you attack you take half your troops rounded down, 
-                and you only can attack if you have >= two commanders on the tile
-
-
-                there are a couple of types of tiles
-                1. Plains (square law remaining troops)
-                2. Mountains (.5x moving)
-                3. Highway (you can move 2x as much)
-                4. Ocean (easier to defend, get 2x defending bonus)
-                */
-        },
         update(diff){
                 let data = player.m
 
@@ -17649,7 +16883,7 @@ addLayer("m", {
                 data.time += diff
                 data.autodevtime += diff
 
-                this.updateArmy(diff)
+                updateMissions(diff)
                 
                 if (data.autodevtime < 1) return
                 data.autodevtime += -1
@@ -17657,8 +16891,8 @@ addLayer("m", {
         },
         row: 12, 
         hotkeys: [
-                {key: "m", description: "M: Reset for Maps", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
-                {key: "shift+M", description: "Shift+M: Go to Maps", onPress(){
+                {key: "m", description: "M: Reset for Missions", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+                {key: "shift+M", description: "Shift+M: Go to Missions", onPress(){
                                 showTab("m")
                         }
                 },
@@ -17671,29 +16905,10 @@ addLayer("m", {
         canReset(){
                 return player.m.time >= 2 && !hasMilestone("m", 5) && tmp.m.getResetGain.gt(0)
         },
-        armyRewards: {
-                tiles: {
-                        1: {
-                                prefix: "You gain ",
-                                suffix: "x Maps",
-                                effect(){
-                                        let x = player.m.army.bestTilesCompleted
-                                        let ret = Decimal.pow(x + 3, Math.sqrt(x)).pow(20)
-
-                                        return ret
-                                },
-                                isDefault(){
-                                        return player.m.army.bestTilesCompleted == 0
-                                },
-                        },
-                },
-                maps: {},
-                worlds: {},
-        },
         milestones: {
                 //2^^n
                 1: {
-                        requirementDescription: "<b>My</b><br>Requires: 1 Map", 
+                        requirementDescription: "<b>My</b><br>Requires: 1 Mission", 
                         effectDescription: "Per <b>M</b> reset you keep three <b>L</b> milestones and keep <b>K</b> milestones",
                         done(){
                                 return player.m.points.gte(1)
@@ -17703,7 +16918,7 @@ addLayer("m", {
                         }, // hasMilestone("m", 1)
                 },
                 2: {
-                        requirementDescription: "<b>May</b><br>Requires: 2 Maps", 
+                        requirementDescription: "<b>May</b><br>Requires: 2 Missions", 
                         effectDescription: "All prior Lock feature autobuyers bulk 10x more and unlock a Key autobuyer for the first eleven Keys",
                         done(){
                                 return player.m.points.gte(2)
@@ -17713,7 +16928,7 @@ addLayer("m", {
                         }, // hasMilestone("m", 2)
                 },
                 3: {
-                        requirementDescription: "<b>Me</b><br>Requires: 4 Maps", 
+                        requirementDescription: "<b>Me</b><br>Requires: 4 Missions", 
                         effectDescription: "Keep <b>L</b> upgrades and get an effective <b>Titanium Key</b>",
                         done(){
                                 return player.m.points.gte(4)
@@ -17723,7 +16938,7 @@ addLayer("m", {
                         }, // hasMilestone("m", 3)
                 },
                 4: {
-                        requirementDescription: "<b>Most</b><br>Requires: 16 Maps", 
+                        requirementDescription: "<b>Most</b><br>Requires: 16 Missions", 
                         effectDescription: "Buy 2x more lock features, get an effective <b>Tin Key</b> per milestone, and unlock a key",
                         done(){
                                 return player.m.points.gte(16)
@@ -17733,8 +16948,8 @@ addLayer("m", {
                         }, // hasMilestone("m", 4)
                 },
                 5: {
-                        requirementDescription: "<b>Make</b><br>Requires: 65,536 Maps", 
-                        effectDescription: "Remove the ability to prestige, but gain 100% of Maps upon reset per second and triple Maps gain",
+                        requirementDescription: "<b>Make</b><br>Requires: 65,536 Missions", 
+                        effectDescription: "Remove the ability to prestige, but gain 100% of Missions upon reset per second and triple Mission gain",
                         done(){
                                 return player.m.points.gte(65536)
                         },
@@ -17824,7 +17039,8 @@ addLayer("m", {
         clickables: {
                 rows: 8,
                 cols: 5,
-                11: {
+                
+                /*11: {
                         title(){
                                 return ""
                         },
@@ -17845,231 +17061,7 @@ addLayer("m", {
                                 let data = player.m.army
                                 data.mode.active = (data.mode.active + 1) % data.mode.all.length
                         },
-                },
-                13: {
-                        title(){
-                                return ""
-                        },
-                        display(){
-                                if (player.tab != "m") return ""
-                                if (player.subtabs.m.mainTabs != "Maps") return ""
-                                let data = player.m.army
-
-                                return "<h2 style='color:#990033'>><br>" + data.mode.all[mod(data.mode.active - 1, data.mode.all.length)] + "</h2>"
-                        },
-                        unlocked(){
-                                return true
-                        },
-                        canClick(){
-                                return player.m.army.clicksSinceDecl >= 3
-                        },
-                        onClick(){
-                                let data = player.m.army
-                                data.mode.active = mod(data.mode.active - 1, data.mode.all.length)
-                        },
-                },
-                12: {
-                        title(){
-                                return ""
-                        },
-                        display(){
-                                if (player.tab != "m") return ""
-                                if (player.subtabs.m.mainTabs != "Maps") return ""
-                                let data = player.m.army
-                                if (data.mode.active == 3) return "Clicking will do nothing"
-
-                                return "Clicking will make your troops not " + data.mode.all[data.mode.active]
-                        },
-                        unlocked(){
-                                return true
-                        },
-                        canClick(){
-                                let data = player.m.army
-                                if (data.mode.active == 3) return false
-                                if (data.mode.active == 0) return data.troopsAttacking.active
-                                if (data.mode.active == 1) return data.troopsMoving.active
-                                if (data.mode.active == 2) return data.troopsPlacing.active
-                                console.log("oops")
-                                return false
-                        },
-                        onClick(){
-                                let data = player.m.army
-                                let data2 = data.mode.active
-                                if (data2 == 3) return 
-                                if (data2 == 0) data.troopsAttacking.active = false
-                                if (data2 == 1) data.troopsMoving.active = false
-                                if (data2 == 2) data.troopsPlacing.active = false
-                        },
-                },
-                14: {
-                        title(){
-                                return ""
-                        },
-                        display(){
-                                if (player.tab != "m") return ""
-                                if (player.subtabs.m.mainTabs != "Maps") return ""
-
-                                let a = "Clicking will toggle pause<br>Currently: "
-                                let b = player.m.army.active ? "Playing" : "Paused"
-
-                                return a + b
-                        },
-                        unlocked(){
-                                return true
-                        },
-                        canClick(){
-                                return true
-                        },
-                        onClick(){
-                                let data = player.m.army
-                                data.active = !data.active
-                        },
-                }, 
-                15: {
-                        title(){
-                                return "Selection"
-                        },
-                        display(){
-                                if (player.tab != "m") return ""
-                                if (player.subtabs.m.mainTabs != "Maps") return ""
-
-                                let data = player.m.army
-                                if (data.mode.active == 0) {
-                                        if (data.clicksSinceDecl == 1) return "Click on the map where you want to attack"
-                                        if (data.clicksSinceDecl == 0) return "Click this to stop specifying<br>Click on the map where you want to take troops from to attack"
-                                        return "Click this to specify where you want to attack"
-                                }
-                                if (data.mode.active == 1) {
-                                        if (data.clicksSinceDecl == 1) return "Click on the map where you want to move troops"
-                                        if (data.clicksSinceDecl == 0) return "Click this to stop specifying<br>Click on the map where you want to move troops from"
-                                        return "Click this to specify where you want to move"
-                                }
-                                if (data.mode.active == 2){
-                                        if (data.clicksSinceDecl == 0) return "Click this to stop specifying<br>Click on the map where you want to place troops"
-                                        return "Click this to specify where you want to place"
-                                }
-                                if (data.mode.active == 3) return "Clicking will do nothing"
-                                
-                                console.log("bug")
-                                return ""
-                        },
-                        unlocked(){
-                                return true
-                        },
-                        canClick(){
-                                return true
-                        },
-                        onClick(){
-                                let data = player.m.army
-                                if (data.clicksSinceDecl == 0) data.clicksSinceDecl = 3
-                                else data.clicksSinceDecl = 0
-                        },
-                }, 
-                21: {
-                        title(){
-                                return "Buy Commanders"
-                        },
-                        display(){
-                                if (player.tab != "m") return ""
-                                if (player.subtabs.m.mainTabs != "Maps") return ""
-
-                                if (player.m.army.boughtThisTick.commanders == 1000) return "Maxed!"
-
-                                return "Buy a commander!<br>Requires: " + format(tmp.m.clickables[21].cost)
-                        },
-                        unlocked(){
-                                return true
-                        },
-                        cost(){
-                                let x = player.m.army.boughtThisTick.commanders
-                                return Decimal.pow(10, Decimal.plus(1750, Decimal.pow(10, x)))
-                        },
-                        canClick(){
-                                return player.m.points.gt(tmp.m.clickables[21].cost)
-                        },
-                        maxPoss(){
-                                let x = player.m.points
-                                let a = Decimal.pow(10, 1750).times(10)
-                                if (x.lt(a)) return new Decimal(0)
-                                return x.div(a).times(10).log(10).log(10).floor().plus(1).max(1000).toNumber()
-                        },
-                        onClick(){
-                                let data = player.m.army
-                                if (!this.canClick()) return 
-                                data.boughtThisTick.commanders ++ 
-                                data.troopsBank.commanders ++
-                        },
-                },
-                22: {
-                        title(){
-                                return "Buy Generals"
-                        },
-                        display(){
-                                if (player.tab != "m") return ""
-                                if (player.subtabs.m.mainTabs != "Maps") return ""
-
-                                if (player.m.army.boughtThisTick.generals == 1000) return "Maxed!"
-
-                                return "Buy a general!<br>Requires: " + format(tmp.m.clickables[22].cost)
-                        },
-                        unlocked(){
-                                return true
-                        },
-                        cost(){
-                                let x = player.m.army.boughtThisTick.generals
-                                return Decimal.pow(10, 1700).times(Decimal.pow(3,Decimal.pow(3,x)))
-                        },
-                        canClick(){
-                                return player.m.points.gt(tmp.m.clickables[22].cost)
-                        },
-                        maxPoss(){
-                                let x = player.m.points
-                                let a = Decimal.pow(10, 1700).times(3)
-                                if (x.lt(a)) return new Decimal(0)
-                                return x.div(a).times(3).log(3).log(3).floor().plus(1).max(1000).toNumber()
-                        },
-                        onClick(){
-                                let data = player.m.army
-                                if (!this.canClick()) return 
-                                data.boughtThisTick.generals ++ 
-                                data.troopsBank.generals ++
-                        },
-                },
-                23: {
-                        title(){
-                                return "Buy Soldiers"
-                        },
-                        display(){
-                                if (player.tab != "m") return ""
-                                if (player.subtabs.m.mainTabs != "Maps") return ""
-
-                                if (player.m.army.boughtThisTick.soldiers == 1000) return "Maxed!"
-
-                                return "Buy a soldier!<br>Requires: " + format(tmp.m.clickables[23].cost)
-                        },
-                        unlocked(){
-                                return true
-                        },
-                        cost(){
-                                let x = player.m.army.boughtThisTick.soldiers
-                                return Decimal.pow(10, 1000).times(Decimal.pow(2,Decimal.pow(2,x)))
-                        },
-                        canClick(){
-                                return player.m.points.gt(tmp.m.clickables[23].cost)
-                        },
-                        maxPoss(){
-                                let x = player.m.points
-                                let a = Decimal.pow(10, 1000).times(2)
-                                if (x.lt(a)) return new Decimal(0)
-                                return x.div(a).times(2).log(2).log(2).floor().plus(1).max(1000).toNumber()
-                        },
-                        onClick(){
-                                let data = player.m.army
-                                if (!this.canClick()) return 
-                                data.boughtThisTick.soldiers ++ 
-                                data.troopsBank.soldiers ++
-                        },
-                },
+                },*/
         },
         tabFormat: {
                 "Upgrades": {
@@ -18080,7 +17072,7 @@ addLayer("m", {
                                         function() {
                                                 if (player.tab != "m") return ""
                                                 if (player.subtabs.m.mainTabs != "Upgrades") return ""
-                                                return shiftDown ? "Your best Maps is " + format(player.m.best) : ""
+                                                return shiftDown ? "Your best Missions is " + format(player.m.best) : ""
                                         }
                                 ],
                                 ["display-text",
@@ -18088,14 +17080,14 @@ addLayer("m", {
                                                 if (player.tab != "m") return ""
                                                 if (player.subtabs.m.mainTabs != "Upgrades") return ""
                                                 if (hasUnlockedPast("l")) return ""
-                                                return "You have done " + formatWhole(player.m.times) + " Maps resets"
+                                                return "You have done " + formatWhole(player.m.times) + " Mission resets"
                                         }
                                 ],
                                 ["display-text",
                                         function() {
                                                 if (player.tab != "m") return ""
                                                 if (player.subtabs.m.mainTabs != "Upgrades") return ""
-                                                if (hasMilestone("m", 5)) return "You are gaining " + format(tmp.m.getResetGain) + " Maps per second"
+                                                if (hasMilestone("m", 5)) return "You are gaining " + format(tmp.m.getResetGain) + " Missions per second"
                                                 return "There is a two second cooldown for prestiging (" + format(Math.max(0, 2-player.m.time)) + ")" 
                                         },
                                 ],
@@ -18114,13 +17106,28 @@ addLayer("m", {
                                 return false
                         },
                 },
-                "Maps":{
+                "Missions":{
                         content: [
-                                "maps",
-                                ["microtabs", "maps"]
+                                ["display-text",
+                                        function() {
+                                                if (player.tab != "m") return ""
+                                                if (player.subtabs.m.mainTabs != "Missions") return ""
+
+                                                let data = player.m.missions
+
+                                                let a = "You have " + format(data.money) + " money<br>"
+                                                let b = "You are gaining " + format(getMoneyPerSecond()) + " money/s<br>"
+                                                
+                                                return a + b
+                                                
+                                        },
+                                ],
+                                ["bar", "missionBar1"],
+                                ["bar", "missionBar2"],
+                                ["bar", "missionBar3"],
                         ],
                         unlocked(){
-                                return player.m.army.unlocked
+                                return hasUpgrade("m", 23) || hasUnlockedPast("m")
                         },
                 },
                 "Milestones": {
@@ -18134,162 +17141,120 @@ addLayer("m", {
                 },
         },
         microtabs: {
-                maps: {
-                        "Stats":{
+                missions: {
+                        "Progress": {
                                 content: [
-                                        ["display-text",
-                                                function() {
-                                                        return "Clicking will currently " + player.m.army.mode.all[player.m.army.mode.active] + "."
-                                                },
-                                        ],
-                                        ["clickables", [1,1]], //toggle mode foreward/backwards
+                                        ["clickables", [1,1]],
                                         ["display-text",
                                                 function() {
                                                         if (player.tab != "m") return ""
-                                                        if (player.subtabs.m.mainTabs != "Maps") return ""
-                                                        let data = player.m.army
-                                                        let data2 = data.troopsBank
-                                                        let data3 = data.troopsMoving
-                                                        let data4 = data.troopsAttacking
-                                                        let data5 = data.troopsPlacing
-                                                        let data6 = data.lastClicked
-                                                        if (typeof data6 == "number") data.lastClicked = [11,12,13]
-                                                        let a = "Time until next tick: " + formatWhole(Math.max(0, data.timeNeeded - data.time)) + "s.<br>"
-                                                        let b = "You have completed " + formatWhole(data.tilesCompleted) + " tiles, "
-                                                        let c = formatWhole(data.mapsCompleted) + " maps, and " + formatWhole(data.worldsCompleted) + " worlds.<br>"
-                                                        let d = "You have " + formatWhole(data2.commanders) + " unplaced commanders, "
-                                                        let e = formatWhole(data2.generals) + " unplaced generals, and " + formatWhole(data2.soldiers) + " unplaced soldiers.<br>"
-                                                        let f = "Currently, your troops are" + (data3.active ? "" : "n't") + " moving"
-                                                        let g = (data3.active ? " from T" + data3.troopsFrom + " to T" + data3.troopsTo : "") + ".<br>"
-                                                        let h = "Currently, your troops are" + (data4.active ? "" : "n't") + " attacking"
-                                                        let i = (data4.active ? " from T" + data4.troopsFrom + " to T" + data4.troopsTo : "") + ".<br>"
-                                                        let j = "Currently, your troops are" + (data5.active ? "" : "n't") + " being placed"
-                                                        let k = (data5.active ? " in T" + data5.troopsTo : "") + ".<br>"
-                                                        let l = "The last three tiles clicked are " + data6[0] + ", "
-                                                        let m = data6[1] + " and, " + data6[2] + ".<br>"
-                                                        let n = "You do not own " + data6[0] + ".<br>"
-                                                        let o = ""
-                                                        let p = ""
-                                                        if (data.tiles.beaten[data6[0]]) {
-                                                                n = "Currently, there are " + formatWhole(data.commandersPlaced[data6[0]]) + " commanders, "
-                                                                o = formatWhole(data.generalsPlaced[data6[0]]) + " generals and, " + formatWhole(data.soldiersPlaced[data6[0]])
-                                                                p = " soldiers placed in T" + data6[0] + ".<br>"
-                                                        }
-
-                                                        return a + b + c + d + e + f + g + h + i + j + k + /*l + m + */ n + o + p
+                                                        if (player.subtabs.m.mainTabs != "Missions") return ""
+                                                        
+                                                        return ""
                                                         
                                                 },
                                         ],
-                                        // moving from/to for 3 diff things
+                                        
                                 ],
                                 unlocked(){
                                         return true
                                 },
                         },
-                        "Army": {
-                                content: [
-                                        ["display-text",
-                                                function() {
-                                                        if (player.tab != "m") return ""
-                                                        if (player.subtabs.m.mainTabs != "Maps") return ""
-                                                        let data = player.m.army
-
-                                                        let a = "This will allow you to buy troops (resets cost in " + formatWhole(10-data.bankTicks) + " ticks)<br>"
-                                                        let b = "Troops cost grows double-exponentially and reset every 10 ticks, Soldiers: 1e1000*2^2^x<br>"
-                                                        let c = "Generals: 1e1700*3^3^x"
-                                                        let d = ", Commanders: 1e1750*10^10^x<br>"
-
-                                                        return a + b + c + d
-                                                },
-                                        ],
-                                        ["clickables", [2,2]], //buy troops here
-                                        ["display-text",
-                                                function() {
-                                                        if (player.tab != "m") return ""
-                                                        if (player.subtabs.m.mainTabs != "Maps") return ""
-                                                        let data = player.m.army
-
-                                                        let a = "Eventually buying each type of troops will be automated<br>"
-                                                        let b = "Oceans get a 2x defense bonus for both you and the enemy<br>"
-                                                        let c = "When you get attacked the enemies have a 1.3x attack bonus<br>"
-                                                        let d = "Each enemy adjacent to your tile has a 1% chance to attack each tick<br>"
-                                                        let e = "However only one of your tiles may be attacked on any tick<br>"
-                                                        let f = "Commanders can command 10 generals, and each general can command 50 soldiers<br>"
-                                                        let g = "<bdi style='font-size:50%'>Hint: You need at least one Commander and one General to fight!</bdi><br>"
-                                                        let h = "<br><h2><bdi style='color:#990000'>Attacking</bdi>:</h2><br>"
-                                                        let i = "When attacking or attacked, your troops and the enemy troops<br>"
-                                                        let j = "both get a random attack factor from .5 to 1.5 (uniformly)<br>"
-                                                        let j2= "When you attack you take half your troops from a tile (which has to be adjacent)<br>"
-                                                        let j3= "Your strength is the number of soldiers commanded<br>Enemy strength is displayed on the tile<br>"
-                                                        let k = "The soldiers then fight, and the remaining prevailing troops stay alive unharmed<br>"
-                                                        let l = "The fighting happens instantly. Upon a win, 10% of the troops on that tile retire<br>"
-                                                        let m = "Additionally, .5% of troops retire on each tick<br>For all types of retiring 2/20/1000 troops are immune to retiring<br>"
-                                                        let n = "<br><h2><bdi style='color:#990000'>How to</bdi>:</h2><br>"
-                                                        let o = "To place, move, or attack click the fifth button <b>Selection</b><br>"
-                                                        let p = "Then click either 1 or 2 tiles to target where you are placing, moving or attacking<br>"
-                                                        let q = "The game only updates every tick<br>Time until next tick can be viewed in the <b>Stats</b> page<br>"
-                                                        let r = ""
-                                                        let s1= ""
-                                                        let s2= ""
-                                                        let s3= ""
-                                                        let s4= ""
-                                                        let s5= ""
-                                                        let s6= ""
-                                                        if (data.attackLog[0] != undefined) {
-                                                                r = "<br><h2><bdi style='color:#990000'>Attack Log</bdi>:</h2><br>"
-                                                                s1= data.attackLog[0].attacker + ". You had " 
-                                                                s2= formatWhole(data.attackLog[0].troopsRemaining) + " soldiers remaining, meaning you " + (data.attackLog[0].win ? "won" : "lost") + ".<br>"
-                                                        }
-                                                        if (data.attackLog[1] != undefined) {
-                                                                s3= data.attackLog[1].attacker + ". You had " 
-                                                                s4= formatWhole(data.attackLog[1].troopsRemaining) + " soldiers remaining, meaning you " + (data.attackLog[1].win ? "won" : "lost") + ".<br>"
-                                                        }
-                                                        if (data.attackLog[2] != undefined) {
-                                                                s5= data.attackLog[2].attacker + ". You had " 
-                                                                s6= formatWhole(data.attackLog[2].troopsRemaining) + " soldiers remaining, meaning you " + (data.attackLog[2].win ? "won" : "lost") + ".<br>"
-                                                        }
-
-                                                        return a + b + /*c + d + e +*/ f + g + h + j2 + j3 + i + j + k + l + m + n + o + p + q + r + s1 + s2 + s3 + s4 + s5 + s6
-                                                },
-                                        ],
-                                ],
-                                unlocked(){
-                                        return true
-                                },
+                },
+        },
+        bars: {
+                missionBar1: {
+                        direction: RIGHT,
+                        width: 600,
+                        height: 40,
+                        progress(){
+                                if (player.tab != "m") return 0
+                                if (player.subtabs.m.mainTabs != "Missions") return 0
+                                if (player.m.missions.currentMissions[0] == undefined) return 0
+                                return getMissionProgress(player.m.missions.currentMissions[0])
                         },
-                        "Rewards": {
-                                content: [
-                                        ["display-text",
-                                                function() {
-                                                        if (player.tab != "m") return ""
-                                                        if (player.subtabs.m.mainTabs != "Maps") return ""
-                                                        let data = player.m.army
-
-                                                        let a = "You have completed " + formatWhole(data.bestTilesCompleted) + " tiles,<br>"
-                                                        let b = formatWhole(data.bestMapsCompleted) + " maps, and " + formatWhole(data.bestWorldsCompleted) + " worlds.<br>"
-                                                        let c = "<br><h2><bdi style='color:#990000'>Rewards for Tiles</bdi>:</h2><br>"
-                                                        let d = ""
-                                                        let data2 = tmp.m.armyRewards
-                                                        let dataT = data2.tiles
-                                                        for (i in dataT){
-                                                                j = dataT[i]
-                                                                if (j.isDefault) continue
-                                                                d += "•" + j.prefix
-                                                                d += format(j.effect) 
-                                                                d += j.suffix
-                                                                d += "<br>"
-                                                        }
-                                                        d += "<br>"
-
-
-                                                        return a + b + c + d
-                                                },
-                                        ],
-                                ],
-                                unlocked(){
-                                        return player.m.army.bestTilesCompleted > 0 
-                                },
-                        }, // attackLog
+                        display(){
+                                if (player.tab != "m") return ""
+                                if (player.subtabs.m.mainTabs != "Missions") return ""
+                                if (player.m.missions.currentMissions[0] == undefined) return ""
+                                let data = player.m.missions.currentMissions[0]
+                                return "Requirement: " + format(data.requirement) + data.name
+                        },
+                        fillStyle(){
+                                return {
+                                        "background": "#66CCFF"
+                                }
+                        },
+                        textStyle(){
+                                return {
+                                        "color": "#990033"
+                                }
+                        },
+                        unlocked(){
+                                return player.m.missions.currentMissions[0] != undefined
+                        },
+                },
+                missionBar2: {
+                        direction: RIGHT,
+                        width: 600,
+                        height: 40,
+                        progress(){
+                                if (player.tab != "m") return 0
+                                if (player.subtabs.m.mainTabs != "Missions") return 0
+                                if (player.m.missions.currentMissions[1] == undefined) return 0
+                                return getMissionProgress(player.m.missions.currentMissions[1])
+                        },
+                        display(){
+                                if (player.tab != "m") return ""
+                                if (player.subtabs.m.mainTabs != "Missions") return ""
+                                if (player.m.missions.currentMissions[1] == undefined) return ""
+                                let data = player.m.missions.currentMissions[1]
+                                return "Requirement: " + format(data.requirement) + data.name
+                        },
+                        fillStyle(){
+                                return {
+                                        "background": "#66CCFF"
+                                }
+                        },
+                        textStyle(){
+                                return {
+                                        "color": "#990033"
+                                }
+                        },
+                        unlocked(){
+                                return player.m.missions.currentMissions[1] != undefined
+                        },
+                },
+                missionBar3: {
+                        direction: RIGHT,
+                        width: 600,
+                        height: 40,
+                        progress(){
+                                if (player.tab != "m") return 0
+                                if (player.subtabs.m.mainTabs != "Missions") return 0
+                                if (player.m.missions.currentMissions[2] == undefined) return 0
+                                return getMissionProgress(player.m.missions.currentMissions[2])
+                        },
+                        display(){
+                                if (player.tab != "m") return ""
+                                if (player.subtabs.m.mainTabs != "Missions") return ""
+                                if (player.m.missions.currentMissions[2] == undefined) return ""
+                                let data = player.m.missions.currentMissions[2]
+                                return "Requirement: " + format(data.requirement) + data.name
+                        },
+                        fillStyle(){
+                                return {
+                                        "background": "#66CCFF"
+                                }
+                        },
+                        textStyle(){
+                                return {
+                                        "color": "#990033"
+                                }
+                        },
+                        unlocked(){
+                                return player.m.missions.currentMissions[2] != undefined
+                        },
                 },
         },
         doReset(layer){
