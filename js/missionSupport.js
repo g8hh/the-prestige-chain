@@ -27,9 +27,7 @@ missions: {
 var FIXED_MISSION_DATA = {
         1: {
                 requirement: new Decimal(789),
-                getAmount(){
-                        return totalChallengeComps("h")
-                },
+                amountType: "h challs",
                 name: "<b>H</b> challenge completions",
                 progress: "lin", //lin, log, exp
                 rewardPassive: new Decimal(.1),
@@ -38,10 +36,8 @@ var FIXED_MISSION_DATA = {
         },
         2: {
                 requirement: new Decimal(357),
-                getAmount(){
-                        return totalChallengeComps("k")
-                },
-                name: "<b>H</b> challenge completions",
+                amountType: "k challs",
+                name: "<b>K</b> challenge completions",
                 progress: "lin", //lin, log, exp
                 rewardPassive: new Decimal(.2),
                 rewardOnce: new Decimal(30),  
@@ -49,9 +45,7 @@ var FIXED_MISSION_DATA = {
         },
         3: {
                 requirement: Decimal.pow(10, 2000),
-                getAmount(){
-                        return player.m.points
-                },
+                amountType: "m points",
                 name: "<b>M</b>",
                 progress: "log", //lin, log, exp
                 rewardPassive: new Decimal(.3),
@@ -60,10 +54,23 @@ var FIXED_MISSION_DATA = {
         }
 }
 
+function getMissionsAmount(s){
+        let layer = s.split(" ")[0];
+        let attr = s.split(" ")[1];
+        if (attr == "challs"){
+                return totalChallengeComps(layer);
+        }
+        if (attr == "points"){
+                return player[layer].points;
+        }
+        console.log("adsahshdashdba")
+        return 0
+}
+
 
 function getMissionProgress(data){
         let req = data.requirement
-        let amt = data.getAmount()
+        let amt = getMissionsAmount(data.amountType)
         if (data.progress == "lin"){
                 return Decimal.div(amt,req).toNumber()
         }
@@ -93,7 +100,7 @@ function getNextMission(){
 }
 
 function isMissionComplete(data){
-        return Decimal.gte(data.getAmount(), data.requirement)
+        return Decimal.gte(getMissionsAmount(data.amountType), data.requirement)
 }
 
 function attemptCompleteMission(id){
@@ -111,6 +118,13 @@ function attemptCompleteMission(id){
 
 function getMoneyPerSecond(){
         let ret = player.m.missions.moneyPassive
+        ret = ret.plus(tmp.m.clickables[11].effect)
+
+        for (i = 11; i < 156; i++){
+                if (tmp.m.clickables[i] == undefined) continue
+                ret = ret.sub(tmp.m.clickables[i].passiveCost)
+        }
+
         return ret
 }
 
@@ -122,7 +136,7 @@ function updateMissions(diff){
         let data = player.m.missions
         doPassiveMoneyGeneration(diff)
 
-        for (i in data.currentMissions){
+        for (let i = 0; i < data.currentMissions.length; i ++){
                 attemptCompleteMission(i)
         } // check if youve completed them
         

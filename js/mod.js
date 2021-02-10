@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".8.28 Lion", // Manatee
+	num: ".8.29 Manatee", // Narwhal
 	name: "",
 }
 
@@ -31,6 +31,7 @@ var doNotCallTheseFunctionsEveryTick = ["blowUpEverything",
 					"getBonusLocks",
 					"getRebirthExp2",
 					"updateArmy",
+					"totalPerTier",
 					]
 
 function getStartPoints(){
@@ -628,6 +629,8 @@ function getChangeLogText(){
 	cq2 = "- Removed maps"
 	cq3 = "- Started missions"
 	cq4 = "- Renamed maps to missions"
+	cr1 = "v.8.29"
+	cr2 = "- Changelog coming! lots of changes!"
 
 
 	let part1  = [a1,  a2,  a3,  a4,  a5,  a6,  ""]

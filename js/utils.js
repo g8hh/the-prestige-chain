@@ -731,6 +731,12 @@ function fixHotkeyCode(s){
 	s = replaceString(s, ",", "<")
 	s = replaceString(s, ".", ">")
 	s = replaceString(s, "0", ")")
+	s = replaceString(s, "1", "!")
+	s = replaceString(s, "2", "@")
+	s = replaceString(s, "3", "#")
+	s = replaceString(s, "4", "$")
+	s = replaceString(s, "5", "%")
+
 	return s
 }
 

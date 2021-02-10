@@ -16789,6 +16789,84 @@ addLayer("m", {
                                 money: new Decimal(0),
                                 moneyPassive: new Decimal(0),
                         },
+                        stones: {
+                                11: new Decimal(0),
+                                12: new Decimal(0),
+                                13: new Decimal(0),
+                                14: new Decimal(0),
+                                15: new Decimal(0),
+                                21: new Decimal(0),
+                                22: new Decimal(0),
+                                23: new Decimal(0),
+                                24: new Decimal(0),
+                                25: new Decimal(0),
+                                31: new Decimal(0),
+                                32: new Decimal(0),
+                                33: new Decimal(0),
+                                34: new Decimal(0),
+                                35: new Decimal(0),
+                                41: new Decimal(0),
+                                42: new Decimal(0),
+                                43: new Decimal(0),
+                                44: new Decimal(0),
+                                45: new Decimal(0),
+                                51: new Decimal(0),
+                                52: new Decimal(0),
+                                53: new Decimal(0),
+                                54: new Decimal(0),
+                                55: new Decimal(0),
+                                61: new Decimal(0),
+                                62: new Decimal(0),
+                                63: new Decimal(0),
+                                64: new Decimal(0),
+                                65: new Decimal(0),
+                                71: new Decimal(0),
+                                72: new Decimal(0),
+                                73: new Decimal(0),
+                                74: new Decimal(0),
+                                75: new Decimal(0),
+                                81: new Decimal(0),
+                                82: new Decimal(0),
+                                83: new Decimal(0),
+                                84: new Decimal(0),
+                                85: new Decimal(0),
+                                91: new Decimal(0),
+                                92: new Decimal(0),
+                                93: new Decimal(0),
+                                94: new Decimal(0),
+                                95: new Decimal(0),
+                                101: new Decimal(0),
+                                102: new Decimal(0),
+                                103: new Decimal(0),
+                                104: new Decimal(0),
+                                105: new Decimal(0),
+                                111: new Decimal(0),
+                                112: new Decimal(0),
+                                113: new Decimal(0),
+                                114: new Decimal(0),
+                                115: new Decimal(0),
+                                121: new Decimal(0),
+                                122: new Decimal(0),
+                                123: new Decimal(0),
+                                124: new Decimal(0),
+                                125: new Decimal(0),
+                                131: new Decimal(0),
+                                132: new Decimal(0),
+                                133: new Decimal(0),
+                                134: new Decimal(0),
+                                135: new Decimal(0),
+                                141: new Decimal(0),
+                                142: new Decimal(0),
+                                143: new Decimal(0),
+                                144: new Decimal(0),
+                                145: new Decimal(0),
+                                151: new Decimal(0),
+                                152: new Decimal(0),
+                                153: new Decimal(0),
+                                154: new Decimal(0),
+                                155: new Decimal(0),
+                        },
+                        totalStonesUnlocked: 0,
                 } //no comma here
         },
         color: "#FFDFA7",
@@ -16894,6 +16972,26 @@ addLayer("m", {
                 {key: "m", description: "M: Reset for Missions", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
                 {key: "shift+M", description: "Shift+M: Go to Missions", onPress(){
                                 showTab("m")
+                        }
+                },
+                {key: "shift+!", description: "Shift+1: Go to Tier 1", onPress(){
+                                player.subtabs.m.pyramids = "Tier 1"
+                        }
+                },
+                {key: "shift+@", description: "Shift+1: Go to Tier 2", onPress(){
+                                player.subtabs.m.pyramids = "Tier 2"
+                        }
+                },
+                {key: "shift+#", description: "Shift+1: Go to Tier 3", onPress(){
+                                player.subtabs.m.pyramids = "Tier 3"
+                        }
+                },
+                {key: "shift+$", description: "Shift+1: Go to Tier 4", onPress(){
+                                player.subtabs.m.pyramids = "Tier 4"
+                        }
+                },
+                {key: "shift+%", description: "Shift+1: Go to Tier 5", onPress(){
+                                player.subtabs.m.pyramids = "Tier 5"
                         }
                 },
         ],
@@ -17037,31 +17135,102 @@ addLayer("m", {
                 */
         },
         clickables: {
-                rows: 8,
+                rows: 99,
                 cols: 5,
-                
-                /*11: {
+                totalPerTier(t){
+                        let a = new Decimal(0)
+                        let low = 16 - (t-6)*(t-7)/2
+                        let high = low + 6 - t
+                        for (i = low; i < high; i++){
+                                if (player.m.clickables[i*10+1] != undefined) a = a.plus(player.m.stones[10*i+1])
+                                if (player.m.clickables[i*10+2] != undefined) a = a.plus(player.m.stones[10*i+2])
+                                if (player.m.clickables[i*10+3] != undefined) a = a.plus(player.m.stones[10*i+3])
+                                if (player.m.clickables[i*10+4] != undefined) a = a.plus(player.m.stones[10*i+4])
+                                if (player.m.clickables[i*10+5] != undefined) a = a.plus(player.m.stones[10*i+5])
+                        }
+
+                        return a
+                },
+                11: {
+                        title(){
+                                return "Stone 111"
+                        },
+                        display(){
+                                if (player.tab != "m") return ""
+                                if (player.subtabs.m.mainTabs != "Missions") return ""
+
+                                let a = ""
+                                let b = ""
+                                let c = ""
+                                let d = ""
+
+                                if (shiftDown) {
+                                        a = "Currently this stone is taking " + format(tmp.m.clickables[11].passiveCost) + " money/s"
+                                        b = "<br><br>Clicking now will sell a stone"
+                                } else {
+                                        a = "Per sqrt(T1 stones) gain .1 money/s<br>"
+                                        b = "You have " + formatWhole(player.m.stones[11]) + " stones<br>"
+                                        c = "Currently: +" + format(tmp.m.clickables[11].effect) + "/s<br>"
+                                        d = "Requirement: " + format(tmp.m.clickables[11].requirement) + " money/s<br>"
+                                }
+
+                                return a + b + c + d
+                        },
+                        effect(){
+                                return tmp.m.clickables[11].effectBase.times(layers.m.clickables.totalPerTier(1).sqrt())
+                        },
+                        effectBase(){
+                                let ret = new Decimal(.1).times(player.m.stones[11])
+                                return ret
+                        },
+                        requirement(){
+                                return this.passiveCost(1).sub(tmp.m.clickables[11].passiveCost)
+                        },
+                        passiveCost(diff = 0){
+                                let x = player.m.stones[11].plus(diff)
+                                return x.plus(1).times(x).div(20)
+                        },
+                        unlocked(){
+                                return player.m.totalStonesUnlocked >= 1
+                        },
+                        canClick(){
+                                return shiftDown ? player.m.stones[11].gt(0) : getMoneyPerSecond().gte(tmp.m.clickables[11].requirement)
+                        },
+                        onClick(){
+                                if (shiftDown) player.m.stones[11] = player.m.stones[11].plus(-1) 
+                                else player.m.stones[11] = player.m.stones[11].plus(1) 
+                        },
+                },
+                161: {
                         title(){
                                 return ""
                         },
                         display(){
                                 if (player.tab != "m") return ""
-                                if (player.subtabs.m.mainTabs != "Maps") return ""
-                                let data = player.m.army
+                                if (player.subtabs.m.mainTabs != "Missions") return ""
 
-                                return "<h2 style='color:#990033'><<br>" + data.mode.all[(data.mode.active + 1)%data.mode.all.length] + "</h2>"
+                                let a = "Unlock a stone!<br>"
+                                let b = "Cost: " + formatWhole(tmp.m.clickables[161].cost) + " money"
+
+                                return a + b
+                        },
+                        cost(){
+                                let x = player.m.totalStonesUnlocked
+                                if (x > 1) return new Decimal(1e69)
+                                if (x < 10) return Decimal.pow(3, Math.pow(x, 1.3)).times(10).floor()
+                                return new Decimal(10)
                         },
                         unlocked(){
                                 return true
                         },
                         canClick(){
-                                return player.m.army.clicksSinceDecl >= 3
+                                return player.m.missions.money.gte(tmp.m.clickables[161].cost)
                         },
                         onClick(){
-                                let data = player.m.army
-                                data.mode.active = (data.mode.active + 1) % data.mode.all.length
+                                player.m.totalStonesUnlocked ++
+                                player.m.missions.money = player.m.missions.money.sub(tmp.m.clickables[161].cost)
                         },
-                },*/
+                },
         },
         tabFormat: {
                 "Upgrades": {
@@ -17116,15 +17285,63 @@ addLayer("m", {
                                                 let data = player.m.missions
 
                                                 let a = "You have " + format(data.money) + " money<br>"
-                                                let b = "You are gaining " + format(getMoneyPerSecond()) + " money/s<br>"
+                                                let b = "You are gaining " + format(getMoneyPerSecond()) + " money/s<br>"                                  
                                                 
                                                 return a + b
                                                 
                                         },
                                 ],
                                 ["bar", "missionBar1"],
+                                ["display-text",
+                                        function() {
+                                                if (player.tab != "m") return ""
+                                                if (player.subtabs.m.mainTabs != "Missions") return ""
+
+                                                let data = player.m.missions
+                                                let data2= data.currentMissions[0]
+
+                                                if (data2 == undefined) return ""
+
+                                                let a = "Completing this will give " + format(data2.rewardOnce) + " money and " + format(data2.rewardPassive) + " money/s"
+                                                
+                                                return a 
+                                        },
+                                ],
                                 ["bar", "missionBar2"],
+                                ["display-text",
+                                        function() {
+                                                if (player.tab != "m") return ""
+                                                if (player.subtabs.m.mainTabs != "Missions") return ""
+
+                                                let data = player.m.missions
+                                                let data2= data.currentMissions[1]
+
+                                                if (data2 == undefined) return ""
+
+                                                let a = "Completing this will give " + format(data2.rewardOnce) + " money and " + format(data2.rewardPassive) + " money/s"
+                                                
+                                                return a 
+                                        },
+                                ],
                                 ["bar", "missionBar3"],
+                                ["display-text",
+                                        function() {
+                                                if (player.tab != "m") return ""
+                                                if (player.subtabs.m.mainTabs != "Missions") return ""
+
+                                                let data = player.m.missions
+                                                let data2= data.currentMissions[2]
+
+                                                if (data2 == undefined) return ""
+
+                                                let a = "Completing this will give " + format(data2.rewardOnce) + " money and " + format(data2.rewardPassive) + " money/s"
+                                                
+                                                return a 
+                                        },
+                                ],
+                                ["microtabs", "pyramids"],
+                                ["clickables", [16,16]],
+                                
                         ],
                         unlocked(){
                                 return hasUpgrade("m", 23) || hasUnlockedPast("m")
@@ -17141,20 +17358,57 @@ addLayer("m", {
                 },
         },
         microtabs: {
-                missions: {
-                        "Progress": {
+                "pyramids": {
+                        "Tier 1": {
                                 content: [
-                                        ["clickables", [1,1]],
-                                        ["display-text",
-                                                function() {
-                                                        if (player.tab != "m") return ""
-                                                        if (player.subtabs.m.mainTabs != "Missions") return ""
-                                                        
-                                                        return ""
-                                                        
-                                                },
-                                        ],
-                                        
+                                        ["display-text", function(){
+                                                return "You have " + formatWhole(layers.m.clickables.totalPerTier(1)) + " T1 stones (hold shift to sell!)"
+                                        }],
+                                        ["clickables", [1,5]],
+                                ],
+                                unlocked(){
+                                        return true
+                                },
+                        },
+                        "Tier 2": {
+                                content: [
+                                        ["display-text", function(){
+                                                return "You have " + formatWhole(layers.m.clickables.totalPerTier(2)) + " T2 stones"
+                                        }],
+                                        ["clickables", [6,9]],
+                                ],
+                                unlocked(){
+                                        return true
+                                },
+                        },
+                        "Tier 3": {
+                                content: [
+                                        ["display-text", function(){
+                                                return "You have " + formatWhole(layers.m.clickables.totalPerTier(3)) + " T3 stones"
+                                        }],
+                                        ["clickables", [10,12]],
+                                ],
+                                unlocked(){
+                                        return true
+                                },
+                        },
+                        "Tier 4": {
+                                content: [
+                                        ["display-text", function(){
+                                                return "You have " + formatWhole(layers.m.clickables.totalPerTier(4)) + " T4 stones"
+                                        }],
+                                        ["clickables", [13,14]],
+                                ],
+                                unlocked(){
+                                        return true
+                                },
+                        },
+                        "Tier 5": {
+                                content: [
+                                        ["display-text", function(){
+                                                return "You have " + formatWhole(layers.m.clickables.totalPerTier(5)) + " T5 stones"
+                                        }],
+                                        ["clickables", [15,15]],
                                 ],
                                 unlocked(){
                                         return true
@@ -17178,7 +17432,7 @@ addLayer("m", {
                                 if (player.subtabs.m.mainTabs != "Missions") return ""
                                 if (player.m.missions.currentMissions[0] == undefined) return ""
                                 let data = player.m.missions.currentMissions[0]
-                                return "Requirement: " + format(data.requirement) + data.name
+                                return "Requirement: " + format(data.requirement) + " " + data.name
                         },
                         fillStyle(){
                                 return {
