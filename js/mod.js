@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".8.29 Manatee", // Narwhal
+	num: ".8.29.1 Manatee", // Narwhal
 	name: "",
 }
 
