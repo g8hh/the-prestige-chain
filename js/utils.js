@@ -307,6 +307,7 @@ function load() {
 	changeTheme();
 	changeTreeQuality();
 	updateLayers()
+	makeMissionsDecimal()
 
 	setupTemp();
 	updateCurrentDepthValues()

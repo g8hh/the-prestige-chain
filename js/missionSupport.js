@@ -40,7 +40,7 @@ var FIXED_MISSION_DATA = {
                 name: "<b>Diamond Keys</b>",
                 progress: "lin", //lin, log, exp
                 rewardPassive: new Decimal(.15),
-                rewardOnce: new Decimal(30),  
+                rewardOnce: new Decimal(50),  
                 id: 2,
         },
         3: {
@@ -49,7 +49,7 @@ var FIXED_MISSION_DATA = {
                 name: "<b>K</b> challenge completions",
                 progress: "lin", //lin, log, exp
                 rewardPassive: new Decimal(.2),
-                rewardOnce: new Decimal(40),  
+                rewardOnce: new Decimal(100),  
                 id: 3,
         },
         4: {
@@ -58,8 +58,35 @@ var FIXED_MISSION_DATA = {
                 name: "<b>M</b>",
                 progress: "log", //lin, log, exp
                 rewardPassive: new Decimal(.3),
-                rewardOnce: new Decimal(50),  
+                rewardOnce: new Decimal(300),  
                 id: 4,
+        },
+        5: {
+                requirement: new Decimal(355),
+                amountType: "k challs",
+                name: "<b>K</b> challenge completions",
+                progress: "lin", //lin, log, exp
+                rewardPassive: new Decimal(.2),
+                rewardOnce: new Decimal(1000),  
+                id: 5,
+        },
+        6: {
+                requirement: Decimal.pow(10, 4000),
+                amountType: "m points",
+                name: "<b>M</b>",
+                progress: "log", //lin, log, exp
+                rewardPassive: new Decimal(.3),
+                rewardOnce: new Decimal(1300),  
+                id: 6,
+        },
+        7: {
+                requirement: Decimal.pow(10, 8000),
+                amountType: "m points",
+                name: "<b>M</b>",
+                progress: "log", //lin, log, exp
+                rewardPassive: new Decimal(.5),
+                rewardOnce: new Decimal(2500),  
+                id: 7,
         },
 }
 
@@ -84,11 +111,11 @@ function getMissionProgress(data){
         let req = data.requirement
         let amt = getMissionsAmount(data.amountType)
         if (data.progress == "lin"){
-                return Decimal.div(amt,req).toNumber()
+                return Decimal.div(amt, req).toNumber()
         }
         if (data.progress == "log"){
-                if (req.lt(1)) return 0
-                return Decimal.div(Decimal.log(amt), Decimal.log(div)).toNumber()
+                if (new Decimal(req).lt(1)) return 0
+                return Decimal.div(Decimal.ln(amt), Decimal.ln(req)).toNumber()
         }
         if (data.progress == "exp"){
                 return Decimal.pow(2, Decimal.sub(amt, req)).toNumber()
@@ -108,7 +135,15 @@ function getNextMission(){
                 return FIXED_MISSION_DATA[i]
         }
         console.log("OOOPS")
-        return FIXED_MISSION_DATA[Object.keys(FIXED_MISSION_DATA).length-1] // for NOW
+        return {
+                requirement: Decimal.pow(10, 1e20),
+                amountType: "m points",
+                name: "<b>M</b>",
+                progress: "log", //lin, log, exp
+                rewardPassive: new Decimal(.5),
+                rewardOnce: new Decimal(2500),  
+                id: 1236712631723,
+        }
 }
 
 function isMissionComplete(data){
@@ -163,6 +198,14 @@ function updateMissions(diff){
         // update the displays
 }
 
+function makeMissionsDecimal(){
+        let d = player.m.missions.currentMissions
+        for (i in d){
+                if (d[i].rewardOnce) d[i].rewardOnce = new Decimal(d[i].rewardOnce)
+                if (d[i].rewardPassive) d[i].rewardPassive = new Decimal(d[i].rewardPassive)
+                if (d[i].requirement) d[i].requirement = new Decimal(d[i].requirement)
+        }
+}
 
 
 

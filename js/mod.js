@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".8.30 Narwhal", // Octopus
+	num: ".8.31 Octopus", // Penguin
 	name: "",
 }
 
@@ -634,6 +634,10 @@ function getChangeLogText(){
 	cs1 = "v.8.30"
 	cs2 = "- Added a couple of stones"
 	cs3 = "- Please click the button that fixes missions"
+	ct1 = "v.8.31"
+	ct2 = "- Added in a last mission so things don't break"
+	ct3 = "- Added a couple of missions"
+	ct4 = "- Added a lemon upgrade"
 
 
 	let part1  = [a1,  a2,  a3,  a4,  a5,  a6,  ""]
@@ -728,6 +732,7 @@ function getChangeLogText(){
 	let part90 = [cp1, cp2, cp3, cp4, cp5,  "", cp6, cp7, cp8,  "", cp9, cp10, "", cp11, cp12]
 	let part91 = [cq1, cq2, cq3, cq4,  ""]
 	let part92 = [cs1, cs2, cs3,  ""]
+	let part93 = [ct1, ct2, ct3, ct4,  ""]
 	// MAKE SURE TO ADD THEM
 
 	let final1 = [part10,  part9,  part8,  part7,  part6,  part5,  part4,  part3,  part2,  part1]
@@ -739,7 +744,7 @@ function getChangeLogText(){
 	let final7 = [part70, part69, part68, part67, part66, part65, part64, part63, part62, part61]
 	let final8 = [part80, part79, part78, part77, part76, part75, part74, part73, part72, part71]
 	let final9 = [part90, part89, part88, part87, part86, part85, part84, part83, part82, part81]
-	let final10= [part92, part91]
+	let final10= [part93, part92, part91]
 
 	let entiresShown = 3
 	let start = [["Hold Shift to see the full changelog!", shiftDown ? "" : "Currrently showing the " + entiresShown + " most recent entries", ""]]

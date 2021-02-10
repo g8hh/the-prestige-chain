@@ -16662,9 +16662,16 @@ addLayer("l", {
                                 return hasUpgrade("l", 34) || hasUnlockedPast("m")
                         }
                 }, // hasUpgrade("l", 35)
+                41: {
+                        title: "Legal",
+                        description: "Double stone 111 effect and divide new stone costs by 100x",
+                        cost: Decimal.pow(10, 4e9),
+                        unlocked(){
+                                return hasUpgrade("m", 24) || hasUnlockedPast("m")
+                        }
+                }, // hasUpgrade("l", 41)
 
                 /*
-                Legal
                 Language
                 Latest
                 Light
@@ -17179,7 +17186,7 @@ addLayer("m", {
                                         a = "Currently this stone is taking " + format(tmp.m.clickables[11].passiveCost) + " money/s"
                                         b = "<br><br>Clicking now will sell a stone"
                                 } else {
-                                        a = "Per sqrt(T1 stones) gain .1 money/s<br>"
+                                        a = "Per sqrt(T1 stones) gain " + format(tmp.m.clickables[11].effectBase) + " money/s<br>"
                                         b = "You have " + formatWhole(player.m.stones[11]) + " stones<br>"
                                         c = "Currently: +" + format(tmp.m.clickables[11].effect) + "/s<br>"
                                         d = "Requirement: " + format(tmp.m.clickables[11].requirement) + " money/s<br>"
@@ -17192,6 +17199,7 @@ addLayer("m", {
                         },
                         effectBase(){
                                 let ret = new Decimal(.1).times(player.m.stones[11])
+                                if (hasUpgrade("l", 41)) ret = ret.times(2)
                                 return ret
                         },
                         requirement(){
@@ -17229,7 +17237,7 @@ addLayer("m", {
                                         a = "Currently this stone is taking " + format(tmp.m.clickables[12].passiveCost) + " money/s"
                                         b = "<br><br>Clicking now will sell a stone"
                                 } else {
-                                        a = "Gain (1+stones)^(100*[T1 Stones])<br>"
+                                        a = "Gain *(1+stones)^(100*[T1 Stones]) <b>M</b><br>"
                                         b = "You have " + formatWhole(player.m.stones[12]) + " stones<br>"
                                         c = "Currently: *" + format(tmp.m.clickables[12].effect) + "<br>"
                                         d = "Requirement: " + format(tmp.m.clickables[12].requirement) + " money/s<br>"
@@ -17377,9 +17385,12 @@ addLayer("m", {
                         },
                         cost(){
                                 let x = player.m.totalStonesUnlocked
-                                if (x > 3) return new Decimal(1e69)
-                                if (x < 3) return Decimal.pow(3, Math.pow(x, 1.3)).times(10).floor()
-                                if (x < 10) return Decimal.pow(5, Math.pow(x, 1.2)).floor()
+                                init = new Decimal(1)
+                                if (hasUpgrade("l", 41)) init = init.div(100)
+
+                                if (x > 4) return new Decimal(1e69).times(init)
+                                if (x < 3) return Decimal.pow(3, Math.pow(x, 1.3)).times(10).times(init).floor()
+                                if (x < 10) return Decimal.pow(5, Math.pow(x, 1.2)).times(init).floor()
                                 return new Decimal(10)
                         },
                         unlocked(){
