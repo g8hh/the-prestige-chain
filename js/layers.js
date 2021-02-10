@@ -15760,6 +15760,7 @@ addLayer("k", {
                                 let amt = player.k.lock.repeatables[81]
                                 amt = amt.plus(layers.k.clickables.getBonusKeys(81))
                                 let ret = amt.pow(1.5).div(100).plus(1).ln().times(50).plus(1)
+                                ret = ret.pow(tmp.m.clickables[22].effect)
                                 return ret
                         },
                         effectDescription(){
@@ -15833,6 +15834,7 @@ addLayer("k", {
                                 let amt = player.k.lock.repeatables[82]
                                 amt = amt.plus(layers.k.clickables.getBonusKeys(82))
                                 let ret = amt.pow(1.5).div(100).plus(1).ln().times(20)
+                                if (hasUpgrade("m", 24)) ret = ret.pow(3)
                                 return ret
                         },
                         effectDescription(){
@@ -16890,6 +16892,7 @@ addLayer("m", {
                 if (hasUpgrade("m", 13)) x = x.plus(tmp.m.upgrades[13].effect)
                 x = x.plus(tmp.k.challenges[21].rewardEffect)
                 if (hasUpgrade("k", 54)) x = x.plus(1)
+                x = x.plus(tmp.m.clickables[21].effect)
                 return x
         },
         getGainMultPre(){
@@ -16912,6 +16915,7 @@ addLayer("m", {
                 if (hasUpgrade("k", 53)) x = x.times(tmp.k.clickables[73].effect)
                 if (hasUpgrade("l", 32)) x = x.times(tmp.k.challenges[12].rewardEffect)
                 if (hasUpgrade("l", 34)) x = x.times(tmp.k.challenges[12].rewardEffect)
+                x = x.times(tmp.m.clickables[12].effect)
 
                 return x
         },
@@ -17126,10 +17130,17 @@ addLayer("m", {
                                 return hasUpgrade("m", 22) || hasUnlockedPast("m")
                         }
                 }, // hasUpgrade("m", 23)
+                24: {
+                        title: "Member",
+                        description: "Cube <b>Diamond Key</b> and gain .2 money/s",
+                        cost: Decimal.pow(10, 1936),
+                        unlocked(){
+                                return hasUpgrade("m", 23) || hasUnlockedPast("m")
+                        }
+                }, // hasUpgrade("m", 24)
         
 
                 /*
-                Member
                 Much
                 Members
                 */
@@ -17201,6 +17212,156 @@ addLayer("m", {
                                 else player.m.stones[11] = player.m.stones[11].plus(1) 
                         },
                 },
+                12: {
+                        title(){
+                                return "Stone 112"
+                        },
+                        display(){
+                                if (player.tab != "m") return ""
+                                if (player.subtabs.m.mainTabs != "Missions") return ""
+
+                                let a = ""
+                                let b = ""
+                                let c = ""
+                                let d = ""
+
+                                if (shiftDown) {
+                                        a = "Currently this stone is taking " + format(tmp.m.clickables[12].passiveCost) + " money/s"
+                                        b = "<br><br>Clicking now will sell a stone"
+                                } else {
+                                        a = "Gain (1+stones)^(100*[T1 Stones])<br>"
+                                        b = "You have " + formatWhole(player.m.stones[12]) + " stones<br>"
+                                        c = "Currently: *" + format(tmp.m.clickables[12].effect) + "<br>"
+                                        d = "Requirement: " + format(tmp.m.clickables[12].requirement) + " money/s<br>"
+                                }
+
+                                return a + b + c + d
+                        },
+                        effect(){
+                                return tmp.m.clickables[12].effectBase.pow(layers.m.clickables.totalPerTier(1))
+                        },
+                        effectBase(){
+                                let ret = new Decimal(1).plus(player.m.stones[12]).pow(100)
+                                return ret
+                        },
+                        requirement(){
+                                return this.passiveCost(1).sub(tmp.m.clickables[12].passiveCost)
+                        },
+                        passiveCost(diff = 0){
+                                let x = player.m.stones[12].plus(diff)
+                                return x.plus(1).times(x).div(20)
+                        },
+                        unlocked(){
+                                return player.m.totalStonesUnlocked >= 2
+                        },
+                        canClick(){
+                                return shiftDown ? player.m.stones[12].gt(0) : getMoneyPerSecond().gte(tmp.m.clickables[12].requirement)
+                        },
+                        onClick(){
+                                if (shiftDown) player.m.stones[12] = player.m.stones[12].plus(-1) 
+                                else player.m.stones[12] = player.m.stones[12].plus(1) 
+                        },
+                },
+                21: {
+                        title(){
+                                return "Stone 121"
+                        },
+                        display(){
+                                if (player.tab != "m") return ""
+                                if (player.subtabs.m.mainTabs != "Missions") return ""
+
+                                let a = ""
+                                let b = ""
+                                let c = ""
+                                let d = ""
+
+                                if (shiftDown) {
+                                        a = "Currently this stone is taking " + format(tmp.m.clickables[21].passiveCost) + " money/s"
+                                        b = "<br><br>Clicking now will sell a stone"
+                                } else {
+                                        a = "Add [stones] to <b>M</b> gain exponent<br>"
+                                        b = "You have " + formatWhole(player.m.stones[21]) + " stones<br>"
+                                        c = "Currently: +" + format(tmp.m.clickables[21].effect) + "<br>"
+                                        d = "Requirement: " + format(tmp.m.clickables[21].requirement) + " money/s<br>"
+                                }
+
+                                return a + b + c + d
+                        },
+                        effect(){
+                                return tmp.m.clickables[21].effectBase
+                        },
+                        effectBase(){
+                                let ret = player.m.stones[21]
+                                return ret
+                        },
+                        requirement(){
+                                return this.passiveCost(1).sub(tmp.m.clickables[21].passiveCost)
+                        },
+                        passiveCost(diff = 0){
+                                let x = player.m.stones[21].plus(diff)
+                                return x.plus(1).times(x).div(20)
+                        },
+                        unlocked(){
+                                return player.m.totalStonesUnlocked >= 3
+                        },
+                        canClick(){
+                                return shiftDown ? player.m.stones[21].gt(0) : getMoneyPerSecond().gte(tmp.m.clickables[21].requirement)
+                        },
+                        onClick(){
+                                if (shiftDown) player.m.stones[21] = player.m.stones[21].plus(-1) 
+                                else player.m.stones[21] = player.m.stones[21].plus(1) 
+                        },
+                },
+                22: {
+                        title(){
+                                return "Stone 122"
+                        },
+                        display(){
+                                if (player.tab != "m") return ""
+                                if (player.subtabs.m.mainTabs != "Missions") return ""
+
+                                let a = ""
+                                let b = ""
+                                let c = ""
+                                let d = ""
+
+                                if (shiftDown) {
+                                        a = "Currently this stone is taking " + format(tmp.m.clickables[22].passiveCost) + " money/s"
+                                        b = "<br><br>Clicking now will sell a stone"
+                                } else {
+                                        a = "Raise <b>Basic Key</b> effect to (4*[stones] + 1)^2<br>"
+                                        b = "You have " + formatWhole(player.m.stones[22]) + " stones<br>"
+                                        c = "Currently: ^" + format(tmp.m.clickables[22].effect) + "<br>"
+                                        d = "Requirement: " + format(tmp.m.clickables[22].requirement) + " money/s<br>"
+                                }
+
+                                return a + b + c + d
+                        },
+                        effect(){
+                                return tmp.m.clickables[22].effectBase
+                        },
+                        effectBase(){
+                                let ret = player.m.stones[22].times(4).plus(1).pow(2)
+                                return ret
+                        },
+                        requirement(){
+                                return this.passiveCost(1).sub(tmp.m.clickables[22].passiveCost)
+                        },
+                        passiveCost(diff = 0){
+                                let x = player.m.stones[22].plus(diff)
+                                return x.plus(1).times(x).div(20)
+                        },
+                        unlocked(){
+                                return player.m.totalStonesUnlocked >= 4
+                        },
+                        canClick(){
+                                return shiftDown ? player.m.stones[22].gt(0) : getMoneyPerSecond().gte(tmp.m.clickables[22].requirement)
+                        },
+                        onClick(){
+                                if (shiftDown) player.m.stones[22] = player.m.stones[22].plus(-1) 
+                                else player.m.stones[22] = player.m.stones[22].plus(1) 
+                        },
+                },
                 161: {
                         title(){
                                 return ""
@@ -17216,8 +17377,9 @@ addLayer("m", {
                         },
                         cost(){
                                 let x = player.m.totalStonesUnlocked
-                                if (x > 1) return new Decimal(1e69)
-                                if (x < 10) return Decimal.pow(3, Math.pow(x, 1.3)).times(10).floor()
+                                if (x > 3) return new Decimal(1e69)
+                                if (x < 3) return Decimal.pow(3, Math.pow(x, 1.3)).times(10).floor()
+                                if (x < 10) return Decimal.pow(5, Math.pow(x, 1.2)).floor()
                                 return new Decimal(10)
                         },
                         unlocked(){
@@ -17229,6 +17391,28 @@ addLayer("m", {
                         onClick(){
                                 player.m.totalStonesUnlocked ++
                                 player.m.missions.money = player.m.missions.money.sub(tmp.m.clickables[161].cost)
+                        },
+                },
+                162: {
+                        title(){
+                                return ""
+                        },
+                        display(){
+                                if (player.tab != "m") return ""
+                                if (player.subtabs.m.mainTabs != "Missions") return ""
+
+                                let a = "Reset Missions<br>Please do this upon update"
+
+                                return a
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        canClick(){
+                                return true
+                        },
+                        onClick(){
+                                player.m.missions.currentMissions = []
                         },
                 },
         },

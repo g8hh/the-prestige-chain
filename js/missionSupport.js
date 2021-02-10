@@ -35,23 +35,32 @@ var FIXED_MISSION_DATA = {
                 id: 1,
         },
         2: {
-                requirement: new Decimal(357),
-                amountType: "k challs",
-                name: "<b>K</b> challenge completions",
+                requirement: new Decimal(79),
+                amountType: "diamond key",
+                name: "<b>Diamond Keys</b>",
                 progress: "lin", //lin, log, exp
-                rewardPassive: new Decimal(.2),
+                rewardPassive: new Decimal(.15),
                 rewardOnce: new Decimal(30),  
                 id: 2,
         },
         3: {
+                requirement: new Decimal(353),
+                amountType: "k challs",
+                name: "<b>K</b> challenge completions",
+                progress: "lin", //lin, log, exp
+                rewardPassive: new Decimal(.2),
+                rewardOnce: new Decimal(40),  
+                id: 3,
+        },
+        4: {
                 requirement: Decimal.pow(10, 2000),
                 amountType: "m points",
                 name: "<b>M</b>",
                 progress: "log", //lin, log, exp
                 rewardPassive: new Decimal(.3),
-                rewardOnce: new Decimal(40),  
-                id: 3,
-        }
+                rewardOnce: new Decimal(50),  
+                id: 4,
+        },
 }
 
 function getMissionsAmount(s){
@@ -62,6 +71,9 @@ function getMissionsAmount(s){
         }
         if (attr == "points"){
                 return player[layer].points;
+        }
+        if (attr == "key"){
+                if (layer == "diamond") return player.k.lock.repeatables[82]
         }
         console.log("adsahshdashdba")
         return 0
@@ -124,6 +136,8 @@ function getMoneyPerSecond(){
                 if (tmp.m.clickables[i] == undefined) continue
                 ret = ret.sub(tmp.m.clickables[i].passiveCost)
         }
+
+        if (hasUpgrade("m", 24)) ret = ret.plus(.2)
 
         return ret
 }
