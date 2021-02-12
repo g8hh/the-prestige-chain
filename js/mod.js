@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".8.32 Penguin", // Rhino
+	num: ".8.33 Rhino", // Sloth
 	name: "",
 }
 
@@ -650,6 +650,9 @@ function getChangeLogText(){
 	cu8 = "- Added a sixth stone that allows more Key challenge completions"
 	cu9 = "- Pushed Heart challenge softcap from 200 to 250"
 	cu10= "- Added two more goals"
+	cv1 = "v.8.33"
+	cv2 = "- Added a stone"
+	cv3 = "- Added a lemon upgrade"
 
 	let part1  = [a1,  a2,  a3,  a4,  a5,  a6,  ""]
 	let part2  = [b1,  b2,  b3,  b4,  b5,  "",  b6,  b7,  "",  b8,  b9,  b10,  "",  b11,  b12,  ""]
@@ -745,6 +748,7 @@ function getChangeLogText(){
 	let part92 = [cs1, cs2, cs3,  ""]
 	let part93 = [ct1, ct2, ct3, ct4,  "", ct5, ct6,  ""]
 	let part94 = [cu1, cu2, cu3, cu4, cu5, cu6, cu7, cu8, cu9, cu10, ""]
+	let part95 = [cv1, cv2, cv3,  ""]
 	// MAKE SURE TO ADD THEM
 
 	let final1 = [part10,  part9,  part8,  part7,  part6,  part5,  part4,  part3,  part2,  part1]
@@ -756,7 +760,7 @@ function getChangeLogText(){
 	let final7 = [part70, part69, part68, part67, part66, part65, part64, part63, part62, part61]
 	let final8 = [part80, part79, part78, part77, part76, part75, part74, part73, part72, part71]
 	let final9 = [part90, part89, part88, part87, part86, part85, part84, part83, part82, part81]
-	let final10= [part94, part93, part92, part91]
+	let final10= [part95, part94, part93, part92, part91]
 
 	let entiresShown = 3
 	let start = [["Hold Shift to see the full changelog!", shiftDown ? "" : "Currrently showing the " + entiresShown + " most recent entries", ""]]

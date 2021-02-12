@@ -181,6 +181,11 @@ function attemptCompleteMission(id){
         // remove the given mission
 }
 
+function getTaxRate(){
+        let ret = .0002
+        if (hasUpgrade("l", 42)) ret *= 5
+        return ret
+}
 
 function getMoneyPerSecond(){
         let ret = player.m.missions.moneyPassive
@@ -194,18 +199,17 @@ function getMoneyPerSecond(){
 
         if (hasUpgrade("m", 24)) ret = ret.plus(.2)
         
-
         return ret.max(0)
 }
 
 function getActualMoneyPerSecond(){
-        let a = player.m.missions.money.times(.0002)
+        let a = player.m.missions.money.times(getTaxRate())
         return getMoneyPerSecond().sub(a)
 }
 
 function doPassiveMoneyGeneration(diff){
         player.m.missions.money = player.m.missions.money.plus(getMoneyPerSecond().times(diff))
-        player.m.missions.money = player.m.missions.money.times(Decimal.pow(.9998, diff))
+        player.m.missions.money = player.m.missions.money.times(Decimal.pow(1-getTaxRate(), diff))
 }
 
 function updateMissions(diff){

@@ -8534,6 +8534,7 @@ addLayer("h", {
                         if (hasUpgrade("k", 45)) c += .05 * player.l.upgrades.length
                         c += CURRENT_BUYABLE_EFFECTS["j22"].toNumber()
                         c += tmp.m.upgrades[13].effect.toNumber()
+                        c += tmp.m.clickables[23].effect.toNumber()
                         return c
                 },
                 11: {
@@ -16697,7 +16698,7 @@ addLayer("l", {
                 }, // hasUpgrade("l", 34)
                 35: {
                         title: "Let",
-                        description: "<bdi style='font-size:80%'> Raise <b>Titanium Key</b> effect to the sqrt(number of upgrades) and each <b>Diamond Key</b> squares <b>I</b> gain</bdi>",
+                        description: "<bdi style='font-size:80%'>Raise <b>Titanium Key</b> effect to the sqrt(number of upgrades) and each <b>Diamond Key</b> squares <b>I</b> gain</bdi>",
                         cost: Decimal.pow(10, 444444444), //444e6
                         unlocked(){
                                 return hasUpgrade("l", 34) || hasUnlockedPast("m")
@@ -16711,9 +16712,16 @@ addLayer("l", {
                                 return hasUpgrade("m", 24) || hasUnlockedPast("m")
                         }
                 }, // hasUpgrade("l", 41)
+                42: {
+                        title: "Language",
+                        description: "<bdi style='font-size:80%'>Taxes are 5 times stronger but make stones unlocks 3x cheaper per upgrade in this row and extra <b>Diamond Keys</b> effects stone 211</bdi>",
+                        cost: Decimal.pow(10, 4e10),
+                        unlocked(){
+                                return hasUpgrade("l", 41) || hasUnlockedPast("m")
+                        }
+                }, // hasUpgrade("l", 42)
 
                 /*
-                Language
                 Latest
                 Light
                 London
@@ -17463,6 +17471,58 @@ addLayer("m", {
                                 else player.m.stones[22] = player.m.stones[22].plus(1) 
                         },
                 },
+                23: {
+                        title(){
+                                return "Stone 123"
+                        },
+                        display(){
+                                if (player.tab != "m") return ""
+                                if (player.subtabs.m.mainTabs != "Missions") return ""
+
+                                let a = ""
+                                let b = ""
+                                let c = ""
+                                let d = ""
+
+                                if (shiftDown) {
+                                        a = "Currently this stone is taking " + format(tmp.m.clickables[23].passiveCost) + " money/s"
+                                        b = "<br><br>Clicking now will sell a stone"
+                                } else {
+                                        a = "-1 effective <b>H</b> challenges <br>"
+                                        b = "You have " + formatWhole(player.m.stones[23]) + " stones<br>"
+                                        c = "Currently: -" + format(tmp.m.clickables[23].effect) + "<br>"
+                                        d = "Requirement: " + format(tmp.m.clickables[23].requirement) + " money/s<br>"
+                                }
+
+                                return a + b + c + d
+                        },
+                        effect(){
+                                return tmp.m.clickables[23].effectBase
+                        },
+                        effectBase(){
+                                let ret = player.m.stones[23]
+                                return ret
+                        },
+                        requirement(){
+                                return this.passiveCost(1).sub(tmp.m.clickables[23].passiveCost)
+                        },
+                        passiveCost(diff = 0){
+                                let x = player.m.stones[23].plus(diff)
+                                return x.plus(1).times(x).div(20)
+                        },
+                        unlocked(){
+                                return player.m.totalStonesUnlocked >= 7
+                        },
+                        canClick(){
+                                let id = 23
+                                return shiftDown ? player.m.stones[id].gt(0) : getMoneyPerSecond().gte(tmp.m.clickables[id].requirement)
+                        },
+                        onClick(){
+                                let id = 23
+                                if (shiftDown) player.m.stones[id] = player.m.stones[id].plus(-1) 
+                                else player.m.stones[id] = player.m.stones[id].plus(1) 
+                        },
+                },
                 61: {
                         title(){
                                 return "Stone 211"
@@ -17492,8 +17552,9 @@ addLayer("m", {
                                 return tmp.m.clickables[61].effectBase.times(player.m.stones[61])
                         },
                         effectBase(){
-                                let ret = player.k.lock.repeatables[82].div(100)
-                                return ret
+                                let ret = player.k.lock.repeatables[82]
+                                if (hasUpgrade("l", 42)) ret = ret.plus(layers.k.clickables.getBonusKeys(82))
+                                return ret.div(100)
                         },
                         requirement(){
                                 return this.passiveCost(1).sub(tmp.m.clickables[61].passiveCost)
@@ -17532,8 +17593,15 @@ addLayer("m", {
                                 let x = player.m.totalStonesUnlocked
                                 init = new Decimal(1)
                                 if (hasUpgrade("l", 41)) init = init.div(100)
+                                if (hasUpgrade("l", 42)) {
+                                        init = init.div(3)
+                                        if (hasUpgrade("l", 41)) init = init.div(3)
+                                        if (hasUpgrade("l", 43)) init = init.div(3)
+                                        if (hasUpgrade("l", 44)) init = init.div(3)
+                                        if (hasUpgrade("l", 45)) init = init.div(3)
+                                }
 
-                                if (x > 6) return new Decimal(1e69).times(init)
+                                if (x > 7) return new Decimal(1e69).times(init)
                                 if (x < 3) return Decimal.pow(3, Math.pow(x, 1.3)).times(10).times(init).floor()
                                 if (x < 10) return Decimal.pow(5, Math.pow(x, 1.2)).times(init).floor()
                                 return new Decimal(10)
@@ -17624,7 +17692,7 @@ addLayer("m", {
 
                                                 let data = player.m.missions
 
-                                                let a = "You have " + format(data.money) + " money (you lose .02% per second due to taxes)<br>"
+                                                let a = "You have " + format(data.money) + " money (you lose " + format(getTaxRate() * 100) + "% per second due to taxes)<br>"
                                                 let b = "You are gaining " + format(getMoneyPerSecond(), 3) + " money/s (after taxes: " + format(getActualMoneyPerSecond()) + ")<br>"                                  
                                                 
                                                 return a + b
