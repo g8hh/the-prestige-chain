@@ -2672,6 +2672,20 @@ var MAIN_BUYABLE_DATA = {
                         return [b0, b1, b2]
                 },
         },
+        k21: {
+                name: "Knife",
+                func: "exp",
+                effects: "<b>Iron Key</b> effect",
+                base: {
+                        initial: new Decimal(1e10),
+                },
+                bases(){
+                        let b0 = Decimal.pow(10, 2e16)
+                        let b1 = Decimal.pow(10, 5e13)
+                        let b2 = Decimal.pow(10, 3e11)
+                        return [b0, b1, b2]
+                },
+        },
 }
 
 var EXTRA_FREE_BUYABLE_DATA = {

@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".8.31.1 Octopus", // Penguin
+	num: ".8.32 Penguin", // Rhino
 	name: "",
 }
 
@@ -84,7 +84,7 @@ var displayThings = [
 		return "(" + format(getPointGen()) + "/sec)"
 	},
 	function(){
-		let a = "Endgame: 1e1764 Maps"
+		let a = "Endgame: 326 goals"
 		return player.autosave ? a : a + ". Warning: autosave is off"
 	},
 	function(){
@@ -640,7 +640,16 @@ function getChangeLogText(){
 	ct4 = "- Added a lemon upgrade"
 	ct5 = "v.8.31.1"
 	ct6 = "- Added a third digit to money production"
-
+	cu1 = "v.8.32"
+	cu2 = "- Added an effect to member"
+	cu3 = "- Added a fifth, OP stone"
+	cu4 = "- Added a 1e9 hardcap for mines/locks/keys"
+	cu5 = "- Made a goal easier"
+	cu6 = "- Added a Key buyable"
+	cu7 = "- Added taxes"
+	cu8 = "- Added a sixth stone that allows more Key challenge completions"
+	cu9 = "- Pushed Heart challenge softcap from 200 to 250"
+	cu10= "- Added two more goals"
 
 	let part1  = [a1,  a2,  a3,  a4,  a5,  a6,  ""]
 	let part2  = [b1,  b2,  b3,  b4,  b5,  "",  b6,  b7,  "",  b8,  b9,  b10,  "",  b11,  b12,  ""]
@@ -735,6 +744,7 @@ function getChangeLogText(){
 	let part91 = [cq1, cq2, cq3, cq4,  ""]
 	let part92 = [cs1, cs2, cs3,  ""]
 	let part93 = [ct1, ct2, ct3, ct4,  "", ct5, ct6,  ""]
+	let part94 = [cu1, cu2, cu3, cu4, cu5, cu6, cu7, cu8, cu9, cu10, ""]
 	// MAKE SURE TO ADD THEM
 
 	let final1 = [part10,  part9,  part8,  part7,  part6,  part5,  part4,  part3,  part2,  part1]
@@ -746,7 +756,7 @@ function getChangeLogText(){
 	let final7 = [part70, part69, part68, part67, part66, part65, part64, part63, part62, part61]
 	let final8 = [part80, part79, part78, part77, part76, part75, part74, part73, part72, part71]
 	let final9 = [part90, part89, part88, part87, part86, part85, part84, part83, part82, part81]
-	let final10= [part93, part92, part91]
+	let final10= [part94, part93, part92, part91]
 
 	let entiresShown = 3
 	let start = [["Hold Shift to see the full changelog!", shiftDown ? "" : "Currrently showing the " + entiresShown + " most recent entries", ""]]

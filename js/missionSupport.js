@@ -80,7 +80,7 @@ var FIXED_MISSION_DATA = {
                 id: 6,
         },
         7: {
-                requirement: Decimal.pow(10, 8000),
+                requirement: Decimal.pow(10, 4567).times(1.23),
                 amountType: "m points",
                 name: "<b>M</b>",
                 progress: "log", //lin, log, exp
@@ -88,6 +88,25 @@ var FIXED_MISSION_DATA = {
                 rewardOnce: new Decimal(2500),  
                 id: 7,
         },
+        8: {
+                requirement: new Decimal(362),
+                amountType: "k challs",
+                name: "<b>K</b> challenge completions",
+                progress: "lin", //lin, log, exp
+                rewardPassive: new Decimal(.6),
+                rewardOnce: new Decimal(3500),  
+                id: 8,
+        },
+        9: {
+                requirement: new Decimal(365),
+                amountType: "k challs",
+                name: "<b>K</b> challenge completions",
+                progress: "lin", //lin, log, exp
+                rewardPassive: new Decimal(.6),
+                rewardOnce: new Decimal(5000),  
+                id: 9,
+        },
+        
 }
 
 function getMissionsAmount(s){
@@ -166,6 +185,7 @@ function attemptCompleteMission(id){
 function getMoneyPerSecond(){
         let ret = player.m.missions.moneyPassive
         ret = ret.plus(tmp.m.clickables[11].effect)
+        ret = ret.plus(tmp.m.clickables[61].effect)
 
         for (i = 11; i < 156; i++){
                 if (tmp.m.clickables[i] == undefined) continue
@@ -173,12 +193,19 @@ function getMoneyPerSecond(){
         }
 
         if (hasUpgrade("m", 24)) ret = ret.plus(.2)
+        
 
-        return ret
+        return ret.max(0)
+}
+
+function getActualMoneyPerSecond(){
+        let a = player.m.missions.money.times(.0002)
+        return getMoneyPerSecond().sub(a)
 }
 
 function doPassiveMoneyGeneration(diff){
         player.m.missions.money = player.m.missions.money.plus(getMoneyPerSecond().times(diff))
+        player.m.missions.money = player.m.missions.money.times(Decimal.pow(.9998, diff))
 }
 
 function updateMissions(diff){

@@ -8548,7 +8548,7 @@ addLayer("h", {
                         goal(){
                                 let init = Decimal.pow(10, 3800e18)
                                 let c = challengeCompletions("h", 11)
-                                if (c > 200) c = c**2 / 200
+                                if (c > 250) c = c**2 / 250
                                 c = Math.max(0, c - tmp.h.challenges.totalSub)
                                 let factor = getChallengeFactor(c)
                                 if (factor.eq(1)) factor = new Decimal(0)
@@ -8584,7 +8584,7 @@ addLayer("h", {
                         goal(){
                                 let init = Decimal.pow(10, 9525e18)
                                 let c = challengeCompletions("h", 12)
-                                if (c > 200) c = c**2 / 200
+                                if (c > 250) c = c**2 / 250
                                 c = Math.max(0, c - tmp.h.challenges.totalSub)
                                 let factor = getChallengeFactor(c)
                                 if (factor.eq(1)) factor = new Decimal(0)
@@ -8622,7 +8622,7 @@ addLayer("h", {
                         goal(){
                                 let init = Decimal.pow(10, 2362e21)
                                 let c = challengeCompletions("h", 21)
-                                if (c > 200) c = c**2 / 200
+                                if (c > 250) c = c**2 / 250
                                 c = Math.max(0, c - tmp.h.challenges.totalSub)
                                 let factor = getChallengeFactor(c)
                                 if (factor.eq(1)) factor = new Decimal(0)
@@ -8660,7 +8660,7 @@ addLayer("h", {
                         goal(){
                                 let init = Decimal.pow(10, 1099e28)
                                 let c = challengeCompletions("h", 22)
-                                if (c > 200) c = c**2 / 200
+                                if (c > 250) c = c**2 / 250
                                 c = Math.max(0, c - tmp.h.challenges.totalSub)
                                 if (c > 3 && !player.j.puzzle.upgrades.includes(64)) c = c * c / 3
                                 let factor = getChallengeFactor(c)
@@ -9735,7 +9735,7 @@ addLayer("j", {
                         description: "Per upgrade multiply <b>J</b> gain by your Bulk Amount levels and you can puzzle reset 3% faster for every upgrade",
                         cost: new Decimal(2e20),
                         unlocked(){
-                                return hasUpgrade("h", 45) || hasUnlockedPast("j")
+                                return hasUpgrade("i", 45) || hasUnlockedPast("j")
                         }
                 }, // hasUpgrade("j", 11)
                 12: {
@@ -12687,7 +12687,6 @@ addLayer("k", {
                 }, // hasUpgrade("k", 55)
                 
                 /*
-                Knife
                 Katrina
                 Killer
                 Kodak
@@ -12831,7 +12830,7 @@ addLayer("k", {
                                 let bases = tmp.k.clickables[11].bases
                                 let amt = player.k.points
                                 if (amt.lt(bases[0])) return new Decimal(0)
-                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1).min(1e9)
                         },
                         effect(){
                                 let amt = player.k.lock.resources[11]
@@ -12871,6 +12870,7 @@ addLayer("k", {
                                 if (hasMilestone("m", 2)) init *= 10
                                 if (hasMilestone("m", 4)) init *= 2
                                 if (hasUpgrade("k", 52)) init *= 1000
+                                if (hasUpgrade("m", 24)) init *= 500
 
                                 diff = diff.min(init)
                                 if (diff.lte(0)) return
@@ -12944,7 +12944,7 @@ addLayer("k", {
                                 let bases = tmp.k.clickables[12].bases
                                 let amt = player.k.points
                                 if (amt.lt(bases[0])) return new Decimal(0)
-                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1).min(1e9)
                         },
                         effect(){
                                 let amt = player.k.lock.resources[12]
@@ -12976,6 +12976,7 @@ addLayer("k", {
                                 if (hasMilestone("m", 2)) init *= 10
                                 if (hasMilestone("m", 4)) init *= 2
                                 if (hasUpgrade("k", 52)) init *= 1000
+                                if (hasUpgrade("m", 24)) init *= 500
 
                                 diff = diff.min(init)
                                 if (diff.lte(0)) return
@@ -13049,7 +13050,7 @@ addLayer("k", {
                                 let bases = tmp.k.clickables[13].bases
                                 let amt = player.k.points
                                 if (amt.lt(bases[0])) return new Decimal(0)
-                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1).min(1e9)
                         },
                         effect(){
                                 let amt = player.k.lock.resources[13]
@@ -13083,6 +13084,7 @@ addLayer("k", {
                                 if (hasMilestone("m", 2)) init *= 10
                                 if (hasMilestone("m", 4)) init *= 2
                                 if (hasUpgrade("k", 52)) init *= 1000
+                                if (hasUpgrade("m", 24)) init *= 500
 
                                 diff = diff.min(init)
                                 if (diff.lte(0)) return
@@ -13156,7 +13158,7 @@ addLayer("k", {
                                 let bases = tmp.k.clickables[14].bases
                                 let amt = player.k.points
                                 if (amt.lt(bases[0])) return new Decimal(0)
-                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1).min(1e9)
                         },
                         effect(){
                                 let amt = player.k.lock.resources[14]
@@ -13188,6 +13190,7 @@ addLayer("k", {
                                 if (hasMilestone("m", 2)) init *= 10
                                 if (hasMilestone("m", 4)) init *= 2
                                 if (hasUpgrade("k", 52)) init *= 1000
+                                if (hasUpgrade("m", 24)) init *= 500
 
                                 diff = diff.min(init)
                                 if (diff.lte(0)) return
@@ -13261,7 +13264,7 @@ addLayer("k", {
                                 let bases = tmp.k.clickables[15].bases
                                 let amt = player.k.points
                                 if (amt.lt(bases[0])) return new Decimal(0)
-                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1).min(1e9)
                         },
                         effect(){
                                 let amt = player.k.lock.resources[15]
@@ -13293,6 +13296,7 @@ addLayer("k", {
                                 if (hasMilestone("m", 2)) init *= 10
                                 if (hasMilestone("m", 4)) init *= 2
                                 if (hasUpgrade("k", 52)) init *= 1000
+                                if (hasUpgrade("m", 24)) init *= 500
 
                                 diff = diff.min(init)
                                 if (diff.lte(0)) return
@@ -13365,7 +13369,7 @@ addLayer("k", {
                                 let bases = tmp.k.clickables[21].bases
                                 let amt = player.k.points
                                 if (amt.lt(bases[0])) return new Decimal(0)
-                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1).min(1e9)
                         },
                         effect(){
                                 let amt = player.k.lock.resources[21]
@@ -13398,6 +13402,7 @@ addLayer("k", {
                                 if (hasMilestone("m", 2)) init *= 10
                                 if (hasMilestone("m", 4)) init *= 2
                                 if (hasUpgrade("k", 52)) init *= 1000
+                                if (hasUpgrade("m", 24)) init *= 500
 
                                 diff = diff.min(init)
                                 if (diff.lte(0)) return
@@ -13470,7 +13475,7 @@ addLayer("k", {
                                 let bases = tmp.k.clickables[22].bases
                                 let amt = player.k.points
                                 if (amt.lt(bases[0])) return new Decimal(0)
-                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1).min(1e9)
                         },
                         effect(){
                                 let amt = player.k.lock.resources[22]
@@ -13503,6 +13508,7 @@ addLayer("k", {
                                 if (hasMilestone("m", 2)) init *= 10
                                 if (hasMilestone("m", 4)) init *= 2
                                 if (hasUpgrade("k", 52)) init *= 1000
+                                if (hasUpgrade("m", 24)) init *= 500
 
                                 diff = diff.min(init)
                                 if (diff.lte(0)) return
@@ -13575,7 +13581,7 @@ addLayer("k", {
                                 let bases = tmp.k.clickables[23].bases
                                 let amt = player.k.points
                                 if (amt.lt(bases[0])) return new Decimal(0)
-                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1).min(1e9)
                         },
                         effect(){
                                 let amt = player.k.lock.resources[23]
@@ -13609,6 +13615,7 @@ addLayer("k", {
                                 if (hasMilestone("m", 2)) init *= 10
                                 if (hasMilestone("m", 4)) init *= 2
                                 if (hasUpgrade("k", 52)) init *= 1000
+                                if (hasUpgrade("m", 24)) init *= 500
 
                                 diff = diff.min(init)
                                 if (diff.lte(0)) return
@@ -13681,7 +13688,7 @@ addLayer("k", {
                                 let bases = tmp.k.clickables[24].bases
                                 let amt = player.k.points
                                 if (amt.lt(bases[0])) return new Decimal(0)
-                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1).min(1e9)
                         },
                         effect(){
                                 let amt = player.k.lock.resources[24]
@@ -13719,6 +13726,7 @@ addLayer("k", {
                                 if (hasMilestone("m", 2)) init *= 10
                                 if (hasMilestone("m", 4)) init *= 2
                                 if (hasUpgrade("k", 52)) init *= 1000
+                                if (hasUpgrade("m", 24)) init *= 500
 
                                 diff = diff.min(init)
                                 if (diff.lte(0)) return
@@ -13792,7 +13800,7 @@ addLayer("k", {
                                 let bases = tmp.k.clickables[25].bases
                                 let amt = player.k.points
                                 if (amt.lt(bases[0])) return new Decimal(0)
-                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1).min(1e9)
                         },
                         effect(){
                                 let amt = player.k.lock.resources[25]
@@ -13824,6 +13832,7 @@ addLayer("k", {
                                 if (hasMilestone("m", 2)) init *= 10
                                 if (hasMilestone("m", 4)) init *= 2
                                 if (hasUpgrade("k", 52)) init *= 1000
+                                if (hasUpgrade("m", 24)) init *= 500
 
                                 diff = diff.min(init)
                                 if (diff.lte(0)) return
@@ -13869,7 +13878,7 @@ addLayer("k", {
                                 let bases = tmp.k.clickables[31].bases
                                 let amt = player.k.lock.resources[11]
                                 if (amt.lt(bases[0])) return new Decimal(0)
-                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1).min(1e9)
                         },
                         effect(){
                                 let amt = player.k.lock.repeatables[31]
@@ -13901,6 +13910,7 @@ addLayer("k", {
                                 if (hasMilestone("m", 2)) init *= 10
                                 if (hasMilestone("m", 4)) init *= 2
                                 if (hasUpgrade("k", 52)) init *= 1000
+                                if (hasUpgrade("m", 24)) init *= 500
 
                                 diff = diff.min(init)
                                 if (diff.lte(0)) return
@@ -13946,7 +13956,7 @@ addLayer("k", {
                                 let bases = tmp.k.clickables[32].bases
                                 let amt = player.k.lock.resources[12]
                                 if (amt.lt(bases[0])) return new Decimal(0)
-                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1).min(1e9)
                         },
                         effect(){
                                 let amt = player.k.lock.repeatables[32]
@@ -13977,6 +13987,7 @@ addLayer("k", {
                                 if (hasMilestone("m", 2)) init *= 10
                                 if (hasMilestone("m", 4)) init *= 2
                                 if (hasUpgrade("k", 52)) init *= 1000
+                                if (hasUpgrade("m", 24)) init *= 500
 
                                 diff = diff.min(init)
                                 if (diff.lte(0)) return
@@ -14022,7 +14033,7 @@ addLayer("k", {
                                 let bases = tmp.k.clickables[33].bases
                                 let amt = player.k.lock.resources[13]
                                 if (amt.lt(bases[0])) return new Decimal(0)
-                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1).min(1e9)
                         },
                         effect(){
                                 let amt = player.k.lock.repeatables[33]
@@ -14054,6 +14065,7 @@ addLayer("k", {
                                 if (hasMilestone("m", 2)) init *= 10
                                 if (hasMilestone("m", 4)) init *= 2
                                 if (hasUpgrade("k", 52)) init *= 1000
+                                if (hasUpgrade("m", 24)) init *= 500
 
                                 diff = diff.min(init)
                                 if (diff.lte(0)) return
@@ -14099,7 +14111,7 @@ addLayer("k", {
                                 let bases = tmp.k.clickables[34].bases
                                 let amt = player.k.lock.resources[14]
                                 if (amt.lt(bases[0])) return new Decimal(0)
-                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1).min(1e9)
                         },
                         effect(){
                                 let amt = player.k.lock.repeatables[34]
@@ -14131,6 +14143,7 @@ addLayer("k", {
                                 if (hasMilestone("m", 2)) init *= 10
                                 if (hasMilestone("m", 4)) init *= 2
                                 if (hasUpgrade("k", 52)) init *= 1000
+                                if (hasUpgrade("m", 24)) init *= 500
 
                                 diff = diff.min(init)
                                 if (diff.lte(0)) return
@@ -14176,7 +14189,7 @@ addLayer("k", {
                                 let bases = tmp.k.clickables[35].bases
                                 let amt = player.k.lock.resources[15]
                                 if (amt.lt(bases[0])) return new Decimal(0)
-                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1).min(1e9)
                         },
                         effect(){
                                 let amt = player.k.lock.repeatables[35]
@@ -14210,6 +14223,7 @@ addLayer("k", {
                                 if (hasMilestone("m", 2)) init *= 10
                                 if (hasMilestone("m", 4)) init *= 2
                                 if (hasUpgrade("k", 52)) init *= 1000
+                                if (hasUpgrade("m", 24)) init *= 500
 
                                 diff = diff.min(init)
                                 
@@ -14254,7 +14268,7 @@ addLayer("k", {
                                 let bases = tmp.k.clickables[41].bases
                                 let amt = player.k.lock.resources[21]
                                 if (amt.lt(bases[0])) return new Decimal(0)
-                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1).min(1e9)
                         },
                         effect(){
                                 let amt = player.k.lock.repeatables[41]
@@ -14285,6 +14299,7 @@ addLayer("k", {
                                 if (hasMilestone("m", 2)) init *= 10
                                 if (hasMilestone("m", 4)) init *= 2
                                 if (hasUpgrade("k", 52)) init *= 1000
+                                if (hasUpgrade("m", 24)) init *= 500
 
                                 diff = diff.min(init)
                                 if (diff.lte(0)) return
@@ -14330,7 +14345,7 @@ addLayer("k", {
                                 let bases = tmp.k.clickables[42].bases
                                 let amt = player.k.lock.resources[22]
                                 if (amt.lt(bases[0])) return new Decimal(0)
-                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1).min(1e9)
                         },
                         effect(){
                                 let amt = player.k.lock.repeatables[42]
@@ -14362,6 +14377,7 @@ addLayer("k", {
                                 if (hasMilestone("m", 2)) init *= 10
                                 if (hasMilestone("m", 4)) init *= 2
                                 if (hasUpgrade("k", 52)) init *= 1000
+                                if (hasUpgrade("m", 24)) init *= 500
 
                                 diff = diff.min(init)
                                 if (diff.lte(0)) return
@@ -14407,7 +14423,7 @@ addLayer("k", {
                                 let bases = tmp.k.clickables[43].bases
                                 let amt = player.k.lock.resources[23]
                                 if (amt.lt(bases[0])) return new Decimal(0)
-                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1).min(1e9)
                         },
                         effect(){
                                 let amt = player.k.lock.repeatables[43]
@@ -14437,6 +14453,7 @@ addLayer("k", {
                                 if (hasMilestone("m", 2)) init *= 10
                                 if (hasMilestone("m", 4)) init *= 2
                                 if (hasUpgrade("k", 52)) init *= 1000
+                                if (hasUpgrade("m", 24)) init *= 500
 
                                 diff = diff.min(init)
                                 if (diff.lte(0)) return
@@ -14482,7 +14499,7 @@ addLayer("k", {
                                 let bases = tmp.k.clickables[44].bases
                                 let amt = player.k.lock.resources[24]
                                 if (amt.lt(bases[0])) return new Decimal(0)
-                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1).min(1e9)
                         },
                         effect(){
                                 let amt = player.k.lock.repeatables[44]
@@ -14513,6 +14530,7 @@ addLayer("k", {
                                 if (hasMilestone("m", 2)) init *= 10
                                 if (hasMilestone("m", 4)) init *= 2
                                 if (hasUpgrade("k", 52)) init *= 1000
+                                if (hasUpgrade("m", 24)) init *= 500
 
                                 diff = diff.min(init)
                                 if (diff.lte(0)) return
@@ -14558,7 +14576,7 @@ addLayer("k", {
                                 let bases = tmp.k.clickables[45].bases
                                 let amt = player.k.lock.resources[25]
                                 if (amt.lt(bases[0])) return new Decimal(0)
-                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1).min(1e9)
                         },
                         effect(){
                                 let amt = player.k.lock.repeatables[45]
@@ -14589,6 +14607,7 @@ addLayer("k", {
                                 if (hasMilestone("m", 2)) init *= 10
                                 if (hasMilestone("m", 4)) init *= 2
                                 if (hasUpgrade("k", 52)) init *= 1000
+                                if (hasUpgrade("m", 24)) init *= 500
 
                                 diff = diff.min(init)
                                 if (diff.lte(0)) return
@@ -14634,7 +14653,7 @@ addLayer("k", {
                                 let bases = tmp.k.clickables[51].bases
                                 let amt = player.l.points
                                 if (amt.lt(bases[0])) return new Decimal(0)
-                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1).min(1e9)
                         },
                         effect(){
                                 let amt = player.k.lock.repeatables[51]
@@ -14664,6 +14683,7 @@ addLayer("k", {
                                 if (hasMilestone("m", 2)) init *= 10
                                 if (hasMilestone("m", 4)) init *= 2
                                 if (hasUpgrade("k", 52)) init *= 1000
+                                if (hasUpgrade("m", 24)) init *= 500
 
                                 diff = diff.min(init)
                                 if (diff.lte(0)) return
@@ -14709,7 +14729,7 @@ addLayer("k", {
                                 let bases = tmp.k.clickables[52].bases
                                 let amt = player.l.points
                                 if (amt.lt(bases[0])) return new Decimal(0)
-                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1).min(1e9)
                         },
                         effect(){
                                 let amt = player.k.lock.repeatables[52]
@@ -14739,6 +14759,7 @@ addLayer("k", {
                                 if (hasMilestone("m", 2)) init *= 10
                                 if (hasMilestone("m", 4)) init *= 2
                                 if (hasUpgrade("k", 52)) init *= 1000
+                                if (hasUpgrade("m", 24)) init *= 500
 
                                 diff = diff.min(init)
                                 if (diff.lte(0)) return
@@ -14784,7 +14805,7 @@ addLayer("k", {
                                 let bases = tmp.k.clickables[53].bases
                                 let amt = player.l.points
                                 if (amt.lt(bases[0])) return new Decimal(0)
-                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1).min(1e9)
                         },
                         effect(){
                                 let amt = player.k.lock.repeatables[53]
@@ -14814,6 +14835,7 @@ addLayer("k", {
                                 if (hasMilestone("m", 2)) init *= 10
                                 if (hasMilestone("m", 4)) init *= 2
                                 if (hasUpgrade("k", 52)) init *= 1000
+                                if (hasUpgrade("m", 24)) init *= 500
 
                                 diff = diff.min(init)
                                 if (diff.lte(0)) return
@@ -14859,7 +14881,7 @@ addLayer("k", {
                                 let bases = tmp.k.clickables[54].bases
                                 let amt = player.l.points
                                 if (amt.lt(bases[0])) return new Decimal(0)
-                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1).min(1e9)
                         },
                         effect(){
                                 let amt = player.k.lock.repeatables[54]
@@ -14889,6 +14911,7 @@ addLayer("k", {
                                 if (hasMilestone("m", 2)) init *= 10
                                 if (hasMilestone("m", 4)) init *= 2
                                 if (hasUpgrade("k", 52)) init *= 1000
+                                if (hasUpgrade("m", 24)) init *= 500
 
                                 diff = diff.min(init)
                                 if (diff.lte(0)) return
@@ -14934,7 +14957,7 @@ addLayer("k", {
                                 let bases = tmp.k.clickables[55].bases
                                 let amt = player.l.points
                                 if (amt.lt(bases[0])) return new Decimal(0)
-                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1).min(1e9)
                         },
                         effect(){
                                 let amt = player.k.lock.repeatables[55]
@@ -14964,6 +14987,7 @@ addLayer("k", {
                                 if (hasMilestone("m", 2)) init *= 10
                                 if (hasMilestone("m", 4)) init *= 2
                                 if (hasUpgrade("k", 52)) init *= 1000
+                                if (hasUpgrade("m", 24)) init *= 500
 
                                 diff = diff.min(init)
                                 if (diff.lte(0)) return
@@ -15008,13 +15032,14 @@ addLayer("k", {
                                 let bases = tmp.k.clickables[61].bases
                                 let amt = player.k.lock.resources[11]
                                 if (amt.lt(bases[0])) return new Decimal(0)
-                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1).min(1e9)
                         },
                         effect(){
                                 let amt = player.k.lock.repeatables[61]
                                 amt = amt.plus(layers.k.clickables.getBonusKeys(61))
                                 let ret = amt.pow(1.1).div(700).plus(1).ln().times(10).plus(1)
                                 if (hasUpgrade("m", 21)) ret = ret.pow(Math.max(1, totalChallengeComps("k")))
+                                ret = ret.times(CURRENT_BUYABLE_EFFECTS["k21"])
                                 return ret
                         },
                         effectDescription(){
@@ -15039,6 +15064,7 @@ addLayer("k", {
                                 let init = 1
                                 if (hasMilestone("m", 4)) init *= 2
                                 if (hasUpgrade("k", 52)) init *= 1000
+                                if (hasUpgrade("m", 24)) init *= 500
 
                                 diff = diff.min(init)
                                 if (diff.lte(0)) return
@@ -15083,7 +15109,7 @@ addLayer("k", {
                                 let bases = tmp.k.clickables[62].bases
                                 let amt = player.k.lock.resources[12]
                                 if (amt.lt(bases[0])) return new Decimal(0)
-                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1).min(1e9)
                         },
                         effect(){
                                 let amt = player.k.lock.repeatables[62]
@@ -15113,6 +15139,7 @@ addLayer("k", {
                                 let init = 1
                                 if (hasMilestone("m", 4)) init *= 2
                                 if (hasUpgrade("k", 52)) init *= 1000
+                                if (hasUpgrade("m", 24)) init *= 500
 
                                 diff = diff.min(init)
                                 if (diff.lte(0)) return
@@ -15157,7 +15184,7 @@ addLayer("k", {
                                 let bases = tmp.k.clickables[63].bases
                                 let amt = player.k.lock.resources[13]
                                 if (amt.lt(bases[0])) return new Decimal(0)
-                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1).min(1e9)
                         },
                         effect(){
                                 let amt = player.k.lock.repeatables[63]
@@ -15190,6 +15217,7 @@ addLayer("k", {
                                 let init = 1
                                 if (hasMilestone("m", 4)) init *= 2
                                 if (hasUpgrade("k", 52)) init *= 1000
+                                if (hasUpgrade("m", 24)) init *= 500
 
                                 diff = diff.min(init)
                                 if (diff.lte(0)) return
@@ -15234,7 +15262,7 @@ addLayer("k", {
                                 let bases = tmp.k.clickables[64].bases
                                 let amt = player.k.lock.resources[14]
                                 if (amt.lt(bases[0])) return new Decimal(0)
-                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1).min(1e9)
                         },
                         effect(){
                                 let amt = player.k.lock.repeatables[64]
@@ -15265,6 +15293,7 @@ addLayer("k", {
                                 let init = 1
                                 if (hasMilestone("m", 4)) init *= 2
                                 if (hasUpgrade("k", 52)) init *= 1000
+                                if (hasUpgrade("m", 24)) init *= 500
 
                                 diff = diff.min(init)
                                 if (diff.lte(0)) return
@@ -15309,7 +15338,7 @@ addLayer("k", {
                                 let bases = tmp.k.clickables[65].bases
                                 let amt = player.k.lock.resources[15]
                                 if (amt.lt(bases[0])) return new Decimal(0)
-                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1).min(1e9)
                         },
                         effect(){
                                 let amt = player.k.lock.repeatables[65]
@@ -15339,6 +15368,7 @@ addLayer("k", {
                                 let init = 1
                                 if (hasMilestone("m", 4)) init *= 2
                                 if (hasUpgrade("k", 52)) init *= 1000
+                                if (hasUpgrade("m", 24)) init *= 500
 
                                 diff = diff.min(init)
                                 if (diff.lte(0)) return
@@ -15383,7 +15413,7 @@ addLayer("k", {
                                 let bases = tmp.k.clickables[71].bases
                                 let amt = player.k.lock.resources[21]
                                 if (amt.lt(bases[0])) return new Decimal(0)
-                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1).min(1e9)
                         },
                         effect(){
                                 let amt = player.k.lock.repeatables[71]
@@ -15413,6 +15443,7 @@ addLayer("k", {
                                 let init = 1
                                 if (hasMilestone("m", 4)) init *= 2
                                 if (hasUpgrade("k", 52)) init *= 1000
+                                if (hasUpgrade("m", 24)) init *= 500
 
                                 diff = diff.min(init)
                                 if (diff.lte(0)) return
@@ -15457,7 +15488,7 @@ addLayer("k", {
                                 let bases = tmp.k.clickables[72].bases
                                 let amt = player.k.lock.resources[22]
                                 if (amt.lt(bases[0])) return new Decimal(0)
-                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1).min(1e9)
                         },
                         effect(){
                                 let amt = player.k.lock.repeatables[72]
@@ -15488,6 +15519,7 @@ addLayer("k", {
                                 let init = 1
                                 if (hasMilestone("m", 4)) init *= 2
                                 if (hasUpgrade("k", 52)) init *= 1000
+                                if (hasUpgrade("m", 24)) init *= 500
 
                                 diff = diff.min(init)
                                 if (diff.lte(0)) return
@@ -15532,7 +15564,7 @@ addLayer("k", {
                                 let bases = tmp.k.clickables[73].bases
                                 let amt = player.k.lock.resources[23]
                                 if (amt.lt(bases[0])) return new Decimal(0)
-                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1).min(1e9)
                         },
                         effect(){
                                 let amt = player.k.lock.repeatables[73]
@@ -15563,6 +15595,7 @@ addLayer("k", {
                                 let init = 1
                                 if (hasMilestone("m", 4)) init *= 2
                                 if (hasUpgrade("k", 52)) init *= 1000
+                                if (hasUpgrade("m", 24)) init *= 500
 
                                 diff = diff.min(init)
                                 if (diff.lte(0)) return
@@ -15607,7 +15640,7 @@ addLayer("k", {
                                 let bases = tmp.k.clickables[74].bases
                                 let amt = player.k.lock.resources[24]
                                 if (amt.lt(bases[0])) return new Decimal(0)
-                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1).min(1e9)
                         },
                         effect(){
                                 let amt = player.k.lock.repeatables[74]
@@ -15638,6 +15671,7 @@ addLayer("k", {
                                 let init = 1
                                 if (hasMilestone("m", 4)) init *= 2
                                 if (hasUpgrade("k", 52)) init *= 1000
+                                if (hasUpgrade("m", 24)) init *= 500
 
                                 diff = diff.min(init)
                                 if (diff.lte(0)) return
@@ -15682,7 +15716,7 @@ addLayer("k", {
                                 let bases = tmp.k.clickables[75].bases
                                 let amt = player.k.lock.resources[25]
                                 if (amt.lt(bases[0])) return new Decimal(0)
-                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1).min(1e9)
                         },
                         effect(){
                                 let amt = player.k.lock.repeatables[75]
@@ -15712,6 +15746,7 @@ addLayer("k", {
                                 let init = 1
                                 if (hasMilestone("m", 4)) init *= 2
                                 if (hasUpgrade("k", 52)) init *= 1000
+                                if (hasUpgrade("m", 24)) init *= 500
 
                                 diff = diff.min(init)
                                 if (diff.lte(0)) return
@@ -15754,7 +15789,7 @@ addLayer("k", {
                                 let bases = tmp.k.clickables[81].bases
                                 let amt = player.l.points
                                 if (amt.lt(bases[0])) return new Decimal(0)
-                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1).min(1e9)
                         },
                         effect(){
                                 let amt = player.k.lock.repeatables[81]
@@ -15785,6 +15820,7 @@ addLayer("k", {
                                 let init = 1
                                 if (hasMilestone("m", 4)) init *= 2
                                 if (hasUpgrade("k", 52)) init *= 1000
+                                if (hasUpgrade("m", 24)) init *= 500
 
                                 diff = diff.min(init)
                                 if (diff.lte(0)) return
@@ -15828,7 +15864,7 @@ addLayer("k", {
                                 let bases = tmp.k.clickables[82].bases
                                 let amt = player.m.points
                                 if (amt.lt(bases[0])) return new Decimal(0)
-                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1)
+                                return amt.div(bases[0]).log(bases[1]).sqrt().floor().plus(1).min(1e9)
                         },
                         effect(){
                                 let amt = player.k.lock.repeatables[82]
@@ -15859,6 +15895,7 @@ addLayer("k", {
                                 let init = 1
                                 if (hasMilestone("m", 4)) init *= 2
                                 if (hasUpgrade("k", 52)) init *= 1000
+                                if (hasUpgrade("m", 24)) init *= 500
 
                                 diff = diff.min(init)
                                 if (diff.lte(0)) return
@@ -15876,6 +15913,7 @@ addLayer("k", {
                         let c = 0
                         if (hasUpgrade("m", 13)) c += tmp.m.upgrades[13].effect.toNumber()
                         if (hasUpgrade("m", 22)) c += totalChallengeComps("h") * .01
+                        c += tmp.m.clickables[13].effect.toNumber()
                         return c
                 },
                 11: {
@@ -16037,6 +16075,9 @@ addLayer("k", {
                         }),
                 13: getGeneralizedBuyableData("k", 13, function(){
                         return hasUpgrade("m", 23) || hasUnlockedPast("m")
+                        }),
+                21: getGeneralizedBuyableData("k", 21, function(){
+                        return hasUpgrade("m", 24) || hasUnlockedPast("m")
                         }),
         },
         shouldNotify(){
@@ -17139,7 +17180,7 @@ addLayer("m", {
                 }, // hasUpgrade("m", 23)
                 24: {
                         title: "Member",
-                        description: "Cube <b>Diamond Key</b> and gain .2 money/s",
+                        description: "Cube <b>Diamond Key</b>, gain .2 money/s, and all <b>Lock</b> feature buyables buy 500x more",
                         cost: Decimal.pow(10, 1936),
                         unlocked(){
                                 return hasUpgrade("m", 23) || hasUnlockedPast("m")
@@ -17270,6 +17311,58 @@ addLayer("m", {
                                 else player.m.stones[12] = player.m.stones[12].plus(1) 
                         },
                 },
+                13: {
+                        title(){
+                                return "Stone 113"
+                        },
+                        display(){
+                                if (player.tab != "m") return ""
+                                if (player.subtabs.m.mainTabs != "Missions") return ""
+
+                                let a = ""
+                                let b = ""
+                                let c = ""
+                                let d = ""
+
+                                if (shiftDown) {
+                                        a = "Currently this stone is taking " + format(tmp.m.clickables[13].passiveCost) + " money/s"
+                                        b = "<br><br>Clicking now will sell a stone"
+                                } else {
+                                        a = "-.1 effective <b>K</b> challenges <br>"
+                                        b = "You have " + formatWhole(player.m.stones[13]) + " stones<br>"
+                                        c = "Currently: -" + format(tmp.m.clickables[13].effect) + "<br>"
+                                        d = "Requirement: " + format(tmp.m.clickables[13].requirement) + " money/s<br>"
+                                }
+
+                                return a + b + c + d
+                        },
+                        effect(){
+                                return tmp.m.clickables[13].effectBase.times(player.m.stones[13])
+                        },
+                        effectBase(){
+                                let ret = new Decimal(.1)
+                                return ret
+                        },
+                        requirement(){
+                                return this.passiveCost(1).sub(tmp.m.clickables[13].passiveCost)
+                        },
+                        passiveCost(diff = 0){
+                                let x = player.m.stones[13].plus(diff)
+                                return x.plus(1).times(x).div(20)
+                        },
+                        unlocked(){
+                                return player.m.totalStonesUnlocked >= 6
+                        },
+                        canClick(){
+                                let id = 13
+                                return shiftDown ? player.m.stones[id].gt(0) : getMoneyPerSecond().gte(tmp.m.clickables[id].requirement)
+                        },
+                        onClick(){
+                                let id = 13
+                                if (shiftDown) player.m.stones[id] = player.m.stones[id].plus(-1) 
+                                else player.m.stones[id] = player.m.stones[id].plus(1) 
+                        },
+                },
                 21: {
                         title(){
                                 return "Stone 121"
@@ -17370,6 +17463,58 @@ addLayer("m", {
                                 else player.m.stones[22] = player.m.stones[22].plus(1) 
                         },
                 },
+                61: {
+                        title(){
+                                return "Stone 211"
+                        },
+                        display(){
+                                if (player.tab != "m") return ""
+                                if (player.subtabs.m.mainTabs != "Missions") return ""
+
+                                let a = ""
+                                let b = ""
+                                let c = ""
+                                let d = ""
+
+                                if (shiftDown) {
+                                        a = "Currently this stone is taking " + format(tmp.m.clickables[61].passiveCost) + " money/s"
+                                        b = "<br><br>Clicking now will sell a stone"
+                                } else {
+                                        a = "Each <b>Diamond Key</b> gives .01 money/s per stone<br>"
+                                        b = "You have " + formatWhole(player.m.stones[61]) + " stones<br>"
+                                        c = "Currently: +" + format(tmp.m.clickables[61].effect) + "<br>"
+                                        d = "Requirement: " + format(tmp.m.clickables[61].requirement) + " money/s<br>"
+                                }
+
+                                return a + b + c + d
+                        },
+                        effect(){
+                                return tmp.m.clickables[61].effectBase.times(player.m.stones[61])
+                        },
+                        effectBase(){
+                                let ret = player.k.lock.repeatables[82].div(100)
+                                return ret
+                        },
+                        requirement(){
+                                return this.passiveCost(1).sub(tmp.m.clickables[61].passiveCost)
+                        },
+                        passiveCost(diff = 0){
+                                let x = player.m.stones[61].plus(diff)
+                                return x.plus(1).times(x).div(10)
+                        },
+                        unlocked(){
+                                return player.m.totalStonesUnlocked >= 5
+                        },
+                        canClick(){
+                                let id = 61
+                                return shiftDown ? player.m.stones[id].gt(0) : getMoneyPerSecond().gte(tmp.m.clickables[id].requirement)
+                        },
+                        onClick(){
+                                let id = 61 
+                                if (shiftDown) player.m.stones[id] = player.m.stones[id].plus(-1) 
+                                else player.m.stones[id] = player.m.stones[id].plus(1) 
+                        },
+                },
                 161: {
                         title(){
                                 return ""
@@ -17388,7 +17533,7 @@ addLayer("m", {
                                 init = new Decimal(1)
                                 if (hasUpgrade("l", 41)) init = init.div(100)
 
-                                if (x > 4) return new Decimal(1e69).times(init)
+                                if (x > 6) return new Decimal(1e69).times(init)
                                 if (x < 3) return Decimal.pow(3, Math.pow(x, 1.3)).times(10).times(init).floor()
                                 if (x < 10) return Decimal.pow(5, Math.pow(x, 1.2)).times(init).floor()
                                 return new Decimal(10)
@@ -17479,8 +17624,8 @@ addLayer("m", {
 
                                                 let data = player.m.missions
 
-                                                let a = "You have " + format(data.money) + " money<br>"
-                                                let b = "You are gaining " + format(getMoneyPerSecond(), 3) + " money/s<br>"                                  
+                                                let a = "You have " + format(data.money) + " money (you lose .02% per second due to taxes)<br>"
+                                                let b = "You are gaining " + format(getMoneyPerSecond(), 3) + " money/s (after taxes: " + format(getActualMoneyPerSecond()) + ")<br>"                                  
                                                 
                                                 return a + b
                                                 
