@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".8.31 Octopus", // Penguin
+	num: ".8.31.1 Octopus", // Penguin
 	name: "",
 }
 
@@ -638,6 +638,8 @@ function getChangeLogText(){
 	ct2 = "- Added in a last mission so things don't break"
 	ct3 = "- Added a couple of missions"
 	ct4 = "- Added a lemon upgrade"
+	ct5 = "v.8.31.1"
+	ct6 = "- Added a third digit to money production"
 
 
 	let part1  = [a1,  a2,  a3,  a4,  a5,  a6,  ""]
@@ -732,7 +734,7 @@ function getChangeLogText(){
 	let part90 = [cp1, cp2, cp3, cp4, cp5,  "", cp6, cp7, cp8,  "", cp9, cp10, "", cp11, cp12]
 	let part91 = [cq1, cq2, cq3, cq4,  ""]
 	let part92 = [cs1, cs2, cs3,  ""]
-	let part93 = [ct1, ct2, ct3, ct4,  ""]
+	let part93 = [ct1, ct2, ct3, ct4,  "", ct5, ct6,  ""]
 	// MAKE SURE TO ADD THEM
 
 	let final1 = [part10,  part9,  part8,  part7,  part6,  part5,  part4,  part3,  part2,  part1]

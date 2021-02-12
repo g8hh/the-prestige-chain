@@ -17480,7 +17480,7 @@ addLayer("m", {
                                                 let data = player.m.missions
 
                                                 let a = "You have " + format(data.money) + " money<br>"
-                                                let b = "You are gaining " + format(getMoneyPerSecond()) + " money/s<br>"                                  
+                                                let b = "You are gaining " + format(getMoneyPerSecond(), 3) + " money/s<br>"                                  
                                                 
                                                 return a + b
                                                 
