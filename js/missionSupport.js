@@ -103,10 +103,27 @@ var FIXED_MISSION_DATA = {
                 name: "<b>K</b> challenge completions",
                 progress: "lin", //lin, log, exp
                 rewardPassive: new Decimal(.6),
-                rewardOnce: new Decimal(5000),  
+                rewardOnce: new Decimal(4000),  
                 id: 9,
         },
-        
+        10: {
+                requirement: new Decimal(388),
+                amountType: "k challs",
+                name: "<b>K</b> challenge completions",
+                progress: "lin", //lin, log, exp
+                rewardPassive: new Decimal(.9),
+                rewardOnce: new Decimal(4500),  
+                id: 10,
+        },
+        11: {
+                requirement: new Decimal(396),
+                amountType: "k challs",
+                name: "<b>K</b> challenge completions",
+                progress: "lin", //lin, log, exp
+                rewardPassive: new Decimal(1.2),
+                rewardOnce: new Decimal(5000),  
+                id: 11,
+        },
 }
 
 function getMissionsAmount(s){

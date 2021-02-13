@@ -49,8 +49,15 @@ function getPrestigeGainChangeExp(layer){
                 if (inChallenge("c", 12)) exp = exp.div(2)
                 exp = exp.times(CURRENT_BUYABLE_EFFECTS["i33"])
         }
+        if (layer == "g") {
+                exp = exp.times(CURRENT_BUYABLE_EFFECTS["k22"])
+        }
         if (layer == "i"){
                 if (hasUpgrade("l", 35)) exp = exp.times(Decimal.pow(2, player.k.lock.repeatables[82]))
+                if (player.m.stoneUpgrades.includes(171)) exp = exp.times(Decimal.pow(2, tmp.m.clickables.totalPerTier(2)))
+        }
+        if (layer == "j"){
+                if (player.m.stoneUpgrades.includes(171)) exp = exp.times(Decimal.pow(2, tmp.m.clickables.totalPerTier(2)))
         }
         return exp
 }

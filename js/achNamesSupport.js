@@ -459,6 +459,20 @@ PROGRESSION_MILESTONES = {
 	327: ()=> player.k.lock.repeatables[82].gte(136),
 	328: ()=> player.k.lock.repeatables[82].gte(153),
 	329: ()=> player.k.lock.repeatables[82].gte(171),
+	330: ()=> player.m.totalStonesUnlocked >= 1, 
+	331: ()=> player.m.totalStonesUnlocked >= 2, 
+	332: ()=> player.m.totalStonesUnlocked >= 3, 
+	333: ()=> player.m.totalStonesUnlocked >= 4, 
+	334: ()=> player.m.totalStonesUnlocked >= 5, 
+	335: ()=> player.m.totalStonesUnlocked >= 6, 
+	336: ()=> player.m.totalStonesUnlocked >= 7, 
+	337: ()=> player.m.totalStonesUnlocked >= 8, 
+	338: ()=> player.m.totalStonesUnlocked >= 9, 
+	339: ()=> player.m.totalStonesUnlocked >= 10, 
+	340: ()=> player.m.totalStonesUnlocked >= 11, 
+	341: ()=> player.m.totalStonesUnlocked >= 12, 
+	342: ()=> player.m.totalStonesUnlocked >= 13, 
+	343: ()=> player.m.totalStonesUnlocked >= 14, 
 }
 
 PROGRESSION_MILESTONES_TEXT = {
@@ -791,6 +805,20 @@ PROGRESSION_MILESTONES_TEXT = {
 	327: "136 Diamond Keys",
 	328: "153 Diamond Keys",
 	329: "171 Diamond Keys",
+	330: "a stone unlocked",
+	331: "2 stones unlocked",
+	332: "3 stones unlocked",
+	333: "4 stones unlocked",
+	334: "5 stones unlocked",
+	335: "6 stones unlocked",
+	336: "7 stones unlocked",
+	337: "8 stones unlocked",
+	338: "9 stones unlocked",
+	339: "10 stones unlocked",
+	330: "11 stones unlocked",
+	341: "12 stones unlocked",
+	342: "13 stones unlocked",
+	343: "14 stones unlocked",
 }
 
 

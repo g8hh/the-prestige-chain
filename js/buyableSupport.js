@@ -2686,6 +2686,21 @@ var MAIN_BUYABLE_DATA = {
                         return [b0, b1, b2]
                 },
         },
+        k22: {
+                name: "Katrina",
+                func: "exp",
+                effects: "<b>G</b> gain",
+                effectSymbol: "^",
+                base: {
+                        initial: new Decimal(2),
+                },
+                bases(){
+                        let b0 = Decimal.pow(10, 2e18)
+                        let b1 = Decimal.pow(10, 1e14)
+                        let b2 = Decimal.pow(10, 1e12)
+                        return [b0, b1, b2]
+                },
+        },
 }
 
 var EXTRA_FREE_BUYABLE_DATA = {

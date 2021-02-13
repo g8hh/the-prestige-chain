@@ -12688,7 +12688,6 @@ addLayer("k", {
                 }, // hasUpgrade("k", 55)
                 
                 /*
-                Katrina
                 Killer
                 Kodak
                 Kingston
@@ -15276,7 +15275,8 @@ addLayer("k", {
                                 if (player.tab != "k") return ""
                                 if (player.subtabs.k.mainTabs != "Lock") return ""
                                 let eff = tmp.k.clickables[64].effect
-                                return "^" + format(eff, 4) + " Osmium Mine generation exp"
+                                if (eff.lt(.98)) return "^" + format(eff, 4) + " Osmium Mine generation exp"
+                                return "^" + format(eff.sub(1).pow(-1)) + " to all mine gain"
                         },
                         canClick(){
                                 let data = player.k.lock.repeatables
@@ -16080,6 +16080,10 @@ addLayer("k", {
                 21: getGeneralizedBuyableData("k", 21, function(){
                         return hasUpgrade("m", 24) || hasUnlockedPast("m")
                         }),
+                22: getGeneralizedBuyableData("k", 22, function(){
+                        return player.m.stoneUpgrades.includes(171) || hasUnlockedPast("m")
+                        }),
+                        
         },
         shouldNotify(){
                 for (id in tmp.k.clickables){
@@ -16924,6 +16928,7 @@ addLayer("m", {
                                 154: new Decimal(0),
                                 155: new Decimal(0),
                         },
+                        stoneUpgrades: [],
                         totalStonesUnlocked: 0,
                 } //no comma here
         },
@@ -17584,7 +17589,7 @@ addLayer("m", {
                                 if (player.tab != "m") return ""
                                 if (player.subtabs.m.mainTabs != "Missions") return ""
 
-                                let a = "Unlock a stone!<br>"
+                                let a = "Unlock a stone!<br>You have " + player.m.totalStonesUnlocked + " stones unlocked<br>"
                                 let b = "Cost: " + formatWhole(tmp.m.clickables[161].cost) + " money"
 
                                 return a + b
@@ -17603,7 +17608,9 @@ addLayer("m", {
 
                                 if (x > 7) return new Decimal(1e69).times(init)
                                 if (x < 3) return Decimal.pow(3, Math.pow(x, 1.3)).times(10).times(init).floor()
-                                if (x < 10) return Decimal.pow(5, Math.pow(x, 1.2)).times(init).floor()
+                                if (x < 4) return init.times(100)
+                                if (x < 7) return Decimal.pow(5, Math.pow(x, 1.2)).times(init).floor()
+                                if (x < 100) return Decimal.pow(1.5, x).times(6e5).times(init).floor()
                                 return new Decimal(10)
                         },
                         unlocked(){
@@ -17639,6 +17646,36 @@ addLayer("m", {
                                 player.m.missions.currentMissions = []
                         },
                 },
+                171: {
+                        title(){
+                                return ""
+                        },
+                        display(){
+                                if (player.tab != "m") return ""
+                                if (player.subtabs.m.mainTabs != "Missions") return ""
+
+                                let a = "Each T2 stone squares <b>I</b> and <b>J</b> gain and unlock a <b>K</b> buyable<br>"
+                                let b = "Requirement: 369 <b>K</b> challenges"
+
+                                return a + b
+                        },
+                        unlocked(){
+                                return player.m.totalStonesUnlocked >= 7
+                        },
+                        canClick(){
+                                return totalChallengeComps("k") >= 369 && !player.m.stoneUpgrades.includes(171)
+                        },
+                        onClick(){
+                                player.m.stoneUpgrades.push(171)
+                        },
+                        style(){
+                                id = 171
+                                return {
+                                        "background-color": player.m.stoneUpgrades.includes(id) ? "#77bf5f" : tmp.m.clickables[id].canClick ? "#66CCFF" : "#bf8f8f"
+                                }
+                        },
+                },
+                //stoneUpgrades
         },
         tabFormat: {
                 "Upgrades": {
@@ -17748,7 +17785,7 @@ addLayer("m", {
                                         },
                                 ],
                                 ["microtabs", "pyramids"],
-                                ["clickables", [16,16]],
+                                ["clickables", [16,18]],
                                 
                         ],
                         unlocked(){
