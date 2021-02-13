@@ -815,7 +815,7 @@ PROGRESSION_MILESTONES_TEXT = {
 	337: "8 stones unlocked",
 	338: "9 stones unlocked",
 	339: "10 stones unlocked",
-	330: "11 stones unlocked",
+	340: "11 stones unlocked",
 	341: "12 stones unlocked",
 	342: "13 stones unlocked",
 	343: "14 stones unlocked",

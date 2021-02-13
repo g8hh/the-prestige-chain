@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".8.34 Sloth", // Turtle
+	num: ".8.34.1 Sloth", // Turtle
 	name: "",
 }
 
@@ -84,7 +84,7 @@ var displayThings = [
 		return "(" + format(getPointGen()) + "/sec)"
 	},
 	function(){
-		let a = "Endgame: 326 goals"
+		let a = "Endgame: 8 stones unlocked"
 		return player.autosave ? a : a + ". Warning: autosave is off"
 	},
 	function(){
