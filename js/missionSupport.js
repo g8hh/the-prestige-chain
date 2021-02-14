@@ -116,13 +116,31 @@ var FIXED_MISSION_DATA = {
                 id: 10,
         },
         11: {
-                requirement: new Decimal(396),
+                requirement: new Decimal(392),
                 amountType: "k challs",
                 name: "<b>K</b> challenge completions",
                 progress: "lin", //lin, log, exp
                 rewardPassive: new Decimal(1.2),
                 rewardOnce: new Decimal(5000),  
                 id: 11,
+        },
+        12: {
+                requirement: new Decimal(396),
+                amountType: "k challs",
+                name: "<b>K</b> challenge completions",
+                progress: "lin", //lin, log, exp
+                rewardPassive: new Decimal(1.5),
+                rewardOnce: new Decimal(5500),  
+                id: 12,
+        },
+        13: {
+                requirement: new Decimal(400),
+                amountType: "k challs",
+                name: "<b>K</b> challenge completions",
+                progress: "lin", //lin, log, exp
+                rewardPassive: new Decimal(1.9),
+                rewardOnce: new Decimal(6000),  
+                id: 13,
         },
 }
 
@@ -231,6 +249,7 @@ function doPassiveMoneyGeneration(diff){
 
 function updateMissions(diff){
         let data = player.m.missions
+        let data2 = player.m
         doPassiveMoneyGeneration(diff)
 
         for (let i = 0; i < data.currentMissions.length; i ++){
@@ -242,8 +261,10 @@ function updateMissions(diff){
         } // give new goals if so
 
 
-        // NOT DONE YET
-        // update the displays
+        // update bestStones
+        for (i in data2.stones) {
+                data2.bestStones[i] = data2.bestStones[i].max(data2.stones[i])
+        }
 }
 
 function makeMissionsDecimal(){
@@ -255,9 +276,19 @@ function makeMissionsDecimal(){
         }
 }
 
+function getShiftDownDisplay(id){
+        let a = "Currently this stone is taking " + format(tmp.m.clickables[id].passiveCost) + " money/s"
+        let b = "<br><br>Clicking now will sell a stone"
+        let c = "<br>Your best number of stones is " + formatWhole(player.m.bestStones[id])
+        return a + c + b
+}
 
-
-
+function getShiftUpEnding(id, character){
+        b = "You have " + formatWhole(player.m.stones[id]) + " stones<br>"
+        c = "Currently: " + character + format(tmp.m.clickables[id].effect) + "/s<br>"
+        d = "Requirement: " + format(tmp.m.clickables[id].requirement) + " money/s<br>"
+        return b + c + d
+}
 
 
 

@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".8.34.1 Sloth", // Turtle
+	num: ".8.35 Turtle", // Usmth
 	name: "",
 }
 
@@ -658,6 +658,10 @@ function getChangeLogText(){
 	cw3 = "- Added a stone upgrade"
 	cw4 = "- Added two missions"
 	cw5 = "- Added two rows of achievements"
+	cx1 = "v.8.35"
+	cx2 = "- Added a best stones ever display"
+	cx3 = "- Added a stone milestone"
+	cx4 = "- Added a stone"
 
 	let part1  = [a1,  a2,  a3,  a4,  a5,  a6,  ""]
 	let part2  = [b1,  b2,  b3,  b4,  b5,  "",  b6,  b7,  "",  b8,  b9,  b10,  "",  b11,  b12,  ""]
