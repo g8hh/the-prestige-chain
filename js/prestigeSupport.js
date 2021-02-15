@@ -35,22 +35,25 @@ function getPrestigeGainChangeExp(layer){
         if (["a", "b", "c", "d", "e", "f"].includes(layer)) {
                 exp = exp.times(Decimal.pow(.985, getChallengeDepth(1)))
                 if (hasMilestone("g", 1)) exp = exp.times(1.001)
-        }       
-        if (layer == "f") {
-                exp = exp.times(Decimal.pow(.9, getChallengeDepth(2) + getChallengeDepth(4)))
-        }
-        if (layer == "e"){
-                exp = exp.times(Decimal.pow(.9, getChallengeDepth(2)))
-                exp = exp.times(Decimal.pow(.8, getChallengeDepth(3)))
-                if (hasUpgrade("goalsii", 14) && getChallengeDepth(4) > 0) exp = exp.times(2)
         }
         if (layer == "a") {
                 if (hasUpgrade("i", 14)) exp = exp.times(Decimal.pow(1.1, player.i.upgrades.length))
                 if (inChallenge("c", 12)) exp = exp.div(2)
                 exp = exp.times(CURRENT_BUYABLE_EFFECTS["i33"])
+        }   
+        if (layer == "e"){
+                exp = exp.times(Decimal.pow(.9, getChallengeDepth(2)))
+                exp = exp.times(Decimal.pow(.8, getChallengeDepth(3)))
+                if (hasUpgrade("goalsii", 14) && getChallengeDepth(4) > 0) exp = exp.times(2)
+        }
+        if (layer == "f") {
+                exp = exp.times(Decimal.pow(.9, getChallengeDepth(2) + getChallengeDepth(4)))
         }
         if (layer == "g") {
                 exp = exp.times(CURRENT_BUYABLE_EFFECTS["k22"])
+        }
+        if (layer == "h") {
+                exp = exp.times(tmp.m.clickables[71].effect)
         }
         if (layer == "i"){
                 if (hasUpgrade("l", 35)) exp = exp.times(Decimal.pow(2, player.k.lock.repeatables[82]))

@@ -1,27 +1,15 @@
+// IMPORTANT
 /*
 
-missions: {
-        completed: {
-                list: [],
-                total: 0,
-        },
-        maxMissions: 1,
-        currentMissions: [
-                {
-                        requirement: new Decimal(789),
-                        getAmount(){
-                                return totalChallengeComps("h")
-                        },
-                        name: "<b>H</b> challenge completions",
-                        progress: "lin", //lin, log, exp
-                        rewardPassive: .1,
-                        rewardOnce: 20,
-                        id: 1,
-                },
-        ],
-        money: new Decimal(0),
-        moneyPassive: new Decimal(0),
-},
+need to add a way to bulk buy stones
+I think there should be another row 16 button that toggles bulk
+Bulk is very simple, it buys up to the maximum number of stones **AT THE CURRENT MOMENT**
+that means itll act weird for things like stone 111 but thats fine :)
+
+
+
+
+/*
 */
 
 var FIXED_MISSION_DATA = {
@@ -130,7 +118,7 @@ var FIXED_MISSION_DATA = {
                 name: "<b>K</b> challenge completions",
                 progress: "lin", //lin, log, exp
                 rewardPassive: new Decimal(1.5),
-                rewardOnce: new Decimal(5500),  
+                rewardOnce: new Decimal(8000),  
                 id: 12,
         },
         13: {
@@ -139,8 +127,26 @@ var FIXED_MISSION_DATA = {
                 name: "<b>K</b> challenge completions",
                 progress: "lin", //lin, log, exp
                 rewardPassive: new Decimal(1.9),
-                rewardOnce: new Decimal(6000),  
+                rewardOnce: new Decimal(9000),  
                 id: 13,
+        },
+        14: {
+                requirement: new Decimal(410),
+                amountType: "k challs",
+                name: "<b>K</b> challenge completions",
+                progress: "lin", //lin, log, exp
+                rewardPassive: new Decimal(2.4),
+                rewardOnce: new Decimal(10000),  
+                id: 14,
+        },
+        15: {
+                requirement: new Decimal(420),
+                amountType: "k challs",
+                name: "<b>K</b> challenge completions",
+                progress: "lin", //lin, log, exp
+                rewardPassive: new Decimal(3),
+                rewardOnce: new Decimal(12000),  
+                id: 15,
         },
 }
 
@@ -226,6 +232,7 @@ function getMoneyPerSecond(){
         let ret = player.m.missions.moneyPassive
         ret = ret.plus(tmp.m.clickables[11].effect)
         ret = ret.plus(tmp.m.clickables[61].effect)
+        ret = ret.plus(tmp.m.clickables[31].effect)
 
         for (i = 11; i < 156; i++){
                 if (tmp.m.clickables[i] == undefined) continue
@@ -239,12 +246,16 @@ function getMoneyPerSecond(){
 
 function getActualMoneyPerSecond(){
         let a = player.m.missions.money.times(getTaxRate())
-        return getMoneyPerSecond().sub(a)
+        let ret = getMoneyPerSecond().sub(a)
+        return ret
 }
 
 function doPassiveMoneyGeneration(diff){
-        player.m.missions.money = player.m.missions.money.plus(getMoneyPerSecond().times(diff))
-        player.m.missions.money = player.m.missions.money.times(Decimal.pow(1-getTaxRate(), diff))
+        let d = player.m.missions
+        let save = d.money.times(1)
+        d.money = d.money.plus(getMoneyPerSecond().times(diff))
+        d.money = d.money.times(Decimal.pow(1-getTaxRate(), diff))
+        if (player.m.stoneUpgrades.includes(174)) d.money = d.money.max(save)
 }
 
 function updateMissions(diff){
@@ -284,9 +295,10 @@ function getShiftDownDisplay(id){
 }
 
 function getShiftUpEnding(id, character){
-        b = "You have " + formatWhole(player.m.stones[id]) + " stones<br>"
-        c = "Currently: " + character + format(tmp.m.clickables[id].effect) + "/s<br>"
-        d = "Requirement: " + format(tmp.m.clickables[id].requirement) + " money/s<br>"
+        let a = [11,31,61].includes(id) ? "/s" : ""
+        let b = "You have " + formatWhole(player.m.stones[id]) + " stones<br>"
+        let c = "Currently: " + character + format(tmp.m.clickables[id].effect) + a + "<br>"
+        let d = "Requirement: " + format(tmp.m.clickables[id].requirement) + " money/s<br>"
         return b + c + d
 }
 

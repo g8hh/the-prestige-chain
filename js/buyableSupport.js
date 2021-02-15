@@ -2636,6 +2636,15 @@ var MAIN_BUYABLE_DATA = {
                 effects: "<b>L</b> effect exponent",
                 base: {
                         initial: new Decimal(2),
+                        1: {
+                                active: function(){
+                                        return true
+                                },
+                                amount: function(){
+                                        return tmp.m.clickables[32].effect
+                                },
+                                type: "add",
+                        },
                 },
                 bases(){
                         let b0 = Decimal.pow(10, 3e14)
@@ -2693,6 +2702,15 @@ var MAIN_BUYABLE_DATA = {
                 effectSymbol: "^",
                 base: {
                         initial: new Decimal(2),
+                        1: {
+                                active: function(){
+                                        return true
+                                },
+                                amount: function(){
+                                        return tmp.m.clickables[32].effect
+                                },
+                                type: "add",
+                        },
                 },
                 bases(){
                         let b0 = Decimal.pow(10, 2e18)

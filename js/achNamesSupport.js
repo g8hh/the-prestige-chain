@@ -472,7 +472,14 @@ PROGRESSION_MILESTONES = {
 	340: ()=> player.m.totalStonesUnlocked >= 11, 
 	341: ()=> player.m.totalStonesUnlocked >= 12, 
 	342: ()=> player.m.totalStonesUnlocked >= 13, 
-	343: ()=> player.m.totalStonesUnlocked >= 14, 
+	343: ()=> player.m.totalStonesUnlocked >= 14,
+	344: ()=> totalChallengeComps("h") >= 946,
+	345: ()=> totalChallengeComps("h") >= 990,
+	346: ()=> totalChallengeComps("h") >= 1035,
+	347: ()=> player.m.totalStonesUnlocked >= 15, 
+	348: ()=> player.m.totalStonesUnlocked >= 16, 
+	349: ()=> player.m.totalStonesUnlocked >= 17, 
+	350: ()=> player.m.totalStonesUnlocked >= 18, 
 }
 
 PROGRESSION_MILESTONES_TEXT = {
@@ -819,6 +826,13 @@ PROGRESSION_MILESTONES_TEXT = {
 	341: "12 stones unlocked",
 	342: "13 stones unlocked",
 	343: "14 stones unlocked",
+	344: "946 Heart challenge completions",
+	345: "990 Heart challenge completions",
+	346: "1035 Heart challenge completions",
+	347: "15 stones unlocked", 
+	348: "16 stones unlocked", 
+	349: "17 stones unlocked", 
+	350: "18 stones unlocked", 
 }
 
 

@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".8.35 Turtle", // Usmth
+	num: ".8.36 Uakari", // Vulture
 	name: "",
 }
 
@@ -30,8 +30,8 @@ var doNotCallTheseFunctionsEveryTick = ["blowUpEverything",
 					"attemptFinish",
 					"getBonusLocks",
 					"getRebirthExp2",
-					"updateArmy",
 					"totalPerTier",
+					"bestTotalPerTier",
 					]
 
 function getStartPoints(){
@@ -84,7 +84,7 @@ var displayThings = [
 		return "(" + format(getPointGen()) + "/sec)"
 	},
 	function(){
-		let a = "Endgame: 8 stones unlocked"
+		let a = "Endgame: 290 Diamond Keys"
 		return player.autosave ? a : a + ". Warning: autosave is off"
 	},
 	function(){
@@ -662,6 +662,13 @@ function getChangeLogText(){
 	cx2 = "- Added a best stones ever display"
 	cx3 = "- Added a stone milestone"
 	cx4 = "- Added a stone"
+	cy1 = "v.8.36"
+	cy2 = "- Added a row of achievements"
+	cy3 = "- Added two tier 1 stones"
+	cy4 = "- Added a teir 2 stone"
+	cy5 = "- Added two mission upgrades"
+	cy6 = "- Fixed a display bug saying /s after upgrades that weren't /s"
+	cy7 = "- Added an upgrade where you don't passively lose money anymore!"
 
 	let part1  = [a1,  a2,  a3,  a4,  a5,  a6,  ""]
 	let part2  = [b1,  b2,  b3,  b4,  b5,  "",  b6,  b7,  "",  b8,  b9,  b10,  "",  b11,  b12,  ""]
@@ -759,6 +766,8 @@ function getChangeLogText(){
 	let part94 = [cu1, cu2, cu3, cu4, cu5, cu6, cu7, cu8, cu9, cu10, ""]
 	let part95 = [cv1, cv2, cv3,  ""]
 	let part96 = [cw1, cw2, cw3, cw4, cw5,  ""]
+	let part97 = [cx1, cx2, cx3, cx4,  ""]
+	let part98 = [cy1, cy2, cy3, cy4, cy5, cy6, cy7,  ""]
 	// MAKE SURE TO ADD THEM
 
 	let final1 = [part10,  part9,  part8,  part7,  part6,  part5,  part4,  part3,  part2,  part1]
@@ -770,7 +779,7 @@ function getChangeLogText(){
 	let final7 = [part70, part69, part68, part67, part66, part65, part64, part63, part62, part61]
 	let final8 = [part80, part79, part78, part77, part76, part75, part74, part73, part72, part71]
 	let final9 = [part90, part89, part88, part87, part86, part85, part84, part83, part82, part81]
-	let final10= [part96, part95, part94, part93, part92, part91]
+	let final10= [part98, part97, part96, part95, part94, part93, part92, part91]
 
 	let entiresShown = 3
 	let start = [["Hold Shift to see the full changelog!", shiftDown ? "" : "Currrently showing the " + entiresShown + " most recent entries", ""]]
