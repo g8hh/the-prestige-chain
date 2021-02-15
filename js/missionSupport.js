@@ -82,7 +82,7 @@ var FIXED_MISSION_DATA = {
                 name: "<b>K</b> challenge completions",
                 progress: "lin", //lin, log, exp
                 rewardPassive: new Decimal(.6),
-                rewardOnce: new Decimal(3500),  
+                rewardOnce: new Decimal(3000),  
                 id: 8,
         },
         9: {
@@ -91,7 +91,7 @@ var FIXED_MISSION_DATA = {
                 name: "<b>K</b> challenge completions",
                 progress: "lin", //lin, log, exp
                 rewardPassive: new Decimal(.6),
-                rewardOnce: new Decimal(4000),  
+                rewardOnce: new Decimal(3500),  
                 id: 9,
         },
         10: {
@@ -100,7 +100,7 @@ var FIXED_MISSION_DATA = {
                 name: "<b>K</b> challenge completions",
                 progress: "lin", //lin, log, exp
                 rewardPassive: new Decimal(.9),
-                rewardOnce: new Decimal(4500),  
+                rewardOnce: new Decimal(4000),  
                 id: 10,
         },
         11: {
@@ -109,7 +109,7 @@ var FIXED_MISSION_DATA = {
                 name: "<b>K</b> challenge completions",
                 progress: "lin", //lin, log, exp
                 rewardPassive: new Decimal(1.2),
-                rewardOnce: new Decimal(5000),  
+                rewardOnce: new Decimal(4500),  
                 id: 11,
         },
         12: {
@@ -147,6 +147,24 @@ var FIXED_MISSION_DATA = {
                 rewardPassive: new Decimal(3),
                 rewardOnce: new Decimal(12000),  
                 id: 15,
+        },
+        16: {
+                requirement: new Decimal(430),
+                amountType: "k challs",
+                name: "<b>K</b> challenge completions",
+                progress: "lin", //lin, log, exp
+                rewardPassive: new Decimal(4),
+                rewardOnce: new Decimal(15000),  
+                id: 16,
+        },
+        17: {
+                requirement: new Decimal(440),
+                amountType: "k challs",
+                name: "<b>K</b> challenge completions",
+                progress: "lin", //lin, log, exp
+                rewardPassive: new Decimal(5),
+                rewardOnce: new Decimal(20000),  
+                id: 17,
         },
 }
 
@@ -210,11 +228,18 @@ function isMissionComplete(data){
         return Decimal.gte(getMissionsAmount(data.amountType), data.requirement)
 }
 
+function getMissionOnceRewardChangeFactor(){
+        let ret = 1
+        if (hasUpgrade("l", 42)) ret *= 5
+        if (player.m.stoneUpgrades.includes(175)) ret *= 20
+        return new Decimal(ret)
+}
+
 function attemptCompleteMission(id){
         let data2 = player.m.missions
         data = data2.currentMissions[id]
         if (!isMissionComplete(data)) return 
-        data2.money = data2.money.plus(data.rewardOnce)
+        data2.money = data2.money.plus(data.rewardOnce.div(getMissionOnceRewardChangeFactor()))
         data2.moneyPassive = data2.moneyPassive.plus(data.rewardPassive)
         data2.currentMissions = data2.currentMissions.slice(0, id).concat(data2.currentMissions.slice(id+1))
         data2.completed.list.push(data.id)
@@ -225,6 +250,7 @@ function attemptCompleteMission(id){
 function getTaxRate(){
         let ret = .0002
         if (hasUpgrade("l", 42)) ret *= 5
+        if (player.m.stoneUpgrades.includes(175)) ret *= 20
         return ret
 }
 
@@ -233,6 +259,8 @@ function getMoneyPerSecond(){
         ret = ret.plus(tmp.m.clickables[11].effect)
         ret = ret.plus(tmp.m.clickables[61].effect)
         ret = ret.plus(tmp.m.clickables[31].effect)
+        ret = ret.plus(tmp.m.clickables[33].effect)
+        ret = ret.plus(tmp.m.clickables[101].effect)
 
         for (i = 11; i < 156; i++){
                 if (tmp.m.clickables[i] == undefined) continue
@@ -295,7 +323,7 @@ function getShiftDownDisplay(id){
 }
 
 function getShiftUpEnding(id, character){
-        let a = [11,31,61].includes(id) ? "/s" : ""
+        let a = [11,31,61,33,101].includes(id) ? "/s" : ""
         let b = "You have " + formatWhole(player.m.stones[id]) + " stones<br>"
         let c = "Currently: " + character + format(tmp.m.clickables[id].effect) + a + "<br>"
         let d = "Requirement: " + format(tmp.m.clickables[id].requirement) + " money/s<br>"

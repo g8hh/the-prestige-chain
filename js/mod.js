@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".8.36 Uakari", // Vulture
+	num: ".8.37 Vulture", // Wombat
 	name: "",
 }
 
@@ -84,7 +84,7 @@ var displayThings = [
 		return "(" + format(getPointGen()) + "/sec)"
 	},
 	function(){
-		let a = "Endgame: 290 Diamond Keys"
+		let a = "Endgame: 15 Stones unlocked"
 		return player.autosave ? a : a + ". Warning: autosave is off"
 	},
 	function(){
@@ -669,6 +669,13 @@ function getChangeLogText(){
 	cy5 = "- Added two mission upgrades"
 	cy6 = "- Fixed a display bug saying /s after upgrades that weren't /s"
 	cy7 = "- Added an upgrade where you don't passively lose money anymore!"
+	cz1 = "v.8.36"
+	cz2 = "- Added a Mission milestone"
+	cz3 = "- Added a tier 1 stone"
+	cz4 = "- Added a teir 2 stone"
+	cz5 = "- Added a teir 3 stone"
+	cz6 = "- Added a display for time until new stone"
+	cz7 = "- Added a none tab"
 
 	let part1  = [a1,  a2,  a3,  a4,  a5,  a6,  ""]
 	let part2  = [b1,  b2,  b3,  b4,  b5,  "",  b6,  b7,  "",  b8,  b9,  b10,  "",  b11,  b12,  ""]
@@ -768,22 +775,24 @@ function getChangeLogText(){
 	let part96 = [cw1, cw2, cw3, cw4, cw5,  ""]
 	let part97 = [cx1, cx2, cx3, cx4,  ""]
 	let part98 = [cy1, cy2, cy3, cy4, cy5, cy6, cy7,  ""]
+	let part99 = [cz1, cz2, cz3, cz4, cz5, cz6, cz7,  ""]
 	// MAKE SURE TO ADD THEM
 
-	let final1 = [part10,  part9,  part8,  part7,  part6,  part5,  part4,  part3,  part2,  part1]
-	let final2 = [part20, part19, part18, part17, part16, part15, part14, part13, part12, part11]
-	let final3 = [part30, part29, part28, part27, part26, part25, part24, part23, part22, part21]
-	let final4 = [part40, part39, part38, part37, part36, part35, part34, part33, part32, part31]
-	let final5 = [part50, part49, part48, part47, part46, part45, part44, part43, part42, part41]
-	let final6 = [part60, part59, part58, part57, part56, part55, part54, part53, part52, part51]
-	let final7 = [part70, part69, part68, part67, part66, part65, part64, part63, part62, part61]
-	let final8 = [part80, part79, part78, part77, part76, part75, part74, part73, part72, part71]
-	let final9 = [part90, part89, part88, part87, part86, part85, part84, part83, part82, part81]
-	let final10= [part98, part97, part96, part95, part94, part93, part92, part91]
+	let final1  = [ part10,   part9,   part8,   part7,   part6,   part5,   part4,   part3,   part2,   part1]
+	let final2  = [ part20,  part19,  part18,  part17,  part16,  part15,  part14,  part13,  part12,  part11]
+	let final3  = [ part30,  part29,  part28,  part27,  part26,  part25,  part24,  part23,  part22,  part21]
+	let final4  = [ part40,  part39,  part38,  part37,  part36,  part35,  part34,  part33,  part32,  part31]
+	let final5  = [ part50,  part49,  part48,  part47,  part46,  part45,  part44,  part43,  part42,  part41]
+	let final6  = [ part60,  part59,  part58,  part57,  part56,  part55,  part54,  part53,  part52,  part51]
+	let final7  = [ part70,  part69,  part68,  part67,  part66,  part65,  part64,  part63,  part62,  part61]
+	let final8  = [ part80,  part79,  part78,  part77,  part76,  part75,  part74,  part73,  part72,  part71]
+	let final9  = [ part90,  part89,  part88,  part87,  part86,  part85,  part84,  part83,  part82,  part81]
+	let final10 = [ part99,  part98,  part97,  part96,  part95,  part94,  part93,  part92,  part91]
+	let final11 = []
 
 	let entiresShown = 3
 	let start = [["Hold Shift to see the full changelog!", shiftDown ? "" : "Currrently showing the " + entiresShown + " most recent entries", ""]]
-	let end = final10.concat(final9).concat(final8).concat(final7).concat(final6).concat(final5).concat(final4).concat(final3).concat(final2).concat(final1)
+	let end = final11.concat(final10).concat(final9).concat(final8).concat(final7).concat(final6).concat(final5).concat(final4).concat(final3).concat(final2).concat(final1)
 
 	if (!shiftDown) return start.concat(end.slice(0, entiresShown))
 

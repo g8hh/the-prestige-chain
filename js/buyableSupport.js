@@ -3432,6 +3432,7 @@ function canAffordBuyable(layer, id, cost = undefined){
 
 function isBuyableFree(layer){
         // Spec function
+        if (hasMilestone("m", 6)) return true
         if (layer == "a") return hasUpgrade("a", 35) || hasMilestone("goalsii", 2)
         if (layer == "b") return hasUpgrade("b", 52) || hasMilestone("goalsii", 3)
         if (layer == "c") return hasUpgrade("e", 12) || hasMilestone("goalsii", 4)
@@ -3742,6 +3743,9 @@ function getMaxBuyablesAmount(layer){
         if (layer == "h"){
                 if (hasUpgrade("k", 32)) ret = ret.times(Decimal.pow(2, player.k.lock.repeatables[45]))
                 if (hasUpgrade("j", 52)) ret = ret.times(Decimal.pow(2.5, player.l.upgrades.length))
+        }
+        if (layer == "i"){
+                ret = ret.times(tmp.m.clickables[72].effect)
         }
         return ret
 }
