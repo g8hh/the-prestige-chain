@@ -16854,6 +16854,13 @@ addLayer("m", {
                                 money: new Decimal(0),
                                 moneyPassive: new Decimal(0),
                         },
+                        bestPerTier: {
+                                1: new Decimal(0),
+                                2: new Decimal(0),
+                                3: new Decimal(0),
+                                4: new Decimal(0),
+                                5: new Decimal(0),
+                        },
                         stones: {
                                 11: new Decimal(0),
                                 12: new Decimal(0),
@@ -17058,6 +17065,7 @@ addLayer("m", {
                 if (hasUpgrade("l", 32)) x = x.times(tmp.k.challenges[12].rewardEffect)
                 if (hasUpgrade("l", 34)) x = x.times(tmp.k.challenges[12].rewardEffect)
                 x = x.times(tmp.m.clickables[12].effect)
+                x = x.times(tmp.m.clickables[14].effect)
 
                 return x
         },
@@ -17452,6 +17460,49 @@ addLayer("m", {
                         },
                         onClick(){
                                 let id = 13
+                                if (shiftDown) player.m.stones[id] = player.m.stones[id].plus(-1) 
+                                else player.m.stones[id] = player.m.stones[id].plus(1) 
+                        },
+                },
+                14: {
+                        title(){
+                                return "Stone 114"
+                        },
+                        display(){
+                                if (player.tab != "m") return ""
+                                if (player.subtabs.m.mainTabs != "Missions") return ""
+
+                                let id = 14
+                                if (shiftDown) return getShiftDownDisplay(id)
+                                let a = "Per best T2 stones per best T3 stones multiply <b>M</b> gain by 1.5<br>"
+                                return a + getShiftUpEnding(id, "*")
+
+                        },
+                        effect(){
+                                let amt = false ? player.m.bestStones[14] : player.m.stones[14]
+                                return tmp.m.clickables[14].effectBase.pow(amt)
+                        },
+                        effectBase(){
+                                let f = player.m.bestPerTier
+                                let exp = f[2].times(f[3])
+                                return Decimal.pow(1.5, exp)
+                        },
+                        requirement(){
+                                return this.passiveCost(1).sub(tmp.m.clickables[14].passiveCost)
+                        },
+                        passiveCost(diff = 0){
+                                let x = player.m.stones[14].plus(diff)
+                                return x.plus(1).times(x).div(20)
+                        },
+                        unlocked(){
+                                return player.m.totalStonesUnlocked >= 15
+                        },
+                        canClick(){
+                                let id = 14
+                                return shiftDown ? player.m.stones[id].gt(0) : getMoneyPerSecond().gte(tmp.m.clickables[id].requirement)
+                        },
+                        onClick(){
+                                let id = 14
                                 if (shiftDown) player.m.stones[id] = player.m.stones[id].plus(-1) 
                                 else player.m.stones[id] = player.m.stones[id].plus(1) 
                         },
@@ -18264,7 +18315,9 @@ addLayer("m", {
                         "Tier 1": {
                                 content: [
                                         ["display-text", function(){
-                                                return "You have " + formatWhole(layers.m.clickables.totalPerTier(1)) + " T1 stones (hold shift to sell!)"
+                                                let a = "You have " + formatWhole(layers.m.clickables.totalPerTier(1)) + " T1 stones"
+                                                let b = ", your best ever is " + formatWhole(player.m.bestPerTier[1]) + " stones (hold shift to sell!)"
+                                                return a + b
                                         }],
                                         ["clickables", [1,5]],
                                 ],
@@ -18275,7 +18328,9 @@ addLayer("m", {
                         "Tier 2": {
                                 content: [
                                         ["display-text", function(){
-                                                return "You have " + formatWhole(layers.m.clickables.totalPerTier(2)) + " T2 stones"
+                                                let a = "You have " + formatWhole(layers.m.clickables.totalPerTier(2)) + " T2 stones"
+                                                let b = ", your best ever is " + formatWhole(player.m.bestPerTier[2]) + " stones"
+                                                return a + b
                                         }],
                                         ["clickables", [6,9]],
                                 ],
@@ -18286,7 +18341,9 @@ addLayer("m", {
                         "Tier 3": {
                                 content: [
                                         ["display-text", function(){
-                                                return "You have " + formatWhole(layers.m.clickables.totalPerTier(3)) + " T3 stones"
+                                                let a = "You have " + formatWhole(layers.m.clickables.totalPerTier(3)) + " T3 stones"
+                                                let b = ", your best ever is " + formatWhole(player.m.bestPerTier[3]) + " stones"
+                                                return a + b
                                         }],
                                         ["clickables", [10,12]],
                                 ],
@@ -18297,7 +18354,9 @@ addLayer("m", {
                         "Tier 4": {
                                 content: [
                                         ["display-text", function(){
-                                                return "You have " + formatWhole(layers.m.clickables.totalPerTier(4)) + " T4 stones"
+                                                let a = "You have " + formatWhole(layers.m.clickables.totalPerTier(4)) + " T4 stones"
+                                                let b = ", your best ever is " + formatWhole(player.m.bestPerTier[4]) + " stones"
+                                                return a + b
                                         }],
                                         ["clickables", [13,14]],
                                 ],
@@ -18308,7 +18367,9 @@ addLayer("m", {
                         "Tier 5": {
                                 content: [
                                         ["display-text", function(){
-                                                return "You have " + formatWhole(layers.m.clickables.totalPerTier(5)) + " T5 stones"
+                                                let a = "You have " + formatWhole(layers.m.clickables.totalPerTier(5)) + " T5 stones"
+                                                let b = ", your best ever is " + formatWhole(player.m.bestPerTier[5]) + " stones"
+                                                return a + b
                                         }],
                                         ["clickables", [15,15]],
                                 ],

@@ -286,6 +286,14 @@ function doPassiveMoneyGeneration(diff){
         if (player.m.stoneUpgrades.includes(174)) d.money = d.money.max(save)
 }
 
+function updateBestPerTier(){
+        // layers.m.clickables.totalPerTier(1)
+        data = player.m.bestPerTier
+        for (let i = 1; i <= 5; i++){
+                data[i] = data[i].max(layers.m.clickables.totalPerTier(i))
+        }
+}
+
 function updateMissions(diff){
         let data = player.m.missions
         let data2 = player.m
@@ -304,6 +312,7 @@ function updateMissions(diff){
         for (i in data2.stones) {
                 data2.bestStones[i] = data2.bestStones[i].max(data2.stones[i])
         }
+        updateBestPerTier()
 }
 
 function makeMissionsDecimal(){

@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".8.37 Vulture", // Wombat
+	num: ".8.38 Wombat", // Xidk
 	name: "",
 }
 
@@ -665,17 +665,20 @@ function getChangeLogText(){
 	cy1 = "v.8.36"
 	cy2 = "- Added a row of achievements"
 	cy3 = "- Added two tier 1 stones"
-	cy4 = "- Added a teir 2 stone"
+	cy4 = "- Added a tier 2 stone"
 	cy5 = "- Added two mission upgrades"
 	cy6 = "- Fixed a display bug saying /s after upgrades that weren't /s"
 	cy7 = "- Added an upgrade where you don't passively lose money anymore!"
-	cz1 = "v.8.36"
+	cz1 = "v.8.37"
 	cz2 = "- Added a Mission milestone"
 	cz3 = "- Added a tier 1 stone"
-	cz4 = "- Added a teir 2 stone"
-	cz5 = "- Added a teir 3 stone"
+	cz4 = "- Added a tier 2 stone"
+	cz5 = "- Added a tier 3 stone"
 	cz6 = "- Added a display for time until new stone"
 	cz7 = "- Added a none tab"
+	da1 = "v.8.38"
+	da2 = "- Added a tier 1 stone"
+	da3 = "- Aded a best stone per tier"
 
 	let part1  = [a1,  a2,  a3,  a4,  a5,  a6,  ""]
 	let part2  = [b1,  b2,  b3,  b4,  b5,  "",  b6,  b7,  "",  b8,  b9,  b10,  "",  b11,  b12,  ""]
@@ -776,6 +779,7 @@ function getChangeLogText(){
 	let part97 = [cx1, cx2, cx3, cx4,  ""]
 	let part98 = [cy1, cy2, cy3, cy4, cy5, cy6, cy7,  ""]
 	let part99 = [cz1, cz2, cz3, cz4, cz5, cz6, cz7,  ""]
+	let part100= [da1, da2, da3,  ""]
 	// MAKE SURE TO ADD THEM
 
 	let final1  = [ part10,   part9,   part8,   part7,   part6,   part5,   part4,   part3,   part2,   part1]
@@ -787,7 +791,7 @@ function getChangeLogText(){
 	let final7  = [ part70,  part69,  part68,  part67,  part66,  part65,  part64,  part63,  part62,  part61]
 	let final8  = [ part80,  part79,  part78,  part77,  part76,  part75,  part74,  part73,  part72,  part71]
 	let final9  = [ part90,  part89,  part88,  part87,  part86,  part85,  part84,  part83,  part82,  part81]
-	let final10 = [ part99,  part98,  part97,  part96,  part95,  part94,  part93,  part92,  part91]
+	let final10 = [part100,  part99,  part98,  part97,  part96,  part95,  part94,  part93,  part92,  part91]
 	let final11 = []
 
 	let entiresShown = 3
