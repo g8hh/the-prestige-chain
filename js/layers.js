@@ -17017,6 +17017,7 @@ addLayer("m", {
                         },
                         stoneUpgrades: [],
                         totalStonesUnlocked: 0,
+                        stonesSaves: {},
                 } //no comma here
         },
         color: "#FFDFA7",
@@ -18184,6 +18185,226 @@ addLayer("m", {
                         },
                 },
                 //stoneUpgrades
+                251: {
+                        title(){
+                                return ""
+                        },
+                        display(){
+                                if (player.tab != "m") return ""
+                                if (player.subtabs.m.mainTabs != "Missions") return ""
+
+                                let a = "Load Stone state 1"
+
+                                return a
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        canClick(){
+                                return player.m.stonesSaves[1] != undefined
+                        },
+                        onClick(){
+                                player.m.stones = clone(player.m.stonesSaves[1])
+                        },
+                },
+                252: {
+                        title(){
+                                return ""
+                        },
+                        display(){
+                                if (player.tab != "m") return ""
+                                if (player.subtabs.m.mainTabs != "Missions") return ""
+
+                                let a = "Load Stone state 2"
+
+                                return a
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        canClick(){
+                                return player.m.stonesSaves[2] != undefined
+                        },
+                        onClick(){
+                                player.m.stones = clone(player.m.stonesSaves[2])
+                        },
+                },
+                253: {
+                        title(){
+                                return ""
+                        },
+                        display(){
+                                if (player.tab != "m") return ""
+                                if (player.subtabs.m.mainTabs != "Missions") return ""
+
+                                let a = "Load Stone state 3"
+
+                                return a
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        canClick(){
+                                return player.m.stonesSaves[3] != undefined
+                        },
+                        onClick(){
+                                player.m.stones = clone(player.m.stonesSaves[3])
+                        }, 
+                },
+                254: {
+                        title(){
+                                return ""
+                        },
+                        display(){
+                                if (player.tab != "m") return ""
+                                if (player.subtabs.m.mainTabs != "Missions") return ""
+
+                                let a = "Load Stone state 4"
+
+                                return a
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        canClick(){
+                                return player.m.stonesSaves[4] != undefined
+                        },
+                        onClick(){
+                                player.m.stones = clone(player.m.stonesSaves[4])
+                        }, 
+                },
+                255: {
+                        title(){
+                                return ""
+                        },
+                        display(){
+                                if (player.tab != "m") return ""
+                                if (player.subtabs.m.mainTabs != "Missions") return ""
+
+                                let a = "Load Stone state 5"
+
+                                return a
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        canClick(){
+                                return player.m.stonesSaves[5] != undefined
+                        },
+                        onClick(){
+                                player.m.stones = clone(player.m.stonesSaves[5])
+                        }, 
+                },
+                261: {
+                        title(){
+                                return ""
+                        },
+                        display(){
+                                if (player.tab != "m") return ""
+                                if (player.subtabs.m.mainTabs != "Missions") return ""
+
+                                let a = "Save Stone state 1"
+
+                                return a
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        canClick(){
+                                return true
+                        },
+                        onClick(){
+                                player.m.stonesSaves[1] = clone(player.m.stones)
+                        },
+                },
+                262: {
+                        title(){
+                                return ""
+                        },
+                        display(){
+                                if (player.tab != "m") return ""
+                                if (player.subtabs.m.mainTabs != "Missions") return ""
+
+                                let a = "Save Stone state 2"
+
+                                return a
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        canClick(){
+                                return true
+                        },
+                        onClick(){
+                                player.m.stonesSaves[2] = clone(player.m.stones)
+                        },
+                },
+                263: {
+                        title(){
+                                return ""
+                        },
+                        display(){
+                                if (player.tab != "m") return ""
+                                if (player.subtabs.m.mainTabs != "Missions") return ""
+
+                                let a = "Save Stone state 3"
+
+                                return a
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        canClick(){
+                                return true
+                        },
+                        onClick(){
+                                player.m.stonesSaves[3] = clone(player.m.stones)
+                        },
+                },
+                264: {
+                        title(){
+                                return ""
+                        },
+                        display(){
+                                if (player.tab != "m") return ""
+                                if (player.subtabs.m.mainTabs != "Missions") return ""
+
+                                let a = "Save Stone state 4"
+
+                                return a
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        canClick(){
+                                return true
+                        },
+                        onClick(){
+                                player.m.stonesSaves[4] = clone(player.m.stones)
+                        },
+                },
+                265: {
+                        title(){
+                                return ""
+                        },
+                        display(){
+                                if (player.tab != "m") return ""
+                                if (player.subtabs.m.mainTabs != "Missions") return ""
+
+                                let a = "Save Stone state 5"
+
+                                return a
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        canClick(){
+                                return true
+                        },
+                        onClick(){
+                                player.m.stonesSaves[5] = clone(player.m.stones)
+                        },
+                },
         },
         tabFormat: {
                 "Upgrades": {
@@ -18293,7 +18514,7 @@ addLayer("m", {
                                         },
                                 ],
                                 ["microtabs", "pyramids"],
-                                ["clickables", [16,18]],
+                                ["clickables", [16,20]],
                                 
                         ],
                         unlocked(){
@@ -18377,8 +18598,9 @@ addLayer("m", {
                                         return true
                                 },
                         },
-                        "None": {
+                        "Saves": {
                                 content: [
+                                        ["clickables", [25,26]],
                                 ],
                                 unlocked(){
                                         return true

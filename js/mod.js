@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".8.38 Wombat", // Xidk
+	num: ".8.38.1 Wombat", // Xidk
 	name: "",
 }
 
@@ -679,6 +679,8 @@ function getChangeLogText(){
 	da1 = "v.8.38"
 	da2 = "- Added a tier 1 stone"
 	da3 = "- Aded a best stone per tier"
+	da4 = "v.8.38.1"
+	da5 = "- Added 5 stone save slots"
 
 	let part1  = [a1,  a2,  a3,  a4,  a5,  a6,  ""]
 	let part2  = [b1,  b2,  b3,  b4,  b5,  "",  b6,  b7,  "",  b8,  b9,  b10,  "",  b11,  b12,  ""]
@@ -779,7 +781,7 @@ function getChangeLogText(){
 	let part97 = [cx1, cx2, cx3, cx4,  ""]
 	let part98 = [cy1, cy2, cy3, cy4, cy5, cy6, cy7,  ""]
 	let part99 = [cz1, cz2, cz3, cz4, cz5, cz6, cz7,  ""]
-	let part100= [da1, da2, da3,  ""]
+	let part100= [da1, da2, da3,  "", da4, da5,  ""]
 	// MAKE SURE TO ADD THEM
 
 	let final1  = [ part10,   part9,   part8,   part7,   part6,   part5,   part4,   part3,   part2,   part1]
