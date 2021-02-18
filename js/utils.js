@@ -320,6 +320,7 @@ function load() {
 	updateCurrentDepthValues()
 	updateGamesRewards()
 	updateTemp()
+	player.m.missions.currentMissions = []
 }
 
 function exportSave() {

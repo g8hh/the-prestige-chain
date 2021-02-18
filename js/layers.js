@@ -12767,8 +12767,12 @@ addLayer("k", {
                         if (id < 82) ret = ret.plus(tmp.k.clickables[82].effect)
                         if (hasUpgrade("m", 11) && id == 75) ret = ret.plus(player.m.upgrades.length)
                         if (hasUpgrade("m", 15) && id == 64) ret = ret.plus(totalChallengeComps("k"))
-                        if (id == 82) ret = ret.plus(tmp.k.challenges[21].rewardEffect)
-                        if (hasUpgrade("l", 31) && id == 82) ret = ret.plus(tmp.k.challenges[11].rewardEffect)
+                        if (id == 82) {
+                                ret = ret.plus(tmp.k.challenges[21].rewardEffect)
+                                ret = ret.plus(tmp.m.clickables[24].effectBase)
+                                if (hasUpgrade("l", 31)) ret = ret.plus(tmp.k.challenges[11].rewardEffect)
+                        }
+                        
                         return ret
                 },
                 11: {
@@ -15348,6 +15352,7 @@ addLayer("k", {
                                 let amt = player.k.lock.repeatables[65]
                                 amt = amt.plus(layers.k.clickables.getBonusKeys(65))
                                 let ret = amt.pow(1.7).div(100).plus(1).ln().times(250)
+                                ret = ret.pow(tmp.m.clickables[63].effect)
                                 return ret
                         },
                         effectDescription(){
@@ -15918,6 +15923,7 @@ addLayer("k", {
                         if (hasUpgrade("m", 13)) c += tmp.m.upgrades[13].effect.toNumber()
                         if (hasUpgrade("m", 22)) c += totalChallengeComps("h") * .01
                         c += tmp.m.clickables[13].effect.toNumber()
+                        if (player.m.stoneUpgrades.includes(181)) c += player.m.stoneUpgrades.length
                         return c
                 },
                 11: {
@@ -17627,6 +17633,49 @@ addLayer("m", {
                                 else player.m.stones[id] = player.m.stones[id].plus(1) 
                         },
                 },
+                24: {
+                        title(){
+                                return "Stone 124"
+                        },
+                        display(){
+                                if (player.tab != "m") return ""
+                                if (player.subtabs.m.mainTabs != "Missions") return ""
+
+                                let id = 24
+                                if (shiftDown) return getShiftDownDisplay(id)
+                                let a = "+" + format(tmp.m.clickables[id].effectBase) + " effective <b>Diamond Keys</b><br>"
+                                return a + getShiftUpEnding(id, "+")
+                        },
+                        effect(){
+                                let amt = false ? player.m.bestStones[24] : player.m.stones[24]
+                                let ret = tmp.m.clickables[24].effectBase.times(amt)
+                                if (ret.gt(100)) ret = ret.log10().times(5).pow(2)
+                                return ret
+                        },
+                        effectBase(){
+                                let ret = new Decimal(2)
+                                return ret
+                        },
+                        requirement(){
+                                return this.passiveCost(1).sub(tmp.m.clickables[24].passiveCost)
+                        },
+                        passiveCost(diff = 0){
+                                let x = player.m.stones[24].plus(diff)
+                                return x.plus(1).times(x).div(20)
+                        },
+                        unlocked(){
+                                return player.m.totalStonesUnlocked >= 16
+                        },
+                        canClick(){
+                                let id = 24
+                                return shiftDown ? player.m.stones[id].gt(0) : getMoneyPerSecond().gte(tmp.m.clickables[id].requirement)
+                        },
+                        onClick(){
+                                let id = 24
+                                if (shiftDown) player.m.stones[id] = player.m.stones[id].plus(-1) 
+                                else player.m.stones[id] = player.m.stones[id].plus(1) 
+                        },
+                },
                 31: {
                         title(){
                                 return "Stone 131"
@@ -17834,6 +17883,46 @@ addLayer("m", {
                                 else player.m.stones[id] = player.m.stones[id].plus(1) 
                         },
                 },
+                63: {
+                        title(){
+                                return "Stone 213"
+                        },
+                        display(){
+                                if (player.tab != "m") return ""
+                                if (player.subtabs.m.mainTabs != "Missions") return ""
+
+                                let id = 63
+                                if (shiftDown) return getShiftDownDisplay(id)
+                                let a = "Raise Copper Key effect to log5(3+log2(4+stones))<br>"
+                                return a + getShiftUpEnding(id, "^")
+                        },
+                        effect(){
+                                return tmp.m.clickables[63].effectBase
+                        },
+                        effectBase(){
+                                let ret = player.m.stones[63].plus(4).log(2).plus(3).log(5)
+                                return ret
+                        },
+                        requirement(){
+                                return this.passiveCost(1).sub(tmp.m.clickables[63].passiveCost)
+                        },
+                        passiveCost(diff = 0){
+                                let x = player.m.stones[63].plus(diff)
+                                return x.plus(1).times(x).div(10)
+                        },
+                        unlocked(){
+                                return player.m.totalStonesUnlocked >= 17
+                        },
+                        canClick(){
+                                let id = 63
+                                return shiftDown ? player.m.stones[id].gt(0) : getMoneyPerSecond().gte(tmp.m.clickables[id].requirement)
+                        },
+                        onClick(){
+                                let id = 63
+                                if (shiftDown) player.m.stones[id] = player.m.stones[id].plus(-1) 
+                                else player.m.stones[id] = player.m.stones[id].plus(1) 
+                        },
+                },
                 71: {
                         title(){
                                 return "Stone 221"
@@ -18024,7 +18113,7 @@ addLayer("m", {
                                 if (player.tab != "m") return ""
                                 if (player.subtabs.m.mainTabs != "Missions") return ""
 
-                                let a = "Reset Missions<br>Please do this upon update"
+                                let a = "Reset Missions"
 
                                 return a
                         },
@@ -18179,6 +18268,35 @@ addLayer("m", {
                         },
                         style(){
                                 id = 175
+                                return {
+                                        "background-color": player.m.stoneUpgrades.includes(id) ? "#77bf5f" : tmp.m.clickables[id].canClick ? "#FFDFA7" : "#bf8f8f"
+                                }
+                        },
+                },
+                181: {
+                        title(){
+                                return ""
+                        },
+                        display(){
+                                if (player.tab != "m") return ""
+                                if (player.subtabs.m.mainTabs != "Missions") return ""
+
+                                let a = "Per upgrade -1 effective <b>K</b> challenges<br>"
+                                let b = "Requirement: 90 money/s</b>"
+
+                                return a + b
+                        },
+                        unlocked(){
+                                return player.m.totalStonesUnlocked >= 15
+                        },
+                        canClick(){
+                                return getMoneyPerSecond().gte(90) && !player.m.stoneUpgrades.includes(181)
+                        },
+                        onClick(){
+                                player.m.stoneUpgrades.push(181)
+                        },
+                        style(){
+                                id = 181
                                 return {
                                         "background-color": player.m.stoneUpgrades.includes(id) ? "#77bf5f" : tmp.m.clickables[id].canClick ? "#FFDFA7" : "#bf8f8f"
                                 }

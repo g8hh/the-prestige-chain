@@ -158,13 +158,22 @@ var FIXED_MISSION_DATA = {
                 id: 16,
         },
         17: {
-                requirement: new Decimal(440),
+                requirement: new Decimal(460),
                 amountType: "k challs",
                 name: "<b>K</b> challenge completions",
                 progress: "lin", //lin, log, exp
                 rewardPassive: new Decimal(5),
                 rewardOnce: new Decimal(20000),  
                 id: 17,
+        },
+        18: {
+                requirement: new Decimal(480),
+                amountType: "k challs",
+                name: "<b>K</b> challenge completions",
+                progress: "lin", //lin, log, exp
+                rewardPassive: new Decimal(6),
+                rewardOnce: new Decimal(25000),  
+                id: 18,
         },
 }
 
@@ -281,8 +290,7 @@ function getActualMoneyPerSecond(){
 function doPassiveMoneyGeneration(diff){
         let d = player.m.missions
         let save = d.money.times(1)
-        d.money = d.money.plus(getMoneyPerSecond().times(diff))
-        d.money = d.money.times(Decimal.pow(1-getTaxRate(), diff))
+        d.money = d.money.plus(getActualMoneyPerSecond().times(diff))
         if (player.m.stoneUpgrades.includes(174)) d.money = d.money.max(save)
 }
 
