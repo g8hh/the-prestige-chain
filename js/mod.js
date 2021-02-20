@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".8.39.1 Yak", // zebra
+	num: ".8.39.2 Yak", // zebra
 	name: "",
 }
 
