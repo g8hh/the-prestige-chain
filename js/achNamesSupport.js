@@ -480,6 +480,13 @@ PROGRESSION_MILESTONES = {
 	348: ()=> player.m.totalStonesUnlocked >= 16, 
 	349: ()=> player.m.totalStonesUnlocked >= 17, 
 	350: ()=> player.m.totalStonesUnlocked >= 18, 
+	351: ()=> player.m.totalStonesUnlocked >= 19, 
+	352: ()=> player.m.totalStonesUnlocked >= 20, 
+	353: ()=> player.m.totalStonesUnlocked >= 21, 
+	354: ()=> player.m.totalStonesUnlocked >= 22, 
+	355: ()=> player.m.totalStonesUnlocked >= 23, 
+	356: ()=> player.m.totalStonesUnlocked >= 24, 
+	357: ()=> player.m.totalStonesUnlocked >= 25, 
 }
 
 PROGRESSION_MILESTONES_TEXT = {
@@ -833,6 +840,13 @@ PROGRESSION_MILESTONES_TEXT = {
 	348: "16 stones unlocked", 
 	349: "17 stones unlocked", 
 	350: "18 stones unlocked", 
+	351: "19 stones unlocked", 
+	352: "20 stones unlocked", 
+	353: "21 stones unlocked", 
+	354: "22 stones unlocked", 
+	355: "23 stones unlocked", 
+	356: "24 stones unlocked", 
+	357: "25 stones unlocked", 
 }
 
 

@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".8.39 Yak", // zebra
+	num: ".8.39.1 Yak", // zebra
 	name: "",
 }
 
@@ -84,7 +84,7 @@ var displayThings = [
 		return "(" + format(getPointGen()) + "/sec)"
 	},
 	function(){
-		let a = "Endgame: 15 Stones unlocked"
+		let a = "Endgame: 348 achievements"
 		return player.autosave ? a : a + ". Warning: autosave is off"
 	},
 	function(){
@@ -686,6 +686,8 @@ function getChangeLogText(){
 	db3 = "- Added a mission upgrade"
 	db4 = "- Added a T1 stone and a T2 stone"
 	db5 = "- Added a mission and updated another"
+	db6 = "v.8.39.1"
+	db7 = "- Added a row of achievements"
 
 	let part1   = [a1,  a2,  a3,  a4,  a5,  a6,  ""]
 	let part2   = [b1,  b2,  b3,  b4,  b5,  "",  b6,  b7,  "",  b8,  b9,  b10,  "",  b11,  b12,  ""]
@@ -787,7 +789,7 @@ function getChangeLogText(){
 	let part98  = [cy1, cy2, cy3, cy4, cy5, cy6, cy7,  ""]
 	let part99  = [cz1, cz2, cz3, cz4, cz5, cz6, cz7,  ""]
 	let part100 = [da1, da2, da3,  "", da4, da5,  ""]
-	let part101 = [db1, db2, db3, db4, db5, ""]
+	let part101 = [db1, db2, db3, db4, db5,  "", db6, db7,  ""]
 	// MAKE SURE TO ADD THEM
 
 	let final1  = [ part10,   part9,   part8,   part7,   part6,   part5,   part4,   part3,   part2,   part1]

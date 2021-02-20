@@ -178,6 +178,7 @@ var FIXED_MISSION_DATA = {
 }
 
 function getMissionsAmount(s){
+        if (s == "none") return 0
         let layer = s.split(" ")[0];
         let attr = s.split(" ")[1];
         if (attr == "challs"){
@@ -224,7 +225,7 @@ function getNextMission(){
         console.log("OOOPS")
         return {
                 requirement: Decimal.pow(10, 1e20),
-                amountType: "m points",
+                amountType: "none",
                 name: "<b>M</b>",
                 progress: "log", //lin, log, exp
                 rewardPassive: new Decimal(.5),
