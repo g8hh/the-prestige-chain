@@ -12,6 +12,9 @@ that means itll act weird for things like stone 111 but thats fine :)
 /*
 */
 
+var BOOST_MONEY = [11,31,61,33,101,73]
+var EXTRA_BEST_ORDER = [132,134,212]
+
 var FIXED_MISSION_DATA = {
         1: {
                 requirement: new Decimal(789),
@@ -266,11 +269,9 @@ function getTaxRate(){
 
 function getMoneyPerSecond(){
         let ret = player.m.missions.moneyPassive
-        ret = ret.plus(tmp.m.clickables[11].effect)
-        ret = ret.plus(tmp.m.clickables[61].effect)
-        ret = ret.plus(tmp.m.clickables[31].effect)
-        ret = ret.plus(tmp.m.clickables[33].effect)
-        ret = ret.plus(tmp.m.clickables[101].effect)
+        for (i in BOOST_MONEY){
+                ret = ret.plus(tmp.m.clickables[BOOST_MONEY[i]].effect)
+        }
 
         for (i = 11; i < 156; i++){
                 if (tmp.m.clickables[i] == undefined) continue
@@ -289,10 +290,25 @@ function getActualMoneyPerSecond(){
 }
 
 function doPassiveMoneyGeneration(diff){
-        let d = player.m.missions
-        let save = d.money.times(1)
-        d.money = d.money.plus(getActualMoneyPerSecond().times(diff))
-        if (player.m.stoneUpgrades.includes(174)) d.money = d.money.max(save)
+        if (player.m.stoneUpgrades.includes(174) && getActualMoneyPerSecond().lt(0)) return 
+        //now we need to estimate the remaining time
+        let t = new Decimal(0)
+        let b = new Decimal(getTaxRate()) // b
+        let c = getMoneyPerSecond() // c
+        let x = player.m.missions.money //x
+
+        let alpha = c.sub(b.times(x)).ln().div(b).times(-1)
+        player.m.missions.money = c.sub(Decimal.pow(Math.E, alpha.plus(diff).times(b).times(-1))).div(b)
+
+        /*
+        dx/dt = c-bx
+        dx/(c-bx) = dt
+        -ln(c-bx)/b = t + alpha
+        ln(c-bx) = -b(t+alpha)
+        c-bx = e^(-b(t+alpha))
+        x = c-e^(-b(t+alpha)) all times 1/b
+        CALC :)
+        */
 }
 
 function updateBestPerTier(){
@@ -322,6 +338,33 @@ function updateMissions(diff){
                 data2.bestStones[i] = data2.bestStones[i].max(data2.stones[i])
         }
         updateBestPerTier()
+        if (player.m.stoneUpgrades.includes(182)) syncBestT1Stones()
+}
+
+function syncBestT1Stones(){
+        let data = player.m.bestStones
+        let ids = getUnlockedStonesIDs().filter(x => x < 60)
+        let a = new Decimal(0)
+        for (i in ids){
+                j = ids[i]
+                a = a.max(data[j])
+        }
+        for (i in ids){
+                j = ids[i]
+                data[j] = data[j].max(a)
+        }   
+}
+
+function getUnlockedStonesIDs(){
+        let a = []
+        let b = Object.keys(tmp.m.clickables)
+        for (i in b) {
+                j = b[i]
+                if (isNaN(Number(j))) continue 
+                if (Number(j) >= 160) continue
+                if (tmp.m.clickables[j].unlocked) a.push(Number(j))
+        }
+        return a
 }
 
 function makeMissionsDecimal(){
@@ -341,7 +384,7 @@ function getShiftDownDisplay(id){
 }
 
 function getShiftUpEnding(id, character){
-        let a = [11,31,61,33,101].includes(id) ? "/s" : ""
+        let a = BOOST_MONEY.includes(id) ? "/s" : ""
         let b = "You have " + formatWhole(player.m.stones[id]) + " stones<br>"
         let c = "Currently: " + character + format(tmp.m.clickables[id].effect) + a + "<br>"
         let d = "Requirement: " + format(tmp.m.clickables[id].requirement) + " money/s<br>"

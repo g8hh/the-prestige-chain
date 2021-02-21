@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".8.39.2 Yak", // zebra
+	num: ".8.40 Zebra", // apple
 	name: "",
 }
 
@@ -688,6 +688,15 @@ function getChangeLogText(){
 	db5 = "- Added a mission and updated another"
 	db6 = "v.8.39.1"
 	db7 = "- Added a row of achievements"
+	dc1 = "v.8.40"
+	dc2 = "- Added two rows of achievements"
+	dc3 = "- Made money use a proper gain formula (calculus sadge)"
+	dc4 = "- Fixed go to tier hotkey displays"
+	dc5 = "- Added a var for stones that give money"
+	dc6 = "- Added a T1, T2, and T3 stone"
+	dc7 = "- Added a stone upgrade"
+	dc8 = "- Made the stone title turn red when its based on best"
+	dc9 = "- Added an repeatable upgrade to make stones based on best"
 
 	let part1   = [a1,  a2,  a3,  a4,  a5,  a6,  ""]
 	let part2   = [b1,  b2,  b3,  b4,  b5,  "",  b6,  b7,  "",  b8,  b9,  b10,  "",  b11,  b12,  ""]
@@ -790,6 +799,7 @@ function getChangeLogText(){
 	let part99  = [cz1, cz2, cz3, cz4, cz5, cz6, cz7,  ""]
 	let part100 = [da1, da2, da3,  "", da4, da5,  ""]
 	let part101 = [db1, db2, db3, db4, db5,  "", db6, db7,  ""]
+	let part102 = [dc1, dc2, dc3, dc4, dc5, dc6, dc7, dc8, dc9,  ""]
 	// MAKE SURE TO ADD THEM
 
 	let final1  = [ part10,   part9,   part8,   part7,   part6,   part5,   part4,   part3,   part2,   part1]
@@ -802,7 +812,7 @@ function getChangeLogText(){
 	let final8  = [ part80,  part79,  part78,  part77,  part76,  part75,  part74,  part73,  part72,  part71]
 	let final9  = [ part90,  part89,  part88,  part87,  part86,  part85,  part84,  part83,  part82,  part81]
 	let final10 = [part100,  part99,  part98,  part97,  part96,  part95,  part94,  part93,  part92,  part91]
-	let final11 = [part101]
+	let final11 = [part102, part101]
 
 	let entiresShown = 3
 	let start = [["Hold Shift to see the full changelog!", shiftDown ? "" : "Currrently showing the " + entiresShown + " most recent entries", ""]]

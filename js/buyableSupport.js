@@ -1491,6 +1491,15 @@ var MAIN_BUYABLE_DATA = {
                                 },
                                 type: "plus"
                         },
+                        3: {
+                                active: function(){
+                                        return true
+                                },
+                                amount: function(){
+                                        return tmp.m.clickables[102].effect
+                                },
+                                type: "times",
+                        },
                 },
                 bases(){
                         let b0 = Decimal.pow(10, 1e6)
@@ -2687,6 +2696,15 @@ var MAIN_BUYABLE_DATA = {
                 effects: "<b>Iron Key</b> effect",
                 base: {
                         initial: new Decimal(1e10),
+                        1: {
+                                active: function(){
+                                        return true
+                                },
+                                amount: function(){
+                                        return tmp.m.clickables[102].effect
+                                },
+                                type: "times",
+                        },
                 },
                 bases(){
                         let b0 = Decimal.pow(10, 2e16)

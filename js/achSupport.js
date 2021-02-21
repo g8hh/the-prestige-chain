@@ -487,6 +487,20 @@ PROGRESSION_MILESTONES = {
 	355: ()=> player.m.totalStonesUnlocked >= 23, 
 	356: ()=> player.m.totalStonesUnlocked >= 24, 
 	357: ()=> player.m.totalStonesUnlocked >= 25, 
+	358: ()=> totalChallengeComps("k") >= 496,
+	359: ()=> player.m.totalStonesUnlocked >= 26, 
+	360: ()=> player.m.totalStonesUnlocked >= 27, 
+	361: ()=> player.m.totalStonesUnlocked >= 28, 
+	362: ()=> player.m.totalStonesUnlocked >= 29, 
+	363: ()=> player.m.totalStonesUnlocked >= 30, 
+	364: ()=> player.m.totalStonesUnlocked >= 31, 
+	365: ()=> totalChallengeComps("h") >= 1081,
+	366: ()=> player.m.totalStonesUnlocked >= 32, 
+	367: ()=> player.m.totalStonesUnlocked >= 33, 
+	368: ()=> player.m.totalStonesUnlocked >= 34, 
+	369: ()=> player.m.totalStonesUnlocked >= 35, 
+	370: ()=> player.m.totalStonesUnlocked >= 36, 
+	371: ()=> player.m.totalStonesUnlocked >= 37, 
 }
 
 PROGRESSION_MILESTONES_TEXT = {
@@ -847,6 +861,20 @@ PROGRESSION_MILESTONES_TEXT = {
 	355: "23 stones unlocked", 
 	356: "24 stones unlocked", 
 	357: "25 stones unlocked", 
+	358: "496 Key challenge completions",
+	359: "26 stones unlocked", 
+	350: "27 stones unlocked", 
+	361: "28 stones unlocked", 
+	362: "29 stones unlocked", 
+	363: "30 stones unlocked", 
+	364: "31 stones unlocked", 
+	365: "1081 Heart challenge completions",
+	366: "32 stones unlocked", 
+	367: "33 stones unlocked", 
+	368: "34 stones unlocked", 
+	369: "35 stones unlocked", 
+	370: "36 stones unlocked", 
+	371: "37 stones unlocked", 
 }
 
 
