@@ -314,19 +314,15 @@ function doPassiveMoneyGeneration(diff){
         let c = getMoneyPerSecond() // c
         let x = player.m.missions.money //x
 
-        if (c.sub(b.times(x)).gte(0)) {
+        if (c.sub(b.times(x)).eq(0)) { 
+                //if its equal then we just end
+                return 
+        } else if (c.sub(b.times(x)).gt(0)) { //increasing
                 let alpha = c.sub(b.times(x)).ln().div(b).times(-1)
                 player.m.missions.money = c.sub(Decimal.pow(Math.E, alpha.plus(diff).times(b).times(-1))).div(b)
-        } else if (!player.m.stoneUpgrades.includes(174)) {
+        } else if (!player.m.stoneUpgrades.includes(174)) {//decreasing
                 let alpha = b.times(x).sub(c).ln().div(b).times(-1)
                 player.m.missions.money = c.plus(Decimal.pow(Math.E, alpha.plus(diff).times(b).times(-1))).div(b)
-        }
-
-        if (isNaN(player.m.missions.money.mag)){
-                console.log(b)
-                console.log(c)
-                console.log(x)
-                console.log(player.m.missions.money)
         }
 
         /*

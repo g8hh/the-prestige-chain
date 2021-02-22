@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".8.41.1 Apple", // Banana
+	num: ".8.41.2 Apple", // Banana
 	name: "",
 }
 

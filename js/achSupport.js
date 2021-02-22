@@ -863,7 +863,7 @@ PROGRESSION_MILESTONES_TEXT = {
 	357: "25 stones unlocked", 
 	358: "496 Key challenge completions",
 	359: "26 stones unlocked", 
-	350: "27 stones unlocked", 
+	360: "27 stones unlocked", 
 	361: "28 stones unlocked", 
 	362: "29 stones unlocked", 
 	363: "30 stones unlocked", 
