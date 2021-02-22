@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".8.40 Zebra", // apple
+	num: ".8.41 Apple", // Banana
 	name: "",
 }
 
@@ -84,7 +84,7 @@ var displayThings = [
 		return "(" + format(getPointGen()) + "/sec)"
 	},
 	function(){
-		let a = "Endgame: 348 achievements"
+		let a = "Endgame: 358 achievements"
 		return player.autosave ? a : a + ". Warning: autosave is off"
 	},
 	function(){
@@ -697,6 +697,12 @@ function getChangeLogText(){
 	dc7 = "- Added a stone upgrade"
 	dc8 = "- Made the stone title turn red when its based on best"
 	dc9 = "- Added an repeatable upgrade to make stones based on best"
+	dd1 = "v.8.41"
+	dd2 = "- Added 2 T1 stones and a T2 stone" 
+	dd3 = "- Softcapped money gain after 200 and 500 by root2/2 (about .707), but it keeps smoothness" 
+	dd4 = "- Added a stone upgrade"
+	dd5 = "- Nerfed the sync of T1 (and T2 in the new upgrade) stones"
+	dd6 = "- Added a mission"
 
 	let part1   = [a1,  a2,  a3,  a4,  a5,  a6,  ""]
 	let part2   = [b1,  b2,  b3,  b4,  b5,  "",  b6,  b7,  "",  b8,  b9,  b10,  "",  b11,  b12,  ""]
@@ -800,6 +806,7 @@ function getChangeLogText(){
 	let part100 = [da1, da2, da3,  "", da4, da5,  ""]
 	let part101 = [db1, db2, db3, db4, db5,  "", db6, db7,  ""]
 	let part102 = [dc1, dc2, dc3, dc4, dc5, dc6, dc7, dc8, dc9,  ""]
+	let part103 = [dd1, dd2, dd3, dd4, dd5, dd6,  ""]
 	// MAKE SURE TO ADD THEM
 
 	let final1  = [ part10,   part9,   part8,   part7,   part6,   part5,   part4,   part3,   part2,   part1]
@@ -812,7 +819,8 @@ function getChangeLogText(){
 	let final8  = [ part80,  part79,  part78,  part77,  part76,  part75,  part74,  part73,  part72,  part71]
 	let final9  = [ part90,  part89,  part88,  part87,  part86,  part85,  part84,  part83,  part82,  part81]
 	let final10 = [part100,  part99,  part98,  part97,  part96,  part95,  part94,  part93,  part92,  part91]
-	let final11 = [part102, part101]
+	let final11 = [part103, part102, part101]
+	let final12 = []
 
 	let entiresShown = 3
 	let start = [["Hold Shift to see the full changelog!", shiftDown ? "" : "Currrently showing the " + entiresShown + " most recent entries", ""]]

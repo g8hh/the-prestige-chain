@@ -19,6 +19,26 @@ To make a new softcap using this function
 */
 
 var softcap_data = {
+	money: {
+		1: {
+			func: "pow",
+			start: 200,
+			pow: .7071,
+			derv: true,
+			active() {
+				return !false
+			},
+		},
+		2: {
+			func: "pow",
+			start: 500,
+			pow: .7071,
+			derv: true,
+			active() {
+				return !false
+			},
+		},
+	},
 	a_eff: {
 		1: {
 			func: "pow",

@@ -12,8 +12,8 @@ that means itll act weird for things like stone 111 but thats fine :)
 /*
 */
 
-var BOOST_MONEY = [11,31,61,33,101,73]
-var EXTRA_BEST_ORDER = [132,134,212]
+var BOOST_MONEY = [11, 31, 61, 33, 101, 73, 81]
+var EXTRA_BEST_ORDER = [132, 134, 212, 141, 312, 142]
 
 var FIXED_MISSION_DATA = {
         1: {
@@ -178,6 +178,24 @@ var FIXED_MISSION_DATA = {
                 rewardOnce: new Decimal(25000),  
                 id: 18,
         },
+        19: {
+                requirement: new Decimal(500),
+                amountType: "k challs",
+                name: "<b>K</b> challenge completions",
+                progress: "lin", //lin, log, exp
+                rewardPassive: new Decimal(7),
+                rewardOnce: new Decimal(30000),  
+                id: 19,
+        },
+        20: {
+                requirement: new Decimal(520),
+                amountType: "k challs",
+                name: "<b>K</b> challenge completions",
+                progress: "lin", //lin, log, exp
+                rewardPassive: new Decimal(9),
+                rewardOnce: new Decimal(35000),  
+                id: 20,
+        },
 }
 
 function getMissionsAmount(s){
@@ -272,14 +290,15 @@ function getMoneyPerSecond(){
         for (i in BOOST_MONEY){
                 ret = ret.plus(tmp.m.clickables[BOOST_MONEY[i]].effect)
         }
+        if (hasUpgrade("m", 24)) ret = ret.plus(.2)
 
         for (i = 11; i < 156; i++){
                 if (tmp.m.clickables[i] == undefined) continue
                 ret = ret.sub(tmp.m.clickables[i].passiveCost)
         }
 
-        if (hasUpgrade("m", 24)) ret = ret.plus(.2)
-        
+        ret = softcap(ret, "money")
+
         return ret.max(0)
 }
 
@@ -339,6 +358,7 @@ function updateMissions(diff){
         }
         updateBestPerTier()
         if (player.m.stoneUpgrades.includes(182)) syncBestT1Stones()
+        if (player.m.stoneUpgrades.includes(183)) syncBestT2Stones()
 }
 
 function syncBestT1Stones(){
@@ -347,6 +367,22 @@ function syncBestT1Stones(){
         let a = new Decimal(0)
         for (i in ids){
                 j = ids[i]
+                if (BOOST_MONEY.includes(j)) continue
+                a = a.max(data[j])
+        }
+        for (i in ids){
+                j = ids[i]
+                data[j] = data[j].max(a)
+        }   
+}
+
+function syncBestT2Stones(){
+        let data = player.m.bestStones
+        let ids = getUnlockedStonesIDs().filter(x => x < 100 && x > 60)
+        let a = new Decimal(0)
+        for (i in ids){
+                j = ids[i]
+                if (BOOST_MONEY.includes(j)) continue
                 a = a.max(data[j])
         }
         for (i in ids){

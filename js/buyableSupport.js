@@ -2520,7 +2520,16 @@ var MAIN_BUYABLE_DATA = {
                                         return CURRENT_BUYABLE_EFFECTS["j33"]
                                 },
                                 type: "plus"
-                        }
+                        },
+                        2:{
+                                active:function(){
+                                        return true
+                                },
+                                amount: function(){
+                                        return tmp.m.clickables[42].effect
+                                },
+                                type: "times"
+                        },
                 },
                 bases(){
                         let b0 = Decimal.pow(10, 5.7e11)
