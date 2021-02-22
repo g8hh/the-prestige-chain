@@ -309,15 +309,25 @@ function getActualMoneyPerSecond(){
 }
 
 function doPassiveMoneyGeneration(diff){
-        if (player.m.stoneUpgrades.includes(174) && getActualMoneyPerSecond().lt(0)) return 
         //now we need to estimate the remaining time
-        let t = new Decimal(0)
         let b = new Decimal(getTaxRate()) // b
         let c = getMoneyPerSecond() // c
         let x = player.m.missions.money //x
 
-        let alpha = c.sub(b.times(x)).ln().div(b).times(-1)
-        player.m.missions.money = c.sub(Decimal.pow(Math.E, alpha.plus(diff).times(b).times(-1))).div(b)
+        if (c.sub(b.times(x)).gte(0)) {
+                let alpha = c.sub(b.times(x)).ln().div(b).times(-1)
+                player.m.missions.money = c.sub(Decimal.pow(Math.E, alpha.plus(diff).times(b).times(-1))).div(b)
+        } else if (!player.m.stoneUpgrades.includes(174)) {
+                let alpha = b.times(x).sub(c).ln().div(b).times(-1)
+                player.m.missions.money = c.plus(Decimal.pow(Math.E, alpha.plus(diff).times(b).times(-1))).div(b)
+        }
+
+        if (isNaN(player.m.missions.money.mag)){
+                console.log(b)
+                console.log(c)
+                console.log(x)
+                console.log(player.m.missions.money)
+        }
 
         /*
         dx/dt = c-bx
@@ -326,6 +336,12 @@ function doPassiveMoneyGeneration(diff){
         ln(c-bx) = -b(t+alpha)
         c-bx = e^(-b(t+alpha))
         x = c-e^(-b(t+alpha)) all times 1/b
+
+        OTHER SIDE: 
+        -ln(bx-c)/b = t + alpha
+        ln(bx-c) = -b(t+alpha)
+        -c+bx = e^(-b(t+alpha))
+        x = c+e^(-b(t+alpha)) all times 1/b
         CALC :)
         */
 }
