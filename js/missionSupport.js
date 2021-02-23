@@ -196,6 +196,15 @@ var FIXED_MISSION_DATA = {
                 rewardOnce: new Decimal(35000),  
                 id: 20,
         },
+        21: {
+                requirement: new Decimal(540),
+                amountType: "k challs",
+                name: "<b>K</b> challenge completions",
+                progress: "lin", //lin, log, exp
+                rewardPassive: new Decimal(12),
+                rewardOnce: new Decimal(45000),  
+                id: 21,
+        },
 }
 
 function getMissionsAmount(s){
@@ -492,6 +501,7 @@ function getPebbleGain(){
         let gain = new Decimal(player.m.stoneUpgrades.includes(184) ? 1 : 0)
         gain = gain.times(tmp.m.buyables[41].effect)
         gain = gain.times(tmp.m.buyables[42].effect)
+        gain = gain.times(tmp.m.buyables[43].effect)
         gain = gain.times(tmp.m.clickables[111].effect)
         return gain
 }

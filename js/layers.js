@@ -18584,6 +18584,7 @@ addLayer("m", {
                                 if (x == 5) return new Decimal(16500)
                                 if (x == 6) return new Decimal(18500)
                                 if (x == 7) return new Decimal(19000)
+                                if (x == 8) return new Decimal(22500)
                                 return new Decimal(1e100)
                         },
                         unlocked(){
@@ -19112,7 +19113,8 @@ addLayer("m", {
                                 let psec = getPebbleGain()
                                 let need = tmp.m.buyables[id].cost
                                 if (tmp.m.buyables[id].cost.lt(1e300)){
-                                        if (need.gt(amt)) e = "Est time: " + formatTime(need.sub(amt).div(psec)) 
+                                        if (psec.eq(0)) e = "Est time: Infinite"
+                                        else if (need.gt(amt)) e = "Est time: " + formatTime(need.sub(amt).div(psec)) 
                                         else e = "Est time: 0.00s"
                                 }
                                 let f = "<br>Shift to see details"
@@ -19180,7 +19182,8 @@ addLayer("m", {
                                 let psec = getPebbleGain()
                                 let need = tmp.m.buyables[id].cost
                                 if (tmp.m.buyables[id].cost.lt(1e300)){
-                                        if (need.gt(amt)) e = "Est time: " + formatTime(need.sub(amt).div(psec)) 
+                                        if (psec.eq(0)) e = "Est time: Infinite"
+                                        else if (need.gt(amt)) e = "Est time: " + formatTime(need.sub(amt).div(psec)) 
                                         else e = "Est time: 0.00s"
                                 }
                                 let f = "<br>Shift to see details"
@@ -19219,6 +19222,75 @@ addLayer("m", {
                                 return bases[2].times(bases[1].pow(amt)).times(bases[0].pow(amt).pow(amt))
                         },
                 }, 
+                43: {
+                        title: "Thirteen",
+                        buy(){
+                                if (!this.canAfford()) return 
+                                player.m.pebbles.buyables[43] = player.m.pebbles.buyables[43].plus(1)
+                        },
+                        canAfford(){
+                                let id = 43
+                                return player.m.pebbles.amount.gte(tmp.m.buyables[id].cost)
+                        },
+                        display(){
+                                let id = 43
+                                if (shiftDown) {
+                                        let a = "<br><b><h2>Effect formula</h2>:<br> ln(ln(missions+20)^x<br>"
+                                        let a2 = format(tmp.m.buyables[id].effectBase) + "^x"
+                                        let b = "</b><br><b><h2>Cost formula</h2>:<br>("
+                                        let data = tmp.m.buyables[id].bases
+                                        let c = format(data[2]) + ")*(" + format(data[1]) + "^x)*(" + format(data[0]) + "^x<sup>2</sup>)</b><br>"
+                                        return a + a2 + b + c
+                                }
+                                let a = "<br><b><h2>Amount</h2>: " + formatWhole(player.m.pebbles.buyables[id]) + "</b><br><b><h2>"
+                                let b = "Effect</h2>: *" + format(tmp.m.buyables[id].effect) + " pebble gain" 
+                                let c = "</b><br><b><h2>Requirement</h2>:<br>" + format(tmp.m.buyables[id].cost)
+                                let d = " pebbles</b><br>" 
+                                let e = ""
+                                let amt = player.m.pebbles.amount
+                                let psec = getPebbleGain()
+                                let need = tmp.m.buyables[id].cost
+                                if (tmp.m.buyables[id].cost.lt(1e300)){
+                                        if (psec.eq(0)) e = "Est time: Infinite"
+                                        else if (need.gt(amt)) e = "Est time: " + formatTime(need.sub(amt).div(psec)) 
+                                        else e = "Est time: 0.00s"
+                                }
+                                let f = "<br>Shift to see details"
+                                return a + b + c + d + e + f
+                        },
+                        effect(){
+                                let id = 43
+                                return Decimal.pow(tmp.m.buyables[id].effectBase, tmp.m.buyables[id].total)
+                        },
+                        effectBase(){
+                                let ret = player.m.points.plus(20).ln().ln()
+
+                                return ret
+                        },
+                        extra(){
+                                return new Decimal(0)
+                        },
+                        total(){
+                                let id = 43
+                                return tmp.m.buyables[id].extra.plus(player.m.pebbles.buyables[id])
+                        },
+                        unlocked(){
+                                return hasUnlockedPast("m") || player.m.pebbles.buyables[41].gte(20)
+                        },
+                        bases(){
+                                let a = new Decimal(2)
+                                let b = new Decimal(10)
+                                let c = new Decimal(2e58)
+                                return [a,b,c]
+                        },
+                        cost(){
+                                let id = 43
+                                let bases = tmp.m.buyables[id].bases
+
+                                let amt = player.m.pebbles.buyables[id]
+                                return bases[2].times(bases[1].pow(amt)).times(bases[0].pow(amt).pow(amt))
+                        },
+                },
         },
         tabFormat: {
                 "Upgrades": {

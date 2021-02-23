@@ -501,6 +501,13 @@ PROGRESSION_MILESTONES = {
 	369: ()=> player.m.totalStonesUnlocked >= 35, 
 	370: ()=> player.m.totalStonesUnlocked >= 36, 
 	371: ()=> player.m.totalStonesUnlocked >= 37, 
+	372: ()=> totalChallengeComps("k") >= 528,
+	373: ()=> totalChallengeComps("k") >= 561,
+	374: ()=> totalChallengeComps("h") >= 1128,
+	375: ()=> totalChallengeComps("h") >= 1176,
+	376: ()=> totalChallengeComps("h") >= 1225,
+	377: ()=> totalChallengeComps("h") >= 1275,
+	378: ()=> totalChallengeComps("k") >= 595,
 }
 
 PROGRESSION_MILESTONES_TEXT = {
@@ -875,6 +882,13 @@ PROGRESSION_MILESTONES_TEXT = {
 	369: "35 stones unlocked", 
 	370: "36 stones unlocked", 
 	371: "37 stones unlocked", 
+	372: "528 Key challenge completions",
+	373: "561 Key challenge completions",
+	374: "1128 Heart challenge completions",
+	375: "1176 Heart challenge completions",
+	376: "1225 Heart challenge completions",
+	377: "1275 Heart challenge completions",
+	378: "595 Key challenge completions",
 }
 
 

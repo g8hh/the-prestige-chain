@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".8.42 Banana", // Cherry
+	num: ".8.43 Cherry", // Date
 	name: "",
 }
 
@@ -85,7 +85,7 @@ var displayThings = [
 		return "(" + format(getPointGen()) + "/sec)"
 	},
 	function(){
-		let a = "Endgame: 358 achievements"
+		let a = "Endgame: 361 achievements"
 		return player.autosave ? a : a + ". Warning: autosave is off"
 	},
 	function(){
@@ -710,6 +710,11 @@ function getChangeLogText(){
 	de4 = "- Added a T1, T2, and T3 stone"
 	de5 = "- Added a stone upgrade"
 	de6 = "- Made reload convert stone saves to Decimals"
+	df1 = "v.8.43"
+	df2 = "- Fixed a bug with zero pebble production"
+	df3 = "- Added a mission"
+	df4 = "- Added a pebble buyable"
+	df5 = "- Added a row of achievements"
 
 	let part1   = [a1,  a2,  a3,  a4,  a5,  a6,  ""]
 	let part2   = [b1,  b2,  b3,  b4,  b5,  "",  b6,  b7,  "",  b8,  b9,  b10,  "",  b11,  b12,  ""]
@@ -815,6 +820,7 @@ function getChangeLogText(){
 	let part102 = [dc1, dc2, dc3, dc4, dc5, dc6, dc7, dc8, dc9,  ""]
 	let part103 = [dd1, dd2, dd3, dd4, dd5, dd6,  ""]
 	let part104 = [de1, de2, de3, de4, de5, de6,  ""]
+	let part105 = [df1, df2, df3, df4, df5,  ""]
 	// MAKE SURE TO ADD THEM
 
 	let final1  = [ part10,   part9,   part8,   part7,   part6,   part5,   part4,   part3,   part2,   part1]
@@ -827,7 +833,7 @@ function getChangeLogText(){
 	let final8  = [ part80,  part79,  part78,  part77,  part76,  part75,  part74,  part73,  part72,  part71]
 	let final9  = [ part90,  part89,  part88,  part87,  part86,  part85,  part84,  part83,  part82,  part81]
 	let final10 = [part100,  part99,  part98,  part97,  part96,  part95,  part94,  part93,  part92,  part91]
-	let final11 = [part104, part103, part102, part101]
+	let final11 = [part105, part104, part103, part102, part101]
 	let final12 = []
 
 	let entiresShown = 3
