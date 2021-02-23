@@ -12,8 +12,8 @@ that means itll act weird for things like stone 111 but thats fine :)
 /*
 */
 
-var BOOST_MONEY = [11, 31, 61, 33, 101, 73, 81]
-var EXTRA_BEST_ORDER = [132, 134, 212, 141, 312, 142]
+var BOOST_MONEY = [11, 31, 61, 33, 101, 73, 81, 43] // stone storage num
+var EXTRA_BEST_ORDER = [132, 134, 212, 141, 312, 142, 213, 321, 232] // stone id
 
 var FIXED_MISSION_DATA = {
         1: {
@@ -299,6 +299,8 @@ function getMoneyPerSecond(){
 
         ret = softcap(ret, "money")
 
+        ret = ret.plus(getPebbleEffect())
+
         return ret.max(0)
 }
 
@@ -371,6 +373,7 @@ function updateMissions(diff){
         updateBestPerTier()
         if (player.m.stoneUpgrades.includes(182)) syncBestT1Stones()
         if (player.m.stoneUpgrades.includes(183)) syncBestT2Stones()
+        if (player.m.stoneUpgrades.includes(184)) syncBestT3Stones()
 }
 
 function syncBestT1Stones(){
@@ -391,6 +394,51 @@ function syncBestT1Stones(){
 function syncBestT2Stones(){
         let data = player.m.bestStones
         let ids = getUnlockedStonesIDs().filter(x => x < 100 && x > 60)
+        let a = new Decimal(0)
+        for (i in ids){
+                j = ids[i]
+                if (BOOST_MONEY.includes(j)) continue
+                a = a.max(data[j])
+        }
+        for (i in ids){
+                j = ids[i]
+                data[j] = data[j].max(a)
+        }   
+}
+
+function syncBestT3Stones(){
+        let data = player.m.bestStones
+        let ids = getUnlockedStonesIDs().filter(x => x < 130 && x > 100)
+        let a = new Decimal(0)
+        for (i in ids){
+                j = ids[i]
+                if (BOOST_MONEY.includes(j)) continue
+                a = a.max(data[j])
+        }
+        for (i in ids){
+                j = ids[i]
+                data[j] = data[j].max(a)
+        }   
+}
+
+function syncBestT4Stones(){
+        let data = player.m.bestStones
+        let ids = getUnlockedStonesIDs().filter(x => x < 150 && x > 130)
+        let a = new Decimal(0)
+        for (i in ids){
+                j = ids[i]
+                if (BOOST_MONEY.includes(j)) continue
+                a = a.max(data[j])
+        }
+        for (i in ids){
+                j = ids[i]
+                data[j] = data[j].max(a)
+        }   
+}
+
+function syncBestT5Stones(){
+        let data = player.m.bestStones
+        let ids = getUnlockedStonesIDs().filter(x => x < 160 && x > 150)
         let a = new Decimal(0)
         for (i in ids){
                 j = ids[i]
@@ -438,6 +486,35 @@ function getShiftUpEnding(id, character){
         let d = "Requirement: " + format(tmp.m.clickables[id].requirement) + " money/s<br>"
         return b + c + d
 }
+
+function getPebbleGain(){
+        let data = player.m.pebbles
+        let gain = new Decimal(player.m.stoneUpgrades.includes(184) ? 1 : 0)
+        gain = gain.times(tmp.m.buyables[41].effect)
+        gain = gain.times(tmp.m.buyables[42].effect)
+        gain = gain.times(tmp.m.clickables[111].effect)
+        return gain
+}
+
+function updatePebbles(diff){
+        let data = player.m.pebbles
+        data.amount = data.amount.plus(getPebbleGain().times(diff))
+}
+
+function getPebbleEffect(){
+        let amt = player.m.pebbles.amount
+
+        let ret = amt.plus(1).log10()
+
+        if (ret.gt(10)) ret = ret.log10().pow(2).times(10)
+        
+        return ret
+}
+
+
+
+
+
 
 
 

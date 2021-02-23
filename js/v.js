@@ -237,6 +237,13 @@ function loadVue() {
 		`
 	})
 
+	Vue.component('pebble-display', {
+		props: ['layer'],
+		template: `
+		<div><span v-if="player.m.pebbles.amount.lt('1e1000')">You have </span><h2 v-bind:style="{'color': tmp.m.color, 'text-shadow': '0px 0px 10px' + tmp.m.color}">{{format(player.m.pebbles.amount)}}</h2> Pebbles and are gaining <h2 v-bind:style="{'color': tmp.m.color, 'text-shadow': '0px 0px 10px' + tmp.m.color}">{{format(getPebbleGain())}}</h2>/s<br>Your pebbles give {{format(getPebbleEffect())}} money/s after the softcap<br></span>
+		`
+	})//-display
+
 	Vue.component('main-display-goals', {
 		props: ['layer'],
 		template: `

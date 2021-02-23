@@ -16280,7 +16280,6 @@ addLayer("k", {
                 //buyables
                 let resetBuyables = [11, 12, 13, 21, 22, 23, 31, 32, 33]
                 for (let j = 0; j < resetBuyables.length; j++) {
-                        break //remove when buyables added
                         data.buyables[resetBuyables[j]] = new Decimal(0)
                 }
 
@@ -17025,6 +17024,20 @@ addLayer("m", {
                                 154: new Decimal(0),
                                 155: new Decimal(0),
                         },
+                        pebbles: {
+                                amount: new Decimal(0),
+                                buyables: {
+                                        41: new Decimal(0),
+                                        42: new Decimal(0),
+                                        43: new Decimal(0),
+                                        51: new Decimal(0),
+                                        52: new Decimal(0),
+                                        53: new Decimal(0),
+                                        61: new Decimal(0),
+                                        62: new Decimal(0),
+                                        63: new Decimal(0),
+                                }
+                        },
                         stoneUpgrades: [],
                         totalStonesUnlocked: 0,
                         bestStonesCurrent: 0,
@@ -17078,6 +17091,7 @@ addLayer("m", {
                 if (hasUpgrade("l", 34)) x = x.times(tmp.k.challenges[12].rewardEffect)
                 x = x.times(tmp.m.clickables[12].effect)
                 x = x.times(tmp.m.clickables[14].effect)
+                x = x.times(tmp.m.clickables[82].effect)
 
                 return x
         },
@@ -17129,6 +17143,7 @@ addLayer("m", {
                 data.autodevtime += diff
 
                 updateMissions(diff)
+                updatePebbles(diff)
                 
                 if (data.autodevtime < 1) return
                 data.autodevtime += -1
@@ -17455,6 +17470,7 @@ addLayer("m", {
                         effectBase(){
                                 let ret = new Decimal(.1)
                                 if (hasMilestone("m", 6)) ret = ret.plus(.01)
+                                if (player.m.stoneUpgrades.includes(184)) ret = ret.plus(.02)
                                 return ret
                         },
                         requirement(){
@@ -17934,6 +17950,48 @@ addLayer("m", {
                                 else player.m.stones[id] = player.m.stones[id].plus(1) 
                         },
                 },
+                43: {
+                        title(){
+                                return "<bdi style='color: #" + (false ? "FF0000" : "000000") + "'>Stone 143</bdi>"
+                        },
+                        display(){
+                                if (player.tab != "m") return ""
+                                if (player.subtabs.m.mainTabs != "Missions") return ""
+
+                                let id = 43
+                                if (shiftDown) return getShiftDownDisplay(id)
+                                let a = "+log10(<b>K</b> challenge completions) money/s<br>"
+                                return a + getShiftUpEnding(id, "+")
+                        },
+                        effect(){
+                                let id = 43
+                                let amt = false ? player.m.bestStones[id] : player.m.stones[id]
+                                return tmp.m.clickables[id].effectBase.times(amt)
+                        },
+                        effectBase(){
+                                let ret = new Decimal(1).plus(totalChallengeComps("k")).log10()
+                                return ret
+                        },
+                        requirement(){
+                                return this.passiveCost(1).sub(tmp.m.clickables[43].passiveCost)
+                        },
+                        passiveCost(diff = 0){
+                                let x = player.m.stones[43].plus(diff)
+                                return x.plus(1).times(x).div(20)
+                        },
+                        unlocked(){
+                                return player.m.totalStonesUnlocked >= 24
+                        },
+                        canClick(){
+                                let id = 43
+                                return shiftDown ? player.m.stones[id].gt(0) : getMoneyPerSecond().gte(tmp.m.clickables[id].requirement)
+                        },
+                        onClick(){
+                                let id = 43
+                                if (shiftDown) player.m.stones[id] = player.m.stones[id].plus(-1) 
+                                else player.m.stones[id] = player.m.stones[id].plus(1) 
+                        },
+                },
                 61: {
                         title(){
                                 return "<bdi style='color: #" + (false ? "FF0000" : "000000") + "'>Stone 211</bdi>"
@@ -18023,7 +18081,7 @@ addLayer("m", {
                 },
                 63: {
                         title(){
-                                return "<bdi style='color: #" + (false ? "FF0000" : "000000") + "'>Stone 213</bdi>"
+                                return "<bdi style='color: #" + (player.m.bestStonesCurrent >= 7 ? "FF0000" : "000000") + "'>Stone 213</bdi>"
                         },
                         display(){
                                 if (player.tab != "m") return ""
@@ -18039,7 +18097,7 @@ addLayer("m", {
                         },
                         effectBase(){
                                 let id = 63
-                                let amt = false ? player.m.bestStones[id] : player.m.stones[id]
+                                let amt = player.m.bestStonesCurrent >= 7 ? player.m.bestStones[id] : player.m.stones[id]
                                 let ret = amt.plus(4).log(2).plus(3).log(5)
                                 return ret
                         },
@@ -18231,6 +18289,49 @@ addLayer("m", {
                                 else player.m.stones[id] = player.m.stones[id].plus(1) 
                         },
                 },
+                82: {
+                        title(){
+                                return "<bdi style='color: #" + (player.m.bestStonesCurrent >= 9 ? "FF0000" : "000000") + "'>Stone 232</bdi>"
+                        },
+                        display(){
+                                if (player.tab != "m") return ""
+                                if (player.subtabs.m.mainTabs != "Missions") return ""
+
+                                let id = 82
+                                if (shiftDown) return getShiftDownDisplay(id)
+                                let a = "<b>H</b> challenge comps^<b>H</b> challenge comps multiplies <b>M</b> gain<br>"
+                                return a + getShiftUpEnding(id, "*")
+                        },
+                        effect(){
+                                let id = 82
+                                let amt = player.m.bestStonesCurrent >= 9 ? player.m.bestStones[id] : player.m.stones[id]
+                                return tmp.m.clickables[id].effectBase.pow(amt)
+                        },
+                        effectBase(){
+                                let h = totalChallengeComps("h")
+                                let ret = Decimal.pow(h,h)
+                                return ret
+                        },
+                        requirement(){
+                                return this.passiveCost(1).sub(tmp.m.clickables[82].passiveCost)
+                        },
+                        passiveCost(diff = 0){
+                                let x = player.m.stones[82].plus(diff)
+                                return x.plus(1).times(x).div(10)
+                        },
+                        unlocked(){
+                                return player.m.totalStonesUnlocked >= 25
+                        },
+                        canClick(){
+                                let id = 82
+                                return shiftDown ? player.m.stones[id].gt(0) : getMoneyPerSecond().gte(tmp.m.clickables[id].requirement)
+                        },
+                        onClick(){
+                                let id = 82
+                                if (shiftDown) player.m.stones[id] = player.m.stones[id].plus(-1) 
+                                else player.m.stones[id] = player.m.stones[id].plus(1) 
+                        },
+                },
                 101: {
                         title(){
                                 return "<bdi style='color: #" + (false ? "FF0000" : "000000") + "'>Stone 311</bdi>"
@@ -18311,6 +18412,48 @@ addLayer("m", {
                         },
                         onClick(){
                                 let id = 102
+                                if (shiftDown) player.m.stones[id] = player.m.stones[id].plus(-1) 
+                                else player.m.stones[id] = player.m.stones[id].plus(1) 
+                        },
+                },
+                111: {
+                        title(){
+                                return "<bdi style='color: #" + (player.m.bestStonesCurrent >= 8 ? "FF0000" : "000000") + "'>Stone 321</bdi>"
+                        },
+                        display(){
+                                if (player.tab != "m") return ""
+                                if (player.subtabs.m.mainTabs != "Missions") return ""
+
+                                let id = 111
+                                if (shiftDown) return getShiftDownDisplay(id)
+                                let a = "*" + format(tmp.m.clickables[id].effectBase) + " pebbles<br>"
+                                return a + getShiftUpEnding(id, "*")
+                        },
+                        effect(){
+                                let id = 111
+                                let amt = player.m.bestStonesCurrent >= 8 ? player.m.bestStones[id] : player.m.stones[id]
+                                return tmp.m.clickables[id].effectBase.pow(amt)
+                        },
+                        effectBase(){
+                                let ret = new Decimal(1.1)
+                                return ret
+                        },
+                        requirement(){
+                                return this.passiveCost(1).sub(tmp.m.clickables[111].passiveCost)
+                        },
+                        passiveCost(diff = 0){
+                                let x = player.m.stones[111].plus(diff)
+                                return x.plus(1).times(x).div(5)
+                        },
+                        unlocked(){
+                                return player.m.totalStonesUnlocked >= 26
+                        },
+                        canClick(){
+                                let id = 111
+                                return shiftDown ? player.m.stones[id].gt(0) : getMoneyPerSecond().gte(tmp.m.clickables[id].requirement)
+                        },
+                        onClick(){
+                                let id = 111
                                 if (shiftDown) player.m.stones[id] = player.m.stones[id].plus(-1) 
                                 else player.m.stones[id] = player.m.stones[id].plus(1) 
                         },
@@ -18438,6 +18581,9 @@ addLayer("m", {
                                 if (x == 2) return new Decimal(10500)
                                 if (x == 3) return new Decimal(12500)
                                 if (x == 4) return new Decimal(13500)
+                                if (x == 5) return new Decimal(16500)
+                                if (x == 6) return new Decimal(18500)
+                                if (x == 7) return new Decimal(19000)
                                 return new Decimal(1e100)
                         },
                         unlocked(){
@@ -18683,6 +18829,35 @@ addLayer("m", {
                                 }
                         },
                 },
+                184: {
+                        title(){
+                                return ""
+                        },
+                        display(){
+                                if (player.tab != "m") return ""
+                                if (player.subtabs.m.mainTabs != "Missions") return ""
+
+                                let a = "Add .02 to Stone 113 base and unlock pebbles and best T3 stones are synchronized (ones that boost money don't count)<br>"
+                                let b = "Requirement: 355 money/s</b>"
+
+                                return a + b
+                        },
+                        unlocked(){
+                                return player.m.totalStonesUnlocked >= 24
+                        },
+                        canClick(){
+                                return getMoneyPerSecond().gte(355) && !player.m.stoneUpgrades.includes(184)
+                        },
+                        onClick(){
+                                player.m.stoneUpgrades.push(184)
+                        },
+                        style(){
+                                id = 184
+                                return {
+                                        "background-color": player.m.stoneUpgrades.includes(id) ? "#77bf5f" : tmp.m.clickables[id].canClick ? "#FFDFA7" : "#bf8f8f"
+                                }
+                        },
+                },
                 //stoneUpgrades
                 251: {
                         title(){
@@ -18905,6 +19080,146 @@ addLayer("m", {
                         },
                 },
         },
+        buyables: {
+                rows: 10,
+                cols: 3,
+                41: {
+                        title: "Eleven",
+                        buy(){
+                                if (!this.canAfford()) return 
+                                player.m.pebbles.buyables[41] = player.m.pebbles.buyables[41].plus(1)
+                        },
+                        canAfford(){
+                                let id = 41
+                                return player.m.pebbles.amount.gte(tmp.m.buyables[id].cost)
+                        },
+                        display(){
+                                let id = 41
+                                if (shiftDown) {
+                                        let a = "<br><b><h2>Effect formula</h2>:<br> ln(pebbles+4)^x<br>"
+                                        let a2 = format(tmp.m.buyables[41].effectBase) + "^x"
+                                        let b = "</b><br><b><h2>Cost formula</h2>:<br>("
+                                        let data = tmp.m.buyables[41].bases
+                                        let c = format(data[2]) + ")*(" + format(data[1]) + "^x)*(" + format(data[0]) + "^x<sup>2</sup>)</b><br>"
+                                        return a + a2 + b + c
+                                }
+                                let a = "<br><b><h2>Amount</h2>: " + formatWhole(player.m.pebbles.buyables[id]) + "</b><br><b><h2>"
+                                let b = "Effect</h2>: *" + format(tmp.m.buyables[id].effect) + " pebble gain" 
+                                let c = "</b><br><b><h2>Requirement</h2>:<br>" + format(tmp.m.buyables[id].cost)
+                                let d = " pebbles</b><br>" 
+                                let e = ""
+                                let amt = player.m.pebbles.amount
+                                let psec = getPebbleGain()
+                                let need = tmp.m.buyables[id].cost
+                                if (tmp.m.buyables[id].cost.lt(1e300)){
+                                        if (need.gt(amt)) e = "Est time: " + formatTime(need.sub(amt).div(psec)) 
+                                        else e = "Est time: 0.00s"
+                                }
+                                let f = "<br>Shift to see details"
+                                return a + b + c + d + e + f
+                        },
+                        effect(){
+                                let id = 41
+                                return Decimal.pow(tmp.m.buyables[id].effectBase, tmp.m.buyables[id].total)
+                        },
+                        effectBase(){
+                                let ret = player.m.pebbles.amount.plus(4).ln()
+
+                                return ret
+                        },
+                        extra(){
+                                return new Decimal(0)
+                        },
+                        total(){
+                                let id = 41
+                                return tmp.m.buyables[id].extra.plus(player.m.pebbles.buyables[id])
+                        },
+                        unlocked(){
+                                return true
+                        },
+                        bases(){
+                                let a = new Decimal(1.3)
+                                let b = new Decimal(5)
+                                let c = new Decimal(20)
+                                return [a,b,c]
+                        },
+                        cost(){
+                                let id = 41
+                                let bases = tmp.m.buyables[id].bases
+
+                                let amt = player.m.pebbles.buyables[id]
+                                return bases[2].times(bases[1].pow(amt)).times(bases[0].pow(amt).pow(amt))
+                        },
+                }, 
+                42: {
+                        title: "Twelve",
+                        buy(){
+                                if (!this.canAfford()) return 
+                                player.m.pebbles.buyables[42] = player.m.pebbles.buyables[42].plus(1)
+                        },
+                        canAfford(){
+                                let id = 42
+                                return player.m.pebbles.amount.gte(tmp.m.buyables[id].cost)
+                        },
+                        display(){
+                                let id = 42
+                                if (shiftDown) {
+                                        let a = "<br><b><h2>Effect formula</h2>:<br> ln(money+4)^x<br>"
+                                        let a2 = format(tmp.m.buyables[id].effectBase) + "^x"
+                                        let b = "</b><br><b><h2>Cost formula</h2>:<br>("
+                                        let data = tmp.m.buyables[id].bases
+                                        let c = format(data[2]) + ")*(" + format(data[1]) + "^x)*(" + format(data[0]) + "^x<sup>2</sup>)</b><br>"
+                                        return a + a2 + b + c
+                                }
+                                let a = "<br><b><h2>Amount</h2>: " + formatWhole(player.m.pebbles.buyables[id]) + "</b><br><b><h2>"
+                                let b = "Effect</h2>: *" + format(tmp.m.buyables[id].effect) + " pebble gain" 
+                                let c = "</b><br><b><h2>Requirement</h2>:<br>" + format(tmp.m.buyables[id].cost)
+                                let d = " pebbles</b><br>" 
+                                let e = ""
+                                let amt = player.m.pebbles.amount
+                                let psec = getPebbleGain()
+                                let need = tmp.m.buyables[id].cost
+                                if (tmp.m.buyables[id].cost.lt(1e300)){
+                                        if (need.gt(amt)) e = "Est time: " + formatTime(need.sub(amt).div(psec)) 
+                                        else e = "Est time: 0.00s"
+                                }
+                                let f = "<br>Shift to see details"
+                                return a + b + c + d + e + f
+                        },
+                        effect(){
+                                let id = 42
+                                return Decimal.pow(tmp.m.buyables[id].effectBase, tmp.m.buyables[id].total)
+                        },
+                        effectBase(){
+                                let ret = player.m.missions.money.plus(4).ln()
+
+                                return ret
+                        },
+                        extra(){
+                                return new Decimal(0)
+                        },
+                        total(){
+                                let id = 42
+                                return tmp.m.buyables[id].extra.plus(player.m.pebbles.buyables[id])
+                        },
+                        unlocked(){
+                                return hasUnlockedPast("m") || player.m.pebbles.buyables[41].gte(12)
+                        },
+                        bases(){
+                                let a = new Decimal(1.5)
+                                let b = new Decimal(10)
+                                let c = new Decimal(2e24)
+                                return [a,b,c]
+                        },
+                        cost(){
+                                let id = 42
+                                let bases = tmp.m.buyables[id].bases
+
+                                let amt = player.m.pebbles.buyables[id]
+                                return bases[2].times(bases[1].pow(amt)).times(bases[0].pow(amt).pow(amt))
+                        },
+                }, 
+        },
         tabFormat: {
                 "Upgrades": {
                         content: [
@@ -19027,6 +19342,15 @@ addLayer("m", {
                         ],
                         unlocked(){
                                 return true
+                        },
+                },
+                "Pebbles": {
+                        content: [
+                                "pebble-display",
+                                ["buyables", [4,6]],
+                        ],
+                        unlocked(){
+                                return player.m.stoneUpgrades.includes(184) || hasUnlockedPast("m")
                         },
                 },
         },

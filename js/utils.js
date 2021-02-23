@@ -321,6 +321,13 @@ function load() {
 	updateGamesRewards()
 	updateTemp()
 	player.m.missions.currentMissions = []
+	for (let i = 1; i <= 5; i++){
+		for (let j = 11; j <= 155; j ++){
+			if (player.m.stonesSaves[i] == undefined) continue
+			if (typeof player.m.stonesSaves[i][j] != "string") continue
+			player.m.stonesSaves[i][j] = new Decimal(player.m.stonesSaves[i][j])
+		}
+	}
 }
 
 function exportSave() {
