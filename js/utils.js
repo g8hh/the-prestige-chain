@@ -107,11 +107,13 @@ function formatChances(v) {
 	return format(v.times(Decimal.pow(10, b))) + "/10^" + formatWhole(b)
 }
 
-function formatTime(s) {
+function formatTime(s, long = false) {
 	if (s < 60) return format(s) + "s"
 	else if (s < 3600) return formatWhole(Math.floor(s/60)) + "m " + format(s%60) + "s"
 	else if (s < 86400) return formatWhole(Math.floor(s/3600)) + "h " + formatWhole(Math.floor(s/60)%60)+"m "+format(s%60)+"s"
-	else return formatWhole(Math.floor(s/86400)) + "d " + formatWhole(Math.floor(s/3600)%24)+"h "+formatWhole(Math.floor(s/60)%60)+"m "+format(s%60)+"s"
+	else if (s < 86400*365) return formatWhole(Math.floor(s/86400)) + "d " + formatWhole(Math.floor(s/3600)%24)+"h "+formatWhole(Math.floor(s/60)%60)+"m "+format(s%60)+"s"
+	else if (s > 86400*365*100 && long) return "Over 100 years"
+	return formatWhole(Math.floor(s/86400/365)) + "y " + formatWhole(Math.floor(s/86400)%365) + "d " + formatWhole(Math.floor(s/3600)%24)+"h "+formatWhole(Math.floor(s/60)%60)+"m "+format(s%60)+"s"
 }
 
 function toPlaces(x, precision, maxAccepted) {

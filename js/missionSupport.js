@@ -12,8 +12,8 @@ that means itll act weird for things like stone 111 but thats fine :)
 /*
 */
 
-var BOOST_MONEY = [11, 31, 61, 33, 101, 73, 81, 43] // stone storage num
-var EXTRA_BEST_ORDER = [132, 134, 212, 141, 312, 142, 213, 321, 232] // stone id
+var BOOST_MONEY = [11, 31, 61, 33, 101, 73, 81, 43, 83] // stone storage num
+var EXTRA_BEST_ORDER = [132, 134, 212, 141, 312, 142, 213, 321, 232, 133] // stone id
 
 var FIXED_MISSION_DATA = {
         1: {
@@ -205,6 +205,42 @@ var FIXED_MISSION_DATA = {
                 rewardOnce: new Decimal(45000),  
                 id: 21,
         },
+        22: {
+                requirement: new Decimal(560),
+                amountType: "k challs",
+                name: "<b>K</b> challenge completions",
+                progress: "lin", //lin, log, exp
+                rewardPassive: new Decimal(14),
+                rewardOnce: new Decimal(60000),  
+                id: 22,
+        },
+        23: {
+                requirement: new Decimal(580),
+                amountType: "k challs",
+                name: "<b>K</b> challenge completions",
+                progress: "lin", //lin, log, exp
+                rewardPassive: new Decimal(17),
+                rewardOnce: new Decimal(80000),  
+                id: 23,
+        },
+        24: {
+                requirement: new Decimal(600),
+                amountType: "k challs",
+                name: "<b>K</b> challenge completions",
+                progress: "lin", //lin, log, exp
+                rewardPassive: new Decimal(20),
+                rewardOnce: new Decimal(10e4),  
+                id: 24,
+        },
+        25: {
+                requirement: new Decimal(620),
+                amountType: "k challs",
+                name: "<b>K</b> challenge completions",
+                progress: "lin", //lin, log, exp
+                rewardPassive: new Decimal(25),
+                rewardOnce: new Decimal(12e4),  
+                id: 25,
+        },
 }
 
 function getMissionsAmount(s){
@@ -291,6 +327,7 @@ function getTaxRate(){
         let ret = .0002
         if (hasUpgrade("l", 42)) ret *= 5
         if (player.m.stoneUpgrades.includes(175)) ret *= 20
+        if (player.m.stoneUpgrades.includes(192)) ret *= 2
         return ret
 }
 
@@ -365,6 +402,7 @@ function updateMissions(diff){
         let data = player.m.missions
         let data2 = player.m
         doPassiveMoneyGeneration(diff)
+        data.bestMoney = data.bestMoney.max(data.money)
 
         for (let i = 0; i < data.currentMissions.length; i ++){
                 attemptCompleteMission(i)

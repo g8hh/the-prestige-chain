@@ -48,6 +48,7 @@ function getPrestigeGainChangeExp(layer){
         }
         if (layer == "f") {
                 exp = exp.times(Decimal.pow(.9, getChallengeDepth(2) + getChallengeDepth(4)))
+                exp = exp.times(tmp.m.clickables[112].effect)
         }
         if (layer == "g") {
                 exp = exp.times(CURRENT_BUYABLE_EFFECTS["k22"])
