@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".8.44 Date", // e-fruit
+	num: ".8.45 Elderberry", // Fig
 	name: "",
 }
 
@@ -85,7 +85,7 @@ var displayThings = [
 		return "(" + format(getPointGen()) + "/sec)"
 	},
 	function(){
-		let a = "Endgame: 361 achievements"
+		let a = "Endgame: 378 achievements"
 		return player.autosave ? a : a + ". Warning: autosave is off"
 	},
 	function(){
@@ -721,6 +721,16 @@ function getChangeLogText(){
 	dg4 = "- Improved the time display (displays years and special display for over 100 years)"
 	dg5 = "- Added a T1, T2, and T3 stone"
 	dg6 = "- Added a stone upgrade"
+	dh1 = "v.8.45"
+	dh2 = "- Added a display for the amount of stones being used if best is used"
+	dh3 = "- Added a Lemon upgrade (not for a while!)"
+	dh4 = "- Added three money softcaps"
+	dh5 = "- Improved money gain display above 1e3"
+	dh6 = "- Added 975 missions"
+	dh7 = "- Made message and mangement fit better"
+	dh8 = "- Added 4 T1, 2 T2 and a T4 stone"
+	dh9 = "- Added 4 stone upgrades" 
+	dh10= "- Added pebble buyable"
 
 	let part1   = [a1,  a2,  a3,  a4,  a5,  a6,  ""]
 	let part2   = [b1,  b2,  b3,  b4,  b5,  "",  b6,  b7,  "",  b8,  b9,  b10,  "",  b11,  b12,  ""]
@@ -828,6 +838,7 @@ function getChangeLogText(){
 	let part104 = [de1, de2, de3, de4, de5, de6,  ""]
 	let part105 = [df1, df2, df3, df4, df5,  ""]
 	let part106 = [dg1, dg2, dg3, dg4, dg5, dg6,  ""]
+	let part107 = [dh1, dh2, dh3, dh4, dh5, dh6, dh7, dh8, dh9, dh10, ""]
 	// MAKE SURE TO ADD THEM
 
 	let final1  = [ part10,   part9,   part8,   part7,   part6,   part5,   part4,   part3,   part2,   part1]
@@ -840,7 +851,7 @@ function getChangeLogText(){
 	let final8  = [ part80,  part79,  part78,  part77,  part76,  part75,  part74,  part73,  part72,  part71]
 	let final9  = [ part90,  part89,  part88,  part87,  part86,  part85,  part84,  part83,  part82,  part81]
 	let final10 = [part100,  part99,  part98,  part97,  part96,  part95,  part94,  part93,  part92,  part91]
-	let final11 = [part106, part105, part104, part103, part102, part101]
+	let final11 = [part107, part106, part105, part104, part103, part102, part101]
 	let final12 = []
 
 	let entiresShown = 3

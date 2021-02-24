@@ -47,6 +47,33 @@ var softcap_data = {
 				return !false
 			},
 		},
+		4: {
+			func: "pow",
+			start: 5000,
+			pow: .7071,
+			derv: false,
+			active() {
+				return !false
+			},
+		},
+		5: {
+			func: "pow",
+			start: 6e3,
+			pow: .5,
+			derv: false,
+			active() {
+				return !false
+			},
+		},
+		6: {
+			func: "log",
+			add: 6,
+			pow: 4,
+			start: 1e4,
+			active(){
+				return !false
+			},
+		},
 	},
 	a_eff: {
 		1: {

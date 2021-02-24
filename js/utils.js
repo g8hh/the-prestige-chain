@@ -85,6 +85,16 @@ function formatWhole(decimal) {
 	return addCommas(decimal.floor().mag.toString())
 }
 
+function formatPlus(decimal, precision){
+	decimal = new Decimal(decimal)
+	if (decimal.gt(1e6)) return format(decimal, precision)
+	if (decimal.lt(1e3)) return format(decimal, precision)
+	let x = decimal.div(1000).floor()
+	let y = format(decimal.sub(x.times(1000)), precision)
+	let z = y.length == precision + 4 ? "" : (y.length == precision + 3 ? "0" : "00")
+	return formatWhole(x) + "," + z + y
+}
+
 function upperCase(s){
 	l = s.split(" ")
 	s2 = ""
@@ -108,6 +118,7 @@ function formatChances(v) {
 }
 
 function formatTime(s, long = false) {
+	if (new Decimal(s).gt(1e200)) return "Basically Infinite"
 	if (s < 60) return format(s) + "s"
 	else if (s < 3600) return formatWhole(Math.floor(s/60)) + "m " + format(s%60) + "s"
 	else if (s < 86400) return formatWhole(Math.floor(s/3600)) + "h " + formatWhole(Math.floor(s/60)%60)+"m "+format(s%60)+"s"

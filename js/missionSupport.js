@@ -12,8 +12,12 @@ that means itll act weird for things like stone 111 but thats fine :)
 /*
 */
 
-var BOOST_MONEY = [11, 31, 61, 33, 101, 73, 81, 43, 83] // stone storage num
-var EXTRA_BEST_ORDER = [132, 134, 212, 141, 312, 142, 213, 321, 232, 133] // stone id
+var BOOST_MONEY = [11, 31, 61, 33, 101, 73, 81, 43, 83, 131, 64] // stone storage num
+var EXTRA_BEST_ORDER = [132, 134, 212, 141, 
+                        312, 142, 213, 321, 
+                        232, 133, 135, 224, 
+                        313, 223, 131, 145, 
+                        143, ] // stone id
 
 var FIXED_MISSION_DATA = {
         1: {
@@ -289,15 +293,20 @@ function getNextMission(){
                 return FIXED_MISSION_DATA[i]
         }
         console.log("OOOPS")
-        return {
-                requirement: Decimal.pow(10, 1e20),
-                amountType: "none",
-                name: "<b>M</b>",
-                progress: "log", //lin, log, exp
-                rewardPassive: new Decimal(.5),
-                rewardOnce: new Decimal(2500),  
-                id: 1236712631723,
+        let x = player.m.missions.completed.total
+        if (x >= 25 && x < 1000) {
+                x = new Decimal(x)
+                return {
+                        requirement: Decimal.pow(10, Decimal.pow(2, x)),
+                        amountType: "m points",
+                        name: "<b>M</b>",
+                        progress: "log", //lin, log, exp
+                        rewardPassive: new Decimal(x + 3),
+                        rewardOnce: new Decimal(x).pow(3),  
+                        id: x + 1,
+                }
         }
+        
 }
 
 function isMissionComplete(data){
@@ -328,22 +337,68 @@ function getTaxRate(){
         if (hasUpgrade("l", 42)) ret *= 5
         if (player.m.stoneUpgrades.includes(175)) ret *= 20
         if (player.m.stoneUpgrades.includes(192)) ret *= 2
+        if (player.m.stoneUpgrades.includes(193)) ret *= 1.25
         return ret
 }
 
-function getMoneyPerSecond(){
+function isUsingBest(id){
+        if (EXTRA_BEST_ORDER.slice(0,player.m.bestStonesCurrent).includes(getStoneNumber(id))) {
+                return true
+        }
+        if (id ==  11) return false
+        if (id ==  12) return player.m.stoneUpgrades.includes(173)
+        if (id ==  13) return player.m.stoneUpgrades.includes(172)
+        if (id ==  14) return player.m.stoneUpgrades.includes(182)
+        if (id ==  15) return player.m.stoneUpgrades.includes(202)
+        if (id ==  21) return player.m.stoneUpgrades.includes(173)
+        if (id ==  22) return player.m.stoneUpgrades.includes(174)
+        if (id ==  23) return player.m.stoneUpgrades.includes(172)
+        if (id ==  24) return player.m.stoneUpgrades.includes(182)
+        if (id ==  25) return player.m.stoneUpgrades.includes(202)
+        if (id ==  31) return false
+        if (id ==  32) return false
+        if (id ==  33) return false
+        if (id ==  34) return false
+        if (id ==  35) return false
+        if (id ==  41) return false
+        if (id ==  42) return false
+        if (id ==  43) return false
+        if (id ==  44) return player.m.stoneUpgrades.includes(191)
+        if (id ==  61) return false
+        if (id ==  62) return false
+        if (id ==  63) return false
+        if (id ==  64) return false
+        if (id ==  71) return player.m.stoneUpgrades.includes(183)
+        if (id ==  72) return player.m.stoneUpgrades.includes(183)
+        if (id ==  73) return false
+        if (id ==  74) return false
+        if (id ==  81) return false
+        if (id ==  82) return false
+        if (id ==  83) return false
+        if (id == 101) return false
+        if (id == 102) return false
+        if (id == 111) return false
+        if (id == 112) return player.m.stoneUpgrades.includes(192)
+        if (id == 131) return false
+
+        if (Math.random() < .04) console.log(id)
+        return false
+}
+
+function getMoneyPerSecond(doSoftcap = true){
         let ret = player.m.missions.moneyPassive
         for (i in BOOST_MONEY){
                 ret = ret.plus(tmp.m.clickables[BOOST_MONEY[i]].effect)
         }
         if (hasUpgrade("m", 24)) ret = ret.plus(.2)
+        if (hasUpgrade("l", 43)) ret = ret.plus(2e6)
 
         for (i = 11; i < 156; i++){
                 if (tmp.m.clickables[i] == undefined) continue
                 ret = ret.sub(tmp.m.clickables[i].passiveCost)
         }
 
-        ret = softcap(ret, "money")
+        if (doSoftcap) ret = softcap(ret, "money")
 
         ret = ret.plus(getPebbleEffect())
 
@@ -421,6 +476,20 @@ function updateMissions(diff){
         if (player.m.stoneUpgrades.includes(182)) syncBestT1Stones()
         if (player.m.stoneUpgrades.includes(183)) syncBestT2Stones()
         if (player.m.stoneUpgrades.includes(184)) syncBestT3Stones()
+        if (player.m.stoneUpgrades.includes(202)) addBestT1Stones()
+
+        if (hasUpgrade("l", 43)) {
+                //buy pebble buys once per tick
+                layers.m.buyables[41].buy()
+                layers.m.buyables[43].buy()
+                layers.m.buyables[42].buy()
+                layers.m.buyables[51].buy()
+        }
+}
+
+function addBestT1Stones(){
+        let amt = tmp.m.clickables[202].effect.floor()
+        player.m.bestStones[12] = player.m.bestStones[12].max(amt)
 }
 
 function syncBestT1Stones(){
@@ -528,10 +597,13 @@ function getShiftDownDisplay(id){
 
 function getShiftUpEnding(id, character){
         let a = BOOST_MONEY.includes(id) ? "/s" : ""
-        let b = "You have " + formatWhole(player.m.stones[id]) + " stones<br>"
-        let c = "Currently: " + character + format(tmp.m.clickables[id].effect) + a + "<br>"
-        let d = "Requirement: " + format(tmp.m.clickables[id].requirement) + " money/s<br>"
-        return b + c + d
+        let b = isUsingBest(id) ? " (" + formatWhole(player.m.bestStones[id]) + ")" : ""
+        let c = "You have " + formatWhole(player.m.stones[id]) + b + " stones<br>"
+        let d = "Currently: " + character + format(tmp.m.clickables[id].effect) + a + "<br>"
+        let e = "Requirement: " + format(tmp.m.clickables[id].requirement) + " money/s<br>"
+        let start = "<bdi style='font-size:80%'>"
+        let end = "</bdi>"
+        return start + c + d + e + end
 }
 
 function getPebbleGain(){
@@ -540,6 +612,7 @@ function getPebbleGain(){
         gain = gain.times(tmp.m.buyables[41].effect)
         gain = gain.times(tmp.m.buyables[42].effect)
         gain = gain.times(tmp.m.buyables[43].effect)
+        gain = gain.times(tmp.m.buyables[51].effect)
         gain = gain.times(tmp.m.clickables[111].effect)
         return gain
 }
@@ -555,11 +628,18 @@ function getPebbleEffect(){
         let ret = amt.plus(1).log10()
 
         if (ret.gt(10)) ret = ret.log10().pow(2).times(10)
+        if (ret.gt(100)) ret = ret.log10().pow(2).times(25)
         
         return ret
 }
 
-
+function getStoneNumber(id){
+        if (id < 60) return id + 100
+        if (id < 100) return id + 150
+        if (id < 130) return id + 210
+        if (id < 150) return id + 280
+        return id + 360
+}
 
 
 
