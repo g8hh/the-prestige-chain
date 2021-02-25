@@ -17,7 +17,7 @@ var EXTRA_BEST_ORDER = [132, 134, 212, 141,
                         312, 142, 213, 321, 
                         232, 133, 135, 224, 
                         313, 223, 131, 145, 
-                        143, ] // stone id
+                        143, 231, 233, 234, ] // stone id
 
 var FIXED_MISSION_DATA = {
         1: {
@@ -345,7 +345,7 @@ function isUsingBest(id){
         if (EXTRA_BEST_ORDER.slice(0,player.m.bestStonesCurrent).includes(getStoneNumber(id))) {
                 return true
         }
-        if (id ==  11) return false
+        if (id ==  11) return hasUpgrade("l", 44)
         if (id ==  12) return player.m.stoneUpgrades.includes(173)
         if (id ==  13) return player.m.stoneUpgrades.includes(172)
         if (id ==  14) return player.m.stoneUpgrades.includes(182)
@@ -364,6 +364,7 @@ function isUsingBest(id){
         if (id ==  42) return false
         if (id ==  43) return false
         if (id ==  44) return player.m.stoneUpgrades.includes(191)
+        if (id ==  45) return false
         if (id ==  61) return false
         if (id ==  62) return false
         if (id ==  63) return false
@@ -377,6 +378,7 @@ function isUsingBest(id){
         if (id ==  83) return false
         if (id == 101) return false
         if (id == 102) return false
+        if (id == 103) return false
         if (id == 111) return false
         if (id == 112) return player.m.stoneUpgrades.includes(192)
         if (id == 131) return false
@@ -477,6 +479,7 @@ function updateMissions(diff){
         if (player.m.stoneUpgrades.includes(183)) syncBestT2Stones()
         if (player.m.stoneUpgrades.includes(184)) syncBestT3Stones()
         if (player.m.stoneUpgrades.includes(202)) addBestT1Stones()
+        if (player.m.stoneUpgrades.includes(211)) addBestT2Stones()
 
         if (hasUpgrade("l", 43)) {
                 //buy pebble buys once per tick
@@ -490,6 +493,11 @@ function updateMissions(diff){
 function addBestT1Stones(){
         let amt = tmp.m.clickables[202].effect.floor()
         player.m.bestStones[12] = player.m.bestStones[12].max(amt)
+}
+
+function addBestT2Stones(){
+        let amt = tmp.m.clickables[211].effect.floor()
+        player.m.bestStones[62] = player.m.bestStones[62].max(amt)
 }
 
 function syncBestT1Stones(){
@@ -613,6 +621,7 @@ function getPebbleGain(){
         gain = gain.times(tmp.m.buyables[42].effect)
         gain = gain.times(tmp.m.buyables[43].effect)
         gain = gain.times(tmp.m.buyables[51].effect)
+        gain = gain.times(tmp.m.buyables[52].effect)
         gain = gain.times(tmp.m.clickables[111].effect)
         return gain
 }
