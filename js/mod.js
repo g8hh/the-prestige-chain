@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".8.46 Fig", // Grape
+	num: ".8.46.1 Fig", // Grape
 	name: "",
 }
 
@@ -845,7 +845,7 @@ function getChangeLogText(){
 	let part105 = [df1, df2, df3, df4, df5,  ""]
 	let part106 = [dg1, dg2, dg3, dg4, dg5, dg6,  ""]
 	let part107 = [dh1, dh2, dh3, dh4, dh5, dh6, dh7, dh8, dh9, dh10, ""]
-	let part108 = [di1, dhi2, di3, di4, di5, di6,  ""]
+	let part108 = [di1, di2, di3, di4, di5, di6,  ""]
 	// MAKE SURE TO ADD THEM
 
 	let final1  = [ part10,   part9,   part8,   part7,   part6,   part5,   part4,   part3,   part2,   part1]
