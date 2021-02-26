@@ -376,6 +376,7 @@ function isUsingBest(id){
         if (id ==  81) return false
         if (id ==  82) return false
         if (id ==  83) return false
+        if (id ==  84) return false
         if (id == 101) return false
         if (id == 102) return false
         if (id == 103) return false

@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: ".8.46.1 Fig", // Grape
+	num: ".8.46.2 Fig", // Grape
 	name: "",
 }
 
