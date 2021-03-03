@@ -20531,23 +20531,9 @@ addLayer("m", {
 })
 
 
-/*
-Idea: You are given a map with 3 points on it
-You are trying to find a path between them that is "pretty good" 
-By this you need to get the path that is within [factor based on time] of the optimal path
-You can unlock various algorithms:
-1. Random--try ranodm duh lol
-2. Random instead we swap a pair adj
-3. Random but we swap pair leq given distance [init 4]
-4. Random but we flip leq given distance pair [init 4]
-
-You can unlock each of the 4 algorithms (you start with 1 unlocked)
-You can also up the simulations per second (default 1/s & each upgrade + .1/s)
-You can upgrade algs 3/4
-You can increase the time factor
-You can prestige to +1 points 
-Prestiging is what gives the big bucks 
 
 
 
-*/
+
+
+

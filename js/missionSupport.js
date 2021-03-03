@@ -462,6 +462,12 @@ function updateMissions(diff){
         doPassiveMoneyGeneration(diff)
         data.bestMoney = data.bestMoney.max(data.money)
 
+        if (isNaN(data.money.mag)) {
+                Decimal(0)
+                console.log(player)
+                console.log(data.money)
+        }
+
         for (let i = 0; i < data.currentMissions.length; i ++){
                 attemptCompleteMission(i)
         } // check if youve completed them
