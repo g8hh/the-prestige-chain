@@ -1,5 +1,5 @@
 let modInfo = {
-	name: "The Prestige Chain",
+	name: "转生链 - The Prestige Chain",
 	id: "prestigechain",
 	author: "pg132",
 	pointsName: "points",
