@@ -1290,7 +1290,7 @@ var cnRegReplace = new Map([
     [/^You are currently attempting to build the edge (.+) times per second.$/, '您目前正在尝试每秒构建边缘 $1 次。'],
     [/^You are currently attempting to filter pieces (.+) times per second.$/, '您目前正在尝试每秒过滤 $1 次。'],
     [/^Per sqrt\(T1 stones\) gain (.+) money$/, '每 sqrt\(T1 石头\) 获得 $1 金钱'],
-    [/^You have (.+) T1 stones, your best ever is (.+) stones \(hold shift to sell!$/, '你有 $1 T1 石头，你最好的是 $2 颗石头（等待出售！'],
+    [/^You have (.+) T1 stones, your best ever is (.+) stones \(hold shift to sell!$/, '你有 $1 T1 石头，你最好的是 $2 颗石头（按着 shift 以出售！'],
     [/^You have (.+) stones, your best ever is (.+) stones$/, '你有 $1 石头，你最好的是 $2 颗石头'],
     [/^You have ([\d\.,]+) stones$/, '你有 $1 石头'],
     [/^Reset for (.+) Games$/, '重置为 $1 游戏'],
